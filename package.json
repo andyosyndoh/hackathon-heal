@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev && cd backend && go mod tidy && go run main.go",
+    "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
