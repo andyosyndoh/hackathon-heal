@@ -69,7 +69,7 @@ func (s *UserService) UpdateProfile(userID string, updates map[string]interface{
 	}
 
 	query := fmt.Sprintf("UPDATE user_profiles SET %s WHERE user_id = ?",
-		fmt.Sprintf("%s", setParts[0]))
+		setParts[0])
 	for i := 1; i < len(setParts); i++ {
 		query = fmt.Sprintf("%s, %s", query, setParts[i])
 	}
