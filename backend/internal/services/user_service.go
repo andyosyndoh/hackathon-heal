@@ -27,7 +27,7 @@ func (s *UserService) GetProfile(userID string) (*models.UserProfile, error) {
 	`, userID).Scan(&profile.UserID, &profile.AvatarURL, &profile.Phone,
 		&profile.DateOfBirth, &profile.EmergencyContactName,
 		&profile.EmergencyContactPhone, &profile.Preferences)
-	
+
 	if err != nil {
 		return nil, err
 	}
@@ -68,12 +68,12 @@ func (s *UserService) UpdateProfile(userID string, updates map[string]interface{
 		return fmt.Errorf("no valid fields to update")
 	}
 
-	query := fmt.Sprintf("UPDATE user_profiles SET %s WHERE user_id = ?", 
+	query := fmt.Sprintf("UPDATE user_profiles SET %s WHERE user_id = ?",
 		fmt.Sprintf("%s", setParts[0]))
 	for i := 1; i < len(setParts); i++ {
 		query = fmt.Sprintf("%s, %s", query, setParts[i])
 	}
-	
+
 	args = append(args, userID)
 	_, err := s.db.Exec(query, args...)
 	return err
