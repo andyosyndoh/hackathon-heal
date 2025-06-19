@@ -1,0 +1,270 @@
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080/api/v1';
+
+interface ApiResponse<T = any> {
+  data?: T;
+  error?: string;
+  message?: string;
+}
+
+class ApiClient {
+  private baseURL: string;
+
+  constructor(baseURL: string = API_BASE_URL) {
+    this.baseURL = baseURL;
+  }
+
+  private async request<T>(
+    endpoint: string,
+    options: RequestInit = {}
+  ): Promise<ApiResponse<T>> {
+    const url = `${this.baseURL}${endpoint}`;
+    
+    const config: RequestInit = {
+      headers: {
+        'Content-Type': 'application/json',
+        ...options.headers,
+      },
+      ...options,
+    };
+
+    // Add auth token if available
+    const token = this.getToken();
+    if (token) {
+      config.headers = {
+        ...config.headers,
+        Authorization: `Bearer ${token}`,
+      };
+    }
+
+    try {
+      const response = await fetch(url, config);
+      const data = await response.json();
+
+      if (!response.ok) {
+        return { error: data.error || 'An error occurred' };
+      }
+
+      return { data };
+    } catch (error) {
+      console.error('API request failed:', error);
+      return { error: 'Network error occurred' };
+    }
+  }
+
+  private getToken(): string | null {
+    if (typeof window === 'undefined') return null;
+    return localStorage.getItem('heal_access_token');
+  }
+
+  private setToken(token: string): void {
+    if (typeof window === 'undefined') return;
+    localStorage.setItem('heal_access_token', token);
+  }
+
+  private removeToken(): void {
+    if (typeof window === 'undefined') return;
+    localStorage.removeItem('heal_access_token');
+    localStorage.removeItem('heal_refresh_token');
+  }
+
+  // Authentication methods
+  async register(data: {
+    email: string;
+    password: string;
+    confirmPassword: string;
+    firstName: string;
+    lastName: string;
+  }) {
+    const response = await this.request<{
+      user: any;
+      accessToken: string;
+      refreshToken: string;
+    }>('/auth/register', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    });
+
+    if (response.data) {
+      this.setToken(response.data.accessToken);
+      localStorage.setItem('heal_refresh_token', response.data.refreshToken);
+    }
+
+    return response;
+  }
+
+  async login(email: string, password: string) {
+    const response = await this.request<{
+      user: any;
+      accessToken: string;
+      refreshToken: string;
+    }>('/auth/login', {
+      method: 'POST',
+      body: JSON.stringify({ email, password }),
+    });
+
+    if (response.data) {
+      this.setToken(response.data.accessToken);
+      localStorage.setItem('heal_refresh_token', response.data.refreshToken);
+    }
+
+    return response;
+  }
+
+  async logout() {
+    const response = await this.request('/auth/logout', {
+      method: 'POST',
+    });
+    this.removeToken();
+    return response;
+  }
+
+  // User methods
+  async getUserProfile() {
+    return this.request('/user/profile');
+  }
+
+  async updateUserProfile(data: any) {
+    return this.request('/user/profile', {
+      method: 'PUT',
+      body: JSON.stringify(data),
+    });
+  }
+
+  async getUserStats() {
+    return this.request('/user/stats');
+  }
+
+  async logMood(moodScore: number, notes?: string) {
+    return this.request('/user/mood', {
+      method: 'POST',
+      body: JSON.stringify({ moodScore, notes }),
+    });
+  }
+
+  async getMoodHistory(days: number = 30) {
+    return this.request(`/user/mood-history?days=${days}`);
+  }
+
+  // Chat methods
+  async sendMessage(sessionId: string, content: string, messageType: string = 'text') {
+    return this.request('/chat/message', {
+      method: 'POST',
+      body: JSON.stringify({ sessionId, content, messageType }),
+    });
+  }
+
+  async getChatHistory(sessionId: string, limit: number = 50, offset: number = 0) {
+    return this.request(`/chat/history?session_id=${sessionId}&limit=${limit}&offset=${offset}`);
+  }
+
+  async getChatSessions() {
+    return this.request('/chat/sessions');
+  }
+
+  async deleteChatSession(sessionId: string) {
+    return this.request(`/chat/session/${sessionId}`, {
+      method: 'DELETE',
+    });
+  }
+
+  // Resource methods
+  async getResources(filters: {
+    category?: string;
+    type?: string;
+    difficulty?: string;
+    limit?: number;
+    offset?: number;
+  } = {}) {
+    const params = new URLSearchParams();
+    Object.entries(filters).forEach(([key, value]) => {
+      if (value !== undefined) {
+        params.append(key, value.toString());
+      }
+    });
+    
+    return this.request(`/resources?${params.toString()}`);
+  }
+
+  async getResource(id: string) {
+    return this.request(`/resources/${id}`);
+  }
+
+  async getResourceCategories() {
+    return this.request('/resources/categories');
+  }
+
+  async updateResourceProgress(resourceId: string, progress: number) {
+    return this.request(`/resources/${resourceId}/progress`, {
+      method: 'POST',
+      body: JSON.stringify({ progress }),
+    });
+  }
+
+  async getRecommendations(limit: number = 5) {
+    return this.request(`/resources/recommendations?limit=${limit}`);
+  }
+
+  async toggleResourceFavorite(resourceId: string) {
+    return this.request(`/resources/${resourceId}/favorite`, {
+      method: 'POST',
+    });
+  }
+
+  // Crisis methods
+  async createCrisisAlert(severity: string, message?: string, location?: string) {
+    return this.request('/crisis/alert', {
+      method: 'POST',
+      body: JSON.stringify({ severity, message, location }),
+    });
+  }
+
+  async getEmergencyContacts() {
+    return this.request('/crisis/contacts');
+  }
+
+  async addEmergencyContact(data: {
+    name: string;
+    phone: string;
+    relationship?: string;
+    isPrimary?: boolean;
+  }) {
+    return this.request('/crisis/contacts', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    });
+  }
+
+  async getLocalServices(lat: number, lng: number) {
+    return this.request(`/crisis/services?lat=${lat}&lng=${lng}`);
+  }
+
+  async createSafetyPlan(plan: any) {
+    return this.request('/crisis/safety-plan', {
+      method: 'POST',
+      body: JSON.stringify(plan),
+    });
+  }
+
+  async getSafetyPlan() {
+    return this.request('/crisis/safety-plan');
+  }
+
+  // Utility methods
+  isAuthenticated(): boolean {
+    return !!this.getToken();
+  }
+
+  getCurrentUser(): any {
+    if (typeof window === 'undefined') return null;
+    const userStr = localStorage.getItem('heal_user');
+    return userStr ? JSON.parse(userStr) : null;
+  }
+
+  setCurrentUser(user: any): void {
+    if (typeof window === 'undefined') return;
+    localStorage.setItem('heal_user', JSON.stringify(user));
+  }
+}
+
+export const apiClient = new ApiClient();
+export default apiClient;
