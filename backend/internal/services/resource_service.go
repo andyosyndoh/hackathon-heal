@@ -2,7 +2,7 @@ package services
 
 import (
 	"database/sql"
-	"fmt"
+	// "fmt"
 
 	"github.com/google/uuid"
 	"github.com/heal/internal/models"
