@@ -1,7 +1,7 @@
 import './globals.css';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
-import { Provider as JotaiProvider } from 'jotai';
+import DailyClientProvider from '@/components/DailyClientProvider';
 
 const inter = Inter({ 
   subsets: ['latin'],
@@ -43,11 +43,11 @@ export default function RootLayout({
         <link rel="manifest" href="/manifest.json" />
       </head>
       <body className={`${inter.className} antialiased`}>
-        <JotaiProvider>
+        <DailyClientProvider>
           <div id="root">
             {children}
           </div>
-        </JotaiProvider>
+        </DailyClientProvider>
       </body>
     </html>
   );
