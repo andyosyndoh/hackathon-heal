@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import { 
+import {
   Heart,
   Send,
   Mic,
@@ -18,6 +18,11 @@ import {
   User
 } from 'lucide-react';
 import Link from 'next/link';
+import { useAtom } from 'jotai';
+import { screenAtom } from '@/store/screens';
+import { Instructions } from '@/screens/Instructions';
+import { Conversation } from '@/screens/Conversation';
+import { ConversationError } from '@/screens/ConversationError';
 
 interface Message {
   id: string;
@@ -38,12 +43,13 @@ export default function ChatPage() {
       type: 'text'
     }
   ]);
-  
+
   const [inputMessage, setInputMessage] = useState('');
   const [isRecording, setIsRecording] = useState(false);
   const [isTyping, setIsTyping] = useState(false);
   const [isSoundEnabled, setIsSoundEnabled] = useState(true);
-  const [isVideoEnabled, setIsVideoEnabled] = useState(false);
+  const [showVideoModal, setShowVideoModal] = useState(false);
+  const [, setScreenState] = useAtom(screenAtom);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
 
@@ -103,6 +109,22 @@ export default function ChatPage() {
     // Here you would implement actual voice recording functionality
   };
 
+  const [{ currentScreen }] = useAtom(screenAtom)
+
+  const renderScreen = () => {
+    console.log("screen", currentScreen)
+    switch (currentScreen) {
+      case "settings":
+        return <Settings />;
+      case "introLoading":
+        return <Instructions />;
+      case "conversation":
+        return <Conversation />;
+    }
+  };
+
+
+
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
       {/* Header */}
@@ -122,24 +144,22 @@ export default function ChatPage() {
               </div>
             </div>
           </div>
-          
+
           <div className="flex items-center space-x-2">
             <button
               onClick={() => setIsSoundEnabled(!isSoundEnabled)}
               className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
               title={isSoundEnabled ? 'Mute sounds' : 'Enable sounds'}
             >
-              {isSoundEnabled ? 
-                <Volume2 className="h-5 w-5 text-gray-600" /> : 
+              {isSoundEnabled ?
+                <Volume2 className="h-5 w-5 text-gray-600" /> :
                 <VolumeX className="h-5 w-5 text-gray-600" />
               }
             </button>
             <button
-              onClick={() => setIsVideoEnabled(!isVideoEnabled)}
-              className={`p-2 hover:bg-gray-100 rounded-lg transition-colors ${
-                isVideoEnabled ? 'bg-blue-100 text-blue-600' : 'text-gray-600'
-              }`}
-              title={isVideoEnabled ? 'Disable video' : 'Enable video chat'}
+              onClick={() => setShowVideoModal(true)}
+              className={`p-2 hover:bg-gray-100 rounded-lg transition-colors text-gray-600`}
+              title={'Start video conversation'}
             >
               <Video className="h-5 w-5" />
             </button>
@@ -161,17 +181,6 @@ export default function ChatPage() {
         </div>
       </div>
 
-      {/* Video Section (when enabled) */}
-      {isVideoEnabled && (
-        <div className="bg-gray-900 h-48 flex items-center justify-center">
-          <div className="text-white text-center">
-            <Video className="h-12 w-12 mx-auto mb-2 opacity-50" />
-            <p className="text-sm opacity-75">AI Video Agent will appear here</p>
-            <p className="text-xs opacity-50">Powered by Tavus AI</p>
-          </div>
-        </div>
-      )}
-
       {/* Messages */}
       <div className="flex-1 overflow-y-auto px-4 py-6 space-y-4">
         {messages.map((message) => (
@@ -179,38 +188,34 @@ export default function ChatPage() {
             key={message.id}
             className={`flex ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}
           >
-            <div className={`flex items-start space-x-3 max-w-xs sm:max-w-md lg:max-w-lg ${
-              message.sender === 'user' ? 'flex-row-reverse space-x-reverse' : ''
-            }`}>
-              {/* Avatar */}
-              <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${
-                message.sender === 'user' 
-                  ? 'bg-blue-500' 
-                  : 'bg-gradient-to-r from-blue-500 to-green-500'
+            <div className={`flex items-start space-x-3 max-w-xs sm:max-w-md lg:max-w-lg ${message.sender === 'user' ? 'flex-row-reverse space-x-reverse' : ''
               }`}>
-                {message.sender === 'user' ? 
-                  <User className="h-4 w-4 text-white" /> : 
+              {/* Avatar */}
+              <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${message.sender === 'user'
+                  ? 'bg-blue-500'
+                  : 'bg-gradient-to-r from-blue-500 to-green-500'
+                }`}>
+                {message.sender === 'user' ?
+                  <User className="h-4 w-4 text-white" /> :
                   <Bot className="h-4 w-4 text-white" />
                 }
               </div>
-              
+
               {/* Message Bubble */}
-              <div className={`heal-chat-bubble ${
-                message.sender === 'user' 
-                  ? 'bg-blue-600 text-white' 
+              <div className={`heal-chat-bubble ${message.sender === 'user'
+                  ? 'bg-blue-600 text-white'
                   : 'bg-white text-gray-900 border border-gray-200'
-              }`}>
-                <p className="text-sm leading-relaxed">{message.content}</p>
-                <p className={`text-xs mt-1 ${
-                  message.sender === 'user' ? 'text-blue-100' : 'text-gray-500'
                 }`}>
+                <p className="text-sm leading-relaxed">{message.content}</p>
+                <p className={`text-xs mt-1 ${message.sender === 'user' ? 'text-blue-100' : 'text-gray-500'
+                  }`}>
                   {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                 </p>
               </div>
             </div>
           </div>
         ))}
-        
+
         {/* Typing Indicator */}
         {isTyping && (
           <div className="flex justify-start">
@@ -228,7 +233,7 @@ export default function ChatPage() {
             </div>
           </div>
         )}
-        
+
         <div ref={messagesEndRef} />
       </div>
 
@@ -249,16 +254,15 @@ export default function ChatPage() {
         <div className="flex items-end space-x-3">
           <button
             onClick={toggleRecording}
-            className={`p-3 rounded-full transition-all duration-200 ${
-              isRecording 
-                ? 'bg-red-500 text-white pulse-glow' 
+            className={`p-3 rounded-full transition-all duration-200 ${isRecording
+                ? 'bg-red-500 text-white pulse-glow'
                 : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-            }`}
+              }`}
             title={isRecording ? 'Stop recording' : 'Start voice message'}
           >
             {isRecording ? <MicOff className="h-5 w-5" /> : <Mic className="h-5 w-5" />}
           </button>
-          
+
           <div className="flex-1 relative">
             <textarea
               ref={inputRef}
@@ -271,21 +275,20 @@ export default function ChatPage() {
               style={{ minHeight: '44px' }}
             />
           </div>
-          
+
           <button
             onClick={sendMessage}
             disabled={!inputMessage.trim()}
-            className={`p-3 rounded-full transition-all duration-200 ${
-              inputMessage.trim()
+            className={`p-3 rounded-full transition-all duration-200 ${inputMessage.trim()
                 ? 'bg-blue-600 text-white hover:bg-blue-700 transform hover:scale-105'
                 : 'bg-gray-100 text-gray-400 cursor-not-allowed'
-            }`}
+              }`}
             title="Send message"
           >
             <Send className="h-5 w-5" />
           </button>
         </div>
-        
+
         {/* Quick Responses */}
         <div className="flex flex-wrap gap-2 mt-3">
           {['I need support', 'Feeling anxious', 'Having a hard day', 'Need coping strategies'].map((quickResponse, index) => (
@@ -299,6 +302,22 @@ export default function ChatPage() {
           ))}
         </div>
       </div>
+
+      {/* Video Conversation Modal */}
+      {showVideoModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
+          <div className="relative z-50">
+            {renderScreen()}
+            <button
+              onClick={() => setShowVideoModal(false)}
+              className="absolute top-2 right-2 bg-white/80 hover:bg-white text-gray-700 rounded-full p-2 shadow"
+              aria-label="Close video conversation"
+            >
+              ×
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
