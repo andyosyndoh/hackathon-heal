@@ -65,11 +65,10 @@ export const Conversation: React.FC = () => {
 
   // Join the conversation when conversation URL is available
   useEffect(() => {
+    console.log("Joining conversation:", conversation?.conversation_url, daily, isJoining);
     if (conversation?.conversation_url && daily && !isJoining) {
       setIsJoining(true);
       setJoinError(null);
-      
-      console.log("Joining conversation:", conversation.conversation_url);
       
       daily
         .join({
@@ -184,6 +183,20 @@ export const Conversation: React.FC = () => {
       setScreenState({ currentScreen: "introLoading" });
     }
   }, [daily, token, conversation?.conversation_id, setConversation, setScreenState]);
+
+  // Show loading until Daily is ready
+  if (!daily) {
+    return (
+      <DialogWrapper>
+        <div className="absolute inset-0 flex h-full items-center justify-center bg-black/50">
+          <div className="flex flex-col items-center gap-4">
+            <l-quantum size="45" speed="1.75" color="white"></l-quantum>
+            <p className="text-white text-lg">Initializing video call...</p>
+          </div>
+        </div>
+      </DialogWrapper>
+    );
+  }
 
   // Show loading state while joining
   if (isJoining || (!remoteParticipantIds.length && !joinError)) {
