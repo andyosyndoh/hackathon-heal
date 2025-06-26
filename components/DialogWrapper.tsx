@@ -4,9 +4,9 @@ import { quantum } from 'ldrs';
 
 quantum.register();
 
-const desktopClassName = "lg:aspect-video lg:max-h-none lg:h-auto";
-const tabletClassName = "sm:max-h-[680px]";
-const mobileClassName = "w-full h-full max-h-[500px] max-w-5xl";
+const desktopClassName = "lg:aspect-video lg:max-h-none lg:h-auto lg:min-h-[600px]";
+const tabletClassName = "sm:max-h-[80vh] sm:min-h-[500px]";
+const mobileClassName = "w-full h-full max-h-[90vh] min-h-[400px] max-w-6xl";
 
 export const DialogWrapper = ({ children }: { children: React.ReactNode }) => {
   return (
