@@ -1,3 +1,4 @@
+"use Client"
 import { createConversation } from "@/api/createConversation";
 import {
   DialogWrapper,
@@ -132,6 +133,7 @@ export function Instructions() {
       setIsLoadingConversation(true);
 
       // Initialize Daily camera
+      console.log("daily", daily)
       try {
         console.log("Starting Daily camera...");
         await daily?.startCamera({
