@@ -25,17 +25,23 @@ const useCreateConversationMutation = () => {
   const token = useAtomValue(apiTokenAtom);
 
   const createConversationRequest = async () => {
-    console.log("token",apiTokenAtom)
     try {
+      setIsLoading(true);
+      setError(null);
+      
       if (!token) {
-        throw new Error("Token is required");
+        throw new Error("API token is required");
       }
-      console.log("starting",token)
+      
+      console.log("Creating conversation with token:", token);
       const conversation = await createConversation(token);
+      console.log("Conversation created:", conversation);
+      
       setConversation(conversation);
       setScreenState({ currentScreen: "conversation" });
     } catch (error) {
-      setError(error as string);
+      console.error("Failed to create conversation:", error);
+      setError(error instanceof Error ? error.message : "Failed to create conversation");
     } finally {
       setIsLoading(false);
     }
@@ -48,18 +54,16 @@ const useCreateConversationMutation = () => {
   };
 };
 
-function hasDeviceId(obj: any): obj is MediaDeviceInfo {
-  return obj && typeof obj.deviceId === 'string';
-}
-
 export function Instructions() {
   const daily = useDaily();
-  const { currentMic, setMicrophone, setSpeaker } = useDevices();
-  const { createConversationRequest } = useCreateConversationMutation();
+  const { currentMic } = useDevices();
+  const { createConversationRequest, isLoading: isCreatingConversation, error: conversationError } = useCreateConversationMutation();
   const [getUserMediaError, setGetUserMediaError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isLoadingConversation, setIsLoadingConversation] = useState(false);
   const [error, setError] = useState(false);
+  const [permissionsGranted, setPermissionsGranted] = useState(false);
+  
   const audio = useMemo(() => {
     if (typeof window !== 'undefined') {
       const audioObj = new Audio('/sounds/zoom.mp3');
@@ -73,55 +77,79 @@ export function Instructions() {
   useDailyEvent(
     "camera-error",
     useCallback(() => {
+      console.log("Camera error detected");
       setGetUserMediaError(true);
     }, []),
   );
 
+  const requestPermissions = async () => {
+    try {
+      console.log("Requesting media permissions...");
+      const stream = await navigator.mediaDevices.getUserMedia({ 
+        audio: true, 
+        video: true 
+      });
+      
+      console.log("Media permissions granted");
+      setPermissionsGranted(true);
+      setGetUserMediaError(false);
+      
+      // Stop the stream since we just needed permissions
+      stream.getTracks().forEach(track => track.stop());
+      
+      return true;
+    } catch (error) {
+      console.error("Failed to get media permissions:", error);
+      setGetUserMediaError(true);
+      return false;
+    }
+  };
+
   const handleClick = async () => {
     try {
       setIsLoading(true);
+      setError(false);
+      
+      // First, request permissions if not already granted
+      if (!permissionsGranted) {
+        const hasPermissions = await requestPermissions();
+        if (!hasPermissions) {
+          setIsLoading(false);
+          return;
+        }
+      }
+
+      // Play sound effect
       setIsPlayingSound(true);
       if (audio) {
         audio.currentTime = 0;
-        await audio.play();
+        await audio.play().catch(console.warn);
       }
+      
+      // Wait for sound to play
       await new Promise(resolve => setTimeout(resolve, 1000));
       setIsPlayingSound(false);
       setIsLoadingConversation(true);
 
-      // Always prompt for permissions first
+      // Initialize Daily camera
       try {
-        await navigator.mediaDevices.getUserMedia({ audio: true, video: true });
-        setGetUserMediaError(false);
-      } catch {
-        setGetUserMediaError(true);
-        setIsLoading(false);
-        setIsLoadingConversation(false);
-        return;
-      }
-
-      // Now enumerate devices again or use Daily API
-      let micDeviceId = currentMic?.device?.deviceId;
-      if (!micDeviceId) {
-        console.log('currentMic before startCamera:', currentMic);
-        const res = await daily?.startCamera({
+        console.log("Starting Daily camera...");
+        await daily?.startCamera({
           startVideoOff: false,
           startAudioOff: false,
           audioSource: "default",
         });
-        console.log('startCamera result:', res);
-        const devices = await navigator.mediaDevices.enumerateDevices();
-        const mics = devices.filter(d => d.kind === 'audioinput');
-        micDeviceId = mics.length > 0 ? mics[0].deviceId : undefined;
-        console.log('Selected mic deviceId:', micDeviceId);
+        console.log("Daily camera started successfully");
+      } catch (dailyError) {
+        console.warn("Daily camera start failed:", dailyError);
+        // Continue anyway, as this might not be critical
       }
       
-      if (micDeviceId) {
-        await createConversationRequest();
-      } else {
-        setGetUserMediaError(true);
-      }
+      // Create conversation
+      await createConversationRequest();
+      
     } catch (error) {
+      console.error("Error in handleClick:", error);
       setError(true);
     } finally {
       setIsLoading(false);
@@ -129,7 +157,12 @@ export function Instructions() {
     }
   };
 
-  if (isPlayingSound || isLoadingConversation) {
+  // Show error if conversation creation failed
+  if (conversationError) {
+    return <ConversationError onClick={handleClick} />;
+  }
+
+  if (isPlayingSound || isLoadingConversation || isCreatingConversation) {
     return (
       <DialogWrapper>
         <video
@@ -144,6 +177,11 @@ export function Instructions() {
         <AnimatedTextBlockWrapper>
           <div className="flex flex-col items-center justify-center gap-4">
             <l-quantum size="45" speed="1.75" color="white"></l-quantum>
+            <p className="text-white text-lg">
+              {isPlayingSound ? "Preparing..." : 
+               isCreatingConversation ? "Creating conversation..." : 
+               "Loading..."}
+            </p>
           </div>
         </AnimatedTextBlockWrapper>
       </DialogWrapper>
@@ -173,6 +211,16 @@ export function Instructions() {
         <p className="max-w-[650px] text-center text-base sm:text-lg text-gray-400 mb-12">
           Have a face-to-face conversation with an AI so real, it feels human—an intelligent agent ready to listen, respond, and act across countless use cases.
         </p>
+        
+        {getUserMediaError && (
+          <div className="mb-6 flex items-center gap-2 text-wrap rounded-lg border bg-red-500/90 p-4 text-white backdrop-blur-sm max-w-md text-center">
+            <AlertTriangle className="size-5 flex-shrink-0" />
+            <p className="text-sm">
+              Camera and microphone access required. Please allow permissions and try again.
+            </p>
+          </div>
+        )}
+        
         <Button
           onClick={handleClick}
           className="relative z-20 flex items-center justify-center gap-2 rounded-3xl border border-[rgba(255,255,255,0.3)] px-8 py-2 text-sm text-white transition-all duration-200 hover:text-primary mb-12 disabled:opacity-50"
@@ -180,26 +228,24 @@ export function Instructions() {
           style={{ height: '48px', transition: 'all 0.2s ease-in-out', backgroundColor: 'rgba(0,0,0,0.3)' }}
         >
           <Video className="size-5" />
-          Start Video Chat
-          {getUserMediaError && (
-            <div className="absolute -top-1 left-0 right-0 flex items-center gap-1 text-wrap rounded-lg border bg-red-500 p-2 text-white backdrop-blur-sm">
-              <AlertTriangle className="text-red size-4" />
-              <p>
-                To chat with the AI, please allow microphone access. Check your browser settings.
-              </p>
-            </div>
-          )}
+          {permissionsGranted ? "Start Video Chat" : "Allow Camera & Mic"}
         </Button>
+        
         <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:gap-8 text-gray-400 justify-center">
-          <div className="flex items-center gap-3 bg-[rgba(0,0,0,0.2)] px-4 py-2 rounded-full">
+          <div className={`flex items-center gap-3 px-4 py-2 rounded-full transition-colors ${
+            permissionsGranted ? 'bg-green-500/20 text-green-300' : 'bg-[rgba(0,0,0,0.2)]'
+          }`}>
             <Mic className="size-5 text-primary" />
-            Mic access is required
+            {permissionsGranted ? "Mic access granted" : "Mic access required"}
           </div>
-          <div className="flex items-center gap-3 bg-[rgba(0,0,0,0.2)] px-4 py-2 rounded-full">
+          <div className={`flex items-center gap-3 px-4 py-2 rounded-full transition-colors ${
+            permissionsGranted ? 'bg-green-500/20 text-green-300' : 'bg-[rgba(0,0,0,0.2)]'
+          }`}>
             <Video className="size-5 text-primary" />
-            Camera access is required
+            {permissionsGranted ? "Camera access granted" : "Camera access required"}
           </div>
         </div>
+        
         <span className="absolute bottom-6 px-4 text-sm text-gray-500 sm:bottom-8 sm:px-8 text-center">
           By starting a conversation, I accept the{' '}
           <a href="#" className="text-primary hover:underline">Terms of Use</a> and acknowledge the{' '}

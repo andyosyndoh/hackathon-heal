@@ -120,10 +120,10 @@ export default function ChatPage() {
         return <Instructions />;
       case "conversation":
         return <Conversation />;
+      default:
+        return <Instructions />;
     }
   };
-
-
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
@@ -303,17 +303,17 @@ export default function ChatPage() {
         </div>
       </div>
 
-      {/* Video Conversation Modal */}
+      {/* Video Conversation Modal - Increased Size */}
       {showVideoModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
-          <div className="relative z-50">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+          <div className="relative z-50 w-full max-w-6xl h-full max-h-[90vh] lg:max-h-[80vh]">
             {renderScreen()}
             <button
               onClick={() => setShowVideoModal(false)}
-              className="absolute top-2 right-2 bg-white/80 hover:bg-white text-gray-700 rounded-full p-2 shadow"
+              className="absolute top-4 right-4 bg-white/80 hover:bg-white text-gray-700 rounded-full p-3 shadow-lg z-10 transition-all duration-200"
               aria-label="Close video conversation"
             >
-              ×
+              ✕
             </button>
           </div>
         </div>
