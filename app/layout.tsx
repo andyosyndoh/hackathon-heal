@@ -23,6 +23,7 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'en_US',
   },
+  metadataBase: new URL('http://localhost:3000'), // or your production URL
 };
 
 export default function RootLayout({
