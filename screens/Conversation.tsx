@@ -10,7 +10,7 @@ import {
 import React, { useCallback, useEffect, useState } from "react";
 import Video from "@/components/Video";
 import { conversationAtom } from "@/store/conversation";
-import { useAtom, useAtomValue } from "jotai";
+import { useAtom } from "jotai";
 import { screenAtom } from "@/store/screens";
 import { Button } from "@/components/ui/button";
 import { endConversation } from "@/api/endConversation";
@@ -29,28 +29,26 @@ import {
 } from "@/utils";
 import { Timer } from "@/components/Timer";
 import { TIME_LIMIT } from "@/config";
-import { apiTokenAtom } from "@/store/tokens";
 import { quantum } from 'ldrs';
 import { cn } from "@/utils";
 
 quantum.register();
 
 const timeToGoPhrases = [
-  "I'll need to dash off soon—let's make these last moments count.",
-  "I'll be heading out soon, but I've got a little more time for you!",
-  "I'll be leaving soon, but I'd love to hear one more thing before I go!",
+  "I'll need to wrap up our conversation soon—let's make these last moments count.",
+  "I'll be ending our session soon, but I've got a little more time for you!",
+  "Our time is almost up, but I'd love to hear one more thing before we finish!",
 ];
 
 const outroPhrases = [
-  "It's time for me to go now. Take care, and I'll see you soon!",
-  "I've got to get back to work. See you next time!",
-  "I must say goodbye for now. Stay well, and I'll see you soon!",
+  "It's time for me to go now. Take care, and remember I'm here whenever you need support!",
+  "I need to end our session now. You did great today - see you next time!",
+  "I must say goodbye for now. Stay well, and remember you're not alone in this journey!",
 ];
 
 export const Conversation: React.FC = () => {
   const [conversation, setConversation] = useAtom(conversationAtom);
   const [, setScreenState] = useAtom(screenAtom);
-  const token = useAtomValue(apiTokenAtom);
 
   const daily = useDaily();
   const localSessionId = useLocalSessionId();
@@ -171,9 +169,9 @@ export const Conversation: React.FC = () => {
         daily.destroy();
       }
       
-      if (conversation?.conversation_id && token) {
+      if (conversation?.conversation_id) {
         console.log("Ending conversation via API");
-        await endConversation(token, conversation.conversation_id);
+        await endConversation(conversation.conversation_id);
       }
     } catch (error) {
       console.error("Error ending conversation:", error);
@@ -182,7 +180,7 @@ export const Conversation: React.FC = () => {
       clearSessionTime();
       setScreenState({ currentScreen: "introLoading" });
     }
-  }, [daily, token, conversation?.conversation_id, setConversation, setScreenState]);
+  }, [daily, conversation?.conversation_id, setConversation, setScreenState]);
 
   // Show loading until Daily is ready
   if (!daily) {
@@ -258,7 +256,7 @@ export const Conversation: React.FC = () => {
             id={localSessionId}
             tileClassName="!object-cover"
             className={cn(
-              "absolute bottom-20 right-4 aspect-video h-32 w-40 overflow-hidden rounded-lg border-2 border-[#22C5FE] shadow-[0_0_20px_rgba(34,197,254,0.3)] "
+              "absolute bottom-20 right-4 aspect-video h-40 w-52 overflow-hidden rounded-lg border-2 border-[#22C5FE] shadow-[0_0_20px_rgba(34,197,254,0.3)] "
             )}
           />
         )}

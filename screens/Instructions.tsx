@@ -1,4 +1,4 @@
-"use Client"
+"use client"
 import { createConversation } from "@/api/createConversation";
 import {
   DialogWrapper,
@@ -8,12 +8,11 @@ import {
 import { screenAtom } from "@/store/screens";
 import { conversationAtom } from "@/store/conversation";
 import React, { useCallback, useMemo, useState } from "react";
-import { useAtom, useAtomValue } from "jotai";
+import { useAtom } from "jotai";
 import { AlertTriangle, Mic, Video } from "lucide-react";
 import { useDaily, useDailyEvent, useDevices } from "@daily-co/daily-react";
 import { ConversationError } from "./ConversationError";
 import { Button } from "@/components/ui/button";
-import { apiTokenAtom } from "@/store/tokens";
 import { quantum } from 'ldrs';
 
 quantum.register();
@@ -23,19 +22,14 @@ const useCreateConversationMutation = () => {
   const [error, setError] = useState<string | null>(null);
   const [, setScreenState] = useAtom(screenAtom);
   const [, setConversation] = useAtom(conversationAtom);
-  const token = useAtomValue(apiTokenAtom);
 
   const createConversationRequest = async () => {
     try {
       setIsLoading(true);
       setError(null);
       
-      if (!token) {
-        throw new Error("API token is required");
-      }
-      
-      console.log("Creating conversation with token:", token);
-      const conversation = await createConversation(token);
+      console.log("Creating conversation...");
+      const conversation = await createConversation();
       console.log("Conversation created:", conversation);
       
       setConversation(conversation);
@@ -110,6 +104,14 @@ export function Instructions() {
     try {
       setIsLoading(true);
       setError(false);
+      
+      // Check if Tavus API key is available
+      if (!process.env.NEXT_PUBLIC_TAVUS_API_KEY) {
+        setError(true);
+        setGetUserMediaError(true);
+        console.error("Tavus API key not found in environment variables");
+        return;
+      }
       
       // First, request permissions if not already granted
       if (!permissionsGranted) {
@@ -207,18 +209,21 @@ export function Instructions() {
       <div className="fixed inset-0 bg-black/60 backdrop-blur-sm" />
       <AnimatedTextBlockWrapper>
         <h1 className="mb-4 pt-1 text-center text-3xl sm:text-4xl lg:text-5xl font-semibold">
-          <span className="text-white">See AI?</span>{" "}
-          <span style={{ color: '#9EEAFF' }}>Act Natural.</span>
+          <span className="text-white">Need Support?</span>{" "}
+          <span style={{ color: '#9EEAFF' }}>I'm Here.</span>
         </h1>
         <p className="max-w-[650px] text-center text-base sm:text-lg text-gray-400 mb-12">
-          Have a face-to-face conversation with an AI so real, it feels human—an intelligent agent ready to listen, respond, and act across countless use cases.
+          Have a face-to-face conversation with an AI mental health companion. I'm here to listen, support, and help you through whatever you're experiencing.
         </p>
         
         {getUserMediaError && (
           <div className="mb-6 flex items-center gap-2 text-wrap rounded-lg border bg-red-500/90 p-4 text-white backdrop-blur-sm max-w-md text-center">
             <AlertTriangle className="size-5 flex-shrink-0" />
             <p className="text-sm">
-              Camera and microphone access required. Please allow permissions and try again.
+              {!process.env.NEXT_PUBLIC_TAVUS_API_KEY 
+                ? "Tavus API key not configured. Please check your environment variables."
+                : "Camera and microphone access required. Please allow permissions and try again."
+              }
             </p>
           </div>
         )}
@@ -226,11 +231,16 @@ export function Instructions() {
         <Button
           onClick={handleClick}
           className="relative z-20 flex items-center justify-center gap-2 rounded-3xl border border-[rgba(255,255,255,0.3)] px-8 py-2 text-sm text-white transition-all duration-200 hover:text-primary mb-12 disabled:opacity-50"
-          disabled={isLoading}
+          disabled={isLoading || !process.env.NEXT_PUBLIC_TAVUS_API_KEY}
           style={{ height: '48px', transition: 'all 0.2s ease-in-out', backgroundColor: 'rgba(0,0,0,0.3)' }}
         >
           <Video className="size-5" />
-          {permissionsGranted ? "Start Video Chat" : "Allow Camera & Mic"}
+          {!process.env.NEXT_PUBLIC_TAVUS_API_KEY 
+            ? "API Key Required"
+            : permissionsGranted 
+              ? "Start Video Chat" 
+              : "Allow Camera & Mic"
+          }
         </Button>
         
         <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:gap-8 text-gray-400 justify-center">
