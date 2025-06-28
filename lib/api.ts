@@ -6,6 +6,62 @@ interface ApiResponse<T = any> {
   message?: string;
 }
 
+// Define specific response types
+interface ChatSessionsResponse {
+  sessions: Array<{
+    id: string;
+    userId: string;
+    title: string;
+    createdAt: string;
+    updatedAt: string;
+  }>;
+}
+
+interface ChatHistoryResponse {
+  messages: Array<{
+    id: string;
+    sessionId: string;
+    userId: string;
+    content: string;
+    senderType: string;
+    messageType: string;
+    createdAt: string;
+  }>;
+}
+
+interface SendMessageResponse {
+  session: {
+    id: string;
+    userId: string;
+    title: string;
+    createdAt: string;
+    updatedAt: string;
+  };
+  userMessage: {
+    id: string;
+    content: string;
+    senderType: string;
+    messageType: string;
+    createdAt: string;
+  };
+  aiMessage: {
+    id: string;
+    content: string;
+    senderType: string;
+    messageType: string;
+    createdAt: string;
+  };
+  response: string;
+}
+
+interface UserStatsResponse {
+  currentStreak: number;
+  totalSessions: number;
+  moodScore: number;
+  resourcesViewed: number;
+  daysActive: number;
+}
+
 class ApiClient {
   private baseURL: string;
 
@@ -130,8 +186,8 @@ class ApiClient {
     });
   }
 
-  async getUserStats() {
-    return this.request('/user/stats');
+  async getUserStats(): Promise<ApiResponse<UserStatsResponse>> {
+    return this.request<UserStatsResponse>('/user/stats');
   }
 
   async logMood(moodScore: number, notes?: string) {
@@ -145,20 +201,20 @@ class ApiClient {
     return this.request(`/user/mood-history?days=${days}`);
   }
 
-  // Chat methods
-  async sendMessage(sessionId: string, content: string, messageType: string = 'text') {
-    return this.request('/chat/message', {
+  // Chat methods with proper typing
+  async sendMessage(sessionId: string, content: string, messageType: string = 'text'): Promise<ApiResponse<SendMessageResponse>> {
+    return this.request<SendMessageResponse>('/chat/message', {
       method: 'POST',
       body: JSON.stringify({ sessionId, content, messageType }),
     });
   }
 
-  async getChatHistory(sessionId: string, limit: number = 50, offset: number = 0) {
-    return this.request(`/chat/history?session_id=${sessionId}&limit=${limit}&offset=${offset}`);
+  async getChatHistory(sessionId: string, limit: number = 50, offset: number = 0): Promise<ApiResponse<ChatHistoryResponse>> {
+    return this.request<ChatHistoryResponse>(`/chat/history?session_id=${sessionId}&limit=${limit}&offset=${offset}`);
   }
 
-  async getChatSessions() {
-    return this.request('/chat/sessions');
+  async getChatSessions(): Promise<ApiResponse<ChatSessionsResponse>> {
+    return this.request<ChatSessionsResponse>('/chat/sessions');
   }
 
   async deleteChatSession(sessionId: string) {

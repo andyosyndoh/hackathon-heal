@@ -26,7 +26,6 @@ import { useAtom } from 'jotai';
 import { screenAtom } from '@/store/screens';
 import { Instructions } from '@/screens/Instructions';
 import { Conversation } from '@/screens/Conversation';
-import { ConversationError } from '@/screens/ConversationError';
 import { geminiService, elevenLabsService } from '@/lib/ai-services';
 import { apiClient } from '@/lib/api';
 import { useAuth } from '@/hooks/use-auth';
