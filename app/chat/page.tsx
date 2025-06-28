@@ -17,7 +17,9 @@ import {
   Bot,
   User,
   Loader2,
-  ChevronDown
+  ChevronDown,
+  MessageSquare,
+  Trash2
 } from 'lucide-react';
 import Link from 'next/link';
 import { useAtom } from 'jotai';
@@ -26,6 +28,8 @@ import { Instructions } from '@/screens/Instructions';
 import { Conversation } from '@/screens/Conversation';
 import { ConversationError } from '@/screens/ConversationError';
 import { geminiService, elevenLabsService } from '@/lib/ai-services';
+import { apiClient } from '@/lib/api';
+import { useAuth } from '@/hooks/use-auth';
 
 interface Message {
   id: string;
@@ -35,25 +39,32 @@ interface Message {
   mood?: string;
   type: 'text' | 'audio' | 'video';
   isLoading?: boolean;
+  sessionId?: string;
+}
+
+interface ChatSession {
+  id: string;
+  title: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
 type VoiceOption = 'off' | 'female' | 'male';
 
 export default function ChatPage() {
-  const [messages, setMessages] = useState<Message[]>([
-    {
-      id: '1',
-      content: "Hello! I'm your AI companion. I'm here to provide emotional support and help you through whatever you're experiencing. How are you feeling today?",
-      sender: 'ai',
-      timestamp: new Date(),
-      type: 'text'
-    }
-  ]);
+  const { user, isAuthenticated } = useAuth();
+  const [currentSessionId, setCurrentSessionId] = useState<string | null>(null);
+  const [sessions, setSessions] = useState<ChatSession[]>([]);
+  const [showSessions, setShowSessions] = useState(false);
+  const [loadingSessions, setLoadingSessions] = useState(false);
+  
+  const [messages, setMessages] = useState<Message[]>([]);
+  const [loadingHistory, setLoadingHistory] = useState(false);
 
   const [inputMessage, setInputMessage] = useState('');
   const [isRecording, setIsRecording] = useState(false);
   const [isTyping, setIsTyping] = useState(false);
-  const [voiceOption, setVoiceOption] = useState<VoiceOption>('female'); // Voice selection state
+  const [voiceOption, setVoiceOption] = useState<VoiceOption>('female');
   const [showVoiceDropdown, setShowVoiceDropdown] = useState(false);
   const [showVideoModal, setShowVideoModal] = useState(false);
   const [showVideoConversation, setShowVideoConversation] = useState(false);
@@ -63,6 +74,7 @@ export default function ChatPage() {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const sessionsRef = useRef<HTMLDivElement>(null);
 
   // Voice configuration
   const voiceConfigs = {
@@ -90,11 +102,28 @@ export default function ChatPage() {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
-  // Close dropdown when clicking outside
+  // Load chat sessions on mount
+  useEffect(() => {
+    if (isAuthenticated) {
+      loadChatSessions();
+    }
+  }, [isAuthenticated]);
+
+  // Load chat history when session changes
+  useEffect(() => {
+    if (currentSessionId && isAuthenticated) {
+      loadChatHistory(currentSessionId);
+    }
+  }, [currentSessionId, isAuthenticated]);
+
+  // Close dropdowns when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
         setShowVoiceDropdown(false);
+      }
+      if (sessionsRef.current && !sessionsRef.current.contains(event.target as Node)) {
+        setShowSessions(false);
       }
     };
 
@@ -111,6 +140,78 @@ export default function ChatPage() {
       }
     };
   }, [currentAudio]);
+
+  const loadChatSessions = async () => {
+    try {
+      setLoadingSessions(true);
+      const response = await apiClient.getChatSessions();
+      if (response.data?.sessions) {
+        setSessions(response.data.sessions);
+      }
+    } catch (error) {
+      console.error('Failed to load chat sessions:', error);
+    } finally {
+      setLoadingSessions(false);
+    }
+  };
+
+  const loadChatHistory = async (sessionId: string) => {
+    try {
+      setLoadingHistory(true);
+      const response = await apiClient.getChatHistory(sessionId);
+      if (response.data?.messages) {
+        const formattedMessages = response.data.messages.map((msg: any) => ({
+          id: msg.id,
+          content: msg.content,
+          sender: msg.senderType,
+          timestamp: new Date(msg.createdAt),
+          type: msg.messageType || 'text',
+          sessionId: msg.sessionId
+        }));
+        setMessages(formattedMessages);
+      }
+    } catch (error) {
+      console.error('Failed to load chat history:', error);
+    } finally {
+      setLoadingHistory(false);
+    }
+  };
+
+  const createNewSession = () => {
+    setCurrentSessionId(null);
+    setMessages([{
+      id: '1',
+      content: "Hello! I'm your AI companion. I'm here to provide emotional support and help you through whatever you're experiencing. How are you feeling today?",
+      sender: 'ai',
+      timestamp: new Date(),
+      type: 'text'
+    }]);
+    setShowSessions(false);
+  };
+
+  const selectSession = (sessionId: string) => {
+    setCurrentSessionId(sessionId);
+    setShowSessions(false);
+  };
+
+  const deleteSession = async (sessionId: string, event: React.MouseEvent) => {
+    event.stopPropagation();
+    
+    if (!confirm('Are you sure you want to delete this chat session?')) {
+      return;
+    }
+
+    try {
+      await apiClient.deleteChatSession(sessionId);
+      setSessions(prev => prev.filter(s => s.id !== sessionId));
+      
+      if (currentSessionId === sessionId) {
+        createNewSession();
+      }
+    } catch (error) {
+      console.error('Failed to delete session:', error);
+    }
+  };
 
   const playAIResponse = async (text: string) => {
     if (voiceOption === 'off' || !process.env.NEXT_PUBLIC_ELEVENLABS_API_KEY) return;
@@ -177,7 +278,7 @@ export default function ChatPage() {
   };
 
   const sendMessage = async () => {
-    if (!inputMessage.trim()) return;
+    if (!inputMessage.trim() || !isAuthenticated) return;
 
     const userMessage: Message = {
       id: Date.now().toString(),
@@ -187,7 +288,7 @@ export default function ChatPage() {
       type: 'text'
     };
 
-    // Add user message
+    // Add user message to UI immediately
     setMessages(prev => [...prev, userMessage]);
     setInputMessage('');
     setIsTyping(true);
@@ -207,31 +308,43 @@ export default function ChatPage() {
     setMessages(prev => [...prev, loadingMessage]);
 
     try {
-      // Get AI response using Gemini
-      const aiResponse = await geminiService.sendMessage(inputMessage);
+      // Send message to backend
+      const response = await apiClient.sendMessage(currentSessionId || '', inputMessage);
       
-      // Remove loading message and add actual response
+      if (response.error) {
+        throw new Error(response.error);
+      }
+
+      // Update session ID if this was a new session
+      if (!currentSessionId && response.data?.session?.id) {
+        setCurrentSessionId(response.data.session.id);
+        // Reload sessions to include the new one
+        loadChatSessions();
+      }
+
+      // Remove loading message and add actual AI response
       setMessages(prev => {
         const filtered = prev.filter(msg => !msg.isLoading);
         return [...filtered, {
-          id: (Date.now() + 2).toString(),
-          content: aiResponse,
+          id: response.data?.aiMessage?.id || (Date.now() + 2).toString(),
+          content: response.data?.response || "I'm sorry, I'm having trouble connecting right now.",
           sender: 'ai',
           timestamp: new Date(),
-          type: 'text'
+          type: 'text',
+          sessionId: response.data?.session?.id
         }];
       });
 
       // Play audio response if voice is enabled
-      if (voiceOption !== 'off') {
+      if (voiceOption !== 'off' && response.data?.response) {
         // Small delay to ensure message is rendered before audio starts
         setTimeout(() => {
-          playAIResponse(aiResponse);
+          playAIResponse(response.data.response);
         }, 500);
       }
 
     } catch (error) {
-      console.error('Error sending message to AI:', error);
+      console.error('Error sending message:', error);
       
       // Remove loading message and add error message
       setMessages(prev => {
@@ -289,6 +402,20 @@ export default function ChatPage() {
   const currentVoiceConfig = voiceConfigs[voiceOption];
   const VoiceIcon = currentVoiceConfig.icon;
 
+  if (!isAuthenticated) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <h2 className="text-2xl font-bold text-gray-900 mb-4">Please Sign In</h2>
+          <p className="text-gray-600 mb-6">You need to be signed in to access the chat.</p>
+          <Link href="/auth" className="heal-button">
+            Sign In
+          </Link>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
       {/* Header */}
@@ -319,6 +446,66 @@ export default function ChatPage() {
           </div>
 
           <div className="flex items-center space-x-2">
+            {/* Chat Sessions Dropdown */}
+            <div className="relative" ref={sessionsRef}>
+              <button
+                onClick={() => setShowSessions(!showSessions)}
+                className="p-2 hover:bg-gray-100 rounded-lg transition-colors flex items-center space-x-1"
+                title="Chat Sessions"
+              >
+                <MessageSquare className="h-5 w-5 text-gray-600" />
+                <ChevronDown className="h-3 w-3 text-gray-600" />
+              </button>
+
+              {showSessions && (
+                <div className="absolute right-0 top-full mt-2 w-80 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-50 max-h-96 overflow-y-auto">
+                  <div className="px-3 py-2 text-xs font-medium text-gray-500 border-b border-gray-100 flex items-center justify-between">
+                    <span>Chat Sessions</span>
+                    <button
+                      onClick={createNewSession}
+                      className="text-blue-600 hover:text-blue-700 text-xs"
+                    >
+                      New Chat
+                    </button>
+                  </div>
+                  
+                  {loadingSessions ? (
+                    <div className="p-4 text-center">
+                      <Loader2 className="h-4 w-4 animate-spin mx-auto" />
+                    </div>
+                  ) : sessions.length === 0 ? (
+                    <div className="p-4 text-center text-gray-500 text-sm">
+                      No chat sessions yet
+                    </div>
+                  ) : (
+                    sessions.map((session) => (
+                      <div
+                        key={session.id}
+                        className={`px-3 py-2 hover:bg-gray-50 cursor-pointer flex items-center justify-between group ${
+                          currentSessionId === session.id ? 'bg-blue-50 text-blue-700' : 'text-gray-700'
+                        }`}
+                        onClick={() => selectSession(session.id)}
+                      >
+                        <div className="flex-1 min-w-0">
+                          <p className="text-sm font-medium truncate">{session.title}</p>
+                          <p className="text-xs text-gray-500">
+                            {new Date(session.updatedAt).toLocaleDateString()}
+                          </p>
+                        </div>
+                        <button
+                          onClick={(e) => deleteSession(session.id, e)}
+                          className="opacity-0 group-hover:opacity-100 p-1 hover:bg-red-100 rounded text-red-600 transition-opacity"
+                          title="Delete session"
+                        >
+                          <Trash2 className="h-3 w-3" />
+                        </button>
+                      </div>
+                    ))
+                  )}
+                </div>
+              )}
+            </div>
+
             {/* Voice Selection Dropdown */}
             <div className="relative" ref={dropdownRef}>
               <button
@@ -421,61 +608,70 @@ export default function ChatPage() {
           <>
             {/* Messages */}
             <div className="flex-1 overflow-y-auto px-4 py-6 space-y-4">
-              {messages.map((message) => (
-                <div
-                  key={message.id}
-                  className={`flex ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}
-                >
-                  <div className={`flex items-start space-x-3 max-w-xs sm:max-w-md lg:max-w-lg ${message.sender === 'user' ? 'flex-row-reverse space-x-reverse' : ''
-                    }`}>
-                    {/* Avatar */}
-                    <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${message.sender === 'user'
-                      ? 'bg-blue-500'
-                      : 'bg-gradient-to-r from-blue-500 to-green-500'
-                      }`}>
-                      {message.sender === 'user' ?
-                        <User className="h-4 w-4 text-white" /> :
-                        <Bot className="h-4 w-4 text-white" />
-                      }
-                    </div>
-
-                    {/* Message Bubble */}
-                    <div className={`heal-chat-bubble ${message.sender === 'user'
-                      ? 'bg-blue-600 text-white'
-                      : 'bg-white text-gray-900 border border-gray-200'
-                      }`}>
-                      {message.isLoading ? (
-                        <div className="flex items-center space-x-2">
-                          <Loader2 className="h-4 w-4 animate-spin" />
-                          <span className="text-sm">Thinking...</span>
-                        </div>
-                      ) : (
-                        <>
-                          <p className="text-sm leading-relaxed">{message.content}</p>
-                          <div className="flex items-center justify-between mt-1">
-                            <p className={`text-xs ${message.sender === 'user' ? 'text-blue-100' : 'text-gray-500'
-                              }`}>
-                              {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                            </p>
-                            {/* Audio indicator for AI messages */}
-                            {message.sender === 'ai' && voiceOption !== 'off' && !message.isLoading && (
-                              <div className="flex items-center space-x-1">
-                                {isPlayingAudio ? (
-                                  <Volume2 className={`h-3 w-3 ${
-                                    voiceOption === 'female' ? 'text-pink-600' : 'text-blue-600'
-                                  }`} />
-                                ) : (
-                                  <VoiceIcon className="h-3 w-3 text-gray-400" />
-                                )}
-                              </div>
-                            )}
-                          </div>
-                        </>
-                      )}
-                    </div>
+              {loadingHistory ? (
+                <div className="flex items-center justify-center py-8">
+                  <div className="flex items-center space-x-2">
+                    <Loader2 className="h-5 w-5 animate-spin text-blue-600" />
+                    <span className="text-gray-600">Loading chat history...</span>
                   </div>
                 </div>
-              ))}
+              ) : (
+                messages.map((message) => (
+                  <div
+                    key={message.id}
+                    className={`flex ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}
+                  >
+                    <div className={`flex items-start space-x-3 max-w-xs sm:max-w-md lg:max-w-lg ${message.sender === 'user' ? 'flex-row-reverse space-x-reverse' : ''
+                      }`}>
+                      {/* Avatar */}
+                      <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${message.sender === 'user'
+                        ? 'bg-blue-500'
+                        : 'bg-gradient-to-r from-blue-500 to-green-500'
+                        }`}>
+                        {message.sender === 'user' ?
+                          <User className="h-4 w-4 text-white" /> :
+                          <Bot className="h-4 w-4 text-white" />
+                        }
+                      </div>
+
+                      {/* Message Bubble */}
+                      <div className={`heal-chat-bubble ${message.sender === 'user'
+                        ? 'bg-blue-600 text-white'
+                        : 'bg-white text-gray-900 border border-gray-200'
+                        }`}>
+                        {message.isLoading ? (
+                          <div className="flex items-center space-x-2">
+                            <Loader2 className="h-4 w-4 animate-spin" />
+                            <span className="text-sm">Thinking...</span>
+                          </div>
+                        ) : (
+                          <>
+                            <p className="text-sm leading-relaxed">{message.content}</p>
+                            <div className="flex items-center justify-between mt-1">
+                              <p className={`text-xs ${message.sender === 'user' ? 'text-blue-100' : 'text-gray-500'
+                                }`}>
+                                {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                              </p>
+                              {/* Audio indicator for AI messages */}
+                              {message.sender === 'ai' && voiceOption !== 'off' && !message.isLoading && (
+                                <div className="flex items-center space-x-1">
+                                  {isPlayingAudio ? (
+                                    <Volume2 className={`h-3 w-3 ${
+                                      voiceOption === 'female' ? 'text-pink-600' : 'text-blue-600'
+                                    }`} />
+                                  ) : (
+                                    <VoiceIcon className="h-3 w-3 text-gray-400" />
+                                  )}
+                                </div>
+                              )}
+                            </div>
+                          </>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                ))
+              )}
 
               <div ref={messagesEndRef} />
             </div>
@@ -574,6 +770,10 @@ export default function ChatPage() {
               <div className="flex items-center space-x-1">
                 <div className={`w-2 h-2 rounded-full ${process.env.NEXT_PUBLIC_ELEVENLABS_API_KEY ? 'bg-green-500' : 'bg-red-500'}`}></div>
                 <span>Voice ({voiceOption})</span>
+              </div>
+              <div className="flex items-center space-x-1">
+                <div className={`w-2 h-2 rounded-full ${isAuthenticated ? 'bg-green-500' : 'bg-red-500'}`}></div>
+                <span>Backend</span>
               </div>
             </div>
           </div>

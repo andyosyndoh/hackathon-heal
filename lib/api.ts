@@ -167,6 +167,13 @@ class ApiClient {
     });
   }
 
+  async submitChatFeedback(sessionId: string, messageId: string, rating: number, feedback?: string) {
+    return this.request('/chat/feedback', {
+      method: 'POST',
+      body: JSON.stringify({ sessionId, messageId, rating, feedback }),
+    });
+  }
+
   // Resource methods
   async getResources(filters: {
     category?: string;
