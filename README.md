@@ -4,7 +4,9 @@ A comprehensive mental health support platform that combines AI-powered assistan
 
 ## 🌟 Features
 
-- **AI-Powered Support**: Real-time conversational AI with video chat capabilities
+- **AI-Powered Support**: Real-time conversational AI with video chat capabilities using Tavus
+- **Text Chat with Gemini AI**: Advanced conversational AI using Google's Gemini model
+- **Voice Responses**: Text-to-speech using ElevenLabs for natural voice interactions
 - **Crisis Management**: 24/7 emergency support with location-based services
 - **Resource Library**: Curated mental health resources with progress tracking
 - **User Dashboard**: Personalized analytics, mood tracking, and progress monitoring
@@ -18,6 +20,7 @@ A comprehensive mental health support platform that combines AI-powered assistan
 heal/
 ├── frontend/                    # Next.js React application
 │   ├── app/                    # Next.js 13+ app directory
+│   │   ├── api/               # API routes (chat endpoint)
 │   │   ├── auth/              # Authentication pages
 │   │   ├── chat/              # Chat interface
 │   │   ├── crisis/            # Crisis support pages
@@ -36,6 +39,7 @@ heal/
 │   │   └── Instructions.tsx
 │   ├── hooks/                # Custom React hooks
 │   ├── lib/                  # Utility libraries
+│   │   ├── ai-services.ts   # Gemini & ElevenLabs integration
 │   │   ├── api.ts           # API client
 │   │   ├── auth.ts          # Authentication manager
 │   │   └── utils.ts         # Utility functions
@@ -64,6 +68,10 @@ heal/
 - **Styling**: Tailwind CSS with custom design system
 - **UI Components**: shadcn/ui component library
 - **State Management**: Jotai for atomic state management
+- **AI Services**: 
+  - Google Gemini AI for conversational responses
+  - ElevenLabs for text-to-speech
+  - Tavus API for video AI conversations
 - **Video/Audio**: Daily.co for real-time video conversations
 - **Icons**: Lucide React
 - **Animations**: Framer Motion
@@ -79,6 +87,8 @@ heal/
 - **UUID**: Google UUID for unique identifiers
 
 ### External Services
+- **AI Text Generation**: Google Gemini AI
+- **Text-to-Speech**: ElevenLabs
 - **Video AI**: Tavus API for conversational AI
 - **Real-time Communication**: Daily.co for video/audio
 - **Deployment**: Netlify (frontend) / Any Go-compatible hosting (backend)
@@ -90,6 +100,11 @@ heal/
 - **Node.js** 18+ and npm
 - **Go** 1.21+
 - **Git**
+- **API Keys**:
+  - Google Gemini AI API key
+  - ElevenLabs API key
+  - Tavus API key
+  - Daily.co API key
 
 ### Backend Setup
 
@@ -138,12 +153,25 @@ heal/
 3. **Set up environment variables**:
    Create a `.env.local` file in the root directory:
    ```env
+   # Backend API
    NEXT_PUBLIC_API_URL=http://localhost:8080/api/v1
-   NEXT_PUBLIC_TAVUS_API_KEY=your-tavus-api-key
-   NEXT_PUBLIC_DAILY_API_KEY=your-daily-api-key
+   
+   # AI Services
+   NEXT_PUBLIC_GEMINI_API_KEY=your-gemini-api-key-here
+   NEXT_PUBLIC_ELEVENLABS_API_KEY=your-elevenlabs-api-key-here
+   
+   # Video Services
+   NEXT_PUBLIC_TAVUS_API_KEY=your-tavus-api-key-here
+   NEXT_PUBLIC_DAILY_API_KEY=your-daily-api-key-here
    ```
 
-4. **Run the development server**:
+4. **Get your API keys**:
+   - **Gemini AI**: Get from [Google AI Studio](https://makersuite.google.com/app/apikey)
+   - **ElevenLabs**: Get from [ElevenLabs Dashboard](https://elevenlabs.io/app/settings/api-keys)
+   - **Tavus**: Get from [Tavus Dashboard](https://platform.tavus.io/)
+   - **Daily.co**: Get from [Daily Dashboard](https://dashboard.daily.co/)
+
+5. **Run the development server**:
    ```bash
    npm run dev
    ```
@@ -185,10 +213,12 @@ To run both frontend and backend simultaneously:
 - Privacy and security status
 
 ### AI Chat (`/chat`)
-- Text-based AI conversations
-- Video AI conversations with Daily.co
-- Real-time messaging
+- **Text Chat**: Powered by Google Gemini AI for intelligent responses
+- **Voice Responses**: ElevenLabs text-to-speech for natural voice interactions
+- **Video AI**: Face-to-face conversations with Tavus AI
+- Real-time messaging with typing indicators
 - Crisis detection and intervention
+- Audio playback controls
 
 ### Crisis Support (`/crisis`)
 - Emergency contact management
@@ -215,6 +245,9 @@ To run both frontend and backend simultaneously:
 - `GET /api/v1/user/stats` - Get user statistics
 - `POST /api/v1/user/mood` - Log mood entry
 
+### Chat
+- `POST /api/chat` - Send message to Gemini AI (Next.js API route)
+
 ### Resources
 - `GET /api/v1/resources` - Get resources (with filtering)
 - `GET /api/v1/resources/:id` - Get specific resource
@@ -225,6 +258,26 @@ To run both frontend and backend simultaneously:
 - `GET /api/v1/crisis/contacts` - Get emergency contacts
 - `GET /api/v1/crisis/services` - Get local services
 
+## 🤖 AI Integration
+
+### Gemini AI (Text Chat)
+- Advanced conversational AI for mental health support
+- Context-aware responses with conversation history
+- Crisis detection and appropriate responses
+- Empathetic and professional tone
+
+### ElevenLabs (Voice)
+- High-quality text-to-speech conversion
+- Natural, empathetic voice (Bella voice)
+- Configurable voice settings for optimal experience
+- Audio playback with visual indicators
+
+### Tavus (Video AI)
+- Face-to-face AI conversations
+- Real-time video and audio processing
+- Natural conversation flow with visual cues
+- Integration with Daily.co for video infrastructure
+
 ## 🔒 Security Features
 
 - **End-to-end encryption** for sensitive data
@@ -234,6 +287,7 @@ To run both frontend and backend simultaneously:
 - **SQL injection prevention** with prepared statements
 - **Password hashing** with bcrypt
 - **HIPAA-compliant** data handling practices
+- **API key security** with environment variable management
 
 ## 🚀 Deployment
 
@@ -241,7 +295,12 @@ To run both frontend and backend simultaneously:
 1. Connect your repository to Netlify
 2. Set build command: `npm run build`
 3. Set publish directory: `out`
-4. Add environment variables in Netlify dashboard
+4. Add environment variables in Netlify dashboard:
+   - `NEXT_PUBLIC_API_URL`
+   - `NEXT_PUBLIC_GEMINI_API_KEY`
+   - `NEXT_PUBLIC_ELEVENLABS_API_KEY`
+   - `NEXT_PUBLIC_TAVUS_API_KEY`
+   - `NEXT_PUBLIC_DAILY_API_KEY`
 
 ### Backend (Any Go hosting)
 1. Build the binary: `go build -o heal-api main.go`
@@ -277,6 +336,9 @@ If you need help or have questions:
 - [ ] Telehealth provider network
 - [ ] Group therapy sessions
 - [ ] Advanced analytics and insights
+- [ ] Voice-to-text for voice messages
+- [ ] Multi-language support
+- [ ] Offline mode capabilities
 
 ---
 
