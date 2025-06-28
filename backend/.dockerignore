@@ -1,0 +1,9 @@
+.env
+.env.local
+.env.example
+*.log
+.git
+.gitignore
+README.md
+Dockerfile
+.dockerignore

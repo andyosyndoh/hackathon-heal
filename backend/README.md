@@ -1,161 +1,220 @@
-# Heal Backend API
+# Heal Backend Deployment Guide
 
-A comprehensive Go backend for the Heal mental health support application.
+This guide covers deploying the Heal backend to various cloud platforms.
 
-## Features
+## 🚀 Quick Deployment Options
 
-- **Authentication**: JWT-based authentication with registration, login, and token management
-- **Chat System**: Real-time messaging with AI responses and session management
-- **Resource Management**: Mental health resources with progress tracking and recommendations
-- **Crisis Support**: Emergency contact management, crisis alerts, and safety planning
-- **User Management**: Profile management, mood tracking, and statistics
+### Option 1: Railway (Recommended - Easiest)
 
-## API Endpoints
+**Why Railway?**
+- ✅ Automatic Go detection
+- ✅ Free tier available
+- ✅ Built-in PostgreSQL
+- ✅ Automatic HTTPS
+- ✅ Environment variables UI
 
-### Authentication (`/api/v1/auth`)
-- `POST /register` - User registration
-- `POST /login` - User login
-- `POST /logout` - User logout
-- `POST /refresh` - Token refresh
-- `POST /forgot-password` - Password reset request
-- `POST /reset-password` - Password reset
-- `GET /verify-email/:token` - Email verification
+**Steps:**
+1. **Install Railway CLI**:
+   ```bash
+   npm install -g @railway/cli
+   ```
 
-### User Management (`/api/v1/user`)
-- `GET /profile` - Get user profile
-- `PUT /profile` - Update user profile
-- `GET /stats` - Get user statistics
-- `POST /mood` - Log mood entry
-- `GET /mood-history` - Get mood history
-
-### Chat (`/api/v1/chat`)
-- `POST /message` - Send chat message
-- `GET /history` - Get chat history
-- `GET /sessions` - Get chat sessions
-- `DELETE /session/:id` - Delete chat session
-- `POST /feedback` - Submit chat feedback
-- `GET /ws` - WebSocket connection for real-time chat
-
-### Resources (`/api/v1/resources`)
-- `GET /` - Get resources (with filtering)
-- `GET /:id` - Get specific resource
-- `GET /categories` - Get resource categories
-- `POST /:id/progress` - Update resource progress
-- `GET /recommendations` - Get personalized recommendations
-- `POST /:id/favorite` - Toggle resource favorite
-
-### Crisis Support (`/api/v1/crisis`)
-- `POST /alert` - Create crisis alert
-- `GET /contacts` - Get emergency contacts
-- `POST /contacts` - Add emergency contact
-- `GET /services` - Get local emergency services
-- `POST /safety-plan` - Create/update safety plan
-- `GET /safety-plan` - Get safety plan
-
-## Setup
-
-1. **Install Dependencies**:
+2. **Login and Deploy**:
    ```bash
    cd backend
+   railway login
+   railway init
+   railway up
+   ```
+
+3. **Add Environment Variables** in Railway dashboard:
+   ```env
+   DATABASE_URL=postgresql://... (auto-generated)
+   JWT_SECRET=your-super-secret-jwt-key
+   PORT=8080
+   ENVIRONMENT=production
+   ```
+
+4. **Get your backend URL** from Railway dashboard
+
+### Option 2: Render (Great Free Tier)
+
+**Why Render?**
+- ✅ Generous free tier
+- ✅ Automatic deployments from Git
+- ✅ Built-in PostgreSQL
+- ✅ Custom domains
+
+**Steps:**
+1. **Connect Git Repository**:
+   - Go to [render.com](https://render.com)
+   - Connect your GitHub repository
+   - Select "Web Service"
+
+2. **Configure Build**:
+   - **Build Command**: `go build -o main .`
+   - **Start Command**: `./main`
+   - **Environment**: `Go`
+
+3. **Set Environment Variables**:
+   ```env
+   PORT=8080
+   ENVIRONMENT=production
+   DATABASE_URL=postgresql://... (from Render PostgreSQL)
+   JWT_SECRET=your-super-secret-jwt-key
+   ```
+
+### Option 3: Heroku (Classic Choice)
+
+**Steps:**
+1. **Install Heroku CLI**
+2. **Deploy**:
+   ```bash
+   cd backend
+   heroku create your-app-name
+   heroku buildpacks:set heroku/go
+   git add .
+   git commit -m "Deploy to Heroku"
+   git push heroku main
+   ```
+
+3. **Add PostgreSQL**:
+   ```bash
+   heroku addons:create heroku-postgresql:mini
+   ```
+
+### Option 4: Google Cloud Platform
+
+**Steps:**
+1. **Install Google Cloud SDK**
+2. **Deploy**:
+   ```bash
+   cd backend
+   gcloud app deploy
+   ```
+
+## 🗄️ Database Setup
+
+### For Production (PostgreSQL)
+
+1. **Update Database Connection** in `internal/database/database.go`:
+   ```go
+   // Change from SQLite to PostgreSQL
+   import _ "github.com/lib/pq"
+   
+   // In Initialize function:
+   db, err := sql.Open("postgres", databaseURL)
+   ```
+
+2. **Add PostgreSQL Driver**:
+   ```bash
+   go get github.com/lib/pq
+   ```
+
+3. **Update go.mod**:
+   ```bash
    go mod tidy
    ```
 
-2. **Environment Configuration**:
-   ```bash
-   cp .env.example .env
-   # Edit .env with your configuration
-   ```
+### Environment Variables Required
 
-3. **Run the Server**:
-   ```bash
-   go run main.go
-   ```
+```env
+# Database
+DATABASE_URL=postgresql://user:password@host:port/database
 
-The server will start on port 8080 (or the port specified in your environment).
+# Security
+JWT_SECRET=your-super-secret-jwt-key-change-in-production
 
-## Database
+# Server
+PORT=8080
+ENVIRONMENT=production
 
-The application uses SQLite for simplicity and portability. The database is automatically initialized with the required tables and sample data on first run.
+# CORS (add your Netlify domain)
+ALLOWED_ORIGINS=https://your-netlify-site.netlify.app,https://your-custom-domain.com
+```
 
-### Tables
-- `users` - User accounts
-- `user_profiles` - Extended user information
-- `chat_sessions` - Chat conversation sessions
-- `chat_messages` - Individual chat messages
-- `resources` - Mental health resources
-- `user_resource_progress` - User progress on resources
-- `mood_logs` - User mood tracking
-- `crisis_alerts` - Crisis situation alerts
-- `safety_plans` - User safety plans
-- `emergency_contacts` - User emergency contacts
+## 🔧 Quick Deploy Script
 
-## Security
-
-- JWT tokens for authentication
-- Password hashing with bcrypt
-- CORS protection
-- Input validation and sanitization
-- SQL injection prevention with prepared statements
-
-## Development
-
-### Adding New Endpoints
-
-1. Define models in `internal/models/`
-2. Implement business logic in `internal/services/`
-3. Create handlers in `internal/handlers/`
-4. Register routes in `main.go`
-
-### Testing
+Make the deploy script executable and use it:
 
 ```bash
-# Run tests
-go test ./...
-
-# Run with coverage
-go test -cover ./...
+chmod +x deploy.sh
+./deploy.sh railway  # or render, heroku, gcp
 ```
 
-## Production Deployment
+## 🌐 After Deployment
 
-1. Set strong JWT secret
-2. Configure proper database (PostgreSQL recommended for production)
-3. Enable HTTPS
-4. Set up proper logging
-5. Configure monitoring and health checks
-6. Set up backup procedures
+1. **Get your backend URL** (e.g., `https://your-app.railway.app`)
 
-## API Documentation
+2. **Update Netlify Environment Variables**:
+   ```env
+   NEXT_PUBLIC_API_URL=https://your-backend-url.com/api/v1
+   ```
 
-The API follows RESTful conventions and returns JSON responses. All protected endpoints require a Bearer token in the Authorization header.
+3. **Test the API**:
+   ```bash
+   curl https://your-backend-url.com/health
+   ```
 
-### Response Format
+## 🔒 Security Checklist
 
-Success responses:
-```json
-{
-  "data": {...},
-  "message": "Success message"
-}
+- [ ] Strong JWT secret (32+ characters)
+- [ ] HTTPS enabled (automatic on most platforms)
+- [ ] CORS configured for your frontend domain
+- [ ] Database connection encrypted
+- [ ] Environment variables secured
+- [ ] API rate limiting (consider adding)
+
+## 📊 Monitoring
+
+Most platforms provide built-in monitoring:
+- **Railway**: Built-in metrics and logs
+- **Render**: Application metrics
+- **Heroku**: Heroku Metrics (paid)
+- **GCP**: Cloud Monitoring
+
+## 🆘 Troubleshooting
+
+### Common Issues:
+
+1. **Build Fails**:
+   ```bash
+   # Ensure go.mod is up to date
+   go mod tidy
+   ```
+
+2. **Database Connection Issues**:
+   - Check DATABASE_URL format
+   - Ensure PostgreSQL driver is imported
+   - Verify database is accessible
+
+3. **CORS Errors**:
+   - Add your Netlify domain to CORS origins
+   - Check environment variables
+
+4. **Port Issues**:
+   - Ensure PORT environment variable is set
+   - Use `os.Getenv("PORT")` in your code
+
+### Logs:
+```bash
+# Railway
+railway logs
+
+# Heroku
+heroku logs --tail
+
+# Render
+# Check logs in dashboard
 ```
 
-Error responses:
-```json
-{
-  "error": "Error message"
-}
-```
+## 💰 Cost Comparison
 
-### Authentication
+| Platform | Free Tier | Paid Plans | Database |
+|----------|-----------|------------|----------|
+| Railway | 500 hours/month | $5/month | PostgreSQL included |
+| Render | 750 hours/month | $7/month | PostgreSQL $7/month |
+| Heroku | 550 hours/month | $7/month | PostgreSQL $9/month |
+| GCP | $300 credit | Pay-as-you-go | Cloud SQL varies |
 
-Include the JWT token in the Authorization header:
-```
-Authorization: Bearer <your-jwt-token>
-```
-
-## Contributing
-
-1. Follow Go conventions and best practices
-2. Add tests for new functionality
-3. Update documentation
-4. Ensure security considerations are addressed
+**Recommendation**: Start with Railway or Render for the best free tier experience.
