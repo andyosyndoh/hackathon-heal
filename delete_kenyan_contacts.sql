@@ -1,1 +1,0 @@
-DELETE FROM resources WHERE id IN ('kenya-befrienders', 'kenya-eplus', 'kenya-redcross', 'kenya-nairobi-mental-health');

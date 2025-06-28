@@ -75,9 +75,9 @@ func createTables(db *sql.DB) error {
 			title TEXT NOT NULL,
 			description TEXT NOT NULL,
 			content TEXT NOT NULL,
-			type TEXT NOT NULL, -- 'article', 'video', 'audio', 'exercise', 'assessment'
+			type TEXT NOT NULL, -- 'article', 'video', 'audio', 'exercise', 'assessment', 'contact'
 			category TEXT NOT NULL,
-			difficulty TEXT NOT NULL, -- 'beginner', 'intermediate', 'advanced'
+			difficulty TEXT NOT NULL, -- 'beginner', 'intermediate', 'advanced', 'Easy'
 			duration_minutes INTEGER,
 			rating REAL DEFAULT 0,
 			featured BOOLEAN DEFAULT FALSE,
@@ -150,7 +150,7 @@ func createTables(db *sql.DB) error {
 		}
 	}
 
-	// Insert sample resources
+	// Insert sample resources including Kenyan crisis contacts
 	if err := insertSampleData(db); err != nil {
 		return fmt.Errorf("failed to insert sample data: %w", err)
 	}
@@ -182,41 +182,92 @@ func insertSampleData(db *sql.DB) error {
 		rating      float64
 		featured    bool
 	}{
+		// Mental Health Resources
 		{
 			"1", "Understanding Anxiety: A Complete Guide",
 			"Learn about anxiety symptoms, triggers, and evidence-based coping strategies.",
-			"Anxiety is a natural response to stress, but when it becomes overwhelming...",
+			"Anxiety is a natural response to stress, but when it becomes overwhelming, it can significantly impact your daily life. This comprehensive guide covers the different types of anxiety disorders, common symptoms like racing thoughts and physical tension, and practical coping strategies including breathing exercises, grounding techniques, and cognitive behavioral therapy approaches. You'll learn how to identify your personal anxiety triggers and develop a toolkit of healthy responses.",
 			"article", "anxiety", "beginner", 15, 4.8, true,
 		},
 		{
 			"2", "Guided Meditation for Depression",
 			"A 20-minute guided meditation specifically designed for managing depressive symptoms.",
-			"This meditation focuses on self-compassion and gentle awareness...",
+			"This meditation focuses on self-compassion and gentle awareness, helping you navigate difficult emotions with kindness. The session includes breathing exercises, body awareness, and loving-kindness practices specifically tailored for those experiencing depression. Regular practice can help improve mood, reduce negative self-talk, and build emotional resilience.",
 			"audio", "depression", "beginner", 20, 4.9, true,
 		},
 		{
 			"3", "Cognitive Behavioral Therapy Techniques",
 			"Interactive exercises to help identify and change negative thought patterns.",
-			"CBT is one of the most effective treatments for depression and anxiety...",
+			"CBT is one of the most effective treatments for depression and anxiety. This resource provides practical exercises for identifying cognitive distortions, challenging negative thoughts, and developing more balanced thinking patterns. Includes thought records, behavioral activation techniques, and homework assignments to practice between sessions.",
 			"exercise", "depression", "intermediate", 30, 4.7, false,
 		},
 		{
 			"4", "Building Healthy Relationships",
 			"Video series on communication skills and boundary setting.",
-			"Healthy relationships are fundamental to mental wellbeing...",
+			"Healthy relationships are fundamental to mental wellbeing. This video series covers effective communication techniques, how to set and maintain healthy boundaries, conflict resolution skills, and building trust. Learn to recognize unhealthy relationship patterns and develop the skills needed for meaningful connections.",
 			"video", "relationships", "beginner", 25, 4.6, true,
 		},
 		{
 			"5", "Stress Assessment Quiz",
 			"Evaluate your stress levels and get personalized recommendations.",
-			"This assessment helps identify your stress patterns...",
+			"This comprehensive assessment helps identify your stress patterns, triggers, and current coping mechanisms. Based on your responses, you'll receive personalized recommendations for stress management techniques, lifestyle changes, and resources for further support.",
 			"assessment", "stress", "beginner", 10, 4.5, false,
 		},
 		{
 			"6", "Advanced Mindfulness Practices",
 			"Deep dive into mindfulness techniques for experienced practitioners.",
-			"These advanced practices build on basic mindfulness skills...",
+			"These advanced practices build on basic mindfulness skills and include body scanning, walking meditation, mindful eating, and integration of mindfulness into daily activities. Suitable for those who have established a regular meditation practice and want to deepen their understanding.",
 			"exercise", "self-care", "advanced", 45, 4.8, false,
+		},
+
+		// Kenyan Crisis Support Contacts
+		{
+			"kenya-befrienders", "Befrienders Kenya",
+			"Provides emotional support to those in distress through confidential listening.",
+			"Befrienders Kenya offers 24/7 emotional support through trained volunteers who provide a safe space to talk about your feelings. They offer confidential telephone support for people experiencing emotional distress, depression, or suicidal thoughts. Services are free and available in English and Kiswahili.\n\nCall: +254 722 178 177\nEmail: info@befrienderskenya.org\nWebsite: www.befrienderskenya.org",
+			"contact", "Crisis Support", "Easy", 5, 4.8, true,
+		},
+		{
+			"kenya-eplus", "Emergency Plus Medical Services (E-Plus)",
+			"Offers ambulance and pre-hospital emergency medical services across Kenya.",
+			"E-Plus provides 24/7 emergency medical services including ambulance services, emergency medical care, and crisis intervention. They have trained medical professionals who can respond to mental health emergencies and provide immediate support while connecting you to appropriate mental health services.\n\nEmergency Line: +254 700 395 395\nAlternative: +254 733 395 395\nWebsite: www.eplus.co.ke",
+			"contact", "Crisis Support", "Easy", 5, 4.7, true,
+		},
+		{
+			"kenya-redcross", "Kenya Red Cross Society",
+			"Provides humanitarian services, including disaster response and emergency support.",
+			"Kenya Red Cross offers psychosocial support services, emergency response, and community-based mental health programs. They provide crisis counseling, trauma support, and can connect you with local mental health resources. Available nationwide with trained counselors.\n\nHotline: +254 703 037 000\nAlternative: +254 20 3950000\nEmail: info@redcross.or.ke\nWebsite: www.redcross.or.ke",
+			"contact", "Crisis Support", "Easy", 5, 4.6, true,
+		},
+		{
+			"kenya-mental-health", "Kenya Association for Mental Health",
+			"Dedicated to promoting mental health awareness and providing support services.",
+			"KAMH provides mental health advocacy, counseling services, and community outreach programs. They offer support groups, individual counseling, and crisis intervention services. They also provide training and education on mental health issues.\n\nPhone: +254 20 2717077\nMobile: +254 722 364 456\nEmail: info@mentalhealthkenya.org\nWebsite: www.mentalhealthkenya.org",
+			"contact", "Crisis Support", "Easy", 5, 4.5, true,
+		},
+		{
+			"kenya-police", "Kenya Police Emergency Services",
+			"National police emergency services for immediate crisis intervention.",
+			"For immediate emergency situations involving threats to personal safety, domestic violence, or when someone is in immediate danger. Police can provide immediate intervention and connect you with appropriate mental health crisis services.\n\nEmergency: 999\nAlternative: 911\nPolice Hotline: +254 20 341 4906",
+			"contact", "Crisis Support", "Easy", 5, 4.4, true,
+		},
+		{
+			"kenya-childline", "Childline Kenya",
+			"24/7 helpline for children and young people in crisis.",
+			"Childline Kenya provides free, confidential support for children and young people (up to 18 years) facing any kind of problem including mental health issues, abuse, family problems, or suicidal thoughts. Trained counselors provide immediate support and referrals.\n\nToll-Free: 116\nAlternative: +254 20 2671757\nWebsite: www.childlinekenya.co.ke",
+			"contact", "Crisis Support", "Easy", 5, 4.7, true,
+		},
+		{
+			"kenya-gender-violence", "Gender Violence Recovery Centre",
+			"Specialized support for survivors of gender-based violence.",
+			"GVRC provides comprehensive support for survivors of gender-based violence including counseling, legal aid, medical support, and safe shelter. They have trained counselors who understand trauma and can provide specialized mental health support.\n\nHotline: +254 709 660 000\nNairobi: +254 20 2731313\nWebsite: www.gvrc.or.ke",
+			"contact", "Crisis Support", "Easy", 5, 4.6, true,
+		},
+		{
+			"kenya-samaritans", "Samaritans Kenya",
+			"Emotional support and suicide prevention services.",
+			"Samaritans Kenya provides confidential emotional support to anyone experiencing feelings of distress or despair, including those having suicidal thoughts. Trained volunteers offer non-judgmental listening and support 24/7.\n\nNairobi: +254 722 178 177\nMombasa: +254 41 222 5555\nEmail: samaritanskenya@gmail.com",
+			"contact", "Crisis Support", "Easy", 5, 4.8, true,
 		},
 	}
 
