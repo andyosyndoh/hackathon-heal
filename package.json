@@ -44,6 +44,8 @@
     "@types/react": "18.2.22",
     "@types/react-dom": "18.2.7",
     "autoprefixer": "10.4.15",
+    "bcryptjs": "^2.4.3",
+    "better-sqlite3": "^9.2.2",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "cmdk": "^1.0.0",
@@ -56,6 +58,7 @@
     "input-otp": "^1.2.4",
     "jotai": "^2.12.5",
     "js-cookie": "^3.0.5",
+    "jsonwebtoken": "^9.0.2",
     "ldrs": "^1.1.7",
     "lucide-react": "^0.446.0",
     "next": "13.5.1",
@@ -72,11 +75,15 @@
     "tailwindcss": "3.3.3",
     "tailwindcss-animate": "^1.0.7",
     "typescript": "5.2.2",
+    "uuid": "^9.0.1",
     "vaul": "^0.9.9",
     "zod": "^3.23.8"
   },
   "devDependencies": {
     "@netlify/plugin-nextjs": "^5.11.4",
-    "@types/js-cookie": "^3.0.6"
+    "@types/bcryptjs": "^2.4.6",
+    "@types/js-cookie": "^3.0.6",
+    "@types/jsonwebtoken": "^9.0.5",
+    "@types/uuid": "^9.0.7"
   }
 }
