@@ -7,6 +7,7 @@ A comprehensive mental health support platform that combines AI-powered assistan
 - **AI-Powered Support**: Real-time conversational AI with video chat capabilities using Tavus
 - **Text Chat with Gemini AI**: Advanced conversational AI using Google's Gemini model
 - **Advanced Voice Features**: Multi-voice text-to-speech with male/female options using ElevenLabs
+- **Persistent Chat History**: Messages are stored in the backend with session management
 - **Crisis Management**: 24/7 emergency support with location-based services
 - **Resource Library**: Curated mental health resources with progress tracking and audio narration
 - **User Dashboard**: Personalized analytics, mood tracking, and progress monitoring
@@ -35,6 +36,26 @@ A comprehensive mental health support platform that combines AI-powered assistan
 ✅ **Audio Management**: Intelligent audio interruption and cleanup  
 ✅ **Accessibility**: Full keyboard navigation and screen reader support  
 
+## 💬 **Chat & Message Storage**
+
+### **Persistent Chat Sessions**
+✅ **Session Management**: Create, view, and manage multiple chat sessions  
+✅ **Message History**: All messages are stored in the backend database  
+✅ **Session Switching**: Seamlessly switch between different chat conversations  
+✅ **Auto-Save**: Messages are automatically saved as you chat  
+
+### **Chat Features**
+✅ **Real-time Messaging**: Instant message delivery with typing indicators  
+✅ **Message Persistence**: Chat history is preserved across sessions  
+✅ **Session Deletion**: Users can delete chat sessions and all associated messages  
+✅ **Message Metadata**: Support for different message types (text, audio, video)  
+
+### **Backend Integration**
+✅ **RESTful API**: Complete chat API with session and message management  
+✅ **Database Storage**: SQLite/PostgreSQL storage for all chat data  
+✅ **User Authentication**: Secure access to chat history per user  
+✅ **Data Privacy**: User messages are encrypted and securely stored  
+
 ## 🏗️ Project Structure
 
 ```
@@ -43,7 +64,7 @@ heal/
 │   ├── app/                    # Next.js 13+ app directory
 │   │   ├── api/               # API routes (chat endpoint)
 │   │   ├── auth/              # Authentication pages
-│   │   ├── chat/              # Chat interface with voice controls
+│   │   ├── chat/              # Enhanced chat interface with session management
 │   │   ├── crisis/            # Crisis support pages
 │   │   ├── dashboard/         # User dashboard
 │   │   ├── resources/         # Resource library with audio narration
@@ -61,7 +82,7 @@ heal/
 │   ├── hooks/                # Custom React hooks
 │   ├── lib/                  # Utility libraries
 │   │   ├── ai-services.ts   # Enhanced Gemini & ElevenLabs integration
-│   │   ├── api.ts           # API client
+│   │   ├── api.ts           # Enhanced API client with chat endpoints
 │   │   ├── auth.ts          # Authentication manager
 │   │   └── utils.ts         # Utility functions
 │   ├── store/               # Jotai state management
@@ -71,11 +92,11 @@ heal/
 │   ├── internal/
 │   │   ├── config/         # Configuration management
 │   │   ├── database/       # Database setup and migrations
-│   │   ├── handlers/       # HTTP request handlers
+│   │   ├── handlers/       # HTTP request handlers (enhanced chat handler)
 │   │   ├── middleware/     # HTTP middleware
-│   │   ├── models/         # Data models
-│   │   └── services/       # Business logic
-│   ├── main.go            # Application entry point
+│   │   ├── models/         # Data models (enhanced with chat models)
+│   │   └── services/       # Business logic (enhanced chat service)
+│   ├── main.go            # Application entry point (updated routes)
 │   ├── go.mod             # Go module dependencies
 │   └── README.md          # Backend documentation
 └── README.md              # This file
@@ -234,7 +255,11 @@ To run both frontend and backend simultaneously:
 - Privacy and security status
 
 ### AI Chat (`/chat`)
-- **Text Chat**: Powered by Google Gemini AI for intelligent responses
+- **Enhanced Chat Interface**: 
+  - Session management with chat history
+  - Multiple conversation support
+  - Session switching and deletion
+  - Persistent message storage
 - **Advanced Voice Controls**: 
   - Voice Off mode for silent conversations
   - Female Voice (Bella) - warm and empathetic
@@ -275,8 +300,12 @@ To run both frontend and backend simultaneously:
 - `GET /api/v1/user/stats` - Get user statistics
 - `POST /api/v1/user/mood` - Log mood entry
 
-### Chat
-- `POST /api/chat` - Send message to Gemini AI (Next.js API route)
+### Chat (Enhanced)
+- `POST /api/v1/chat/message` - Send message and get AI response
+- `GET /api/v1/chat/history` - Get chat history for a session
+- `GET /api/v1/chat/sessions` - Get all user chat sessions
+- `DELETE /api/v1/chat/session/:id` - Delete a chat session
+- `POST /api/v1/chat/feedback` - Submit feedback for AI responses
 
 ### Resources
 - `GET /api/v1/resources` - Get resources (with filtering)
@@ -316,6 +345,42 @@ To run both frontend and backend simultaneously:
 - Natural conversation flow with visual cues
 - Integration with Daily.co for video infrastructure
 
+## 💾 **Database Schema**
+
+### **Chat Tables**
+```sql
+-- Chat sessions for organizing conversations
+CREATE TABLE chat_sessions (
+    id TEXT PRIMARY KEY,
+    user_id TEXT NOT NULL,
+    title TEXT,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
+-- Individual chat messages
+CREATE TABLE chat_messages (
+    id TEXT PRIMARY KEY,
+    session_id TEXT NOT NULL,
+    user_id TEXT NOT NULL,
+    content TEXT NOT NULL,
+    sender_type TEXT NOT NULL, -- 'user' or 'ai'
+    message_type TEXT DEFAULT 'text', -- 'text', 'audio', 'video'
+    metadata TEXT, -- JSON for additional data
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (session_id) REFERENCES chat_sessions(id) ON DELETE CASCADE,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
+```
+
+### **Key Features**
+- **Session Management**: Organize conversations into sessions
+- **Message Persistence**: All messages stored with timestamps
+- **User Privacy**: Messages tied to authenticated users
+- **Metadata Support**: Extensible JSON metadata for future features
+- **Cascade Deletion**: Clean up when users or sessions are deleted
+
 ## 🎨 **Voice UI Design System**
 
 ### **Color-Coded Voice States**
@@ -347,6 +412,7 @@ To run both frontend and backend simultaneously:
 - **HIPAA-compliant** data handling practices
 - **API key security** with environment variable management
 - **Audio data protection** with secure blob handling and cleanup
+- **Message privacy** with user-specific access controls
 
 ## 🚀 Deployment
 
@@ -387,6 +453,20 @@ To run both frontend and backend simultaneously:
 - **Consistent Quality**: High-fidelity audio generation across all features
 - **Responsive Performance**: Efficient audio generation and playback
 
+## 💬 **Chat System Usage**
+
+### **Session Management**
+1. **Create New Chat**: Click "New Chat" to start a fresh conversation
+2. **Switch Sessions**: Use the chat sessions dropdown to switch between conversations
+3. **View History**: All previous messages are automatically loaded when switching sessions
+4. **Delete Sessions**: Remove unwanted chat sessions and all associated messages
+
+### **Message Features**
+- **Auto-Save**: Messages are automatically saved as you type and send
+- **Persistent History**: Chat history is preserved across browser sessions
+- **Real-time Updates**: Messages appear instantly with typing indicators
+- **Voice Integration**: AI responses can be spoken aloud with voice controls
+
 ## 🤝 Contributing
 
 1. Fork the repository
@@ -418,11 +498,17 @@ If you need help or have questions:
 - [x] ✅ **Multi-voice text-to-speech system**
 - [x] ✅ **Resource audio narration**
 - [x] ✅ **Voice control interface**
+- [x] ✅ **Persistent chat message storage**
+- [x] ✅ **Chat session management**
+- [x] ✅ **Message history and retrieval**
 - [ ] Voice-to-text for voice messages
 - [ ] Multi-language support with localized voices
 - [ ] Offline mode capabilities
 - [ ] Custom voice training for personalized experiences
 - [ ] Voice emotion detection and response adaptation
+- [ ] Advanced chat analytics and insights
+- [ ] Message search and filtering
+- [ ] Chat export functionality
 
 ---
 
@@ -436,3 +522,10 @@ If you need help or have questions:
   - Adam (Male Voice) - Calibrated for calm, supportive interactions
 - **Audio Processing**: Advanced speech synthesis with natural language optimization
 - **Accessibility**: Full compliance with web accessibility standards for audio content
+
+## 💾 **Data Storage Credits**
+
+- **Backend Framework**: Built with [Go](https://golang.org/) and [Gin](https://gin-gonic.com/)
+- **Database**: SQLite for development, PostgreSQL-ready for production
+- **Message Storage**: Secure, encrypted storage with user privacy protection
+- **Session Management**: Efficient chat session organization and retrieval

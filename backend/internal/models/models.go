@@ -33,7 +33,16 @@ type ChatSession struct {
 	UpdatedAt time.Time `json:"updatedAt" db:"updated_at"`
 }
 
-
+type ChatMessage struct {
+	ID          string    `json:"id" db:"id"`
+	SessionID   string    `json:"sessionId" db:"session_id"`
+	UserID      string    `json:"userId" db:"user_id"`
+	Content     string    `json:"content" db:"content"`
+	SenderType  string    `json:"senderType" db:"sender_type"` // 'user' or 'ai'
+	MessageType string    `json:"messageType" db:"message_type"` // 'text', 'audio', 'video'
+	Metadata    string    `json:"metadata" db:"metadata"` // JSON for additional data
+	CreatedAt   time.Time `json:"createdAt" db:"created_at"`
+}
 
 type Resource struct {
 	ID              string    `json:"id" db:"id"`
