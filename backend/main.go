@@ -27,14 +27,14 @@ func main() {
 
 	// Initialize services
 	authService := services.NewAuthService(db, cfg.JWTSecret)
-	chatService := services.NewChatService(db)
+			chatService := services.NewChatService()
 	resourceService := services.NewResourceService(db)
 	crisisService := services.NewCrisisService(db)
 	userService := services.NewUserService(db)
 
 	// Initialize handlers
 	authHandler := handlers.NewAuthHandler(authService)
-	chatHandler := handlers.NewChatHandler(chatService, authService)
+		chatHandler := handlers.NewChatHandler(chatService)
 	resourceHandler := handlers.NewResourceHandler(resourceService)
 	crisisHandler := handlers.NewCrisisHandler(crisisService)
 	userHandler := handlers.NewUserHandler(userService)
@@ -92,11 +92,8 @@ func main() {
 			// Chat routes
 			chat := protected.Group("/chat")
 			{
-				chat.POST("/message", chatHandler.SendMessage)
-				chat.GET("/history", chatHandler.GetChatHistory)
-				chat.GET("/sessions", chatHandler.GetChatSessions)
-				chat.DELETE("/session/:id", chatHandler.DeleteChatSession)
-				chat.POST("/feedback", chatHandler.SubmitFeedback)
+				chat.POST("/message", chatHandler.HandleChat)
+				
 			}
 
 			// Resource routes
@@ -122,8 +119,8 @@ func main() {
 			}
 		}
 
-		// WebSocket endpoint for real-time chat
-		api.GET("/ws", middleware.AuthRequired(authService), chatHandler.HandleWebSocket)
+		
+		
 	}
 
 	// Start server
