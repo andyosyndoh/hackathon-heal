@@ -4,6 +4,9 @@ FROM golang:1.21-alpine AS builder
 # Set working directory
 WORKDIR /app
 
+# Install git and ca-certificates
+RUN apk add --no-cache git ca-certificates
+
 # Copy go mod files
 COPY go.mod go.sum ./
 
@@ -19,13 +22,16 @@ RUN CGO_ENABLED=1 GOOS=linux go build -a -installsuffix cgo -o main .
 # Final stage
 FROM alpine:latest
 
-# Install ca-certificates for HTTPS requests
-RUN apk --no-cache add ca-certificates
+# Install ca-certificates for HTTPS requests and sqlite
+RUN apk --no-cache add ca-certificates sqlite
 
 WORKDIR /root/
 
 # Copy the binary from builder stage
 COPY --from=builder /app/main .
+
+# Create directory for database
+RUN mkdir -p /data
 
 # Expose port
 EXPOSE 8080
