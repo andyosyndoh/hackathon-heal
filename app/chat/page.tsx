@@ -16,7 +16,8 @@ import {
   Video,
   Bot,
   User,
-  Loader2
+  Loader2,
+  ChevronDown
 } from 'lucide-react';
 import Link from 'next/link';
 import { useAtom } from 'jotai';
@@ -36,6 +37,8 @@ interface Message {
   isLoading?: boolean;
 }
 
+type VoiceOption = 'off' | 'female' | 'male';
+
 export default function ChatPage() {
   const [messages, setMessages] = useState<Message[]>([
     {
@@ -50,7 +53,8 @@ export default function ChatPage() {
   const [inputMessage, setInputMessage] = useState('');
   const [isRecording, setIsRecording] = useState(false);
   const [isTyping, setIsTyping] = useState(false);
-  const [isVoiceEnabled, setIsVoiceEnabled] = useState(true); // Voice toggle state
+  const [voiceOption, setVoiceOption] = useState<VoiceOption>('female'); // Voice selection state
+  const [showVoiceDropdown, setShowVoiceDropdown] = useState(false);
   const [showVideoModal, setShowVideoModal] = useState(false);
   const [showVideoConversation, setShowVideoConversation] = useState(false);
   const [isPlayingAudio, setIsPlayingAudio] = useState(false);
@@ -58,10 +62,45 @@ export default function ChatPage() {
   const [, setScreenState] = useAtom(screenAtom);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  // Voice configuration
+  const voiceConfigs = {
+    off: { 
+      label: 'Voice Off', 
+      icon: VolumeX, 
+      color: 'text-gray-600 bg-gray-100',
+      voiceId: null 
+    },
+    female: { 
+      label: 'Female Voice', 
+      icon: Volume2, 
+      color: 'text-pink-600 bg-pink-100',
+      voiceId: 'EXAVITQu4vr4xnSDxMaL' // Bella - warm and empathetic female voice
+    },
+    male: { 
+      label: 'Male Voice', 
+      icon: Volume2, 
+      color: 'text-blue-600 bg-blue-100',
+      voiceId: 'pNInz6obpgDQGcFmaJgB' // Adam - calm and supportive male voice
+    }
+  };
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setShowVoiceDropdown(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   // Cleanup audio on unmount
   useEffect(() => {
@@ -74,7 +113,7 @@ export default function ChatPage() {
   }, [currentAudio]);
 
   const playAIResponse = async (text: string) => {
-    if (!isVoiceEnabled || !process.env.NEXT_PUBLIC_ELEVENLABS_API_KEY) return;
+    if (voiceOption === 'off' || !process.env.NEXT_PUBLIC_ELEVENLABS_API_KEY) return;
     
     try {
       setIsPlayingAudio(true);
@@ -85,7 +124,7 @@ export default function ChatPage() {
         currentAudio.src = '';
       }
 
-      console.log('Generating speech for AI response');
+      console.log(`Generating speech with ${voiceOption} voice for AI response`);
       
       // Clean text for better speech synthesis
       const cleanText = text
@@ -96,7 +135,8 @@ export default function ChatPage() {
         .replace(/\s+/g, ' ') // Replace multiple spaces
         .trim();
 
-      const audioBuffer = await elevenLabsService.textToSpeech(cleanText);
+      const voiceId = voiceConfigs[voiceOption].voiceId;
+      const audioBuffer = await elevenLabsService.textToSpeech(cleanText, voiceId);
       
       // Create audio blob and URL
       const audioBlob = new Blob([audioBuffer], { type: 'audio/mpeg' });
@@ -183,7 +223,7 @@ export default function ChatPage() {
       });
 
       // Play audio response if voice is enabled
-      if (isVoiceEnabled) {
+      if (voiceOption !== 'off') {
         // Small delay to ensure message is rendered before audio starts
         setTimeout(() => {
           playAIResponse(aiResponse);
@@ -216,12 +256,12 @@ export default function ChatPage() {
     }
   };
 
-  const toggleVoice = () => {
-    const newVoiceState = !isVoiceEnabled;
-    setIsVoiceEnabled(newVoiceState);
+  const handleVoiceOptionChange = (option: VoiceOption) => {
+    setVoiceOption(option);
+    setShowVoiceDropdown(false);
     
-    // Stop current audio if disabling voice
-    if (!newVoiceState && isPlayingAudio) {
+    // Stop current audio if switching to off or changing voice
+    if (isPlayingAudio) {
       stopCurrentAudio();
     }
   };
@@ -246,6 +286,9 @@ export default function ChatPage() {
     }
   };
 
+  const currentVoiceConfig = voiceConfigs[voiceOption];
+  const VoiceIcon = currentVoiceConfig.icon;
+
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
       {/* Header */}
@@ -265,7 +308,7 @@ export default function ChatPage() {
                   {isPlayingAudio ? (
                     <>
                       <Volume2 className="h-3 w-3 mr-1" />
-                      Speaking...
+                      Speaking ({voiceOption} voice)...
                     </>
                   ) : (
                     'Online • Secure Session'
@@ -276,20 +319,50 @@ export default function ChatPage() {
           </div>
 
           <div className="flex items-center space-x-2">
-            <button
-              onClick={toggleVoice}
-              className={`p-2 rounded-lg transition-colors ${
-                isVoiceEnabled 
-                  ? 'bg-green-100 text-green-600 hover:bg-green-200' 
-                  : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-              }`}
-              title={isVoiceEnabled ? 'Voice responses enabled' : 'Voice responses disabled'}
-            >
-              {isVoiceEnabled ?
-                <Volume2 className="h-5 w-5" /> :
-                <VolumeX className="h-5 w-5" />
-              }
-            </button>
+            {/* Voice Selection Dropdown */}
+            <div className="relative" ref={dropdownRef}>
+              <button
+                onClick={() => setShowVoiceDropdown(!showVoiceDropdown)}
+                className={`p-2 rounded-lg transition-colors flex items-center space-x-1 ${currentVoiceConfig.color}`}
+                title={`Current: ${currentVoiceConfig.label}`}
+              >
+                <VoiceIcon className="h-5 w-5" />
+                <ChevronDown className="h-3 w-3" />
+              </button>
+
+              {showVoiceDropdown && (
+                <div className="absolute right-0 top-full mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-50">
+                  <div className="px-3 py-2 text-xs font-medium text-gray-500 border-b border-gray-100">
+                    Voice Options
+                  </div>
+                  {Object.entries(voiceConfigs).map(([key, config]) => {
+                    const OptionIcon = config.icon;
+                    return (
+                      <button
+                        key={key}
+                        onClick={() => handleVoiceOptionChange(key as VoiceOption)}
+                        className={`w-full px-3 py-2 text-left hover:bg-gray-50 flex items-center space-x-3 transition-colors ${
+                          voiceOption === key ? 'bg-blue-50 text-blue-700' : 'text-gray-700'
+                        }`}
+                      >
+                        <OptionIcon className="h-4 w-4" />
+                        <span className="text-sm">{config.label}</span>
+                        {voiceOption === key && (
+                          <div className="ml-auto w-2 h-2 bg-blue-600 rounded-full"></div>
+                        )}
+                      </button>
+                    );
+                  })}
+                  <div className="px-3 py-2 text-xs text-gray-500 border-t border-gray-100 mt-1">
+                    {process.env.NEXT_PUBLIC_ELEVENLABS_API_KEY 
+                      ? 'Powered by ElevenLabs AI' 
+                      : 'API key required for voice'
+                    }
+                  </div>
+                </div>
+              )}
+            </div>
+
             <button
               onClick={() => setShowVideoConversation(true)}
               className={`p-2 hover:bg-gray-100 rounded-lg transition-colors text-gray-600`}
@@ -316,11 +389,15 @@ export default function ChatPage() {
       </div>
 
       {/* Voice Status Banner */}
-      {isVoiceEnabled && process.env.NEXT_PUBLIC_ELEVENLABS_API_KEY && (
-        <div className="bg-green-50 border-b border-green-200 px-4 py-2">
-          <div className="flex items-center justify-center space-x-2 text-sm text-green-700">
-            <Volume2 className="h-4 w-4" />
-            <span>Voice responses enabled • AI will speak responses aloud</span>
+      {voiceOption !== 'off' && process.env.NEXT_PUBLIC_ELEVENLABS_API_KEY && (
+        <div className={`border-b px-4 py-2 ${
+          voiceOption === 'female' ? 'bg-pink-50 border-pink-200' : 'bg-blue-50 border-blue-200'
+        }`}>
+          <div className={`flex items-center justify-center space-x-2 text-sm ${
+            voiceOption === 'female' ? 'text-pink-700' : 'text-blue-700'
+          }`}>
+            <VoiceIcon className="h-4 w-4" />
+            <span>{currentVoiceConfig.label} enabled • AI will speak responses aloud</span>
           </div>
         </div>
       )}
@@ -381,12 +458,14 @@ export default function ChatPage() {
                               {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                             </p>
                             {/* Audio indicator for AI messages */}
-                            {message.sender === 'ai' && isVoiceEnabled && !message.isLoading && (
+                            {message.sender === 'ai' && voiceOption !== 'off' && !message.isLoading && (
                               <div className="flex items-center space-x-1">
                                 {isPlayingAudio ? (
-                                  <Volume2 className="h-3 w-3 text-green-600" />
+                                  <Volume2 className={`h-3 w-3 ${
+                                    voiceOption === 'female' ? 'text-pink-600' : 'text-blue-600'
+                                  }`} />
                                 ) : (
-                                  <Volume2 className="h-3 w-3 text-gray-400" />
+                                  <VoiceIcon className="h-3 w-3 text-gray-400" />
                                 )}
                               </div>
                             )}
@@ -419,15 +498,14 @@ export default function ChatPage() {
         <div className="bg-white border-t border-gray-200 px-4 py-4">
           <div className="flex items-end space-x-3">
             <button
-              onClick={toggleVoice}
-              className={`p-3 rounded-full transition-all duration-200 ${
-                isVoiceEnabled
-                  ? 'bg-green-500 text-white hover:bg-green-600'
-                  : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-              }`}
-              title={isVoiceEnabled ? 'Voice responses enabled - click to disable' : 'Voice responses disabled - click to enable'}
+              onClick={toggleRecording}
+              className={`p-3 rounded-full transition-all duration-200 ${isRecording
+                ? 'bg-red-500 text-white pulse-glow'
+                : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                }`}
+              title={isRecording ? 'Stop recording' : 'Start voice message'}
             >
-              {isVoiceEnabled ? <Mic className="h-5 w-5" /> : <MicOff className="h-5 w-5" />}
+              {isRecording ? <MicOff className="h-5 w-5" /> : <Mic className="h-5 w-5" />}
             </button>
 
             <div className="flex-1 relative">
@@ -478,8 +556,11 @@ export default function ChatPage() {
 
             {/* Voice Status */}
             <div className="flex items-center space-x-2 text-xs text-gray-500">
-              <div className={`w-2 h-2 rounded-full ${isVoiceEnabled ? 'bg-green-500' : 'bg-gray-400'}`}></div>
-              <span>{isVoiceEnabled ? 'Voice ON' : 'Voice OFF'}</span>
+              <div className={`w-2 h-2 rounded-full ${
+                voiceOption === 'off' ? 'bg-gray-400' : 
+                voiceOption === 'female' ? 'bg-pink-500' : 'bg-blue-500'
+              }`}></div>
+              <span>{currentVoiceConfig.label}</span>
             </div>
           </div>
 
@@ -492,7 +573,7 @@ export default function ChatPage() {
               </div>
               <div className="flex items-center space-x-1">
                 <div className={`w-2 h-2 rounded-full ${process.env.NEXT_PUBLIC_ELEVENLABS_API_KEY ? 'bg-green-500' : 'bg-red-500'}`}></div>
-                <span>Voice</span>
+                <span>Voice ({voiceOption})</span>
               </div>
             </div>
           </div>

@@ -85,19 +85,35 @@ Remember: You're here to support, not to diagnose or treat. Always encourage pro
 
 export class ElevenLabsService {
   private apiKey: string;
-  private voiceId: string = 'EXAVITQu4vr4xnSDxMaL'; // Bella voice - warm and empathetic
+  
+  // Voice configurations for different options
+  private voiceConfigs = {
+    female: {
+      voiceId: 'EXAVITQu4vr4xnSDxMaL', // Bella - warm and empathetic female voice
+      name: 'Bella',
+      description: 'Warm, empathetic female voice'
+    },
+    male: {
+      voiceId: 'pNInz6obpgDQGcFmaJgB', // Adam - calm and supportive male voice  
+      name: 'Adam',
+      description: 'Calm, supportive male voice'
+    }
+  };
 
   constructor() {
     this.apiKey = process.env.NEXT_PUBLIC_ELEVENLABS_API_KEY || '';
   }
 
-  async textToSpeech(text: string): Promise<ArrayBuffer> {
+  async textToSpeech(text: string, voiceId?: string | null): Promise<ArrayBuffer> {
     if (!this.apiKey) {
       throw new Error('ElevenLabs API key not configured. Please set NEXT_PUBLIC_ELEVENLABS_API_KEY in your environment variables.');
     }
 
+    // Use provided voiceId or default to female voice
+    const selectedVoiceId = voiceId || this.voiceConfigs.female.voiceId;
+
     try {
-      const response = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${this.voiceId}`, {
+      const response = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${selectedVoiceId}`, {
         method: 'POST',
         headers: {
           'Accept': 'audio/mpeg',
@@ -146,6 +162,16 @@ export class ElevenLabsService {
         reject(new Error('Failed to play audio'));
       }
     });
+  }
+
+  // Get available voice configurations
+  getVoiceConfigs() {
+    return this.voiceConfigs;
+  }
+
+  // Get voice info by type
+  getVoiceInfo(voiceType: 'female' | 'male') {
+    return this.voiceConfigs[voiceType];
   }
 }
 
