@@ -240,6 +240,93 @@ To run both frontend and backend simultaneously:
    - Backend API: `http://localhost:8080`
    - API Health Check: `http://localhost:8080/health`
 
+## 🌐 **Netlify Deployment**
+
+### **Frontend Deployment (Netlify)**
+
+#### **1. Prepare Your Repository**
+```bash
+# Ensure your code is committed and pushed to GitHub/GitLab/Bitbucket
+git add .
+git commit -m "Prepare for Netlify deployment"
+git push origin main
+```
+
+#### **2. Connect to Netlify**
+1. Go to [Netlify](https://netlify.com) and sign up/login
+2. Click "New site from Git"
+3. Connect your Git provider (GitHub, GitLab, or Bitbucket)
+4. Select your repository
+
+#### **3. Configure Build Settings**
+- **Build command**: `npm run build`
+- **Publish directory**: `out`
+- **Node version**: `18` (set in Environment variables)
+
+#### **4. Set Environment Variables**
+In Netlify dashboard → Site settings → Environment variables, add:
+
+```env
+# AI Services (Required)
+NEXT_PUBLIC_GEMINI_API_KEY=your-gemini-api-key-here
+NEXT_PUBLIC_ELEVENLABS_API_KEY=your-elevenlabs-api-key-here
+
+# Video Services (Required)
+NEXT_PUBLIC_TAVUS_API_KEY=your-tavus-api-key-here
+NEXT_PUBLIC_DAILY_API_KEY=your-daily-api-key-here
+
+# Backend API (Update with your backend URL)
+NEXT_PUBLIC_API_URL=https://your-backend-api.com/api/v1
+
+# Node Version
+NODE_VERSION=18
+```
+
+#### **5. Deploy**
+- Click "Deploy site"
+- Netlify will automatically build and deploy your site
+- Your site will be available at `https://your-site-name.netlify.app`
+
+### **Backend Deployment Options**
+
+Since Netlify only hosts static sites, you'll need to deploy your Go backend separately:
+
+#### **Option 1: Railway (Recommended)**
+1. Go to [Railway](https://railway.app)
+2. Connect your GitHub repository
+3. Select the `backend` folder
+4. Set environment variables:
+   ```env
+   DATABASE_URL=postgresql://user:pass@host:port/dbname
+   JWT_SECRET=your-super-secret-jwt-key
+   PORT=8080
+   ENVIRONMENT=production
+   ```
+5. Railway will automatically deploy your Go backend
+
+#### **Option 2: Heroku**
+1. Install Heroku CLI
+2. Create a new Heroku app
+3. Set buildpack: `heroku buildpacks:set heroku/go`
+4. Deploy: `git subtree push --prefix backend heroku main`
+
+#### **Option 3: DigitalOcean App Platform**
+1. Connect your repository
+2. Select Go as the runtime
+3. Set the source directory to `backend`
+4. Configure environment variables
+
+### **6. Update Frontend with Backend URL**
+Once your backend is deployed, update the environment variable in Netlify:
+```env
+NEXT_PUBLIC_API_URL=https://your-backend-url.com/api/v1
+```
+
+### **7. Custom Domain (Optional)**
+1. In Netlify dashboard → Domain settings
+2. Add your custom domain
+3. Configure DNS settings as instructed
+
 ## 📱 Key Features & Pages
 
 ### Authentication (`/auth`)
@@ -501,6 +588,7 @@ If you need help or have questions:
 - [x] ✅ **Persistent chat message storage**
 - [x] ✅ **Chat session management**
 - [x] ✅ **Message history and retrieval**
+- [x] ✅ **Netlify deployment configuration**
 - [ ] Voice-to-text for voice messages
 - [ ] Multi-language support with localized voices
 - [ ] Offline mode capabilities
@@ -529,3 +617,10 @@ If you need help or have questions:
 - **Database**: SQLite for development, PostgreSQL-ready for production
 - **Message Storage**: Secure, encrypted storage with user privacy protection
 - **Session Management**: Efficient chat session organization and retrieval
+
+## 🌐 **Deployment Credits**
+
+- **Frontend Hosting**: [Netlify](https://netlify.com/) with automatic deployments
+- **Static Site Generation**: Next.js static export for optimal performance
+- **CDN**: Global content delivery for fast loading worldwide
+- **SSL**: Automatic HTTPS with Let's Encrypt certificates
