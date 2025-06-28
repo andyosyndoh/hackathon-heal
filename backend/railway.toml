@@ -9,3 +9,4 @@
 
 [env]
   PORT = "8080"
+  ENVIRONMENT = "production"
