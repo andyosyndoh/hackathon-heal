@@ -30,7 +30,7 @@ import {
 import { Timer } from "@/components/Timer";
 import { TIME_LIMIT } from "@/config";
 import { cn } from "@/utils";
-import { QuantumLoader } from "@/components/QuantumLoader";
+import  QuantumLoader  from "@/components/QuantumLoader";
 
 const timeToGoPhrases = [
   "I'll need to wrap up our conversation soon—let's make these last moments count.",
