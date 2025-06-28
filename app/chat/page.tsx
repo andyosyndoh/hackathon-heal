@@ -384,12 +384,12 @@ export default function ChatPage() {
     // Here you would implement actual voice recording functionality
   };
 
-  const [{ currentScreen }] = useAtom(screenAtom)
+  const [{ currentScreen }] = useAtom(screenAtom);
 
   const renderScreen = () => {
     switch (currentScreen) {
       case "settings":
-        return <Settings />;
+        return <div>Settings Component</div>;
       case "introLoading":
         return <Instructions />;
       case "conversation":
