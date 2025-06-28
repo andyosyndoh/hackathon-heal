@@ -19,9 +19,13 @@ import {
   Copy,
   CheckCircle,
   Loader2,
-  AlertCircle
+  AlertCircle,
+  Pause,
+  Volume2,
+  VolumeX
 } from 'lucide-react';
 import Link from 'next/link';
+import { elevenLabsService } from '@/lib/ai-services';
 
 interface Resource {
   id: string;
@@ -215,12 +219,29 @@ export default function ResourceDetailClient() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [copiedText, setCopiedText] = useState<string | null>(null);
+  
+  // Audio playback state
+  const [isPlayingAudio, setIsPlayingAudio] = useState(false);
+  const [isGeneratingAudio, setIsGeneratingAudio] = useState(false);
+  const [audioError, setAudioError] = useState<string | null>(null);
+  const [currentAudio, setCurrentAudio] = useState<HTMLAudioElement | null>(null);
+  const [isMuted, setIsMuted] = useState(false);
 
   useEffect(() => {
     if (id) {
       fetchResource();
     }
   }, [id]);
+
+  // Cleanup audio on unmount
+  useEffect(() => {
+    return () => {
+      if (currentAudio) {
+        currentAudio.pause();
+        currentAudio.src = '';
+      }
+    };
+  }, [currentAudio]);
 
   const fetchResource = async () => {
     try {
@@ -313,6 +334,103 @@ export default function ResourceDetailClient() {
     window.open(url, '_blank');
   };
 
+  const prepareTextForSpeech = (content: string): string => {
+    // Clean up the content for better speech synthesis
+    return content
+      .replace(/\n\n/g, '. ') // Replace double newlines with periods
+      .replace(/\n/g, ' ') // Replace single newlines with spaces
+      .replace(/•/g, '') // Remove bullet points
+      .replace(/\s+/g, ' ') // Replace multiple spaces with single space
+      .replace(/([a-z])([A-Z])/g, '$1. $2') // Add periods between sentences
+      .trim();
+  };
+
+  const playAudioContent = async () => {
+    if (!resource) return;
+
+    try {
+      setIsGeneratingAudio(true);
+      setAudioError(null);
+
+      // Stop current audio if playing
+      if (currentAudio) {
+        currentAudio.pause();
+        setCurrentAudio(null);
+        setIsPlayingAudio(false);
+      }
+
+      // Prepare text for speech
+      const textToSpeak = prepareTextForSpeech(resource.content);
+      
+      // Limit text length for better performance (ElevenLabs has character limits)
+      const maxLength = 2500;
+      const truncatedText = textToSpeak.length > maxLength 
+        ? textToSpeak.substring(0, maxLength) + '...'
+        : textToSpeak;
+
+      console.log('Generating speech for:', resource.title);
+      
+      // Generate audio using ElevenLabs
+      const audioBuffer = await elevenLabsService.textToSpeech(truncatedText);
+      
+      // Create audio blob and URL
+      const audioBlob = new Blob([audioBuffer], { type: 'audio/mpeg' });
+      const audioUrl = URL.createObjectURL(audioBlob);
+      
+      // Create and configure audio element
+      const audio = new Audio(audioUrl);
+      audio.volume = isMuted ? 0 : 0.7;
+      
+      audio.onplay = () => {
+        setIsPlayingAudio(true);
+        setIsGeneratingAudio(false);
+      };
+      
+      audio.onpause = () => {
+        setIsPlayingAudio(false);
+      };
+      
+      audio.onended = () => {
+        setIsPlayingAudio(false);
+        setCurrentAudio(null);
+        URL.revokeObjectURL(audioUrl);
+      };
+      
+      audio.onerror = () => {
+        setAudioError('Failed to play audio');
+        setIsPlayingAudio(false);
+        setIsGeneratingAudio(false);
+        setCurrentAudio(null);
+        URL.revokeObjectURL(audioUrl);
+      };
+
+      setCurrentAudio(audio);
+      await audio.play();
+      
+    } catch (error) {
+      console.error('Error playing audio:', error);
+      setAudioError(error instanceof Error ? error.message : 'Failed to generate audio');
+      setIsGeneratingAudio(false);
+      setIsPlayingAudio(false);
+    }
+  };
+
+  const stopAudio = () => {
+    if (currentAudio) {
+      currentAudio.pause();
+      currentAudio.currentTime = 0;
+      setIsPlayingAudio(false);
+    }
+  };
+
+  const toggleMute = () => {
+    if (currentAudio) {
+      const newMutedState = !isMuted;
+      currentAudio.volume = newMutedState ? 0 : 0.7;
+      setIsMuted(newMutedState);
+    }
+  };
+
   const handleInteraction = () => {
     if (!resource) return;
     
@@ -327,7 +445,8 @@ export default function ResourceDetailClient() {
     } else if (resource.type === 'video') {
       alert(`Playing video: ${resource.title}\nContent: ${resource.content}`);
     } else if (resource.type === 'audio') {
-      alert(`Playing audio: ${resource.title}\nContent: ${resource.content}`);
+      // For audio resources, play the content using ElevenLabs
+      playAudioContent();
     } else {
       alert(`Starting ${resource.type}: ${resource.title}\nContent: ${resource.content}`);
     }
@@ -453,6 +572,51 @@ export default function ResourceDetailClient() {
             </div>
           </div>
 
+          {/* Audio Controls */}
+          {(isPlayingAudio || isGeneratingAudio || audioError) && (
+            <div className="mb-6 bg-blue-50 border border-blue-200 rounded-lg p-4">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center space-x-3">
+                  {isGeneratingAudio ? (
+                    <>
+                      <Loader2 className="h-5 w-5 animate-spin text-blue-600" />
+                      <span className="text-blue-800">Generating audio...</span>
+                    </>
+                  ) : isPlayingAudio ? (
+                    <>
+                      <Volume2 className="h-5 w-5 text-blue-600" />
+                      <span className="text-blue-800">Playing audio narration</span>
+                    </>
+                  ) : audioError ? (
+                    <>
+                      <AlertCircle className="h-5 w-5 text-red-600" />
+                      <span className="text-red-800">{audioError}</span>
+                    </>
+                  ) : null}
+                </div>
+                
+                {isPlayingAudio && (
+                  <div className="flex items-center space-x-2">
+                    <button
+                      onClick={toggleMute}
+                      className="p-2 text-blue-600 hover:text-blue-700 transition-colors"
+                      title={isMuted ? 'Unmute' : 'Mute'}
+                    >
+                      {isMuted ? <VolumeX className="h-4 w-4" /> : <Volume2 className="h-4 w-4" />}
+                    </button>
+                    <button
+                      onClick={stopAudio}
+                      className="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded text-sm transition-colors flex items-center space-x-1"
+                    >
+                      <Pause className="h-3 w-3" />
+                      <span>Stop</span>
+                    </button>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+
           {/* Content */}
           <div className="prose prose-lg max-w-none mb-6">
             {resource.type === 'contact' ? (
@@ -517,11 +681,38 @@ export default function ResourceDetailClient() {
                 </div>
               </div>
             ) : resource.type === 'audio' ? (
-              <div className="w-full bg-gray-200 rounded-lg flex items-center justify-center py-8">
+              <div className="w-full bg-gradient-to-r from-blue-50 to-green-50 border border-blue-200 rounded-lg p-8">
                 <div className="text-center">
-                  <Headphones className="h-12 w-12 text-gray-500 mx-auto mb-2" />
-                  <p className="text-gray-500">Audio Player Placeholder</p>
-                  <p className="text-sm text-gray-400 mt-2 max-w-md">{resource.content}</p>
+                  <Headphones className="h-16 w-16 text-blue-600 mx-auto mb-4" />
+                  <h3 className="text-lg font-semibold text-gray-900 mb-2">Audio Content Available</h3>
+                  <p className="text-gray-600 mb-6">Listen to this resource with AI-generated narration</p>
+                  
+                  <button
+                    onClick={playAudioContent}
+                    disabled={isGeneratingAudio || isPlayingAudio}
+                    className="heal-button flex items-center space-x-2 mx-auto mb-4"
+                  >
+                    {isGeneratingAudio ? (
+                      <>
+                        <Loader2 className="h-4 w-4 animate-spin" />
+                        <span>Generating Audio...</span>
+                      </>
+                    ) : isPlayingAudio ? (
+                      <>
+                        <Pause className="h-4 w-4" />
+                        <span>Playing...</span>
+                      </>
+                    ) : (
+                      <>
+                        <Play className="h-4 w-4" />
+                        <span>Play Audio</span>
+                      </>
+                    )}
+                  </button>
+                  
+                  <div className="text-sm text-gray-500 max-w-md mx-auto">
+                    <p className="whitespace-pre-line">{resource.content}</p>
+                  </div>
                 </div>
               </div>
             ) : (
@@ -532,9 +723,10 @@ export default function ResourceDetailClient() {
           </div>
 
           {/* Action Buttons */}
-          <div className="flex space-x-3">
+          <div className="flex flex-wrap gap-3">
             <button 
               onClick={handleInteraction} 
+              disabled={isGeneratingAudio}
               className="heal-button flex items-center space-x-2"
             >
               <Play className="h-4 w-4" />
@@ -545,10 +737,48 @@ export default function ResourceDetailClient() {
                  'Start Resource'}
               </span>
             </button>
+            
+            {/* Play Audio Button for all resource types */}
+            {resource.type !== 'audio' && (
+              <button
+                onClick={playAudioContent}
+                disabled={isGeneratingAudio || isPlayingAudio}
+                className="bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded-lg transition-colors flex items-center space-x-2 disabled:opacity-50"
+              >
+                {isGeneratingAudio ? (
+                  <>
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                    <span>Generating...</span>
+                  </>
+                ) : isPlayingAudio ? (
+                  <>
+                    <Volume2 className="h-4 w-4" />
+                    <span>Playing</span>
+                  </>
+                ) : (
+                  <>
+                    <Headphones className="h-4 w-4" />
+                    <span>Listen</span>
+                  </>
+                )}
+              </button>
+            )}
+            
             <button className="bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium py-2 px-4 rounded-lg transition-colors flex items-center space-x-2">
               <Download className="h-4 w-4" />
               <span>Save</span>
             </button>
+          </div>
+
+          {/* ElevenLabs Status */}
+          <div className="mt-4 text-xs text-gray-500 flex items-center space-x-2">
+            <div className={`w-2 h-2 rounded-full ${process.env.NEXT_PUBLIC_ELEVENLABS_API_KEY ? 'bg-green-500' : 'bg-red-500'}`}></div>
+            <span>
+              {process.env.NEXT_PUBLIC_ELEVENLABS_API_KEY 
+                ? 'AI Voice narration powered by ElevenLabs' 
+                : 'ElevenLabs API key required for voice narration'
+              }
+            </span>
           </div>
         </div>
 
