@@ -13,7 +13,7 @@ import { AlertTriangle, Mic, Video } from "lucide-react";
 import { useDaily, useDailyEvent, useDevices } from "@daily-co/daily-react";
 import { ConversationError } from "./ConversationError";
 import { Button } from "@/components/ui/button";
-import { QuantumLoader } from "@/components/QuantumLoader";
+import  QuantumLoader  from "@/components/QuantumLoader";
 
 const useCreateConversationMutation = () => {
   const [isLoading, setIsLoading] = useState(false);
