@@ -338,7 +338,9 @@ export default function ChatPage() {
       if (voiceOption !== 'off' && response.data?.response) {
         // Small delay to ensure message is rendered before audio starts
         setTimeout(() => {
-          playAIResponse(response.data.response);
+          if (response.data && response.data.response) {
+            playAIResponse(response.data.response);
+          }
         }, 500);
       }
 
