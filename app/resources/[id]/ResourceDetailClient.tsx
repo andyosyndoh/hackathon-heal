@@ -36,6 +36,178 @@ interface Resource {
   featured: boolean;
 }
 
+// Static resource data - this replaces the API call
+const getStaticResourceData = (): Record<string, Resource> => ({
+  '1': {
+    id: '1',
+    title: 'Understanding Anxiety: A Complete Guide',
+    description: 'Learn about anxiety symptoms, triggers, and evidence-based coping strategies.',
+    content: 'Anxiety is a natural response to stress, but when it becomes overwhelming, it can significantly impact your daily life. This comprehensive guide covers the different types of anxiety disorders, common symptoms like racing thoughts and physical tension, and practical coping strategies including breathing exercises, grounding techniques, and cognitive behavioral therapy approaches. You\'ll learn how to identify your personal anxiety triggers and develop a toolkit of healthy responses.\n\nKey Topics Covered:\n• Understanding anxiety disorders\n• Recognizing symptoms and triggers\n• Breathing and relaxation techniques\n• Cognitive behavioral therapy strategies\n• Building long-term coping skills\n• When to seek professional help',
+    type: 'article',
+    category: 'anxiety',
+    duration_minutes: 15,
+    rating: 4.8,
+    difficulty: 'beginner',
+    featured: true
+  },
+  '2': {
+    id: '2',
+    title: 'Guided Meditation for Depression',
+    description: 'A 20-minute guided meditation specifically designed for managing depressive symptoms.',
+    content: 'This meditation focuses on self-compassion and gentle awareness, helping you navigate difficult emotions with kindness. The session includes breathing exercises, body awareness, and loving-kindness practices specifically tailored for those experiencing depression. Regular practice can help improve mood, reduce negative self-talk, and build emotional resilience.\n\nWhat You\'ll Experience:\n• Gentle breathing exercises\n• Body awareness and relaxation\n• Self-compassion practices\n• Loving-kindness meditation\n• Techniques for managing difficult emotions\n• Building emotional resilience',
+    type: 'audio',
+    category: 'depression',
+    duration_minutes: 20,
+    rating: 4.9,
+    difficulty: 'beginner',
+    featured: true
+  },
+  '3': {
+    id: '3',
+    title: 'Cognitive Behavioral Therapy Techniques',
+    description: 'Interactive exercises to help identify and change negative thought patterns.',
+    content: 'CBT is one of the most effective treatments for depression and anxiety. This resource provides practical exercises for identifying cognitive distortions, challenging negative thoughts, and developing more balanced thinking patterns. Includes thought records, behavioral activation techniques, and homework assignments to practice between sessions.\n\nTechniques Included:\n• Thought record worksheets\n• Cognitive distortion identification\n• Behavioral activation strategies\n• Problem-solving techniques\n• Mood monitoring tools\n• Relapse prevention planning',
+    type: 'exercise',
+    category: 'depression',
+    duration_minutes: 30,
+    rating: 4.7,
+    difficulty: 'intermediate',
+    featured: false
+  },
+  '4': {
+    id: '4',
+    title: 'Building Healthy Relationships',
+    description: 'Video series on communication skills and boundary setting.',
+    content: 'Healthy relationships are fundamental to mental wellbeing. This video series covers effective communication techniques, how to set and maintain healthy boundaries, conflict resolution skills, and building trust. Learn to recognize unhealthy relationship patterns and develop the skills needed for meaningful connections.\n\nVideo Topics:\n• Effective communication strategies\n• Setting healthy boundaries\n• Conflict resolution techniques\n• Building and maintaining trust\n• Recognizing toxic patterns\n• Creating meaningful connections',
+    type: 'video',
+    category: 'relationships',
+    duration_minutes: 25,
+    rating: 4.6,
+    difficulty: 'beginner',
+    featured: true
+  },
+  '5': {
+    id: '5',
+    title: 'Stress Assessment Quiz',
+    description: 'Evaluate your stress levels and get personalized recommendations.',
+    content: 'This comprehensive assessment helps identify your stress patterns, triggers, and current coping mechanisms. Based on your responses, you\'ll receive personalized recommendations for stress management techniques, lifestyle changes, and resources for further support.\n\nAssessment Areas:\n• Stress level evaluation\n• Trigger identification\n• Coping mechanism analysis\n• Lifestyle factor assessment\n• Personalized recommendations\n• Action plan development',
+    type: 'assessment',
+    category: 'stress',
+    duration_minutes: 10,
+    rating: 4.5,
+    difficulty: 'beginner',
+    featured: false
+  },
+  '6': {
+    id: '6',
+    title: 'Advanced Mindfulness Practices',
+    description: 'Deep dive into mindfulness techniques for experienced practitioners.',
+    content: 'These advanced practices build on basic mindfulness skills and include body scanning, walking meditation, mindful eating, and integration of mindfulness into daily activities. Suitable for those who have established a regular meditation practice and want to deepen their understanding.\n\nAdvanced Techniques:\n• Body scanning meditation\n• Walking meditation practices\n• Mindful eating exercises\n• Daily life integration\n• Advanced breathing techniques\n• Insight meditation practices',
+    type: 'exercise',
+    category: 'self-care',
+    duration_minutes: 45,
+    rating: 4.8,
+    difficulty: 'advanced',
+    featured: false
+  },
+  'kenya-befrienders': {
+    id: 'kenya-befrienders',
+    title: 'Befrienders Kenya',
+    description: 'Provides emotional support to those in distress through confidential listening.',
+    content: 'Befrienders Kenya offers 24/7 emotional support through trained volunteers who provide a safe space to talk about your feelings. They offer confidential telephone support for people experiencing emotional distress, depression, or suicidal thoughts. Services are free and available in English and Kiswahili.\n\nServices Include:\n• 24/7 telephone support\n• Confidential listening\n• Emotional support\n• Crisis intervention\n• Referrals to professional services\n\nContact Information:\nCall: +254 722 178 177\nEmail: info@befrienderskenya.org\nWebsite: www.befrienderskenya.org\n\nAvailable in English and Kiswahili. All services are free and confidential.',
+    type: 'contact',
+    category: 'Crisis Support',
+    difficulty: 'Easy',
+    duration_minutes: 5,
+    rating: 4.8,
+    featured: true
+  },
+  'kenya-eplus': {
+    id: 'kenya-eplus',
+    title: 'Emergency Plus Medical Services (E-Plus)',
+    description: 'Offers ambulance and pre-hospital emergency medical services across Kenya.',
+    content: 'E-Plus provides 24/7 emergency medical services including ambulance services, emergency medical care, and crisis intervention. They have trained medical professionals who can respond to mental health emergencies and provide immediate support while connecting you to appropriate mental health services.\n\nServices Include:\n• 24/7 emergency medical response\n• Ambulance services\n• Mental health crisis intervention\n• Pre-hospital emergency care\n• Medical emergency consultation\n• Referrals to mental health facilities\n\nContact Information:\nEmergency Line: +254 700 395 395\nAlternative: +254 733 395 395\nWebsite: www.eplus.co.ke\n\nNationwide coverage with trained medical professionals.',
+    type: 'contact',
+    category: 'Crisis Support',
+    difficulty: 'Easy',
+    duration_minutes: 5,
+    rating: 4.7,
+    featured: true
+  },
+  'kenya-redcross': {
+    id: 'kenya-redcross',
+    title: 'Kenya Red Cross Society',
+    description: 'Provides humanitarian services, including disaster response and emergency support.',
+    content: 'Kenya Red Cross offers psychosocial support services, emergency response, and community-based mental health programs. They provide crisis counseling, trauma support, and can connect you with local mental health resources. Available nationwide with trained counselors.\n\nServices Include:\n• Psychosocial support\n• Crisis counseling\n• Trauma support\n• Community mental health programs\n• Emergency response\n• Referrals to mental health services\n• Support groups\n\nContact Information:\nHotline: +254 703 037 000\nAlternative: +254 20 3950000\nEmail: info@redcross.or.ke\nWebsite: www.redcross.or.ke\n\nNationwide presence with trained counselors and volunteers.',
+    type: 'contact',
+    category: 'Crisis Support',
+    difficulty: 'Easy',
+    duration_minutes: 5,
+    rating: 4.6,
+    featured: true
+  },
+  'kenya-mental-health': {
+    id: 'kenya-mental-health',
+    title: 'Kenya Association for Mental Health',
+    description: 'Dedicated to promoting mental health awareness and providing support services.',
+    content: 'KAMH provides mental health advocacy, counseling services, and community outreach programs. They offer support groups, individual counseling, and crisis intervention services. They also provide training and education on mental health issues.\n\nServices Include:\n• Mental health advocacy\n• Individual counseling\n• Support groups\n• Crisis intervention\n• Community outreach\n• Training and education\n• Mental health awareness programs\n\nContact Information:\nPhone: +254 20 2717077\nMobile: +254 722 364 456\nEmail: info@mentalhealthkenya.org\nWebsite: www.mentalhealthkenya.org\n\nDedicated to improving mental health care access across Kenya.',
+    type: 'contact',
+    category: 'Crisis Support',
+    difficulty: 'Easy',
+    duration_minutes: 5,
+    rating: 4.5,
+    featured: true
+  },
+  'kenya-police': {
+    id: 'kenya-police',
+    title: 'Kenya Police Emergency Services',
+    description: 'National police emergency services for immediate crisis intervention.',
+    content: 'For immediate emergency situations involving threats to personal safety, domestic violence, or when someone is in immediate danger. Police can provide immediate intervention and connect you with appropriate mental health crisis services.\n\nWhen to Call:\n• Immediate threats to safety\n• Domestic violence situations\n• Someone is in immediate danger\n• Emergency mental health crisis\n• Suicidal behavior requiring intervention\n\nContact Information:\nEmergency: 999\nAlternative: 911\nPolice Hotline: +254 20 341 4906\n\nAvailable 24/7 for emergency situations requiring immediate intervention.',
+    type: 'contact',
+    category: 'Crisis Support',
+    difficulty: 'Easy',
+    duration_minutes: 5,
+    rating: 4.4,
+    featured: true
+  },
+  'kenya-childline': {
+    id: 'kenya-childline',
+    title: 'Childline Kenya',
+    description: '24/7 helpline for children and young people in crisis.',
+    content: 'Childline Kenya provides free, confidential support for children and young people (up to 18 years) facing any kind of problem including mental health issues, abuse, family problems, or suicidal thoughts. Trained counselors provide immediate support and referrals.\n\nServices Include:\n• 24/7 helpline for children and youth\n• Crisis counseling\n• Mental health support\n• Abuse reporting and support\n• Family problem mediation\n• Referrals to appropriate services\n• Follow-up support\n\nContact Information:\nToll-Free: 116\nAlternative: +254 20 2671757\nWebsite: www.childlinekenya.co.ke\n\nSpecialized support for children and young people up to 18 years.',
+    type: 'contact',
+    category: 'Crisis Support',
+    difficulty: 'Easy',
+    duration_minutes: 5,
+    rating: 4.7,
+    featured: true
+  },
+  'kenya-gender-violence': {
+    id: 'kenya-gender-violence',
+    title: 'Gender Violence Recovery Centre',
+    description: 'Specialized support for survivors of gender-based violence.',
+    content: 'GVRC provides comprehensive support for survivors of gender-based violence including counseling, legal aid, medical support, and safe shelter. They have trained counselors who understand trauma and can provide specialized mental health support.\n\nServices Include:\n• Crisis counseling and support\n• Legal aid and advocacy\n• Medical support and referrals\n• Safe shelter and accommodation\n• Trauma-informed therapy\n• Support groups\n• Court accompaniment\n\nContact Information:\nHotline: +254 709 660 000\nNairobi: +254 20 2731313\nWebsite: www.gvrc.or.ke\n\nSpecialized trauma-informed care for survivors of gender-based violence.',
+    type: 'contact',
+    category: 'Crisis Support',
+    difficulty: 'Easy',
+    duration_minutes: 5,
+    rating: 4.6,
+    featured: true
+  },
+  'kenya-samaritans': {
+    id: 'kenya-samaritans',
+    title: 'Samaritans Kenya',
+    description: 'Emotional support and suicide prevention services.',
+    content: 'Samaritans Kenya provides confidential emotional support to anyone experiencing feelings of distress or despair, including those having suicidal thoughts. Trained volunteers offer non-judgmental listening and support 24/7.\n\nServices Include:\n• 24/7 emotional support\n• Suicide prevention\n• Crisis intervention\n• Non-judgmental listening\n• Confidential support\n• Referrals to professional help\n• Follow-up support\n\nContact Information:\nNairobi: +254 722 178 177\nMombasa: +254 41 222 5555\nEmail: samaritanskenya@gmail.com\n\nTrained volunteers providing compassionate support 24/7.',
+    type: 'contact',
+    category: 'Crisis Support',
+    difficulty: 'Easy',
+    duration_minutes: 5,
+    rating: 4.8,
+    featured: true
+  }
+});
+
 export default function ResourceDetailClient() {
   const { id } = useParams();
   const router = useRouter();
@@ -55,19 +227,18 @@ export default function ResourceDetailClient() {
       setLoading(true);
       setError(null);
       
-      const response = await fetch(`/api/resources/${id}`);
+      // Simulate loading delay for better UX
+      await new Promise(resolve => setTimeout(resolve, 500));
       
-      if (!response.ok) {
-        if (response.status === 404) {
-          setError('Resource not found');
-        } else {
-          throw new Error(`Failed to fetch resource: ${response.status}`);
-        }
+      const staticData = getStaticResourceData();
+      const resourceData = staticData[id as string];
+      
+      if (!resourceData) {
+        setError('Resource not found');
         return;
       }
       
-      const data = await response.json();
-      setResource(data);
+      setResource(resourceData);
     } catch (err: any) {
       console.error('Failed to fetch resource:', err);
       setError('Failed to load resource. Please try again.');

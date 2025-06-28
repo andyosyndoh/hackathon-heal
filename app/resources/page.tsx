@@ -38,6 +38,164 @@ interface Resource {
   featured: boolean;
 }
 
+// Static resource data - this replaces the API call for static export
+const getStaticResourcesData = (): Resource[] => [
+  {
+    id: '1',
+    title: 'Understanding Anxiety: A Complete Guide',
+    description: 'Learn about anxiety symptoms, triggers, and evidence-based coping strategies.',
+    type: 'article',
+    category: 'anxiety',
+    duration_minutes: 15,
+    rating: 4.8,
+    difficulty: 'beginner',
+    featured: true
+  },
+  {
+    id: '2',
+    title: 'Guided Meditation for Depression',
+    description: 'A 20-minute guided meditation specifically designed for managing depressive symptoms.',
+    type: 'audio',
+    category: 'depression',
+    duration_minutes: 20,
+    rating: 4.9,
+    difficulty: 'beginner',
+    featured: true
+  },
+  {
+    id: '3',
+    title: 'Cognitive Behavioral Therapy Techniques',
+    description: 'Interactive exercises to help identify and change negative thought patterns.',
+    type: 'exercise',
+    category: 'depression',
+    duration_minutes: 30,
+    rating: 4.7,
+    difficulty: 'intermediate',
+    featured: false
+  },
+  {
+    id: '4',
+    title: 'Building Healthy Relationships',
+    description: 'Video series on communication skills and boundary setting.',
+    type: 'video',
+    category: 'relationships',
+    duration_minutes: 25,
+    rating: 4.6,
+    difficulty: 'beginner',
+    featured: true
+  },
+  {
+    id: '5',
+    title: 'Stress Assessment Quiz',
+    description: 'Evaluate your stress levels and get personalized recommendations.',
+    type: 'assessment',
+    category: 'stress',
+    duration_minutes: 10,
+    rating: 4.5,
+    difficulty: 'beginner',
+    featured: false
+  },
+  {
+    id: '6',
+    title: 'Advanced Mindfulness Practices',
+    description: 'Deep dive into mindfulness techniques for experienced practitioners.',
+    type: 'exercise',
+    category: 'self-care',
+    duration_minutes: 45,
+    rating: 4.8,
+    difficulty: 'advanced',
+    featured: false
+  },
+  {
+    id: 'kenya-befrienders',
+    title: 'Befrienders Kenya',
+    description: 'Provides emotional support to those in distress through confidential listening.',
+    type: 'contact',
+    category: 'Crisis Support',
+    duration_minutes: 5,
+    rating: 4.8,
+    difficulty: 'Easy',
+    featured: true
+  },
+  {
+    id: 'kenya-eplus',
+    title: 'Emergency Plus Medical Services (E-Plus)',
+    description: 'Offers ambulance and pre-hospital emergency medical services across Kenya.',
+    type: 'contact',
+    category: 'Crisis Support',
+    duration_minutes: 5,
+    rating: 4.7,
+    difficulty: 'Easy',
+    featured: true
+  },
+  {
+    id: 'kenya-redcross',
+    title: 'Kenya Red Cross Society',
+    description: 'Provides humanitarian services, including disaster response and emergency support.',
+    type: 'contact',
+    category: 'Crisis Support',
+    duration_minutes: 5,
+    rating: 4.6,
+    difficulty: 'Easy',
+    featured: true
+  },
+  {
+    id: 'kenya-mental-health',
+    title: 'Kenya Association for Mental Health',
+    description: 'Dedicated to promoting mental health awareness and providing support services.',
+    type: 'contact',
+    category: 'Crisis Support',
+    duration_minutes: 5,
+    rating: 4.5,
+    difficulty: 'Easy',
+    featured: true
+  },
+  {
+    id: 'kenya-police',
+    title: 'Kenya Police Emergency Services',
+    description: 'National police emergency services for immediate crisis intervention.',
+    type: 'contact',
+    category: 'Crisis Support',
+    duration_minutes: 5,
+    rating: 4.4,
+    difficulty: 'Easy',
+    featured: true
+  },
+  {
+    id: 'kenya-childline',
+    title: 'Childline Kenya',
+    description: '24/7 helpline for children and young people in crisis.',
+    type: 'contact',
+    category: 'Crisis Support',
+    duration_minutes: 5,
+    rating: 4.7,
+    difficulty: 'Easy',
+    featured: true
+  },
+  {
+    id: 'kenya-gender-violence',
+    title: 'Gender Violence Recovery Centre',
+    description: 'Specialized support for survivors of gender-based violence.',
+    type: 'contact',
+    category: 'Crisis Support',
+    duration_minutes: 5,
+    rating: 4.6,
+    difficulty: 'Easy',
+    featured: true
+  },
+  {
+    id: 'kenya-samaritans',
+    title: 'Samaritans Kenya',
+    description: 'Emotional support and suicide prevention services.',
+    type: 'contact',
+    category: 'Crisis Support',
+    duration_minutes: 5,
+    rating: 4.8,
+    difficulty: 'Easy',
+    featured: true
+  }
+];
+
 export default function ResourcesPage() {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
@@ -76,68 +234,33 @@ export default function ResourcesPage() {
       setLoading(true);
       setError(null);
       
-      const params = new URLSearchParams();
+      // Simulate loading delay for better UX
+      await new Promise(resolve => setTimeout(resolve, 500));
+      
+      let allResources = getStaticResourcesData();
+      
+      // Apply filters
       if (selectedCategory !== 'all') {
-        params.append('category', selectedCategory);
+        allResources = allResources.filter(r => 
+          r.category.toLowerCase() === selectedCategory.toLowerCase()
+        );
       }
+      
       if (selectedType !== 'all') {
-        params.append('type', selectedType);
-      }
-      params.append('limit', '50');
-      
-      const response = await fetch(`/api/resources?${params.toString()}`);
-      
-      if (!response.ok) {
-        throw new Error(`Failed to fetch resources: ${response.status}`);
+        allResources = allResources.filter(r => 
+          r.type.toLowerCase() === selectedType.toLowerCase()
+        );
       }
       
-      const data = await response.json();
-      setResources(data.resources || []);
+      setResources(allResources);
     } catch (error) {
       console.error('Failed to fetch resources:', error);
       setError('Failed to load resources. Please try again.');
-      // Set fallback data
-      setResources(getFallbackResources());
+      setResources(getStaticResourcesData());
     } finally {
       setLoading(false);
     }
   };
-
-  const getFallbackResources = (): Resource[] => [
-    {
-      id: '1',
-      title: 'Understanding Anxiety: A Complete Guide',
-      description: 'Learn about anxiety symptoms, triggers, and evidence-based coping strategies.',
-      type: 'article',
-      category: 'anxiety',
-      duration_minutes: 15,
-      rating: 4.8,
-      difficulty: 'beginner',
-      featured: true
-    },
-    {
-      id: '2',
-      title: 'Guided Meditation for Depression',
-      description: 'A 20-minute guided meditation specifically designed for managing depressive symptoms.',
-      type: 'audio',
-      category: 'depression',
-      duration_minutes: 20,
-      rating: 4.9,
-      difficulty: 'beginner',
-      featured: true
-    },
-    {
-      id: 'kenya-befrienders',
-      title: 'Befrienders Kenya',
-      description: 'Provides emotional support to those in distress through confidential listening.',
-      type: 'contact',
-      category: 'Crisis Support',
-      duration_minutes: 5,
-      rating: 4.8,
-      difficulty: 'Easy',
-      featured: true
-    }
-  ];
 
   const filteredResources = resources.filter(resource => {
     const matchesSearch = resource.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
