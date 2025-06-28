@@ -62,14 +62,16 @@ interface UserStatsResponse {
   daysActive: number;
 }
 
+interface MoodEntry {
+  id: string;
+  userId: string;
+  moodScore: number;
+  notes: string;
+  createdAt: string;
+}
+
 interface MoodHistoryResponse {
-  logs: Array<{
-    id: string;
-    userId: string;
-    moodScore: number;
-    notes: string;
-    createdAt: string;
-  }>;
+  logs: Array<MoodEntry>;
 }
 
 class ApiClient {
@@ -200,8 +202,8 @@ class ApiClient {
     return this.request<UserStatsResponse>('/user/stats');
   }
 
-  async logMood(moodScore: number, notes?: string) {
-    return this.request('/user/mood', {
+  async logMood(moodScore: number, notes?: string): Promise<ApiResponse<MoodEntry>> {
+    return this.request<MoodEntry>('/user/mood', {
       method: 'POST',
       body: JSON.stringify({ moodScore, notes }),
     });
