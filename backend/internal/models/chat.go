@@ -1,8 +1,4 @@
 package models
 
-type ChatMessage struct {
-	ID        string `json:"id"`
-	Content   string `json:"content"`
-	Sender    string `json:"sender"`
-	Timestamp string `json:"timestamp"`
-}
+// This file is no longer needed since ChatMessage is now defined in models.go
+// Removing to fix the duplicate declaration error
