@@ -1,6 +1,7 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { 
   BookOpen,
   Heart,
@@ -17,7 +18,8 @@ import {
   Headphones,
   Video,
   FileText,
-  TrendingUp
+  TrendingUp,
+  Phone
 } from 'lucide-react';
 import Link from 'next/link';
 
@@ -25,9 +27,9 @@ interface Resource {
   id: string;
   title: string;
   description: string;
-  type: 'article' | 'video' | 'audio' | 'exercise' | 'assessment';
+  type: 'article' | 'video' | 'audio' | 'exercise' | 'assessment' | 'contact';
   category: string;
-  duration: string;
+  duration_minutes: number;
   rating: number;
   difficulty: 'beginner' | 'intermediate' | 'advanced';
   featured: boolean;
@@ -37,6 +39,36 @@ export default function ResourcesPage() {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [selectedType, setSelectedType] = useState('all');
+  const [resources, setResources] = useState<Resource[]>([]);
+  const router = useRouter();
+
+  useEffect(() => {
+    const fetchResources = async () => {
+      const params = new URLSearchParams();
+      if (selectedCategory !== 'all') {
+        params.append('category', selectedCategory);
+      }
+      if (selectedType !== 'all') {
+        params.append('type', selectedType);
+      }
+      try {
+        const res = await fetch(`/api/resources?${params.toString()}`);
+        if (!res.ok) {
+          throw new Error('Failed to fetch resources');
+        }
+        const data = await res.json();
+        const formattedResources = data.resources.map((r: any) => ({
+          ...r,
+          duration: `${r.duration_minutes} min read`,
+        }));
+        setResources(formattedResources);
+      } catch (error) {
+        console.error('Failed to fetch resources:', error);
+      }
+    };
+
+    fetchResources();
+  }, [selectedCategory, selectedType]);
 
   const categories = [
     { id: 'all', name: 'All Resources', icon: BookOpen },
@@ -44,76 +76,8 @@ export default function ResourcesPage() {
     { id: 'depression', name: 'Depression', icon: Heart },
     { id: 'stress', name: 'Stress Management', icon: TrendingUp },
     { id: 'relationships', name: 'Relationships', icon: Users },
-    { id: 'self-care', name: 'Self-Care', icon: Star }
-  ];
-
-  const resources: Resource[] = [
-    {
-      id: '1',
-      title: 'Understanding Anxiety: A Complete Guide',
-      description: 'Learn about anxiety symptoms, triggers, and evidence-based coping strategies.',
-      type: 'article',
-      category: 'anxiety',
-      duration: '15 min read',
-      rating: 4.8,
-      difficulty: 'beginner',
-      featured: true
-    },
-    {
-      id: '2',
-      title: 'Guided Meditation for Depression',
-      description: 'A 20-minute guided meditation specifically designed for managing depressive symptoms.',
-      type: 'audio',
-      category: 'depression',
-      duration: '20 min',
-      rating: 4.9,
-      difficulty: 'beginner',
-      featured: true
-    },
-    {
-      id: '3',
-      title: 'Cognitive Behavioral Therapy Techniques',
-      description: 'Interactive exercises to help identify and change negative thought patterns.',
-      type: 'exercise',
-      category: 'depression',
-      duration: '30 min',
-      rating: 4.7,
-      difficulty: 'intermediate',
-      featured: false
-    },
-    {
-      id: '4',
-      title: 'Building Healthy Relationships',
-      description: 'Video series on communication skills and boundary setting.',
-      type: 'video',
-      category: 'relationships',
-      duration: '25 min',
-      rating: 4.6,
-      difficulty: 'beginner',
-      featured: true
-    },
-    {
-      id: '5',
-      title: 'Stress Assessment Quiz',
-      description: 'Evaluate your stress levels and get personalized recommendations.',
-      type: 'assessment',
-      category: 'stress',
-      duration: '10 min',
-      rating: 4.5,
-      difficulty: 'beginner',
-      featured: false
-    },
-    {
-      id: '6',
-      title: 'Advanced Mindfulness Practices',
-      description: 'Deep dive into mindfulness techniques for experienced practitioners.',
-      type: 'exercise',
-      category: 'self-care',
-      duration: '45 min',
-      rating: 4.8,
-      difficulty: 'advanced',
-      featured: false
-    }
+    { id: 'self-care', name: 'Self-Care', icon: Star },
+    { id: 'Crisis Support', name: 'Crisis Support', icon: Phone }
   ];
 
   const filteredResources = resources.filter(resource => {
@@ -132,6 +96,7 @@ export default function ResourcesPage() {
       case 'audio': return Headphones;
       case 'exercise': return Brain;
       case 'assessment': return TrendingUp;
+      case 'contact': return Phone;
       default: return BookOpen;
     }
   };
@@ -143,6 +108,10 @@ export default function ResourcesPage() {
       case 'advanced': return 'text-red-600 bg-red-100';
       default: return 'text-gray-600 bg-gray-100';
     }
+  };
+
+  const handleResourceClick = (resourceId: string) => {
+    router.push(`/resources/${resourceId}`);
   };
 
   return (
@@ -192,6 +161,7 @@ export default function ResourcesPage() {
               <option value="audio">Audio</option>
               <option value="exercise">Exercises</option>
               <option value="assessment">Assessments</option>
+              <option value="contact">Contacts</option>
             </select>
           </div>
 
@@ -239,14 +209,14 @@ export default function ResourcesPage() {
                     <div className="flex items-center justify-between text-sm">
                       <div className="flex items-center space-x-2 text-gray-500">
                         <Clock className="h-4 w-4" />
-                        <span>{resource.duration}</span>
+                        <span>{resource.duration_minutes} min read</span>
                       </div>
                       <span className={`px-2 py-1 rounded-full text-xs font-medium ${getDifficultyColor(resource.difficulty)}`}>
                         {resource.difficulty}
                       </span>
                     </div>
                     
-                    <button className="w-full mt-4 heal-button flex items-center justify-center space-x-2">
+                    <button onClick={() => handleResourceClick(resource.id)} className="w-full mt-4 heal-button flex items-center justify-center space-x-2">
                       <Play className="h-4 w-4" />
                       <span>Start Resource</span>
                     </button>
@@ -295,7 +265,7 @@ export default function ResourcesPage() {
                         <div className="flex items-center space-x-6 text-sm text-gray-500 mb-4">
                           <div className="flex items-center space-x-1">
                             <Clock className="h-4 w-4" />
-                            <span>{resource.duration}</span>
+                            <span>{resource.duration_minutes} min read</span>
                           </div>
                           <div className="flex items-center space-x-1">
                             <Star className="h-4 w-4 text-yellow-500 fill-current" />
@@ -308,7 +278,7 @@ export default function ResourcesPage() {
                         
                         <div className="flex items-center justify-between">
                           <div className="flex space-x-3">
-                            <button className="heal-button flex items-center space-x-2">
+                            <button onClick={() => handleResourceClick(resource.id)} className="heal-button flex items-center space-x-2">
                               <Play className="h-4 w-4" />
                               <span>Start</span>
                             </button>
