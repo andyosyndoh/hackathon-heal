@@ -24,6 +24,7 @@ import {
 import Link from 'next/link';
 import { useAuth } from '@/hooks/use-auth';
 import { apiClient } from '@/lib/api';
+import { MoodWidget } from '@/components/MoodWidget';
 
 export default function DashboardPage() {
   const router = useRouter();
@@ -73,6 +74,14 @@ export default function DashboardPage() {
       urgent: false
     },
     { 
+      title: 'Track Mood', 
+      description: 'Log your daily mood', 
+      icon: BarChart3, 
+      href: '/mood',
+      color: 'bg-purple-500',
+      urgent: false
+    },
+    { 
       title: 'Resource Library', 
       description: 'Browse self-help resources', 
       icon: BookOpen, 
@@ -87,14 +96,6 @@ export default function DashboardPage() {
       href: '/crisis',
       color: 'bg-red-500',
       urgent: true
-    },
-    { 
-      title: 'Mood Tracker', 
-      description: 'Log your daily mood', 
-      icon: BarChart3, 
-      href: '/mood',
-      color: 'bg-purple-500',
-      urgent: false
     }
   ];
 
@@ -274,6 +275,9 @@ export default function DashboardPage() {
 
           {/* Right Sidebar */}
           <div className="space-y-6">
+            {/* Mood Widget */}
+            <MoodWidget />
+
             {/* Today's Reminder */}
             <div className="heal-card p-6">
               <h3 className="font-semibold text-gray-900 mb-4">Today's Reminder</h3>
