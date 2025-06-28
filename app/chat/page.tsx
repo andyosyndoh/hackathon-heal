@@ -50,10 +50,11 @@ export default function ChatPage() {
   const [inputMessage, setInputMessage] = useState('');
   const [isRecording, setIsRecording] = useState(false);
   const [isTyping, setIsTyping] = useState(false);
-  const [isSoundEnabled, setIsSoundEnabled] = useState(true);
+  const [isVoiceEnabled, setIsVoiceEnabled] = useState(true); // Voice toggle state
   const [showVideoModal, setShowVideoModal] = useState(false);
   const [showVideoConversation, setShowVideoConversation] = useState(false);
   const [isPlayingAudio, setIsPlayingAudio] = useState(false);
+  const [currentAudio, setCurrentAudio] = useState<HTMLAudioElement | null>(null);
   const [, setScreenState] = useAtom(screenAtom);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
@@ -62,16 +63,75 @@ export default function ChatPage() {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
+  // Cleanup audio on unmount
+  useEffect(() => {
+    return () => {
+      if (currentAudio) {
+        currentAudio.pause();
+        currentAudio.src = '';
+      }
+    };
+  }, [currentAudio]);
+
   const playAIResponse = async (text: string) => {
-    if (!isSoundEnabled) return;
+    if (!isVoiceEnabled || !process.env.NEXT_PUBLIC_ELEVENLABS_API_KEY) return;
     
     try {
       setIsPlayingAudio(true);
-      const audioBuffer = await elevenLabsService.textToSpeech(text);
-      await elevenLabsService.playAudio(audioBuffer);
+      
+      // Stop any currently playing audio
+      if (currentAudio) {
+        currentAudio.pause();
+        currentAudio.src = '';
+      }
+
+      console.log('Generating speech for AI response');
+      
+      // Clean text for better speech synthesis
+      const cleanText = text
+        .replace(/\*\*(.*?)\*\*/g, '$1') // Remove markdown bold
+        .replace(/\*(.*?)\*/g, '$1') // Remove markdown italic
+        .replace(/`(.*?)`/g, '$1') // Remove code blocks
+        .replace(/\n+/g, '. ') // Replace newlines with periods
+        .replace(/\s+/g, ' ') // Replace multiple spaces
+        .trim();
+
+      const audioBuffer = await elevenLabsService.textToSpeech(cleanText);
+      
+      // Create audio blob and URL
+      const audioBlob = new Blob([audioBuffer], { type: 'audio/mpeg' });
+      const audioUrl = URL.createObjectURL(audioBlob);
+      
+      // Create and configure audio element
+      const audio = new Audio(audioUrl);
+      audio.volume = 0.7;
+      
+      audio.onended = () => {
+        setIsPlayingAudio(false);
+        setCurrentAudio(null);
+        URL.revokeObjectURL(audioUrl);
+      };
+      
+      audio.onerror = () => {
+        console.error('Audio playback error');
+        setIsPlayingAudio(false);
+        setCurrentAudio(null);
+        URL.revokeObjectURL(audioUrl);
+      };
+
+      setCurrentAudio(audio);
+      await audio.play();
+      
     } catch (error) {
       console.warn('Failed to play audio:', error);
-    } finally {
+      setIsPlayingAudio(false);
+    }
+  };
+
+  const stopCurrentAudio = () => {
+    if (currentAudio) {
+      currentAudio.pause();
+      currentAudio.currentTime = 0;
       setIsPlayingAudio(false);
     }
   };
@@ -91,6 +151,9 @@ export default function ChatPage() {
     setMessages(prev => [...prev, userMessage]);
     setInputMessage('');
     setIsTyping(true);
+
+    // Stop any currently playing audio when user sends a new message
+    stopCurrentAudio();
 
     // Add loading message
     const loadingMessage: Message = {
@@ -119,9 +182,12 @@ export default function ChatPage() {
         }];
       });
 
-      // Play audio response if enabled
-      if (isSoundEnabled) {
-        playAIResponse(aiResponse);
+      // Play audio response if voice is enabled
+      if (isVoiceEnabled) {
+        // Small delay to ensure message is rendered before audio starts
+        setTimeout(() => {
+          playAIResponse(aiResponse);
+        }, 500);
       }
 
     } catch (error) {
@@ -147,6 +213,16 @@ export default function ChatPage() {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
       sendMessage();
+    }
+  };
+
+  const toggleVoice = () => {
+    const newVoiceState = !isVoiceEnabled;
+    setIsVoiceEnabled(newVoiceState);
+    
+    // Stop current audio if disabling voice
+    if (!newVoiceState && isPlayingAudio) {
+      stopCurrentAudio();
     }
   };
 
@@ -201,13 +277,17 @@ export default function ChatPage() {
 
           <div className="flex items-center space-x-2">
             <button
-              onClick={() => setIsSoundEnabled(!isSoundEnabled)}
-              className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
-              title={isSoundEnabled ? 'Mute sounds' : 'Enable sounds'}
+              onClick={toggleVoice}
+              className={`p-2 rounded-lg transition-colors ${
+                isVoiceEnabled 
+                  ? 'bg-green-100 text-green-600 hover:bg-green-200' 
+                  : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+              }`}
+              title={isVoiceEnabled ? 'Voice responses enabled' : 'Voice responses disabled'}
             >
-              {isSoundEnabled ?
-                <Volume2 className="h-5 w-5 text-gray-600" /> :
-                <VolumeX className="h-5 w-5 text-gray-600" />
+              {isVoiceEnabled ?
+                <Volume2 className="h-5 w-5" /> :
+                <VolumeX className="h-5 w-5" />
               }
             </button>
             <button
@@ -234,6 +314,16 @@ export default function ChatPage() {
           <span>End-to-end encrypted • Your conversation is private and secure</span>
         </div>
       </div>
+
+      {/* Voice Status Banner */}
+      {isVoiceEnabled && process.env.NEXT_PUBLIC_ELEVENLABS_API_KEY && (
+        <div className="bg-green-50 border-b border-green-200 px-4 py-2">
+          <div className="flex items-center justify-center space-x-2 text-sm text-green-700">
+            <Volume2 className="h-4 w-4" />
+            <span>Voice responses enabled • AI will speak responses aloud</span>
+          </div>
+        </div>
+      )}
 
       {/* Main Content */}
       <div className="flex-1 flex flex-col min-h-0">
@@ -285,10 +375,22 @@ export default function ChatPage() {
                       ) : (
                         <>
                           <p className="text-sm leading-relaxed">{message.content}</p>
-                          <p className={`text-xs mt-1 ${message.sender === 'user' ? 'text-blue-100' : 'text-gray-500'
-                            }`}>
-                            {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                          </p>
+                          <div className="flex items-center justify-between mt-1">
+                            <p className={`text-xs ${message.sender === 'user' ? 'text-blue-100' : 'text-gray-500'
+                              }`}>
+                              {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                            </p>
+                            {/* Audio indicator for AI messages */}
+                            {message.sender === 'ai' && isVoiceEnabled && !message.isLoading && (
+                              <div className="flex items-center space-x-1">
+                                {isPlayingAudio ? (
+                                  <Volume2 className="h-3 w-3 text-green-600" />
+                                ) : (
+                                  <Volume2 className="h-3 w-3 text-gray-400" />
+                                )}
+                              </div>
+                            )}
+                          </div>
                         </>
                       )}
                     </div>
@@ -317,14 +419,15 @@ export default function ChatPage() {
         <div className="bg-white border-t border-gray-200 px-4 py-4">
           <div className="flex items-end space-x-3">
             <button
-              onClick={toggleRecording}
-              className={`p-3 rounded-full transition-all duration-200 ${isRecording
-                ? 'bg-red-500 text-white pulse-glow'
-                : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                }`}
-              title={isRecording ? 'Stop recording' : 'Start voice message'}
+              onClick={toggleVoice}
+              className={`p-3 rounded-full transition-all duration-200 ${
+                isVoiceEnabled
+                  ? 'bg-green-500 text-white hover:bg-green-600'
+                  : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+              }`}
+              title={isVoiceEnabled ? 'Voice responses enabled - click to disable' : 'Voice responses disabled - click to enable'}
             >
-              {isRecording ? <MicOff className="h-5 w-5" /> : <Mic className="h-5 w-5" />}
+              {isVoiceEnabled ? <Mic className="h-5 w-5" /> : <MicOff className="h-5 w-5" />}
             </button>
 
             <div className="flex-1 relative">
@@ -358,18 +461,26 @@ export default function ChatPage() {
             </button>
           </div>
 
-          {/* Quick Responses */}
-          <div className="flex flex-wrap gap-2 mt-3">
-            {['I need support', 'Feeling anxious', 'Having a hard day', 'Need coping strategies'].map((quickResponse, index) => (
-              <button
-                key={index}
-                onClick={() => setInputMessage(quickResponse)}
-                className="px-3 py-1 bg-gray-100 hover:bg-gray-200 text-gray-700 text-sm rounded-full transition-colors disabled:opacity-50"
-                disabled={isTyping}
-              >
-                {quickResponse}
-              </button>
-            ))}
+          {/* Voice Status Indicator */}
+          <div className="flex items-center justify-between mt-3">
+            <div className="flex flex-wrap gap-2">
+              {['I need support', 'Feeling anxious', 'Having a hard day', 'Need coping strategies'].map((quickResponse, index) => (
+                <button
+                  key={index}
+                  onClick={() => setInputMessage(quickResponse)}
+                  className="px-3 py-1 bg-gray-100 hover:bg-gray-200 text-gray-700 text-sm rounded-full transition-colors disabled:opacity-50"
+                  disabled={isTyping}
+                >
+                  {quickResponse}
+                </button>
+              ))}
+            </div>
+
+            {/* Voice Status */}
+            <div className="flex items-center space-x-2 text-xs text-gray-500">
+              <div className={`w-2 h-2 rounded-full ${isVoiceEnabled ? 'bg-green-500' : 'bg-gray-400'}`}></div>
+              <span>{isVoiceEnabled ? 'Voice ON' : 'Voice OFF'}</span>
+            </div>
           </div>
 
           {/* AI Service Status */}
