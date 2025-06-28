@@ -29,10 +29,8 @@ import {
 } from "@/utils";
 import { Timer } from "@/components/Timer";
 import { TIME_LIMIT } from "@/config";
-import { quantum } from 'ldrs';
 import { cn } from "@/utils";
-
-quantum.register();
+import { QuantumLoader } from "@/components/QuantumLoader";
 
 const timeToGoPhrases = [
   "I'll need to wrap up our conversation soon—let's make these last moments count.",
@@ -188,7 +186,7 @@ export const Conversation: React.FC = () => {
       <DialogWrapper>
         <div className="absolute inset-0 flex h-full items-center justify-center bg-black/50">
           <div className="flex flex-col items-center gap-4">
-            <l-quantum size="45" speed="1.75" color="white"></l-quantum>
+            <QuantumLoader />
             <p className="text-white text-lg">Initializing video call...</p>
           </div>
         </div>
@@ -202,7 +200,7 @@ export const Conversation: React.FC = () => {
       <DialogWrapper>
         <div className="absolute inset-0 flex h-full items-center justify-center bg-black/50">
           <div className="flex flex-col items-center gap-4">
-            <l-quantum size="45" speed="1.75" color="white"></l-quantum>
+            <QuantumLoader />
             <p className="text-white text-lg">
               {isJoining ? "Joining conversation..." : "Waiting for AI to connect..."}
             </p>
@@ -245,7 +243,7 @@ export const Conversation: React.FC = () => {
         ) : (
           <div className="flex h-full items-center justify-center bg-black/50">
             <div className="flex flex-col items-center gap-4">
-              <l-quantum size="45" speed="1.75" color="white"></l-quantum>
+              <QuantumLoader />
               <p className="text-white text-lg">Connecting to AI...</p>
             </div>
           </div>

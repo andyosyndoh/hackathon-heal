@@ -13,9 +13,7 @@ import { AlertTriangle, Mic, Video } from "lucide-react";
 import { useDaily, useDailyEvent, useDevices } from "@daily-co/daily-react";
 import { ConversationError } from "./ConversationError";
 import { Button } from "@/components/ui/button";
-import { quantum } from 'ldrs';
-
-quantum.register();
+import { QuantumLoader } from "@/components/QuantumLoader";
 
 const useCreateConversationMutation = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -180,7 +178,7 @@ export function Instructions() {
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm" />
         <AnimatedTextBlockWrapper>
           <div className="flex flex-col items-center justify-center gap-4">
-            <l-quantum size="45" speed="1.75" color="white"></l-quantum>
+            <QuantumLoader />
             <p className="text-white text-lg">
               {isPlayingSound ? "Preparing..." : 
                isCreatingConversation ? "Creating conversation..." : 
