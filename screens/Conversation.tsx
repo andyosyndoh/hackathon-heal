@@ -258,7 +258,7 @@ export const Conversation: React.FC = () => {
             id={localSessionId}
             tileClassName="!object-cover"
             className={cn(
-              "absolute bottom-20 right-4 aspect-video h-48 w-32 overflow-hidden rounded-lg border-2 border-[#22C5FE] shadow-[0_0_20px_rgba(34,197,254,0.3)] sm:bottom-12 sm:h-56 sm:w-40 lg:h-64 lg:w-48"
+              "absolute bottom-20 right-4 aspect-video h-32 w-40 overflow-hidden rounded-lg border-2 border-[#22C5FE] shadow-[0_0_20px_rgba(34,197,254,0.3)] "
             )}
           />
         )}
