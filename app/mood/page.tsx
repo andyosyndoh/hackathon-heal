@@ -192,7 +192,7 @@ export default function MoodTrackerPage() {
       
       if (response.data) {
         // Add new entry to the beginning of the list
-        setMoodEntries(prev => [response.data, ...prev]);
+        setMoodEntries(prev => [response.data!, ...prev]);
         
         // Reset form
         setSelectedMood(5);
