@@ -1,5 +1,3 @@
-'use client';
-
 import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import {
@@ -36,7 +34,7 @@ interface Resource {
   featured: boolean;
 }
 
-// Static params for build-time generation
+// Static params for build-time generation (Server Component)
 export async function generateStaticParams() {
   // Define all possible resource IDs that should be pre-generated
   const resourceIds = [
@@ -61,7 +59,8 @@ export async function generateStaticParams() {
   }));
 }
 
-export default function ResourceDetailPage() {
+// Client Component for the page content
+function ResourceDetailContent() {
   const { id } = useParams();
   const router = useRouter();
   const [resource, setResource] = useState<Resource | null>(null);
@@ -423,4 +422,9 @@ export default function ResourceDetailPage() {
       </div>
     </div>
   );
+}
+
+// Main page component (Server Component)
+export default function ResourceDetailPage() {
+  return <ResourceDetailContent />;
 }
