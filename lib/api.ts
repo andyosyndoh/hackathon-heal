@@ -62,6 +62,16 @@ interface UserStatsResponse {
   daysActive: number;
 }
 
+interface MoodHistoryResponse {
+  logs: Array<{
+    id: string;
+    userId: string;
+    moodScore: number;
+    notes: string;
+    createdAt: string;
+  }>;
+}
+
 class ApiClient {
   private baseURL: string;
 
@@ -197,8 +207,8 @@ class ApiClient {
     });
   }
 
-  async getMoodHistory(days: number = 30) {
-    return this.request(`/user/mood-history?days=${days}`);
+  async getMoodHistory(days: number = 30): Promise<ApiResponse<MoodHistoryResponse>> {
+    return this.request<MoodHistoryResponse>(`/user/mood-history?days=${days}`);
   }
 
   // Chat methods with proper typing
