@@ -235,15 +235,15 @@ export function Instructions() {
         
         <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:gap-8 text-gray-400 justify-center">
           <div className={`flex items-center gap-3 px-4 py-2 rounded-full transition-colors ${
-            permissionsGranted ? 'bg-green-500/20 text-green-300' : 'bg-[rgba(0,0,0,0.2)]'
+            permissionsGranted ? 'bg-green-500/30 text-green-200' : 'bg-gray-700/50 text-gray-400'
           }`}>
-            <Mic className="size-5 text-primary" />
+            <Mic className="size-5" />
             {permissionsGranted ? "Mic access granted" : "Mic access required"}
           </div>
           <div className={`flex items-center gap-3 px-4 py-2 rounded-full transition-colors ${
-            permissionsGranted ? 'bg-green-500/20 text-green-300' : 'bg-[rgba(0,0,0,0.2)]'
+            permissionsGranted ? 'bg-green-500/30 text-green-200' : 'bg-gray-700/50 text-gray-400'
           }`}>
-            <Video className="size-5 text-primary" />
+            <Video className="size-5" />
             {permissionsGranted ? "Camera access granted" : "Camera access required"}
           </div>
         </div>
