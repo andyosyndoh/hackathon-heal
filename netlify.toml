@@ -10,14 +10,73 @@
   to = "/index.html"
   status = 200
 
+# API redirects for Netlify Functions
+[[redirects]]
+  from = "/api/v1/health"
+  to = "/.netlify/functions/health"
+  status = 200
+
+[[redirects]]
+  from = "/api/v1/auth/register"
+  to = "/.netlify/functions/auth/register"
+  status = 200
+
+[[redirects]]
+  from = "/api/v1/auth/login"
+  to = "/.netlify/functions/auth/login"
+  status = 200
+
+[[redirects]]
+  from = "/api/v1/auth/logout"
+  to = "/.netlify/functions/auth/logout"
+  status = 200
+
+[[redirects]]
+  from = "/api/v1/chat/message"
+  to = "/.netlify/functions/chat/message"
+  status = 200
+
+[[redirects]]
+  from = "/api/v1/chat/history"
+  to = "/.netlify/functions/chat/history"
+  status = 200
+
+[[redirects]]
+  from = "/api/v1/chat/sessions"
+  to = "/.netlify/functions/chat/sessions"
+  status = 200
+
+[[redirects]]
+  from = "/api/v1/user/stats"
+  to = "/.netlify/functions/user/stats"
+  status = 200
+
+[[redirects]]
+  from = "/api/v1/user/mood"
+  to = "/.netlify/functions/user/mood"
+  status = 200
+
+[[redirects]]
+  from = "/api/v1/user/mood-history"
+  to = "/.netlify/functions/user/mood"
+  status = 200
+
+[[redirects]]
+  from = "/api/v1/resources"
+  to = "/.netlify/functions/resources/index"
+  status = 200
+
 [context.production.environment]
-  NEXT_PUBLIC_API_URL = "https://your-backend-api.com/api/v1"
+  NEXT_PUBLIC_API_URL = "https://your-netlify-site.netlify.app/api/v1"
 
 [context.deploy-preview.environment]
-  NEXT_PUBLIC_API_URL = "https://your-backend-api.com/api/v1"
+  NEXT_PUBLIC_API_URL = "https://deploy-preview-{REVIEW_ID}--your-netlify-site.netlify.app/api/v1"
 
 [context.branch-deploy.environment]
-  NEXT_PUBLIC_API_URL = "https://your-backend-api.com/api/v1"
+  NEXT_PUBLIC_API_URL = "https://{BRANCH}--your-netlify-site.netlify.app/api/v1"
 
 [[plugins]]
   package = "@netlify/plugin-nextjs"
+
+[functions]
+  node_bundler = "esbuild"
