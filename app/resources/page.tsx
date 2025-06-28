@@ -21,9 +21,12 @@ import {
   TrendingUp,
   Phone,
   Loader2,
-  AlertCircle
+  AlertCircle,
+  Volume2,
+  VolumeX
 } from 'lucide-react';
 import Link from 'next/link';
+import { elevenLabsService } from '@/lib/ai-services';
 
 interface Resource {
   id: string;
@@ -44,6 +47,7 @@ const getStaticResourcesData = (): Resource[] => [
     id: '1',
     title: 'Understanding Anxiety: A Complete Guide',
     description: 'Learn about anxiety symptoms, triggers, and evidence-based coping strategies.',
+    content: 'Anxiety is a natural response to stress, but when it becomes overwhelming, it can significantly impact your daily life. This comprehensive guide covers the different types of anxiety disorders, common symptoms like racing thoughts and physical tension, and practical coping strategies including breathing exercises, grounding techniques, and cognitive behavioral therapy approaches.',
     type: 'article',
     category: 'anxiety',
     duration_minutes: 15,
@@ -55,6 +59,7 @@ const getStaticResourcesData = (): Resource[] => [
     id: '2',
     title: 'Guided Meditation for Depression',
     description: 'A 20-minute guided meditation specifically designed for managing depressive symptoms.',
+    content: 'This meditation focuses on self-compassion and gentle awareness, helping you navigate difficult emotions with kindness. The session includes breathing exercises, body awareness, and loving-kindness practices specifically tailored for those experiencing depression.',
     type: 'audio',
     category: 'depression',
     duration_minutes: 20,
@@ -66,6 +71,7 @@ const getStaticResourcesData = (): Resource[] => [
     id: '3',
     title: 'Cognitive Behavioral Therapy Techniques',
     description: 'Interactive exercises to help identify and change negative thought patterns.',
+    content: 'CBT is one of the most effective treatments for depression and anxiety. This resource provides practical exercises for identifying cognitive distortions, challenging negative thoughts, and developing more balanced thinking patterns.',
     type: 'exercise',
     category: 'depression',
     duration_minutes: 30,
@@ -77,6 +83,7 @@ const getStaticResourcesData = (): Resource[] => [
     id: '4',
     title: 'Building Healthy Relationships',
     description: 'Video series on communication skills and boundary setting.',
+    content: 'Healthy relationships are fundamental to mental wellbeing. This video series covers effective communication techniques, how to set and maintain healthy boundaries, conflict resolution skills, and building trust.',
     type: 'video',
     category: 'relationships',
     duration_minutes: 25,
@@ -88,6 +95,7 @@ const getStaticResourcesData = (): Resource[] => [
     id: '5',
     title: 'Stress Assessment Quiz',
     description: 'Evaluate your stress levels and get personalized recommendations.',
+    content: 'This comprehensive assessment helps identify your stress patterns, triggers, and current coping mechanisms. Based on your responses, you will receive personalized recommendations for stress management techniques.',
     type: 'assessment',
     category: 'stress',
     duration_minutes: 10,
@@ -99,6 +107,7 @@ const getStaticResourcesData = (): Resource[] => [
     id: '6',
     title: 'Advanced Mindfulness Practices',
     description: 'Deep dive into mindfulness techniques for experienced practitioners.',
+    content: 'These advanced practices build on basic mindfulness skills and include body scanning, walking meditation, mindful eating, and integration of mindfulness into daily activities.',
     type: 'exercise',
     category: 'self-care',
     duration_minutes: 45,
@@ -110,6 +119,7 @@ const getStaticResourcesData = (): Resource[] => [
     id: 'kenya-befrienders',
     title: 'Befrienders Kenya',
     description: 'Provides emotional support to those in distress through confidential listening.',
+    content: 'Befrienders Kenya offers 24/7 emotional support through trained volunteers who provide a safe space to talk about your feelings. Call +254 722 178 177 for free confidential support.',
     type: 'contact',
     category: 'Crisis Support',
     duration_minutes: 5,
@@ -121,6 +131,7 @@ const getStaticResourcesData = (): Resource[] => [
     id: 'kenya-eplus',
     title: 'Emergency Plus Medical Services (E-Plus)',
     description: 'Offers ambulance and pre-hospital emergency medical services across Kenya.',
+    content: 'E-Plus provides 24/7 emergency medical services including crisis intervention. Emergency Line: +254 700 395 395 for immediate medical and mental health emergency response.',
     type: 'contact',
     category: 'Crisis Support',
     duration_minutes: 5,
@@ -132,6 +143,7 @@ const getStaticResourcesData = (): Resource[] => [
     id: 'kenya-redcross',
     title: 'Kenya Red Cross Society',
     description: 'Provides humanitarian services, including disaster response and emergency support.',
+    content: 'Kenya Red Cross offers psychosocial support services and crisis counseling. Hotline: +254 703 037 000 for nationwide mental health support and emergency response.',
     type: 'contact',
     category: 'Crisis Support',
     duration_minutes: 5,
@@ -143,6 +155,7 @@ const getStaticResourcesData = (): Resource[] => [
     id: 'kenya-mental-health',
     title: 'Kenya Association for Mental Health',
     description: 'Dedicated to promoting mental health awareness and providing support services.',
+    content: 'KAMH provides mental health advocacy and counseling services. Phone: +254 20 2717077 for individual counseling and crisis intervention services.',
     type: 'contact',
     category: 'Crisis Support',
     duration_minutes: 5,
@@ -154,6 +167,7 @@ const getStaticResourcesData = (): Resource[] => [
     id: 'kenya-police',
     title: 'Kenya Police Emergency Services',
     description: 'National police emergency services for immediate crisis intervention.',
+    content: 'For immediate emergency situations involving threats to personal safety. Emergency: 999 for immediate intervention and mental health crisis response.',
     type: 'contact',
     category: 'Crisis Support',
     duration_minutes: 5,
@@ -165,6 +179,7 @@ const getStaticResourcesData = (): Resource[] => [
     id: 'kenya-childline',
     title: 'Childline Kenya',
     description: '24/7 helpline for children and young people in crisis.',
+    content: 'Childline Kenya provides free confidential support for children and young people up to 18 years. Toll-Free: 116 for crisis counseling and mental health support.',
     type: 'contact',
     category: 'Crisis Support',
     duration_minutes: 5,
@@ -176,6 +191,7 @@ const getStaticResourcesData = (): Resource[] => [
     id: 'kenya-gender-violence',
     title: 'Gender Violence Recovery Centre',
     description: 'Specialized support for survivors of gender-based violence.',
+    content: 'GVRC provides comprehensive support for survivors including counseling and legal aid. Hotline: +254 709 660 000 for specialized trauma-informed mental health support.',
     type: 'contact',
     category: 'Crisis Support',
     duration_minutes: 5,
@@ -187,6 +203,7 @@ const getStaticResourcesData = (): Resource[] => [
     id: 'kenya-samaritans',
     title: 'Samaritans Kenya',
     description: 'Emotional support and suicide prevention services.',
+    content: 'Samaritans Kenya provides confidential emotional support to anyone experiencing distress. Nairobi: +254 722 178 177 for 24/7 non-judgmental listening and support.',
     type: 'contact',
     category: 'Crisis Support',
     duration_minutes: 5,
@@ -203,6 +220,9 @@ export default function ResourcesPage() {
   const [resources, setResources] = useState<Resource[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [playingAudio, setPlayingAudio] = useState<string | null>(null);
+  const [generatingAudio, setGeneratingAudio] = useState<string | null>(null);
+  const [currentAudio, setCurrentAudio] = useState<HTMLAudioElement | null>(null);
   const router = useRouter();
 
   const categories = [
@@ -228,6 +248,16 @@ export default function ResourcesPage() {
   useEffect(() => {
     fetchResources();
   }, [selectedCategory, selectedType]);
+
+  // Cleanup audio on unmount
+  useEffect(() => {
+    return () => {
+      if (currentAudio) {
+        currentAudio.pause();
+        currentAudio.src = '';
+      }
+    };
+  }, [currentAudio]);
 
   const fetchResources = async () => {
     try {
@@ -306,16 +336,91 @@ export default function ResourcesPage() {
     }
   };
 
+  const prepareTextForSpeech = (content: string): string => {
+    return content
+      .replace(/\n\n/g, '. ')
+      .replace(/\n/g, ' ')
+      .replace(/•/g, '')
+      .replace(/\s+/g, ' ')
+      .trim();
+  };
+
+  const playResourceAudio = async (resource: Resource) => {
+    if (!resource.content) return;
+
+    try {
+      setGeneratingAudio(resource.id);
+      
+      // Stop current audio if playing
+      if (currentAudio) {
+        currentAudio.pause();
+        setCurrentAudio(null);
+        setPlayingAudio(null);
+      }
+
+      const textToSpeak = prepareTextForSpeech(resource.content);
+      const maxLength = 1000; // Shorter for preview
+      const truncatedText = textToSpeak.length > maxLength 
+        ? textToSpeak.substring(0, maxLength) + '...'
+        : textToSpeak;
+
+      console.log('Generating speech for:', resource.title);
+      
+      const audioBuffer = await elevenLabsService.textToSpeech(truncatedText);
+      const audioBlob = new Blob([audioBuffer], { type: 'audio/mpeg' });
+      const audioUrl = URL.createObjectURL(audioBlob);
+      
+      const audio = new Audio(audioUrl);
+      audio.volume = 0.7;
+      
+      audio.onplay = () => {
+        setPlayingAudio(resource.id);
+        setGeneratingAudio(null);
+      };
+      
+      audio.onpause = () => {
+        setPlayingAudio(null);
+      };
+      
+      audio.onended = () => {
+        setPlayingAudio(null);
+        setCurrentAudio(null);
+        URL.revokeObjectURL(audioUrl);
+      };
+      
+      audio.onerror = () => {
+        setPlayingAudio(null);
+        setGeneratingAudio(null);
+        setCurrentAudio(null);
+        URL.revokeObjectURL(audioUrl);
+      };
+
+      setCurrentAudio(audio);
+      await audio.play();
+      
+    } catch (error) {
+      console.error('Error playing audio:', error);
+      setGeneratingAudio(null);
+      setPlayingAudio(null);
+    }
+  };
+
+  const stopAudio = () => {
+    if (currentAudio) {
+      currentAudio.pause();
+      currentAudio.currentTime = 0;
+      setPlayingAudio(null);
+    }
+  };
+
   const handleResourceClick = (resourceId: string) => {
     router.push(`/resources/${resourceId}`);
   };
 
   const handleStartResource = (resource: Resource) => {
     if (resource.type === 'contact') {
-      // For crisis contacts, redirect to crisis page
       router.push('/crisis');
     } else {
-      // For other resources, go to detail page
       router.push(`/resources/${resource.id}`);
     }
   };
@@ -440,6 +545,9 @@ export default function ResourcesPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {filteredResources.filter(r => r.featured).slice(0, 6).map((resource) => {
                 const IconComponent = getResourceIcon(resource.type);
+                const isGenerating = generatingAudio === resource.id;
+                const isPlaying = playingAudio === resource.id;
+                
                 return (
                   <div key={resource.id} className="heal-card p-6 hover:shadow-lg transition-all duration-200 transform hover:scale-105 cursor-pointer">
                     <div className="flex items-start justify-between mb-4">
@@ -470,13 +578,39 @@ export default function ResourcesPage() {
                       </div>
                     </div>
                     
-                    <button 
-                      onClick={() => handleStartResource(resource)}
-                      className="w-full heal-button flex items-center justify-center space-x-2"
-                    >
-                      <Play className="h-4 w-4" />
-                      <span>{resource.type === 'contact' ? 'View Contact' : 'Start Resource'}</span>
-                    </button>
+                    <div className="flex space-x-2">
+                      <button 
+                        onClick={() => handleStartResource(resource)}
+                        className="flex-1 heal-button flex items-center justify-center space-x-2"
+                      >
+                        <Play className="h-4 w-4" />
+                        <span>{resource.type === 'contact' ? 'View Contact' : 'Start'}</span>
+                      </button>
+                      
+                      {resource.content && process.env.NEXT_PUBLIC_ELEVENLABS_API_KEY && (
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            if (isPlaying) {
+                              stopAudio();
+                            } else {
+                              playResourceAudio(resource);
+                            }
+                          }}
+                          disabled={isGenerating}
+                          className="bg-green-600 hover:bg-green-700 text-white p-2 rounded-lg transition-colors disabled:opacity-50"
+                          title="Listen to preview"
+                        >
+                          {isGenerating ? (
+                            <Loader2 className="h-4 w-4 animate-spin" />
+                          ) : isPlaying ? (
+                            <VolumeX className="h-4 w-4" />
+                          ) : (
+                            <Volume2 className="h-4 w-4" />
+                          )}
+                        </button>
+                      )}
+                    </div>
                   </div>
                 );
               })}
@@ -508,6 +642,9 @@ export default function ResourcesPage() {
             <div className="space-y-4">
               {filteredResources.map((resource) => {
                 const IconComponent = getResourceIcon(resource.type);
+                const isGenerating = generatingAudio === resource.id;
+                const isPlaying = playingAudio === resource.id;
+                
                 return (
                   <div key={resource.id} className="heal-card p-6 hover:shadow-lg transition-all duration-200 cursor-pointer">
                     <div className="flex items-start space-x-4">
@@ -555,6 +692,39 @@ export default function ResourcesPage() {
                               <Play className="h-4 w-4" />
                               <span>{resource.type === 'contact' ? 'View Contact' : 'Start'}</span>
                             </button>
+                            
+                            {resource.content && process.env.NEXT_PUBLIC_ELEVENLABS_API_KEY && (
+                              <button
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  if (isPlaying) {
+                                    stopAudio();
+                                  } else {
+                                    playResourceAudio(resource);
+                                  }
+                                }}
+                                disabled={isGenerating}
+                                className="bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded-lg transition-colors flex items-center space-x-2 disabled:opacity-50"
+                              >
+                                {isGenerating ? (
+                                  <>
+                                    <Loader2 className="h-4 w-4 animate-spin" />
+                                    <span>Generating...</span>
+                                  </>
+                                ) : isPlaying ? (
+                                  <>
+                                    <VolumeX className="h-4 w-4" />
+                                    <span>Stop</span>
+                                  </>
+                                ) : (
+                                  <>
+                                    <Volume2 className="h-4 w-4" />
+                                    <span>Listen</span>
+                                  </>
+                                )}
+                              </button>
+                            )}
+                            
                             <button className="bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium py-2 px-4 rounded-lg transition-colors flex items-center space-x-2">
                               <Download className="h-4 w-4" />
                               <span>Save</span>
@@ -569,6 +739,19 @@ export default function ResourcesPage() {
               })}
             </div>
           )}
+        </div>
+
+        {/* ElevenLabs Status */}
+        <div className="mt-8 text-center">
+          <div className="inline-flex items-center space-x-2 text-xs text-gray-500 bg-gray-100 px-3 py-2 rounded-full">
+            <div className={`w-2 h-2 rounded-full ${process.env.NEXT_PUBLIC_ELEVENLABS_API_KEY ? 'bg-green-500' : 'bg-red-500'}`}></div>
+            <span>
+              {process.env.NEXT_PUBLIC_ELEVENLABS_API_KEY 
+                ? 'AI Voice narration powered by ElevenLabs' 
+                : 'ElevenLabs API key required for voice narration'
+              }
+            </span>
+          </div>
         </div>
 
         {/* Personalized Recommendations */}
