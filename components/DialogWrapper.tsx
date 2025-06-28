@@ -1,8 +1,20 @@
 import { cn } from "@/utils";
 import { motion } from "framer-motion";
-import { quantum } from 'ldrs';
+import dynamic from "next/dynamic";
 
-quantum.register();
+// Dynamically import the quantum loader to avoid SSR issues
+const QuantumLoader = dynamic(
+  () => import('./QuantumLoader'),
+  { 
+    ssr: false,
+    loading: () => (
+      <div className="absolute inset-0 flex flex-col items-center justify-center gap-4">
+        <div className="w-11 h-11 border-4 border-white border-t-transparent rounded-full animate-spin"></div>
+        <p className="text-white text-lg">Loading...</p>
+      </div>
+    )
+  }
+);
 
 const desktopClassName = "lg:aspect-video lg:max-h-none lg:h-auto lg:min-h-[600px]";
 const tabletClassName = "sm:max-h-[80vh] sm:min-h-[500px]";
@@ -23,12 +35,7 @@ export const DialogWrapper = ({ children }: { children: React.ReactNode }) => {
         alt="background"
         className="absolute inset-0 h-full w-full object-cover"
       />
-      {children || (
-        <div className="absolute inset-0 flex flex-col items-center justify-center gap-4">
-          <l-quantum size="45" speed="1.75" color="white"></l-quantum>
-          <p className="text-white text-lg">Loading...</p>
-        </div>
-      )}
+      {children || <QuantumLoader />}
     </div>
   );
 };
