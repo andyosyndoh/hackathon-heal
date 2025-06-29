@@ -1,4 +1,4 @@
-// Global TypeScript declarations
+// Global TypeScript declarations for custom elements
 
 declare namespace JSX {
   interface IntrinsicElements {
