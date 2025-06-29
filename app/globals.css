@@ -8,6 +8,7 @@
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
   --background-end-rgb: 255, 255, 255;
+  --vh: 1vh;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -83,6 +84,25 @@
     @apply bg-background text-foreground font-sans;
     font-family: 'Inter', sans-serif;
   }
+  
+  /* Prevent zoom on iOS when focusing inputs */
+  input[type="text"],
+  input[type="email"],
+  input[type="password"],
+  textarea,
+  select {
+    font-size: 16px;
+  }
+  
+  /* Ensure proper viewport height handling */
+  html, body {
+    height: 100%;
+    overflow: hidden;
+  }
+  
+  #__next {
+    height: 100%;
+  }
 }
 
 @layer components {
@@ -107,7 +127,10 @@
   }
   
   .heal-chat-bubble {
-    @apply max-w-xs lg:max-w-md px-4 py-2 rounded-2xl shadow-sm;
+    @apply max-w-xs lg:max-w-md xl:max-w-lg px-4 py-2 rounded-2xl shadow-sm word-wrap break-words;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
   }
   
   .heal-emergency {
@@ -144,6 +167,25 @@
   animation: pulse-glow 2s ease-in-out infinite;
 }
 
+/* Scrollbar styling for webkit browsers */
+.overflow-y-auto::-webkit-scrollbar {
+  width: 6px;
+}
+
+.overflow-y-auto::-webkit-scrollbar-track {
+  background: #f1f5f9;
+  border-radius: 3px;
+}
+
+.overflow-y-auto::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 3px;
+}
+
+.overflow-y-auto::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
 /* Accessibility improvements */
 .sr-only {
   position: absolute;
@@ -162,6 +204,44 @@
   @apply ring-2 ring-blue-500 ring-offset-2 outline-none;
 }
 
+/* Mobile-specific optimizations */
+@media (max-width: 768px) {
+  .heal-chat-bubble {
+    @apply max-w-[280px];
+  }
+  
+  /* Prevent horizontal scroll on mobile */
+  body {
+    overflow-x: hidden;
+  }
+  
+  /* Optimize touch targets */
+  button, input, textarea, select {
+    min-height: 44px;
+  }
+}
+
+/* Tablet optimizations */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .heal-chat-bubble {
+    @apply max-w-md;
+  }
+}
+
+/* Desktop optimizations */
+@media (min-width: 1024px) {
+  .heal-chat-bubble {
+    @apply max-w-lg;
+  }
+}
+
+/* Large desktop optimizations */
+@media (min-width: 1280px) {
+  .heal-chat-bubble {
+    @apply max-w-xl;
+  }
+}
+
 /* Reduced motion support */
 @media (prefers-reduced-motion: reduce) {
   .fade-in-up,
@@ -172,4 +252,85 @@
   .heal-button {
     @apply transform-none;
   }
+  
+  * {
+    scroll-behavior: auto !important;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .heal-card {
+    @apply border-2 border-gray-800;
+  }
+  
+  .heal-chat-bubble {
+    @apply border-2;
+  }
+}
+
+/* Print styles */
+@media print {
+  .heal-button,
+  button {
+    display: none;
+  }
+  
+  .heal-chat-bubble {
+    @apply shadow-none border border-gray-400;
+  }
+}
+
+/* Safe area insets for devices with notches */
+@supports (padding: max(0px)) {
+  .chat-container {
+    padding-left: max(1rem, env(safe-area-inset-left));
+    padding-right: max(1rem, env(safe-area-inset-right));
+    padding-bottom: max(1rem, env(safe-area-inset-bottom));
+  }
+}
+
+/* Viewport height fix for mobile browsers */
+@supports (-webkit-touch-callout: none) {
+  .h-screen {
+    height: -webkit-fill-available;
+  }
+}
+
+/* Custom scrolling behavior */
+.smooth-scroll {
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Loading states */
+.loading-shimmer {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/* Text selection */
+::selection {
+  background-color: hsl(var(--heal-primary) / 0.2);
+  color: hsl(var(--foreground));
+}
+
+/* Focus management for better accessibility */
+.focus-trap {
+  position: relative;
+}
+
+.focus-trap:focus-within {
+  outline: 2px solid hsl(var(--heal-primary));
+  outline-offset: 2px;
 }
