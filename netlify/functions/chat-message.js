@@ -1,65 +1,6 @@
 const jwt = require('jsonwebtoken');
 const { v4: uuidv4 } = require('uuid');
-const Database = require('better-sqlite3');
-const path = require('path');
-
-// Initialize database
-const dbPath = path.join('/tmp', 'heal.db');
-let db;
-
-function initDatabase() {
-  if (!db) {
-    try {
-      db = new Database(dbPath);
-      
-      // Create chat tables if they don't exist
-      db.exec(`
-        CREATE TABLE IF NOT EXISTS chat_sessions (
-          id TEXT PRIMARY KEY,
-          user_id TEXT NOT NULL,
-          title TEXT,
-          created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-          updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
-        );
-
-        CREATE TABLE IF NOT EXISTS chat_messages (
-          id TEXT PRIMARY KEY,
-          session_id TEXT NOT NULL,
-          user_id TEXT NOT NULL,
-          content TEXT NOT NULL,
-          sender_type TEXT NOT NULL,
-          message_type TEXT DEFAULT 'text',
-          metadata TEXT,
-          created_at DATETIME DEFAULT CURRENT_TIMESTAMP
-        );
-      `);
-    } catch (error) {
-      console.error('Database initialization error:', error);
-      db = new Database(':memory:');
-      db.exec(`
-        CREATE TABLE chat_sessions (
-          id TEXT PRIMARY KEY,
-          user_id TEXT NOT NULL,
-          title TEXT,
-          created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-          updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
-        );
-
-        CREATE TABLE chat_messages (
-          id TEXT PRIMARY KEY,
-          session_id TEXT NOT NULL,
-          user_id TEXT NOT NULL,
-          content TEXT NOT NULL,
-          sender_type TEXT NOT NULL,
-          message_type TEXT DEFAULT 'text',
-          metadata TEXT,
-          created_at DATETIME DEFAULT CURRENT_TIMESTAMP
-        );
-      `);
-    }
-  }
-  return db;
-}
+const db = require('./shared-db');
 
 function verifyToken(token) {
   const jwtSecret = process.env.JWT_SECRET || 'your-super-secret-jwt-key-change-in-production';
@@ -134,47 +75,62 @@ exports.handler = async (event, context) => {
       };
     }
 
-    // Initialize database
-    const database = initDatabase();
     const now = new Date().toISOString();
 
     // Get or create session
     let session;
     if (sessionId) {
-      session = database.prepare('SELECT * FROM chat_sessions WHERE id = ? AND user_id = ?').get(sessionId, userId);
+      session = db.findChatSession(sessionId, userId);
     }
 
     if (!session) {
       const newSessionId = sessionId || uuidv4();
       const title = `Chat Session - ${new Date().toLocaleDateString()}`;
       
-      database.prepare(`
-        INSERT INTO chat_sessions (id, user_id, title, created_at, updated_at)
-        VALUES (?, ?, ?, ?, ?)
-      `).run(newSessionId, userId, title, now, now);
+      session = {
+        id: newSessionId,
+        user_id: userId,
+        title,
+        created_at: now,
+        updated_at: now
+      };
 
-      session = { id: newSessionId, user_id: userId, title, created_at: now, updated_at: now };
+      db.createChatSession(session);
     }
 
     // Save user message
     const userMessageId = uuidv4();
-    database.prepare(`
-      INSERT INTO chat_messages (id, session_id, user_id, content, sender_type, message_type, created_at)
-      VALUES (?, ?, ?, ?, ?, ?, ?)
-    `).run(userMessageId, session.id, userId, content, 'user', messageType, now);
+    const userMessage = {
+      id: userMessageId,
+      session_id: session.id,
+      user_id: userId,
+      content,
+      sender_type: 'user',
+      message_type: messageType,
+      created_at: now
+    };
+
+    db.createChatMessage(userMessage);
 
     // Get AI response
     const aiResponse = getAIResponse(content);
 
     // Save AI message
     const aiMessageId = uuidv4();
-    database.prepare(`
-      INSERT INTO chat_messages (id, session_id, user_id, content, sender_type, message_type, created_at)
-      VALUES (?, ?, ?, ?, ?, ?, ?)
-    `).run(aiMessageId, session.id, userId, aiResponse, 'ai', 'text', now);
+    const aiMessage = {
+      id: aiMessageId,
+      session_id: session.id,
+      user_id: userId,
+      content: aiResponse,
+      sender_type: 'ai',
+      message_type: 'text',
+      created_at: now
+    };
+
+    db.createChatMessage(aiMessage);
 
     // Update session timestamp
-    database.prepare('UPDATE chat_sessions SET updated_at = ? WHERE id = ?').run(now, session.id);
+    db.updateChatSession(session.id, { updated_at: now });
 
     return {
       statusCode: 200,

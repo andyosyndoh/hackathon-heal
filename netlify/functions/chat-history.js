@@ -1,22 +1,5 @@
 const jwt = require('jsonwebtoken');
-const Database = require('better-sqlite3');
-const path = require('path');
-
-// Initialize database
-const dbPath = path.join('/tmp', 'heal.db');
-let db;
-
-function initDatabase() {
-  if (!db) {
-    try {
-      db = new Database(dbPath);
-    } catch (error) {
-      console.error('Database connection error:', error);
-      db = new Database(':memory:');
-    }
-  }
-  return db;
-}
+const db = require('./shared-db');
 
 function verifyToken(token) {
   const jwtSecret = process.env.JWT_SECRET || 'your-super-secret-jwt-key-change-in-production';
@@ -82,11 +65,8 @@ exports.handler = async (event, context) => {
       };
     }
 
-    // Initialize database
-    const database = initDatabase();
-
     // Verify session belongs to user
-    const session = database.prepare('SELECT * FROM chat_sessions WHERE id = ? AND user_id = ?').get(sessionId, userId);
+    const session = db.findChatSession(sessionId, userId);
     if (!session) {
       return {
         statusCode: 404,
@@ -96,14 +76,7 @@ exports.handler = async (event, context) => {
     }
 
     // Get messages
-    const messages = database.prepare(`
-      SELECT id, session_id, user_id, content, sender_type, message_type, 
-             COALESCE(metadata, '{}') as metadata, created_at
-      FROM chat_messages
-      WHERE session_id = ?
-      ORDER BY created_at ASC
-      LIMIT ? OFFSET ?
-    `).all(sessionId, limit, offset);
+    const messages = db.getChatMessages(sessionId, limit, offset);
 
     const formattedMessages = messages.map(msg => ({
       id: msg.id,
@@ -112,7 +85,6 @@ exports.handler = async (event, context) => {
       content: msg.content,
       senderType: msg.sender_type,
       messageType: msg.message_type,
-      metadata: msg.metadata,
       createdAt: msg.created_at
     }));
 

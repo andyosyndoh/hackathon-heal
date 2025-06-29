@@ -1,23 +1,6 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const Database = require('better-sqlite3');
-const path = require('path');
-
-// Initialize database
-const dbPath = path.join('/tmp', 'heal.db');
-let db;
-
-function initDatabase() {
-  if (!db) {
-    try {
-      db = new Database(dbPath);
-    } catch (error) {
-      console.error('Database connection error:', error);
-      db = new Database(':memory:');
-    }
-  }
-  return db;
-}
+const db = require('./shared-db');
 
 exports.handler = async (event, context) => {
   // Enable CORS
@@ -52,14 +35,8 @@ exports.handler = async (event, context) => {
       };
     }
 
-    // Initialize database
-    const database = initDatabase();
-
     // Get user by email
-    const user = database.prepare(`
-      SELECT id, email, password_hash, first_name, last_name, email_verified, created_at, updated_at
-      FROM users WHERE email = ?
-    `).get(email);
+    const user = db.findUserByEmail(email);
 
     if (!user) {
       return {
