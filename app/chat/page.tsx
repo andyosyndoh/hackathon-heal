@@ -70,10 +70,14 @@ export default function ChatPage() {
   const [isPlayingAudio, setIsPlayingAudio] = useState(false);
   const [currentAudio, setCurrentAudio] = useState<HTMLAudioElement | null>(null);
   const [, setScreenState] = useAtom(screenAtom);
+  
+  // Refs for scrolling and responsive behavior
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const messagesContainerRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const sessionsRef = useRef<HTMLDivElement>(null);
+  const chatContainerRef = useRef<HTMLDivElement>(null);
 
   // Voice configuration
   const voiceConfigs = {
@@ -97,9 +101,37 @@ export default function ChatPage() {
     }
   };
 
+  // Auto-scroll to bottom when new messages arrive
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ 
+        behavior: 'smooth',
+        block: 'end'
+      });
+    }
   }, [messages]);
+
+  // Handle viewport height changes (mobile keyboard)
+  useEffect(() => {
+    const handleResize = () => {
+      // Force a re-render to adjust container height
+      if (chatContainerRef.current) {
+        const vh = window.innerHeight * 0.01;
+        document.documentElement.style.setProperty('--vh', `${vh}px`);
+      }
+    };
+
+    // Set initial viewport height
+    handleResize();
+    
+    window.addEventListener('resize', handleResize);
+    window.addEventListener('orientationchange', handleResize);
+    
+    return () => {
+      window.removeEventListener('resize', handleResize);
+      window.removeEventListener('orientationchange', handleResize);
+    };
+  }, []);
 
   // Load chat sessions on mount
   useEffect(() => {
@@ -418,9 +450,13 @@ export default function ChatPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col">
-      {/* Header */}
-      <div className="bg-white shadow-sm border-b border-gray-200 px-4 py-3">
+    <div 
+      ref={chatContainerRef}
+      className="h-screen flex flex-col bg-gray-50 overflow-hidden"
+      style={{ height: 'calc(var(--vh, 1vh) * 100)' }}
+    >
+      {/* Header - Fixed */}
+      <div className="bg-white shadow-sm border-b border-gray-200 px-4 py-3 flex-shrink-0">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-4">
             <Link href="/dashboard" className="p-2 hover:bg-gray-100 rounded-lg transition-colors">
@@ -568,17 +604,17 @@ export default function ChatPage() {
         </div>
       </div>
 
-      {/* Privacy Notice */}
-      <div className="bg-blue-50 border-b border-blue-200 px-4 py-2">
+      {/* Privacy Notice - Fixed */}
+      <div className="bg-blue-50 border-b border-blue-200 px-4 py-2 flex-shrink-0">
         <div className="flex items-center justify-center space-x-2 text-sm text-blue-700">
           <Shield className="h-4 w-4" />
           <span>End-to-end encrypted • Your conversation is private and secure</span>
         </div>
       </div>
 
-      {/* Voice Status Banner */}
+      {/* Voice Status Banner - Fixed */}
       {voiceOption !== 'off' && process.env.NEXT_PUBLIC_ELEVENLABS_API_KEY && (
-        <div className={`border-b px-4 py-2 ${
+        <div className={`border-b px-4 py-2 flex-shrink-0 ${
           voiceOption === 'female' ? 'bg-pink-50 border-pink-200' : 'bg-blue-50 border-blue-200'
         }`}>
           <div className={`flex items-center justify-center space-x-2 text-sm ${
@@ -590,8 +626,8 @@ export default function ChatPage() {
         </div>
       )}
 
-      {/* Main Content */}
-      <div className="flex-1 flex flex-col min-h-0">
+      {/* Main Content - Flexible */}
+      <div className="flex-1 flex flex-col min-h-0 overflow-hidden">
         {showVideoConversation ? (
           <div className="flex-1 flex flex-col min-h-0 justify-center items-center relative bg-black">
             <div className="absolute inset-0 flex flex-col h-full items-center justify-center">
@@ -607,8 +643,15 @@ export default function ChatPage() {
           </div>
         ) : (
           <>
-            {/* Messages */}
-            <div className="flex-1 overflow-y-auto px-4 py-6 space-y-4">
+            {/* Messages Container - Scrollable */}
+            <div 
+              ref={messagesContainerRef}
+              className="flex-1 overflow-y-auto px-4 py-6 space-y-4 min-h-0"
+              style={{
+                scrollBehavior: 'smooth',
+                overscrollBehavior: 'contain'
+              }}
+            >
               {loadingHistory ? (
                 <div className="flex items-center justify-center py-8">
                   <div className="flex items-center space-x-2">
@@ -622,13 +665,15 @@ export default function ChatPage() {
                     key={message.id}
                     className={`flex ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}
                   >
-                    <div className={`flex items-start space-x-3 max-w-xs sm:max-w-md lg:max-w-lg ${message.sender === 'user' ? 'flex-row-reverse space-x-reverse' : ''
-                      }`}>
+                    <div className={`flex items-start space-x-3 max-w-xs sm:max-w-md lg:max-w-lg xl:max-w-2xl ${
+                      message.sender === 'user' ? 'flex-row-reverse space-x-reverse' : ''
+                    }`}>
                       {/* Avatar */}
-                      <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${message.sender === 'user'
-                        ? 'bg-blue-500'
-                        : 'bg-gradient-to-r from-blue-500 to-green-500'
-                        }`}>
+                      <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${
+                        message.sender === 'user'
+                          ? 'bg-blue-500'
+                          : 'bg-gradient-to-r from-blue-500 to-green-500'
+                      }`}>
                         {message.sender === 'user' ?
                           <User className="h-4 w-4 text-white" /> :
                           <Bot className="h-4 w-4 text-white" />
@@ -636,10 +681,11 @@ export default function ChatPage() {
                       </div>
 
                       {/* Message Bubble */}
-                      <div className={`heal-chat-bubble ${message.sender === 'user'
-                        ? 'bg-blue-600 text-white'
-                        : 'bg-white text-gray-900 border border-gray-200'
-                        }`}>
+                      <div className={`heal-chat-bubble ${
+                        message.sender === 'user'
+                          ? 'bg-blue-600 text-white'
+                          : 'bg-white text-gray-900 border border-gray-200'
+                      }`}>
                         {message.isLoading ? (
                           <div className="flex items-center space-x-2">
                             <Loader2 className="h-4 w-4 animate-spin" />
@@ -647,10 +693,11 @@ export default function ChatPage() {
                           </div>
                         ) : (
                           <>
-                            <p className="text-sm leading-relaxed">{message.content}</p>
+                            <p className="text-sm leading-relaxed break-words">{message.content}</p>
                             <div className="flex items-center justify-between mt-1">
-                              <p className={`text-xs ${message.sender === 'user' ? 'text-blue-100' : 'text-gray-500'
-                                }`}>
+                              <p className={`text-xs ${
+                                message.sender === 'user' ? 'text-blue-100' : 'text-gray-500'
+                              }`}>
                                 {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                               </p>
                               {/* Audio indicator for AI messages */}
@@ -677,8 +724,8 @@ export default function ChatPage() {
               <div ref={messagesEndRef} />
             </div>
 
-            {/* Crisis Support Banner */}
-            <div className="bg-red-50 border-t border-red-200 px-4 py-2">
+            {/* Crisis Support Banner - Fixed */}
+            <div className="bg-red-50 border-t border-red-200 px-4 py-2 flex-shrink-0">
               <div className="flex items-center justify-between">
                 <p className="text-sm text-red-700">
                   If you're having thoughts of self-harm, please get help immediately.
@@ -691,21 +738,22 @@ export default function ChatPage() {
           </>
         )}
 
-        {/* Input Area */}
-        <div className="bg-white border-t border-gray-200 px-4 py-4">
+        {/* Input Area - Fixed at bottom */}
+        <div className="bg-white border-t border-gray-200 px-4 py-4 flex-shrink-0">
           <div className="flex items-end space-x-3">
             <button
               onClick={toggleRecording}
-              className={`p-3 rounded-full transition-all duration-200 ${isRecording
-                ? 'bg-red-500 text-white pulse-glow'
-                : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                }`}
+              className={`p-3 rounded-full transition-all duration-200 flex-shrink-0 ${
+                isRecording
+                  ? 'bg-red-500 text-white pulse-glow'
+                  : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+              }`}
               title={isRecording ? 'Stop recording' : 'Start voice message'}
             >
               {isRecording ? <MicOff className="h-5 w-5" /> : <Mic className="h-5 w-5" />}
             </button>
 
-            <div className="flex-1 relative">
+            <div className="flex-1 relative min-w-0">
               <textarea
                 ref={inputRef}
                 value={inputMessage}
@@ -714,7 +762,10 @@ export default function ChatPage() {
                 placeholder="Type your message... (Press Enter to send)"
                 className="w-full px-4 py-3 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none max-h-32 bg-gray-50"
                 rows={1}
-                style={{ minHeight: '44px' }}
+                style={{ 
+                  minHeight: '44px',
+                  maxHeight: '128px'
+                }}
                 disabled={isTyping}
               />
             </div>
@@ -722,10 +773,11 @@ export default function ChatPage() {
             <button
               onClick={sendMessage}
               disabled={!inputMessage.trim() || isTyping}
-              className={`p-3 rounded-full transition-all duration-200 ${inputMessage.trim() && !isTyping
-                ? 'bg-blue-600 text-white hover:bg-blue-700 transform hover:scale-105'
-                : 'bg-gray-100 text-gray-400 cursor-not-allowed'
-                }`}
+              className={`p-3 rounded-full transition-all duration-200 flex-shrink-0 ${
+                inputMessage.trim() && !isTyping
+                  ? 'bg-blue-600 text-white hover:bg-blue-700 transform hover:scale-105'
+                  : 'bg-gray-100 text-gray-400 cursor-not-allowed'
+              }`}
               title="Send message"
             >
               {isTyping ? (
@@ -736,14 +788,14 @@ export default function ChatPage() {
             </button>
           </div>
 
-          {/* Voice Status Indicator */}
+          {/* Quick Response Buttons - Responsive */}
           <div className="flex items-center justify-between mt-3">
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap gap-2 flex-1 min-w-0">
               {['I need support', 'Feeling anxious', 'Having a hard day', 'Need coping strategies'].map((quickResponse, index) => (
                 <button
                   key={index}
                   onClick={() => setInputMessage(quickResponse)}
-                  className="px-3 py-1 bg-gray-100 hover:bg-gray-200 text-gray-700 text-sm rounded-full transition-colors disabled:opacity-50"
+                  className="px-3 py-1 bg-gray-100 hover:bg-gray-200 text-gray-700 text-sm rounded-full transition-colors disabled:opacity-50 whitespace-nowrap"
                   disabled={isTyping}
                 >
                   {quickResponse}
@@ -752,12 +804,12 @@ export default function ChatPage() {
             </div>
 
             {/* Voice Status */}
-            <div className="flex items-center space-x-2 text-xs text-gray-500">
+            <div className="flex items-center space-x-2 text-xs text-gray-500 ml-4 flex-shrink-0">
               <div className={`w-2 h-2 rounded-full ${
                 voiceOption === 'off' ? 'bg-gray-400' : 
                 voiceOption === 'female' ? 'bg-pink-500' : 'bg-blue-500'
               }`}></div>
-              <span>{currentVoiceConfig.label}</span>
+              <span className="hidden sm:inline">{currentVoiceConfig.label}</span>
             </div>
           </div>
 
@@ -765,15 +817,22 @@ export default function ChatPage() {
           <div className="flex items-center justify-center mt-2 text-xs text-gray-500">
             <div className="flex items-center space-x-4">
               <div className="flex items-center space-x-1">
-                <div className={`w-2 h-2 rounded-full ${process.env.NEXT_PUBLIC_GEMINI_API_KEY ? 'bg-green-500' : 'bg-red-500'}`}></div>
+                <div className={`w-2 h-2 rounded-full ${
+                  process.env.NEXT_PUBLIC_GEMINI_API_KEY ? 'bg-green-500' : 'bg-red-500'
+                }`}></div>
                 <span>Gemini AI</span>
               </div>
               <div className="flex items-center space-x-1">
-                <div className={`w-2 h-2 rounded-full ${process.env.NEXT_PUBLIC_ELEVENLABS_API_KEY ? 'bg-green-500' : 'bg-red-500'}`}></div>
-                <span>Voice ({voiceOption})</span>
+                <div className={`w-2 h-2 rounded-full ${
+                  process.env.NEXT_PUBLIC_ELEVENLABS_API_KEY ? 'bg-green-500' : 'bg-red-500'
+                }`}></div>
+                <span className="hidden sm:inline">Voice ({voiceOption})</span>
+                <span className="sm:hidden">Voice</span>
               </div>
               <div className="flex items-center space-x-1">
-                <div className={`w-2 h-2 rounded-full ${isAuthenticated ? 'bg-green-500' : 'bg-red-500'}`}></div>
+                <div className={`w-2 h-2 rounded-full ${
+                  isAuthenticated ? 'bg-green-500' : 'bg-red-500'
+                }`}></div>
                 <span>Backend</span>
               </div>
             </div>
