@@ -77,7 +77,6 @@ export default function ChatPage() {
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const sessionsRef = useRef<HTMLDivElement>(null);
-  const chatContainerRef = useRef<HTMLDivElement>(null);
 
   // Voice configuration
   const voiceConfigs = {
@@ -110,28 +109,6 @@ export default function ChatPage() {
       });
     }
   }, [messages]);
-
-  // Handle viewport height changes (mobile keyboard)
-  useEffect(() => {
-    const handleResize = () => {
-      // Force a re-render to adjust container height
-      if (chatContainerRef.current) {
-        const vh = window.innerHeight * 0.01;
-        document.documentElement.style.setProperty('--vh', `${vh}px`);
-      }
-    };
-
-    // Set initial viewport height
-    handleResize();
-    
-    window.addEventListener('resize', handleResize);
-    window.addEventListener('orientationchange', handleResize);
-    
-    return () => {
-      window.removeEventListener('resize', handleResize);
-      window.removeEventListener('orientationchange', handleResize);
-    };
-  }, []);
 
   // Load chat sessions on mount
   useEffect(() => {
@@ -437,10 +414,10 @@ export default function ChatPage() {
 
   if (!isAuthenticated) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
         <div className="text-center">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">Please Sign In</h2>
-          <p className="text-gray-600 mb-6">You need to be signed in to access the chat.</p>
+          <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-4">Please Sign In</h2>
+          <p className="text-gray-600 mb-6 text-sm sm:text-base">You need to be signed in to access the chat.</p>
           <Link href="/auth" className="heal-button">
             Sign In
           </Link>
@@ -450,39 +427,39 @@ export default function ChatPage() {
   }
 
   return (
-    <div 
-      ref={chatContainerRef}
-      className="h-screen flex flex-col bg-gray-50 overflow-hidden"
-      style={{ height: 'calc(var(--vh, 1vh) * 100)' }}
-    >
+    <div className="h-screen flex flex-col bg-gray-50 overflow-hidden">
       {/* Header - Fixed */}
-      <div className="bg-white shadow-sm border-b border-gray-200 px-4 py-3 flex-shrink-0">
+      <div className="bg-white shadow-sm border-b border-gray-200 px-3 sm:px-4 py-3 flex-shrink-0">
         <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-2 sm:space-x-4">
             <Link href="/dashboard" className="p-2 hover:bg-gray-100 rounded-lg transition-colors">
-              <ArrowLeft className="h-5 w-5 text-gray-600" />
+              <ArrowLeft className="h-4 w-4 sm:h-5 sm:w-5 text-gray-600" />
             </Link>
-            <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-green-500 rounded-full flex items-center justify-center">
-                <Bot className="h-5 w-5 text-white" />
+            <div className="flex items-center space-x-2 sm:space-x-3">
+              <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-r from-blue-500 to-green-500 rounded-full flex items-center justify-center">
+                <Bot className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
               </div>
               <div>
-                <h1 className="font-semibold text-gray-900">AI Companion</h1>
-                <p className="text-sm text-green-600 flex items-center">
+                <h1 className="font-semibold text-gray-900 text-sm sm:text-base">AI Companion</h1>
+                <p className="text-xs sm:text-sm text-green-600 flex items-center">
                   {isPlayingAudio ? (
                     <>
                       <Volume2 className="h-3 w-3 mr-1" />
-                      Speaking ({voiceOption} voice)...
+                      <span className="hidden sm:inline">Speaking ({voiceOption} voice)...</span>
+                      <span className="sm:hidden">Speaking...</span>
                     </>
                   ) : (
-                    'Online • Secure Session'
+                    <>
+                      <span className="hidden sm:inline">Online • Secure Session</span>
+                      <span className="sm:hidden">Online</span>
+                    </>
                   )}
                 </p>
               </div>
             </div>
           </div>
 
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center space-x-1 sm:space-x-2">
             {/* Chat Sessions Dropdown */}
             <div className="relative" ref={sessionsRef}>
               <button
@@ -490,12 +467,12 @@ export default function ChatPage() {
                 className="p-2 hover:bg-gray-100 rounded-lg transition-colors flex items-center space-x-1"
                 title="Chat Sessions"
               >
-                <MessageSquare className="h-5 w-5 text-gray-600" />
-                <ChevronDown className="h-3 w-3 text-gray-600" />
+                <MessageSquare className="h-4 w-4 sm:h-5 sm:w-5 text-gray-600" />
+                <ChevronDown className="h-3 w-3 text-gray-600 hidden sm:block" />
               </button>
 
               {showSessions && (
-                <div className="absolute right-0 top-full mt-2 w-80 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-50 max-h-96 overflow-y-auto">
+                <div className="absolute right-0 top-full mt-2 w-72 sm:w-80 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-50 max-h-96 overflow-y-auto">
                   <div className="px-3 py-2 text-xs font-medium text-gray-500 border-b border-gray-100 flex items-center justify-between">
                     <span>Chat Sessions</span>
                     <button
@@ -550,12 +527,12 @@ export default function ChatPage() {
                 className={`p-2 rounded-lg transition-colors flex items-center space-x-1 ${currentVoiceConfig.color}`}
                 title={`Current: ${currentVoiceConfig.label}`}
               >
-                <VoiceIcon className="h-5 w-5" />
-                <ChevronDown className="h-3 w-3" />
+                <VoiceIcon className="h-4 w-4 sm:h-5 sm:w-5" />
+                <ChevronDown className="h-3 w-3 hidden sm:block" />
               </button>
 
               {showVoiceDropdown && (
-                <div className="absolute right-0 top-full mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-50">
+                <div className="absolute right-0 top-full mt-2 w-44 sm:w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-50">
                   <div className="px-3 py-2 text-xs font-medium text-gray-500 border-b border-gray-100">
                     Voice Options
                   </div>
@@ -589,39 +566,45 @@ export default function ChatPage() {
 
             <button
               onClick={() => setShowVideoConversation(true)}
-              className={`p-2 hover:bg-gray-100 rounded-lg transition-colors text-gray-600`}
-              title={'Start video conversation'}
+              className="p-2 hover:bg-gray-100 rounded-lg transition-colors text-gray-600"
+              title="Start video conversation"
             >
-              <Video className="h-5 w-5" />
+              <Video className="h-4 w-4 sm:h-5 sm:w-5" />
             </button>
             <Link href="/crisis" className="p-2 hover:bg-gray-100 rounded-lg transition-colors text-red-600">
-              <Phone className="h-5 w-5" />
+              <Phone className="h-4 w-4 sm:h-5 sm:w-5" />
             </Link>
             <button className="p-2 hover:bg-gray-100 rounded-lg transition-colors">
-              <MoreVertical className="h-5 w-5 text-gray-600" />
+              <MoreVertical className="h-4 w-4 sm:h-5 sm:w-5 text-gray-600" />
             </button>
           </div>
         </div>
       </div>
 
       {/* Privacy Notice - Fixed */}
-      <div className="bg-blue-50 border-b border-blue-200 px-4 py-2 flex-shrink-0">
-        <div className="flex items-center justify-center space-x-2 text-sm text-blue-700">
-          <Shield className="h-4 w-4" />
-          <span>End-to-end encrypted • Your conversation is private and secure</span>
+      <div className="bg-blue-50 border-b border-blue-200 px-3 sm:px-4 py-2 flex-shrink-0">
+        <div className="flex items-center justify-center space-x-2 text-xs sm:text-sm text-blue-700">
+          <Shield className="h-3 w-3 sm:h-4 sm:w-4" />
+          <span className="text-center">
+            <span className="hidden sm:inline">End-to-end encrypted • Your conversation is private and secure</span>
+            <span className="sm:hidden">Encrypted • Private & Secure</span>
+          </span>
         </div>
       </div>
 
       {/* Voice Status Banner - Fixed */}
       {voiceOption !== 'off' && process.env.NEXT_PUBLIC_ELEVENLABS_API_KEY && (
-        <div className={`border-b px-4 py-2 flex-shrink-0 ${
+        <div className={`border-b px-3 sm:px-4 py-2 flex-shrink-0 ${
           voiceOption === 'female' ? 'bg-pink-50 border-pink-200' : 'bg-blue-50 border-blue-200'
         }`}>
-          <div className={`flex items-center justify-center space-x-2 text-sm ${
+          <div className={`flex items-center justify-center space-x-2 text-xs sm:text-sm ${
             voiceOption === 'female' ? 'text-pink-700' : 'text-blue-700'
           }`}>
-            <VoiceIcon className="h-4 w-4" />
-            <span>{currentVoiceConfig.label} enabled • AI will speak responses aloud</span>
+            <VoiceIcon className="h-3 w-3 sm:h-4 sm:w-4" />
+            <span className="text-center">
+              <span className="hidden sm:inline">{currentVoiceConfig.label} enabled • AI will speak responses aloud</span>
+              <span className="sm:hidden">{currentVoiceConfig.label} enabled</span>
+            </span>
           </div>
         </div>
       )}
@@ -634,7 +617,7 @@ export default function ChatPage() {
               {renderScreen()}
               <button
                 onClick={() => setShowVideoConversation(false)}
-                className="absolute top-4 right-4 bg-white/80 hover:bg-white text-gray-700 rounded-full p-3 shadow-lg z-10 transition-all duration-200"
+                className="absolute top-4 right-4 bg-white/80 hover:bg-white text-gray-700 rounded-full p-2 sm:p-3 shadow-lg z-10 transition-all duration-200"
                 aria-label="Close video conversation"
               >
                 ✕
@@ -646,7 +629,7 @@ export default function ChatPage() {
             {/* Messages Container - Scrollable */}
             <div 
               ref={messagesContainerRef}
-              className="flex-1 overflow-y-auto px-4 py-6 space-y-4 min-h-0"
+              className="flex-1 overflow-y-auto px-3 sm:px-4 py-4 sm:py-6 space-y-3 sm:space-y-4 min-h-0 chat-messages-container"
               style={{
                 scrollBehavior: 'smooth',
                 overscrollBehavior: 'contain'
@@ -655,8 +638,8 @@ export default function ChatPage() {
               {loadingHistory ? (
                 <div className="flex items-center justify-center py-8">
                   <div className="flex items-center space-x-2">
-                    <Loader2 className="h-5 w-5 animate-spin text-blue-600" />
-                    <span className="text-gray-600">Loading chat history...</span>
+                    <Loader2 className="h-4 w-4 sm:h-5 sm:w-5 animate-spin text-blue-600" />
+                    <span className="text-gray-600 text-sm sm:text-base">Loading chat history...</span>
                   </div>
                 </div>
               ) : (
@@ -665,18 +648,18 @@ export default function ChatPage() {
                     key={message.id}
                     className={`flex ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}
                   >
-                    <div className={`flex items-start space-x-3 max-w-xs sm:max-w-md lg:max-w-lg xl:max-w-2xl ${
+                    <div className={`flex items-start space-x-2 sm:space-x-3 max-w-[85%] sm:max-w-xs md:max-w-md lg:max-w-lg xl:max-w-2xl ${
                       message.sender === 'user' ? 'flex-row-reverse space-x-reverse' : ''
                     }`}>
                       {/* Avatar */}
-                      <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${
+                      <div className={`w-6 h-6 sm:w-8 sm:h-8 rounded-full flex items-center justify-center flex-shrink-0 ${
                         message.sender === 'user'
                           ? 'bg-blue-500'
                           : 'bg-gradient-to-r from-blue-500 to-green-500'
                       }`}>
                         {message.sender === 'user' ?
-                          <User className="h-4 w-4 text-white" /> :
-                          <Bot className="h-4 w-4 text-white" />
+                          <User className="h-3 w-3 sm:h-4 sm:w-4 text-white" /> :
+                          <Bot className="h-3 w-3 sm:h-4 sm:w-4 text-white" />
                         }
                       </div>
 
@@ -688,12 +671,12 @@ export default function ChatPage() {
                       }`}>
                         {message.isLoading ? (
                           <div className="flex items-center space-x-2">
-                            <Loader2 className="h-4 w-4 animate-spin" />
-                            <span className="text-sm">Thinking...</span>
+                            <Loader2 className="h-3 w-3 sm:h-4 sm:w-4 animate-spin" />
+                            <span className="text-xs sm:text-sm">Thinking...</span>
                           </div>
                         ) : (
                           <>
-                            <p className="text-sm leading-relaxed break-words">{message.content}</p>
+                            <p className="text-xs sm:text-sm leading-relaxed break-words">{message.content}</p>
                             <div className="flex items-center justify-between mt-1">
                               <p className={`text-xs ${
                                 message.sender === 'user' ? 'text-blue-100' : 'text-gray-500'
@@ -725,12 +708,13 @@ export default function ChatPage() {
             </div>
 
             {/* Crisis Support Banner - Fixed */}
-            <div className="bg-red-50 border-t border-red-200 px-4 py-2 flex-shrink-0">
+            <div className="bg-red-50 border-t border-red-200 px-3 sm:px-4 py-2 flex-shrink-0">
               <div className="flex items-center justify-between">
-                <p className="text-sm text-red-700">
-                  If you're having thoughts of self-harm, please get help immediately.
+                <p className="text-xs sm:text-sm text-red-700">
+                  <span className="hidden sm:inline">If you're having thoughts of self-harm, please get help immediately.</span>
+                  <span className="sm:hidden">Need immediate help?</span>
                 </p>
-                <Link href="/crisis" className="text-sm font-medium text-red-600 hover:text-red-700">
+                <Link href="/crisis" className="text-xs sm:text-sm font-medium text-red-600 hover:text-red-700">
                   Crisis Support →
                 </Link>
               </div>
@@ -739,18 +723,18 @@ export default function ChatPage() {
         )}
 
         {/* Input Area - Fixed at bottom */}
-        <div className="bg-white border-t border-gray-200 px-4 py-4 flex-shrink-0">
-          <div className="flex items-end space-x-3">
+        <div className="bg-white border-t border-gray-200 px-3 sm:px-4 py-3 sm:py-4 flex-shrink-0">
+          <div className="flex items-end space-x-2 sm:space-x-3">
             <button
               onClick={toggleRecording}
-              className={`p-3 rounded-full transition-all duration-200 flex-shrink-0 ${
+              className={`p-2 sm:p-3 rounded-full transition-all duration-200 flex-shrink-0 ${
                 isRecording
                   ? 'bg-red-500 text-white pulse-glow'
                   : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
               }`}
               title={isRecording ? 'Stop recording' : 'Start voice message'}
             >
-              {isRecording ? <MicOff className="h-5 w-5" /> : <Mic className="h-5 w-5" />}
+              {isRecording ? <MicOff className="h-4 w-4 sm:h-5 sm:w-5" /> : <Mic className="h-4 w-4 sm:h-5 sm:w-5" />}
             </button>
 
             <div className="flex-1 relative min-w-0">
@@ -759,12 +743,12 @@ export default function ChatPage() {
                 value={inputMessage}
                 onChange={(e) => setInputMessage(e.target.value)}
                 onKeyPress={handleKeyPress}
-                placeholder="Type your message... (Press Enter to send)"
-                className="w-full px-4 py-3 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none max-h-32 bg-gray-50"
+                placeholder="Type your message..."
+                className="w-full px-3 py-2 sm:px-4 sm:py-3 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none max-h-24 sm:max-h-32 bg-gray-50 text-sm sm:text-base"
                 rows={1}
                 style={{ 
-                  minHeight: '44px',
-                  maxHeight: '128px'
+                  minHeight: '40px',
+                  maxHeight: '96px'
                 }}
                 disabled={isTyping}
               />
@@ -773,7 +757,7 @@ export default function ChatPage() {
             <button
               onClick={sendMessage}
               disabled={!inputMessage.trim() || isTyping}
-              className={`p-3 rounded-full transition-all duration-200 flex-shrink-0 ${
+              className={`p-2 sm:p-3 rounded-full transition-all duration-200 flex-shrink-0 ${
                 inputMessage.trim() && !isTyping
                   ? 'bg-blue-600 text-white hover:bg-blue-700 transform hover:scale-105'
                   : 'bg-gray-100 text-gray-400 cursor-not-allowed'
@@ -781,30 +765,33 @@ export default function ChatPage() {
               title="Send message"
             >
               {isTyping ? (
-                <Loader2 className="h-5 w-5 animate-spin" />
+                <Loader2 className="h-4 w-4 sm:h-5 sm:w-5 animate-spin" />
               ) : (
-                <Send className="h-5 w-5" />
+                <Send className="h-4 w-4 sm:h-5 sm:w-5" />
               )}
             </button>
           </div>
 
           {/* Quick Response Buttons - Responsive */}
-          <div className="flex items-center justify-between mt-3">
-            <div className="flex flex-wrap gap-2 flex-1 min-w-0">
+          <div className="flex items-center justify-between mt-2 sm:mt-3">
+            <div className="flex flex-wrap gap-1 sm:gap-2 flex-1 min-w-0">
               {['I need support', 'Feeling anxious', 'Having a hard day', 'Need coping strategies'].map((quickResponse, index) => (
                 <button
                   key={index}
                   onClick={() => setInputMessage(quickResponse)}
-                  className="px-3 py-1 bg-gray-100 hover:bg-gray-200 text-gray-700 text-sm rounded-full transition-colors disabled:opacity-50 whitespace-nowrap"
+                  className="px-2 py-1 sm:px-3 sm:py-1 bg-gray-100 hover:bg-gray-200 text-gray-700 text-xs sm:text-sm rounded-full transition-colors disabled:opacity-50 whitespace-nowrap"
                   disabled={isTyping}
                 >
-                  {quickResponse}
+                  <span className="hidden sm:inline">{quickResponse}</span>
+                  <span className="sm:hidden">
+                    {index === 0 ? 'Support' : index === 1 ? 'Anxious' : index === 2 ? 'Hard day' : 'Coping'}
+                  </span>
                 </button>
               ))}
             </div>
 
             {/* Voice Status */}
-            <div className="flex items-center space-x-2 text-xs text-gray-500 ml-4 flex-shrink-0">
+            <div className="flex items-center space-x-1 sm:space-x-2 text-xs text-gray-500 ml-2 sm:ml-4 flex-shrink-0">
               <div className={`w-2 h-2 rounded-full ${
                 voiceOption === 'off' ? 'bg-gray-400' : 
                 voiceOption === 'female' ? 'bg-pink-500' : 'bg-blue-500'
@@ -815,7 +802,7 @@ export default function ChatPage() {
 
           {/* AI Service Status */}
           <div className="flex items-center justify-center mt-2 text-xs text-gray-500">
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-2 sm:space-x-4">
               <div className="flex items-center space-x-1">
                 <div className={`w-2 h-2 rounded-full ${
                   process.env.NEXT_PUBLIC_GEMINI_API_KEY ? 'bg-green-500' : 'bg-red-500'

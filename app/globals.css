@@ -97,7 +97,7 @@
   /* Ensure proper viewport height handling */
   html, body {
     height: 100%;
-    overflow: hidden;
+    overflow-x: hidden;
   }
   
   #__next {
@@ -119,22 +119,22 @@
   }
   
   .heal-button {
-    @apply bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-medium py-3 px-6 rounded-lg transition-all duration-200 transform hover:scale-105 active:scale-95 shadow-lg hover:shadow-xl;
+    @apply bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-medium py-2 px-4 sm:py-3 sm:px-6 rounded-lg transition-all duration-200 transform hover:scale-105 active:scale-95 shadow-lg hover:shadow-xl text-sm sm:text-base;
   }
   
   .heal-input {
-    @apply w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 bg-white/80 backdrop-blur-sm;
+    @apply w-full px-3 py-2 sm:px-4 sm:py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 bg-white/80 backdrop-blur-sm text-sm sm:text-base;
   }
   
   .heal-chat-bubble {
-    @apply max-w-xs lg:max-w-md xl:max-w-lg px-4 py-2 rounded-2xl shadow-sm break-words;
+    @apply max-w-[280px] sm:max-w-xs lg:max-w-md xl:max-w-lg px-3 py-2 sm:px-4 sm:py-2 rounded-2xl shadow-sm break-words text-sm sm:text-base;
     word-wrap: break-word;
     overflow-wrap: break-word;
     hyphens: auto;
   }
   
   .heal-emergency {
-    @apply bg-red-50 border-l-4 border-red-500 p-4 rounded-r-lg;
+    @apply bg-red-50 border-l-4 border-red-500 p-3 sm:p-4 rounded-r-lg;
   }
 }
 
@@ -169,17 +169,17 @@
 
 /* Scrollbar styling for webkit browsers */
 .overflow-y-auto::-webkit-scrollbar {
-  width: 6px;
+  width: 4px;
 }
 
 .overflow-y-auto::-webkit-scrollbar-track {
   background: #f1f5f9;
-  border-radius: 3px;
+  border-radius: 2px;
 }
 
 .overflow-y-auto::-webkit-scrollbar-thumb {
   background: #cbd5e1;
-  border-radius: 3px;
+  border-radius: 2px;
 }
 
 .overflow-y-auto::-webkit-scrollbar-thumb:hover {
@@ -205,9 +205,9 @@
 }
 
 /* Mobile-specific optimizations */
-@media (max-width: 768px) {
+@media (max-width: 640px) {
   .heal-chat-bubble {
-    @apply max-w-[280px];
+    @apply max-w-[260px] px-3 py-2 text-sm;
   }
   
   /* Prevent horizontal scroll on mobile */
@@ -219,17 +219,46 @@
   button, input, textarea, select {
     min-height: 44px;
   }
+  
+  /* Responsive text sizes */
+  h1 {
+    @apply text-xl sm:text-2xl md:text-3xl;
+  }
+  
+  h2 {
+    @apply text-lg sm:text-xl md:text-2xl;
+  }
+  
+  h3 {
+    @apply text-base sm:text-lg md:text-xl;
+  }
+  
+  .text-4xl {
+    @apply text-2xl sm:text-3xl md:text-4xl;
+  }
+  
+  .text-3xl {
+    @apply text-xl sm:text-2xl md:text-3xl;
+  }
+  
+  .text-2xl {
+    @apply text-lg sm:text-xl md:text-2xl;
+  }
+  
+  .text-xl {
+    @apply text-base sm:text-lg md:text-xl;
+  }
 }
 
 /* Tablet optimizations */
-@media (min-width: 768px) and (max-width: 1024px) {
+@media (min-width: 641px) and (max-width: 1024px) {
   .heal-chat-bubble {
-    @apply max-w-md;
+    @apply max-w-sm;
   }
 }
 
 /* Desktop optimizations */
-@media (min-width: 1024px) {
+@media (min-width: 1025px) {
   .heal-chat-bubble {
     @apply max-w-lg;
   }
@@ -333,4 +362,17 @@
 .focus-trap:focus-within {
   outline: 2px solid hsl(var(--heal-primary));
   outline-offset: 2px;
+}
+
+/* Chat specific styles */
+.chat-messages-container {
+  height: calc(100vh - 200px);
+  min-height: 400px;
+}
+
+@media (max-width: 640px) {
+  .chat-messages-container {
+    height: calc(100vh - 180px);
+    min-height: 300px;
+  }
 }
