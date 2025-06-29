@@ -77,7 +77,7 @@
   status = 200
 
 [context.production.environment]
-  NEXT_PUBLIC_API_URL = "https://your-netlify-site.netlify.app/api/v1"
+  NEXT_PUBLIC_API_URL = "https://courageous-brigadeiros-7bc471.netlify.app/api/v1"
 
 [context.deploy-preview.environment]
   NEXT_PUBLIC_API_URL = "https://deploy-preview-{REVIEW_ID}--your-netlify-site.netlify.app/api/v1"
