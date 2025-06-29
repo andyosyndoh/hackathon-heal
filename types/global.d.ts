@@ -17,5 +17,3 @@ declare global {
     // Add any global window properties here if needed
   }
 }
-
-export {};
