@@ -1,22 +1,5 @@
 const jwt = require('jsonwebtoken');
-const Database = require('better-sqlite3');
-const path = require('path');
-
-// Initialize database
-const dbPath = path.join('/tmp', 'heal.db');
-let db;
-
-function initDatabase() {
-  if (!db) {
-    try {
-      db = new Database(dbPath);
-    } catch (error) {
-      console.error('Database connection error:', error);
-      db = new Database(':memory:');
-    }
-  }
-  return db;
-}
+const db = require('./shared-db');
 
 function verifyToken(token) {
   const jwtSecret = process.env.JWT_SECRET || 'your-super-secret-jwt-key-change-in-production';
@@ -73,17 +56,8 @@ exports.handler = async (event, context) => {
     const limit = parseInt(event.queryStringParameters?.limit || '20');
     const offset = parseInt(event.queryStringParameters?.offset || '0');
 
-    // Initialize database
-    const database = initDatabase();
-
     // Get sessions
-    const sessions = database.prepare(`
-      SELECT id, user_id, title, created_at, updated_at
-      FROM chat_sessions
-      WHERE user_id = ?
-      ORDER BY updated_at DESC
-      LIMIT ? OFFSET ?
-    `).all(userId, limit, offset);
+    const sessions = db.getUserChatSessions(userId, limit, offset);
 
     const formattedSessions = sessions.map(session => ({
       id: session.id,

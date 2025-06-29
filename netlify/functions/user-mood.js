@@ -1,43 +1,6 @@
 const jwt = require('jsonwebtoken');
 const { v4: uuidv4 } = require('uuid');
-const Database = require('better-sqlite3');
-const path = require('path');
-
-// Initialize database
-const dbPath = path.join('/tmp', 'heal.db');
-let db;
-
-function initDatabase() {
-  if (!db) {
-    try {
-      db = new Database(dbPath);
-      
-      // Create mood_logs table if it doesn't exist
-      db.exec(`
-        CREATE TABLE IF NOT EXISTS mood_logs (
-          id TEXT PRIMARY KEY,
-          user_id TEXT NOT NULL,
-          mood_score INTEGER NOT NULL,
-          notes TEXT,
-          created_at DATETIME DEFAULT CURRENT_TIMESTAMP
-        );
-      `);
-    } catch (error) {
-      console.error('Database initialization error:', error);
-      db = new Database(':memory:');
-      db.exec(`
-        CREATE TABLE mood_logs (
-          id TEXT PRIMARY KEY,
-          user_id TEXT NOT NULL,
-          mood_score INTEGER NOT NULL,
-          notes TEXT,
-          created_at DATETIME DEFAULT CURRENT_TIMESTAMP
-        );
-      `);
-    }
-  }
-  return db;
-}
+const db = require('./shared-db');
 
 function verifyToken(token) {
   const jwtSecret = process.env.JWT_SECRET || 'your-super-secret-jwt-key-change-in-production';
@@ -84,9 +47,6 @@ exports.handler = async (event, context) => {
 
     const userId = decoded.user_id;
 
-    // Initialize database
-    const database = initDatabase();
-
     if (event.httpMethod === 'POST') {
       // Log mood
       const { moodScore, notes = '' } = JSON.parse(event.body);
@@ -102,10 +62,15 @@ exports.handler = async (event, context) => {
       const logId = uuidv4();
       const now = new Date().toISOString();
 
-      database.prepare(`
-        INSERT INTO mood_logs (id, user_id, mood_score, notes, created_at)
-        VALUES (?, ?, ?, ?, ?)
-      `).run(logId, userId, moodScore, notes, now);
+      const moodLog = {
+        id: logId,
+        user_id: userId,
+        mood_score: moodScore,
+        notes,
+        created_at: now
+      };
+
+      db.createMoodLog(moodLog);
 
       return {
         statusCode: 201,
@@ -123,12 +88,7 @@ exports.handler = async (event, context) => {
       // Get mood history
       const days = parseInt(event.queryStringParameters?.days || '30');
 
-      const logs = database.prepare(`
-        SELECT id, user_id, mood_score, notes, created_at
-        FROM mood_logs
-        WHERE user_id = ? AND created_at > datetime('now', '-' || ? || ' days')
-        ORDER BY created_at DESC
-      `).all(userId, days);
+      const logs = db.getUserMoodLogs(userId, days);
 
       const formattedLogs = logs.map(log => ({
         id: log.id,

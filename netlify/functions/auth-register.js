@@ -1,72 +1,7 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { v4: uuidv4 } = require('uuid');
-const Database = require('better-sqlite3');
-const path = require('path');
-
-// Initialize database
-const dbPath = path.join('/tmp', 'heal.db');
-let db;
-
-function initDatabase() {
-  if (!db) {
-    try {
-      db = new Database(dbPath);
-      
-      // Create tables if they don't exist
-      db.exec(`
-        CREATE TABLE IF NOT EXISTS users (
-          id TEXT PRIMARY KEY,
-          email TEXT UNIQUE NOT NULL,
-          password_hash TEXT NOT NULL,
-          first_name TEXT NOT NULL,
-          last_name TEXT NOT NULL,
-          email_verified BOOLEAN DEFAULT TRUE,
-          created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-          updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
-        );
-
-        CREATE TABLE IF NOT EXISTS user_profiles (
-          user_id TEXT PRIMARY KEY,
-          avatar_url TEXT,
-          phone TEXT,
-          date_of_birth DATE,
-          emergency_contact_name TEXT,
-          emergency_contact_phone TEXT,
-          preferences TEXT DEFAULT '{}',
-          FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
-        );
-      `);
-    } catch (error) {
-      console.error('Database initialization error:', error);
-      // Fallback to in-memory database
-      db = new Database(':memory:');
-      db.exec(`
-        CREATE TABLE users (
-          id TEXT PRIMARY KEY,
-          email TEXT UNIQUE NOT NULL,
-          password_hash TEXT NOT NULL,
-          first_name TEXT NOT NULL,
-          last_name TEXT NOT NULL,
-          email_verified BOOLEAN DEFAULT TRUE,
-          created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-          updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
-        );
-
-        CREATE TABLE user_profiles (
-          user_id TEXT PRIMARY KEY,
-          avatar_url TEXT,
-          phone TEXT,
-          date_of_birth DATE,
-          emergency_contact_name TEXT,
-          emergency_contact_phone TEXT,
-          preferences TEXT DEFAULT '{}'
-        );
-      `);
-    }
-  }
-  return db;
-}
+const db = require('./shared-db');
 
 exports.handler = async (event, context) => {
   // Enable CORS
@@ -117,11 +52,8 @@ exports.handler = async (event, context) => {
       };
     }
 
-    // Initialize database
-    const database = initDatabase();
-
     // Check if user already exists
-    const existingUser = database.prepare('SELECT id FROM users WHERE email = ?').get(email);
+    const existingUser = db.findUserByEmail(email);
     if (existingUser) {
       return {
         statusCode: 400,
@@ -138,22 +70,26 @@ exports.handler = async (event, context) => {
     const userId = uuidv4();
     const now = new Date().toISOString();
 
-    database.prepare(`
-      INSERT INTO users (id, email, password_hash, first_name, last_name, email_verified, created_at, updated_at)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-    `).run(userId, email, passwordHash, firstName, lastName, true, now, now);
+    const newUser = {
+      id: userId,
+      email,
+      password_hash: passwordHash,
+      first_name: firstName,
+      last_name: lastName,
+      email_verified: true,
+      created_at: now,
+      updated_at: now
+    };
+
+    db.createUser(newUser);
 
     // Create user profile
-    database.prepare(`
-      INSERT INTO user_profiles (user_id, preferences)
-      VALUES (?, ?)
-    `).run(userId, '{}');
+    const newProfile = {
+      user_id: userId,
+      preferences: '{}'
+    };
 
-    // Get created user
-    const user = database.prepare(`
-      SELECT id, email, first_name, last_name, email_verified, created_at, updated_at
-      FROM users WHERE id = ?
-    `).get(userId);
+    db.createUserProfile(newProfile);
 
     // Generate JWT tokens
     const jwtSecret = process.env.JWT_SECRET || 'your-super-secret-jwt-key-change-in-production';
@@ -165,13 +101,13 @@ exports.handler = async (event, context) => {
       headers,
       body: JSON.stringify({
         user: {
-          id: user.id,
-          email: user.email,
-          firstName: user.first_name,
-          lastName: user.last_name,
-          emailVerified: user.email_verified,
-          createdAt: user.created_at,
-          updatedAt: user.updated_at
+          id: newUser.id,
+          email: newUser.email,
+          firstName: newUser.first_name,
+          lastName: newUser.last_name,
+          emailVerified: newUser.email_verified,
+          createdAt: newUser.created_at,
+          updatedAt: newUser.updated_at
         },
         accessToken,
         refreshToken
