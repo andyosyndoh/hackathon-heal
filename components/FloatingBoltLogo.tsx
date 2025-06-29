@@ -7,23 +7,26 @@ export function FloatingBoltLogo() {
   const [isHovered, setIsHovered] = useState(false);
 
   return (
-    <div 
-      className="fixed bottom-6 left-6 z-50 group cursor-pointer"
+    <div
+      className="fixed bottom-6 right-6 z-50 group cursor-pointer"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
+      onClick={() => window.open('https://bolt.new/', '_blank')}
     >
       {/* Logo Container */}
       <div className={`
-        relative w-14 h-14 bg-gradient-to-br from-blue-600 to-purple-600 
+        relative w-20 h-20 bg-gradient-to-br from-blue-600 to-purple-600 
         rounded-full shadow-lg hover:shadow-xl transition-all duration-300 
         flex items-center justify-center
         ${isHovered ? 'scale-110 shadow-2xl' : 'scale-100'}
       `}>
-        {/* Bolt Icon Placeholder - Replace with actual logo */}
-        <div className="w-8 h-8 bg-white rounded-sm flex items-center justify-center">
-          <Zap className="w-5 h-5 text-blue-600" />
-        </div>
-        
+        {/* With your actual logo */}
+        <img
+          src="/images/black-logo.png"
+          alt="Bolt Logo"
+          className="w-19 h-19 object-contain"
+        />
+
         {/* Glow Effect */}
         <div className={`
           absolute inset-0 bg-gradient-to-br from-blue-600 to-purple-600 
