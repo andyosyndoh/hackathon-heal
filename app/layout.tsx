@@ -2,6 +2,7 @@ import './globals.css';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import DailyClientProvider from '@/components/DailyClientProvider';
+import { FloatingBoltLogo } from '@/components/FloatingBoltLogo';
 
 const inter = Inter({ 
   subsets: ['latin'],
@@ -14,7 +15,7 @@ export const metadata: Metadata = {
   description: 'Professional mental health support with AI-powered assistance, crisis management, and personalized care plans.',
   keywords: 'mental health, therapy, counseling, crisis support, AI therapy, emotional support',
   authors: [{ name: 'Heal Team' }],
-  viewport: 'width=device-width, initial-scale=1',
+  viewport: 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no',
   themeColor: '#3B82F6',
   robots: 'index, follow',
   openGraph: {
@@ -40,13 +41,14 @@ export default function RootLayout({
         <meta name="apple-mobile-web-app-title" content="Heal" />
         <meta name="format-detection" content="telephone=no" />
         <meta name="mobile-web-app-capable" content="yes" />
-        <link rel="apple-touch-icon" href="/icon-192x192.png" />
+        <meta name="apple-touch-icon" href="/icon-192x192.png" />
         <link rel="manifest" href="/manifest.json" />
       </head>
       <body className={`${inter.className} antialiased`}>
         <DailyClientProvider>
           <div id="root">
             {children}
+            <FloatingBoltLogo />
           </div>
         </DailyClientProvider>
       </body>

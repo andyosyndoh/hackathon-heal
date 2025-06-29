@@ -405,11 +405,11 @@ export default function ChatPage() {
 
   if (!isAuthenticated) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-center">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">Please Sign In</h2>
-          <p className="text-gray-600 mb-6">You need to be signed in to access the chat.</p>
-          <Link href="/auth" className="heal-button">
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center mobile-container">
+        <div className="text-center heal-card max-w-md w-full">
+          <h2 className="mobile-heading-responsive text-gray-900 mb-4">Please Sign In</h2>
+          <p className="mobile-text-responsive text-gray-600 mb-6">You need to be signed in to access the chat.</p>
+          <Link href="/auth" className="heal-button w-full">
             Sign In
           </Link>
         </div>
@@ -418,174 +418,176 @@ export default function ChatPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col">
+    <div className="min-h-screen bg-gray-50 flex flex-col overflow-hidden">
       {/* Header */}
-      <div className="bg-white shadow-sm border-b border-gray-200 px-4 py-3">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-4">
-            <Link href="/dashboard" className="p-2 hover:bg-gray-100 rounded-lg transition-colors">
-              <ArrowLeft className="h-5 w-5 text-gray-600" />
-            </Link>
-            <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-green-500 rounded-full flex items-center justify-center">
-                <Bot className="h-5 w-5 text-white" />
-              </div>
-              <div>
-                <h1 className="font-semibold text-gray-900">AI Companion</h1>
-                <p className="text-sm text-green-600 flex items-center">
-                  {isPlayingAudio ? (
-                    <>
-                      <Volume2 className="h-3 w-3 mr-1" />
-                      Speaking ({voiceOption} voice)...
-                    </>
-                  ) : (
-                    'Online • Secure Session'
-                  )}
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <div className="flex items-center space-x-2">
-            {/* Chat Sessions Dropdown */}
-            <div className="relative" ref={sessionsRef}>
-              <button
-                onClick={() => setShowSessions(!showSessions)}
-                className="p-2 hover:bg-gray-100 rounded-lg transition-colors flex items-center space-x-1"
-                title="Chat Sessions"
-              >
-                <MessageSquare className="h-5 w-5 text-gray-600" />
-                <ChevronDown className="h-3 w-3 text-gray-600" />
-              </button>
-
-              {showSessions && (
-                <div className="absolute right-0 top-full mt-2 w-80 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-50 max-h-96 overflow-y-auto">
-                  <div className="px-3 py-2 text-xs font-medium text-gray-500 border-b border-gray-100 flex items-center justify-between">
-                    <span>Chat Sessions</span>
-                    <button
-                      onClick={createNewSession}
-                      className="text-blue-600 hover:text-blue-700 text-xs"
-                    >
-                      New Chat
-                    </button>
-                  </div>
-                  
-                  {loadingSessions ? (
-                    <div className="p-4 text-center">
-                      <Loader2 className="h-4 w-4 animate-spin mx-auto" />
-                    </div>
-                  ) : sessions.length === 0 ? (
-                    <div className="p-4 text-center text-gray-500 text-sm">
-                      No chat sessions yet
-                    </div>
-                  ) : (
-                    sessions.map((session) => (
-                      <div
-                        key={session.id}
-                        className={`px-3 py-2 hover:bg-gray-50 cursor-pointer flex items-center justify-between group ${
-                          currentSessionId === session.id ? 'bg-blue-50 text-blue-700' : 'text-gray-700'
-                        }`}
-                        onClick={() => selectSession(session.id)}
-                      >
-                        <div className="flex-1 min-w-0">
-                          <p className="text-sm font-medium truncate">{session.title}</p>
-                          <p className="text-xs text-gray-500">
-                            {new Date(session.updatedAt).toLocaleDateString()}
-                          </p>
-                        </div>
-                        <button
-                          onClick={(e) => deleteSession(session.id, e)}
-                          className="opacity-0 group-hover:opacity-100 p-1 hover:bg-red-100 rounded text-red-600 transition-opacity"
-                          title="Delete session"
-                        >
-                          <Trash2 className="h-3 w-3" />
-                        </button>
-                      </div>
-                    ))
-                  )}
+      <div className="bg-white shadow-sm border-b border-gray-200 flex-shrink-0">
+        <div className="mobile-container py-3 sm:py-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-3 sm:space-x-4 min-w-0 flex-1">
+              <Link href="/dashboard" className="mobile-touch-target hover:bg-gray-100 rounded-lg transition-colors flex-shrink-0">
+                <ArrowLeft className="h-5 w-5 text-gray-600" />
+              </Link>
+              <div className="flex items-center space-x-2 sm:space-x-3 min-w-0">
+                <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-r from-blue-500 to-green-500 rounded-full flex items-center justify-center flex-shrink-0">
+                  <Bot className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
                 </div>
-              )}
+                <div className="min-w-0">
+                  <h1 className="font-semibold text-gray-900 text-sm sm:text-base truncate">AI Companion</h1>
+                  <p className="text-xs sm:text-sm text-green-600 flex items-center">
+                    {isPlayingAudio ? (
+                      <>
+                        <Volume2 className="h-3 w-3 mr-1 flex-shrink-0" />
+                        <span className="truncate">Speaking ({voiceOption} voice)...</span>
+                      </>
+                    ) : (
+                      'Online • Secure Session'
+                    )}
+                  </p>
+                </div>
+              </div>
             </div>
 
-            {/* Voice Selection Dropdown */}
-            <div className="relative" ref={dropdownRef}>
-              <button
-                onClick={() => setShowVoiceDropdown(!showVoiceDropdown)}
-                className={`p-2 rounded-lg transition-colors flex items-center space-x-1 ${currentVoiceConfig.color}`}
-                title={`Current: ${currentVoiceConfig.label}`}
-              >
-                <VoiceIcon className="h-5 w-5" />
-                <ChevronDown className="h-3 w-3" />
-              </button>
+            <div className="flex items-center space-x-1 sm:space-x-2 flex-shrink-0">
+              {/* Chat Sessions Dropdown */}
+              <div className="relative" ref={sessionsRef}>
+                <button
+                  onClick={() => setShowSessions(!showSessions)}
+                  className="mobile-touch-target hover:bg-gray-100 rounded-lg transition-colors flex items-center space-x-1"
+                  title="Chat Sessions"
+                >
+                  <MessageSquare className="h-4 w-4 sm:h-5 sm:w-5 text-gray-600" />
+                  <ChevronDown className="h-3 w-3 text-gray-600 hidden sm:block" />
+                </button>
 
-              {showVoiceDropdown && (
-                <div className="absolute right-0 top-full mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-50">
-                  <div className="px-3 py-2 text-xs font-medium text-gray-500 border-b border-gray-100">
-                    Voice Options
-                  </div>
-                  {Object.entries(voiceConfigs).map(([key, config]) => {
-                    const OptionIcon = config.icon;
-                    return (
+                {showSessions && (
+                  <div className="absolute right-0 top-full mt-2 w-72 sm:w-80 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-50 max-h-80 sm:max-h-96 overflow-y-auto">
+                    <div className="px-3 py-2 text-xs font-medium text-gray-500 border-b border-gray-100 flex items-center justify-between">
+                      <span>Chat Sessions</span>
                       <button
-                        key={key}
-                        onClick={() => handleVoiceOptionChange(key as VoiceOption)}
-                        className={`w-full px-3 py-2 text-left hover:bg-gray-50 flex items-center space-x-3 transition-colors ${
-                          voiceOption === key ? 'bg-blue-50 text-blue-700' : 'text-gray-700'
-                        }`}
+                        onClick={createNewSession}
+                        className="text-blue-600 hover:text-blue-700 text-xs mobile-touch-target"
                       >
-                        <OptionIcon className="h-4 w-4" />
-                        <span className="text-sm">{config.label}</span>
-                        {voiceOption === key && (
-                          <div className="ml-auto w-2 h-2 bg-blue-600 rounded-full"></div>
-                        )}
+                        New Chat
                       </button>
-                    );
-                  })}
-                  <div className="px-3 py-2 text-xs text-gray-500 border-t border-gray-100 mt-1">
-                    {process.env.NEXT_PUBLIC_ELEVENLABS_API_KEY 
-                      ? 'Powered by ElevenLabs AI' 
-                      : 'API key required for voice'
-                    }
+                    </div>
+                    
+                    {loadingSessions ? (
+                      <div className="p-4 text-center">
+                        <Loader2 className="h-4 w-4 animate-spin mx-auto" />
+                      </div>
+                    ) : sessions.length === 0 ? (
+                      <div className="p-4 text-center text-gray-500 text-sm">
+                        No chat sessions yet
+                      </div>
+                    ) : (
+                      sessions.map((session) => (
+                        <div
+                          key={session.id}
+                          className={`px-3 py-3 hover:bg-gray-50 cursor-pointer flex items-center justify-between group ${
+                            currentSessionId === session.id ? 'bg-blue-50 text-blue-700' : 'text-gray-700'
+                          }`}
+                          onClick={() => selectSession(session.id)}
+                        >
+                          <div className="flex-1 min-w-0">
+                            <p className="text-sm font-medium truncate">{session.title}</p>
+                            <p className="text-xs text-gray-500">
+                              {new Date(session.updatedAt).toLocaleDateString()}
+                            </p>
+                          </div>
+                          <button
+                            onClick={(e) => deleteSession(session.id, e)}
+                            className="opacity-0 group-hover:opacity-100 mobile-touch-target hover:bg-red-100 rounded text-red-600 transition-opacity"
+                            title="Delete session"
+                          >
+                            <Trash2 className="h-3 w-3" />
+                          </button>
+                        </div>
+                      ))
+                    )}
                   </div>
-                </div>
-              )}
-            </div>
+                )}
+              </div>
 
-            <button
-              onClick={() => setShowVideoConversation(true)}
-              className={`p-2 hover:bg-gray-100 rounded-lg transition-colors text-gray-600`}
-              title={'Start video conversation'}
-            >
-              <Video className="h-5 w-5" />
-            </button>
-            <Link href="/crisis" className="p-2 hover:bg-gray-100 rounded-lg transition-colors text-red-600">
-              <Phone className="h-5 w-5" />
-            </Link>
-            <button className="p-2 hover:bg-gray-100 rounded-lg transition-colors">
-              <MoreVertical className="h-5 w-5 text-gray-600" />
-            </button>
+              {/* Voice Selection Dropdown */}
+              <div className="relative" ref={dropdownRef}>
+                <button
+                  onClick={() => setShowVoiceDropdown(!showVoiceDropdown)}
+                  className={`mobile-touch-target rounded-lg transition-colors flex items-center space-x-1 ${currentVoiceConfig.color}`}
+                  title={`Current: ${currentVoiceConfig.label}`}
+                >
+                  <VoiceIcon className="h-4 w-4 sm:h-5 sm:w-5" />
+                  <ChevronDown className="h-3 w-3 hidden sm:block" />
+                </button>
+
+                {showVoiceDropdown && (
+                  <div className="absolute right-0 top-full mt-2 w-44 sm:w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-50">
+                    <div className="px-3 py-2 text-xs font-medium text-gray-500 border-b border-gray-100">
+                      Voice Options
+                    </div>
+                    {Object.entries(voiceConfigs).map(([key, config]) => {
+                      const OptionIcon = config.icon;
+                      return (
+                        <button
+                          key={key}
+                          onClick={() => handleVoiceOptionChange(key as VoiceOption)}
+                          className={`w-full px-3 py-3 text-left hover:bg-gray-50 flex items-center space-x-3 transition-colors ${
+                            voiceOption === key ? 'bg-blue-50 text-blue-700' : 'text-gray-700'
+                          }`}
+                        >
+                          <OptionIcon className="h-4 w-4 flex-shrink-0" />
+                          <span className="text-sm">{config.label}</span>
+                          {voiceOption === key && (
+                            <div className="ml-auto w-2 h-2 bg-blue-600 rounded-full"></div>
+                          )}
+                        </button>
+                      );
+                    })}
+                    <div className="px-3 py-2 text-xs text-gray-500 border-t border-gray-100 mt-1">
+                      {process.env.NEXT_PUBLIC_ELEVENLABS_API_KEY 
+                        ? 'Powered by ElevenLabs AI' 
+                        : 'API key required for voice'
+                      }
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              <button
+                onClick={() => setShowVideoConversation(true)}
+                className="mobile-touch-target hover:bg-gray-100 rounded-lg transition-colors text-gray-600"
+                title="Start video conversation"
+              >
+                <Video className="h-4 w-4 sm:h-5 sm:w-5" />
+              </button>
+              <Link href="/crisis" className="mobile-touch-target hover:bg-gray-100 rounded-lg transition-colors text-red-600">
+                <Phone className="h-4 w-4 sm:h-5 sm:w-5" />
+              </Link>
+              <button className="mobile-touch-target hover:bg-gray-100 rounded-lg transition-colors">
+                <MoreVertical className="h-4 w-4 sm:h-5 sm:w-5 text-gray-600" />
+              </button>
+            </div>
           </div>
         </div>
       </div>
 
       {/* Privacy Notice */}
-      <div className="bg-blue-50 border-b border-blue-200 px-4 py-2">
-        <div className="flex items-center justify-center space-x-2 text-sm text-blue-700">
-          <Shield className="h-4 w-4" />
-          <span>End-to-end encrypted • Your conversation is private and secure</span>
+      <div className="bg-blue-50 border-b border-blue-200 px-4 py-2 flex-shrink-0">
+        <div className="flex items-center justify-center space-x-2 text-xs sm:text-sm text-blue-700">
+          <Shield className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />
+          <span className="text-center">End-to-end encrypted • Your conversation is private and secure</span>
         </div>
       </div>
 
       {/* Voice Status Banner */}
       {voiceOption !== 'off' && process.env.NEXT_PUBLIC_ELEVENLABS_API_KEY && (
-        <div className={`border-b px-4 py-2 ${
+        <div className={`border-b px-4 py-2 flex-shrink-0 ${
           voiceOption === 'female' ? 'bg-pink-50 border-pink-200' : 'bg-blue-50 border-blue-200'
         }`}>
-          <div className={`flex items-center justify-center space-x-2 text-sm ${
+          <div className={`flex items-center justify-center space-x-2 text-xs sm:text-sm ${
             voiceOption === 'female' ? 'text-pink-700' : 'text-blue-700'
           }`}>
-            <VoiceIcon className="h-4 w-4" />
-            <span>{currentVoiceConfig.label} enabled • AI will speak responses aloud</span>
+            <VoiceIcon className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />
+            <span className="text-center">{currentVoiceConfig.label} enabled • AI will speak responses aloud</span>
           </div>
         </div>
       )}
@@ -598,7 +600,7 @@ export default function ChatPage() {
               {renderScreen()}
               <button
                 onClick={() => setShowVideoConversation(false)}
-                className="absolute top-4 right-4 bg-white/80 hover:bg-white text-gray-700 rounded-full p-3 shadow-lg z-10 transition-all duration-200"
+                className="absolute top-4 right-4 bg-white/80 hover:bg-white text-gray-700 rounded-full p-3 shadow-lg z-10 transition-all duration-200 mobile-touch-target"
                 aria-label="Close video conversation"
               >
                 ✕
@@ -608,82 +610,87 @@ export default function ChatPage() {
         ) : (
           <>
             {/* Messages */}
-            <div className="flex-1 overflow-y-auto px-4 py-6 space-y-4">
+            <div className="chat-messages-mobile">
               {loadingHistory ? (
                 <div className="flex items-center justify-center py-8">
                   <div className="flex items-center space-x-2">
                     <Loader2 className="h-5 w-5 animate-spin text-blue-600" />
-                    <span className="text-gray-600">Loading chat history...</span>
+                    <span className="text-gray-600 text-sm sm:text-base">Loading chat history...</span>
                   </div>
                 </div>
               ) : (
-                messages.map((message) => (
-                  <div
-                    key={message.id}
-                    className={`flex ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}
-                  >
-                    <div className={`flex items-start space-x-3 max-w-xs sm:max-w-md lg:max-w-lg ${message.sender === 'user' ? 'flex-row-reverse space-x-reverse' : ''
+                <div className="space-y-3 sm:space-y-4">
+                  {messages.map((message) => (
+                    <div
+                      key={message.id}
+                      className={`flex ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}
+                    >
+                      <div className={`flex items-start space-x-2 sm:space-x-3 max-w-[85%] sm:max-w-xs md:max-w-md lg:max-w-lg ${
+                        message.sender === 'user' ? 'flex-row-reverse space-x-reverse' : ''
                       }`}>
-                      {/* Avatar */}
-                      <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${message.sender === 'user'
-                        ? 'bg-blue-500'
-                        : 'bg-gradient-to-r from-blue-500 to-green-500'
+                        {/* Avatar */}
+                        <div className={`w-6 h-6 sm:w-8 sm:h-8 rounded-full flex items-center justify-center flex-shrink-0 ${
+                          message.sender === 'user'
+                            ? 'bg-blue-500'
+                            : 'bg-gradient-to-r from-blue-500 to-green-500'
                         }`}>
-                        {message.sender === 'user' ?
-                          <User className="h-4 w-4 text-white" /> :
-                          <Bot className="h-4 w-4 text-white" />
-                        }
-                      </div>
+                          {message.sender === 'user' ?
+                            <User className="h-3 w-3 sm:h-4 sm:w-4 text-white" /> :
+                            <Bot className="h-3 w-3 sm:h-4 sm:w-4 text-white" />
+                          }
+                        </div>
 
-                      {/* Message Bubble */}
-                      <div className={`heal-chat-bubble ${message.sender === 'user'
-                        ? 'bg-blue-600 text-white'
-                        : 'bg-white text-gray-900 border border-gray-200'
+                        {/* Message Bubble */}
+                        <div className={`heal-chat-bubble ${
+                          message.sender === 'user'
+                            ? 'bg-blue-600 text-white'
+                            : 'bg-white text-gray-900 border border-gray-200'
                         }`}>
-                        {message.isLoading ? (
-                          <div className="flex items-center space-x-2">
-                            <Loader2 className="h-4 w-4 animate-spin" />
-                            <span className="text-sm">Thinking...</span>
-                          </div>
-                        ) : (
-                          <>
-                            <p className="text-sm leading-relaxed">{message.content}</p>
-                            <div className="flex items-center justify-between mt-1">
-                              <p className={`text-xs ${message.sender === 'user' ? 'text-blue-100' : 'text-gray-500'
-                                }`}>
-                                {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                              </p>
-                              {/* Audio indicator for AI messages */}
-                              {message.sender === 'ai' && voiceOption !== 'off' && !message.isLoading && (
-                                <div className="flex items-center space-x-1">
-                                  {isPlayingAudio ? (
-                                    <Volume2 className={`h-3 w-3 ${
-                                      voiceOption === 'female' ? 'text-pink-600' : 'text-blue-600'
-                                    }`} />
-                                  ) : (
-                                    <VoiceIcon className="h-3 w-3 text-gray-400" />
-                                  )}
-                                </div>
-                              )}
+                          {message.isLoading ? (
+                            <div className="flex items-center space-x-2">
+                              <Loader2 className="h-3 w-3 sm:h-4 sm:w-4 animate-spin" />
+                              <span className="text-xs sm:text-sm">Thinking...</span>
                             </div>
-                          </>
-                        )}
+                          ) : (
+                            <>
+                              <p className="leading-relaxed">{message.content}</p>
+                              <div className="flex items-center justify-between mt-1">
+                                <p className={`text-xs ${
+                                  message.sender === 'user' ? 'text-blue-100' : 'text-gray-500'
+                                }`}>
+                                  {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                                </p>
+                                {/* Audio indicator for AI messages */}
+                                {message.sender === 'ai' && voiceOption !== 'off' && !message.isLoading && (
+                                  <div className="flex items-center space-x-1">
+                                    {isPlayingAudio ? (
+                                      <Volume2 className={`h-3 w-3 ${
+                                        voiceOption === 'female' ? 'text-pink-600' : 'text-blue-600'
+                                      }`} />
+                                    ) : (
+                                      <VoiceIcon className="h-3 w-3 text-gray-400" />
+                                    )}
+                                  </div>
+                                )}
+                              </div>
+                            </>
+                          )}
+                        </div>
                       </div>
                     </div>
-                  </div>
-                ))
+                  ))}
+                  <div ref={messagesEndRef} />
+                </div>
               )}
-
-              <div ref={messagesEndRef} />
             </div>
 
             {/* Crisis Support Banner */}
-            <div className="bg-red-50 border-t border-red-200 px-4 py-2">
+            <div className="bg-red-50 border-t border-red-200 px-4 py-2 flex-shrink-0">
               <div className="flex items-center justify-between">
-                <p className="text-sm text-red-700">
+                <p className="text-xs sm:text-sm text-red-700">
                   If you're having thoughts of self-harm, please get help immediately.
                 </p>
-                <Link href="/crisis" className="text-sm font-medium text-red-600 hover:text-red-700">
+                <Link href="/crisis" className="text-xs sm:text-sm font-medium text-red-600 hover:text-red-700 mobile-touch-target">
                   Crisis Support →
                 </Link>
               </div>
@@ -692,17 +699,18 @@ export default function ChatPage() {
         )}
 
         {/* Input Area */}
-        <div className="bg-white border-t border-gray-200 px-4 py-4">
-          <div className="flex items-end space-x-3">
+        <div className="chat-input-mobile">
+          <div className="flex items-end space-x-2 sm:space-x-3">
             <button
               onClick={toggleRecording}
-              className={`p-3 rounded-full transition-all duration-200 ${isRecording
-                ? 'bg-red-500 text-white pulse-glow'
-                : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                }`}
+              className={`mobile-touch-target rounded-full transition-all duration-200 flex-shrink-0 ${
+                isRecording
+                  ? 'bg-red-500 text-white pulse-glow'
+                  : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+              }`}
               title={isRecording ? 'Stop recording' : 'Start voice message'}
             >
-              {isRecording ? <MicOff className="h-5 w-5" /> : <Mic className="h-5 w-5" />}
+              {isRecording ? <MicOff className="h-4 w-4 sm:h-5 sm:w-5" /> : <Mic className="h-4 w-4 sm:h-5 sm:w-5" />}
             </button>
 
             <div className="flex-1 relative">
@@ -712,9 +720,9 @@ export default function ChatPage() {
                 onChange={(e) => setInputMessage(e.target.value)}
                 onKeyPress={handleKeyPress}
                 placeholder="Type your message... (Press Enter to send)"
-                className="w-full px-4 py-3 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none max-h-32 bg-gray-50"
+                className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none max-h-24 sm:max-h-32 bg-gray-50 text-sm sm:text-base"
                 rows={1}
-                style={{ minHeight: '44px' }}
+                style={{ minHeight: '40px' }}
                 disabled={isTyping}
               />
             </div>
@@ -722,28 +730,29 @@ export default function ChatPage() {
             <button
               onClick={sendMessage}
               disabled={!inputMessage.trim() || isTyping}
-              className={`p-3 rounded-full transition-all duration-200 ${inputMessage.trim() && !isTyping
-                ? 'bg-blue-600 text-white hover:bg-blue-700 transform hover:scale-105'
-                : 'bg-gray-100 text-gray-400 cursor-not-allowed'
-                }`}
+              className={`mobile-touch-target rounded-full transition-all duration-200 flex-shrink-0 ${
+                inputMessage.trim() && !isTyping
+                  ? 'bg-blue-600 text-white hover:bg-blue-700 transform hover:scale-105'
+                  : 'bg-gray-100 text-gray-400 cursor-not-allowed'
+              }`}
               title="Send message"
             >
               {isTyping ? (
-                <Loader2 className="h-5 w-5 animate-spin" />
+                <Loader2 className="h-4 w-4 sm:h-5 sm:w-5 animate-spin" />
               ) : (
-                <Send className="h-5 w-5" />
+                <Send className="h-4 w-4 sm:h-5 sm:w-5" />
               )}
             </button>
           </div>
 
-          {/* Voice Status Indicator */}
+          {/* Quick Responses */}
           <div className="flex items-center justify-between mt-3">
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap gap-1 sm:gap-2 flex-1">
               {['I need support', 'Feeling anxious', 'Having a hard day', 'Need coping strategies'].map((quickResponse, index) => (
                 <button
                   key={index}
                   onClick={() => setInputMessage(quickResponse)}
-                  className="px-3 py-1 bg-gray-100 hover:bg-gray-200 text-gray-700 text-sm rounded-full transition-colors disabled:opacity-50"
+                  className="px-2 sm:px-3 py-1 bg-gray-100 hover:bg-gray-200 text-gray-700 text-xs sm:text-sm rounded-full transition-colors disabled:opacity-50 mobile-touch-target"
                   disabled={isTyping}
                 >
                   {quickResponse}
@@ -752,28 +761,28 @@ export default function ChatPage() {
             </div>
 
             {/* Voice Status */}
-            <div className="flex items-center space-x-2 text-xs text-gray-500">
+            <div className="flex items-center space-x-1 sm:space-x-2 text-xs text-gray-500 ml-2">
               <div className={`w-2 h-2 rounded-full ${
                 voiceOption === 'off' ? 'bg-gray-400' : 
                 voiceOption === 'female' ? 'bg-pink-500' : 'bg-blue-500'
               }`}></div>
-              <span>{currentVoiceConfig.label}</span>
+              <span className="hidden sm:inline">{currentVoiceConfig.label}</span>
             </div>
           </div>
 
           {/* AI Service Status */}
           <div className="flex items-center justify-center mt-2 text-xs text-gray-500">
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-3 sm:space-x-4">
               <div className="flex items-center space-x-1">
-                <div className={`w-2 h-2 rounded-full ${process.env.NEXT_PUBLIC_GEMINI_API_KEY ? 'bg-green-500' : 'bg-red-500'}`}></div>
+                <div className={`w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full ${process.env.NEXT_PUBLIC_GEMINI_API_KEY ? 'bg-green-500' : 'bg-red-500'}`}></div>
                 <span>Gemini AI</span>
               </div>
               <div className="flex items-center space-x-1">
-                <div className={`w-2 h-2 rounded-full ${process.env.NEXT_PUBLIC_ELEVENLABS_API_KEY ? 'bg-green-500' : 'bg-red-500'}`}></div>
+                <div className={`w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full ${process.env.NEXT_PUBLIC_ELEVENLABS_API_KEY ? 'bg-green-500' : 'bg-red-500'}`}></div>
                 <span>Voice ({voiceOption})</span>
               </div>
               <div className="flex items-center space-x-1">
-                <div className={`w-2 h-2 rounded-full ${isAuthenticated ? 'bg-green-500' : 'bg-red-500'}`}></div>
+                <div className={`w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full ${isAuthenticated ? 'bg-green-500' : 'bg-red-500'}`}></div>
                 <span>Backend</span>
               </div>
             </div>
