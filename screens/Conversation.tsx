@@ -233,12 +233,17 @@ export const Conversation: React.FC = () => {
       <div className="absolute inset-0 size-full">
         {remoteParticipantIds?.length > 0 ? (
           <>
-            <Timer />
-            <Video
-              id={remoteParticipantIds[0]}
-              className="size-full"
-              tileClassName="!object-cover"
-            />
+            <div className="absolute inset-0 w-full h-full">
+              <Video
+                id={remoteParticipantIds[0]}
+                className="w-full h-full min-h-full min-w-full max-w-none max-h-none object-cover"
+                tileClassName="w-full h-full min-h-full min-w-full max-w-none max-h-none object-cover"
+              />
+              {/* Timer overlay, always visible in top-left */}
+              <div className="pointer-events-none absolute left-4 top-4 z-20">
+                <Timer />
+              </div>
+            </div>
           </>
         ) : (
           <div className="flex h-full items-center justify-center bg-black/50">
