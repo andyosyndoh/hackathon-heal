@@ -21,10 +21,10 @@ export const createConversation = async (
   
   const payload = {
     persona_id: settings.persona || "pd43ffef",
-    custom_greeting: settings.greeting !== undefined && settings.greeting !== null && settings.greeting.trim() !== ""
+    custom_greeting: settings.greeting !== undefined && settings.greeting !== null 
       ? settings.greeting 
       : "Hey there! I'm your AI mental health companion. I'm here to listen, support, and help you through whatever you're experiencing. How are you feeling today?",
-    conversational_context: contextString || "You are a compassionate AI mental health companion. Provide supportive, empathetic responses while maintaining professional boundaries. If the user expresses thoughts of self-harm, gently guide them to seek professional help. Do not provide medical advice or diagnoses. Do not negate the user's feelings, but instead validate their emotions and encourage them to share more about their experiences.",
+    conversational_context: contextString || "You are a compassionate AI mental health companion. Provide supportive, empathetic responses while maintaining professional boundaries. If the user expresses thoughts of self-harm, gently guide them to seek professional help."
   };
 
   const response = await fetch("https://tavusapi.com/v2/conversations", {
