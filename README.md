@@ -151,8 +151,8 @@ heal/
 
 1. **Clone and setup**:
    ```bash
-   git clone <your-repo>
-   cd heal
+   git clone https://github.com/andyosyndoh/hackathon-heal.git
+   cd hackathon-heal
    npm install
    ```
 
@@ -180,7 +180,26 @@ heal/
    - **Tavus**: Get from [Tavus Dashboard](https://platform.tavus.io/)
    - **Daily.co**: Get from [Daily Dashboard](https://dashboard.daily.co/)
 
-4. **Run locally with Netlify Functions**:
+
+## 🏃‍♂️ Running the Project (Frontend + 3 Backend Options)
+
+
+This project supports three backend configurations. **NestJS is the recommended and default backend.** Use the provided npm scripts for easy setup and running:
+
+### 1. NestJS Backend (Monorepo Server) **[RECOMMENDED FOR BOLT.NEW]**
+- Installs dependencies and runs the NestJS backend:
+  ```bash
+  npm run dev:nest
+  ```
+- In a separate terminal, start the frontend:
+  ```bash
+  npm run dev
+  ```
+  > Make sure you have a `.env.local` in the root and a `.env` in `server/`.
+
+### 2. Netlify Functions (Serverless Node.js)
+
+ **Run locally with Netlify Functions**:
    ```bash
    # Install Netlify CLI
    npm install -g netlify-cli
@@ -191,7 +210,25 @@ heal/
 
    This starts both frontend and backend functions locally.
 
-### Alternative: Separate Frontend/Backend
+- Installs dependencies and starts both frontend and Netlify Functions backend:
+  ```bash
+  npm run dev:netlify
+  ```
+  > Make sure you have a `.env.local` file in the root (see below).
+
+### 3. Go Backend (Traditional)
+- Installs Go dependencies and runs the Go backend:
+  ```bash
+  npm run install:go
+  npm run dev:go
+  ```
+- In a separate terminal, start the frontend:
+  ```bash
+  npm run dev
+  ```
+  > Make sure you have a `.env.local` in the root and `.env` in `backend/`.
+
+  ### Alternative: Separate Frontend/Backend
 
 If you prefer to run the Go backend separately:
 
@@ -209,6 +246,18 @@ If you prefer to run the Go backend separately:
    # In project root
    npm run dev
    ```
+
+---
+
+## 🛠️ Environment Variables
+
+- **Frontend:** Create a `.env.local` file in the project root.
+- **NestJS Backend:** Create a `.env` file in the `server/` directory.
+- **Go Backend:** Create a `.env` file in the `backend/` directory.
+
+See each backend's README or `.env.example` for required variables.
+
+---
 
 ## 🌐 **Netlify Deployment (Recommended)**
 
