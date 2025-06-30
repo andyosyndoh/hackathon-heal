@@ -46,8 +46,18 @@ exports.handler = async (event, context) => {
       };
     }
 
+    // Make sure the password field matches your DB
+    const passwordHash = user.password_hash || user.password || user.hash;
+    if (!passwordHash) {
+      return {
+        statusCode: 500,
+        headers,
+        body: JSON.stringify({ error: 'User record is missing password hash' })
+      };
+    }
+
     // Verify password
-    const isValidPassword = await bcrypt.compare(password, user.password_hash);
+    const isValidPassword = await bcrypt.compare(password, passwordHash);
     if (!isValidPassword) {
       return {
         statusCode: 401,
@@ -68,11 +78,11 @@ exports.handler = async (event, context) => {
         user: {
           id: user.id,
           email: user.email,
-          firstName: user.first_name,
-          lastName: user.last_name,
-          emailVerified: user.email_verified,
-          createdAt: user.created_at,
-          updatedAt: user.updated_at
+          firstName: user.first_name || user.firstName,
+          lastName: user.last_name || user.lastName,
+          emailVerified: user.email_verified ?? true,
+          createdAt: user.created_at || user.createdAt,
+          updatedAt: user.updated_at || user.updatedAt
         },
         accessToken,
         refreshToken
