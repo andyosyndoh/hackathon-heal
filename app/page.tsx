@@ -344,7 +344,7 @@ export default function HomePage() {
               <h3 className="text-white font-semibold mb-3 sm:mb-4 text-sm sm:text-base">Emergency</h3>
               <div className="space-y-2 text-sm">
                 <p className="text-red-400 font-medium">If you're in crisis:</p>
-                <p>Call 988 (Suicide & Crisis Lifeline)</p>
+                <p>Call 999 (Suicide & Crisis Lifeline)</p>
                 <p>Text "HELLO" to 741741</p>
                 <p>Or call 911</p>
               </div>
