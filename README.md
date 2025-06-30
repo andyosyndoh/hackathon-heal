@@ -195,6 +195,10 @@ This project supports three backend configurations. **NestJS is the recommended 
   ```bash
   npm run dev
   ```
+  OR
+  ```
+  npm run dev:all
+  ```
   > Make sure you have a `.env.local` in the root and a `.env` in `server/`.
 
 ### 2. Netlify Functions (Serverless Node.js)
