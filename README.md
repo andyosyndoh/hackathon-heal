@@ -5,15 +5,16 @@ A comprehensive mental health support platform that combines AI-powered assistan
 ## 🌟 Features
 
 - **AI-Powered Support**: Real-time conversational AI with video chat capabilities using Tavus
-- **Text Chat with Gemini AI**: Advanced conversational AI using Google's Gemini model
+- **Gemini AI Chat**: Advanced conversational AI using Google's Gemini 1.5 Flash model with intelligent responses
 - **Advanced Voice Features**: Multi-voice text-to-speech with male/female options using ElevenLabs
-- **Persistent Chat History**: Messages are stored in the backend with session management
-- **Crisis Management**: 24/7 emergency support with location-based services
+- **Persistent Chat History**: Messages are stored in the backend with full session management
+- **Crisis Management**: 24/7 emergency support with location-based services and intelligent crisis detection
 - **Resource Library**: Curated mental health resources with progress tracking and audio narration
 - **User Dashboard**: Personalized analytics, mood tracking, and progress monitoring
 - **Secure Authentication**: JWT-based authentication with privacy-first design
 - **Video Conversations**: Face-to-face AI conversations using Daily.co integration
 - **Mobile Responsive**: Optimized for all devices and screen sizes
+- **Full-Stack Deployment**: Frontend and backend both deployable to Netlify
 
 ## 🎤 **Voice & Audio Features**
 
@@ -30,31 +31,26 @@ A comprehensive mental health support platform that combines AI-powered assistan
 ✅ **Playback Controls**: Play, pause, stop, and mute controls for audio content  
 ✅ **Smart Text Processing**: Optimized text preparation for natural-sounding speech  
 
-### **Voice Control Features**
-✅ **Dropdown Voice Selection**: Easy-to-use voice picker with visual indicators  
-✅ **Real-time Voice Status**: Live status indicators showing current voice mode  
-✅ **Audio Management**: Intelligent audio interruption and cleanup  
-✅ **Accessibility**: Full keyboard navigation and screen reader support  
+## 💬 **Enhanced Chat & AI Integration**
 
-## 💬 **Chat & Message Storage**
+### **Gemini AI Integration**
+✅ **Real AI Responses**: Powered by Google's Gemini 1.5 Flash model  
+✅ **Mental Health Specialized**: Custom prompts optimized for mental health support  
+✅ **Crisis Detection**: Intelligent detection of crisis keywords with appropriate responses  
+✅ **Contextual Responses**: Tailored responses for anxiety, depression, stress, and other conditions  
+✅ **Safety Settings**: Configured to block harmful content and maintain therapeutic boundaries  
 
 ### **Persistent Chat Sessions**
 ✅ **Session Management**: Create, view, and manage multiple chat sessions  
 ✅ **Message History**: All messages are stored in the backend database  
 ✅ **Session Switching**: Seamlessly switch between different chat conversations  
 ✅ **Auto-Save**: Messages are automatically saved as you chat  
+✅ **Message Metadata**: Rich metadata support for AI responses and analytics  
 
-### **Chat Features**
-✅ **Real-time Messaging**: Instant message delivery with typing indicators  
-✅ **Message Persistence**: Chat history is preserved across sessions  
-✅ **Session Deletion**: Users can delete chat sessions and all associated messages  
-✅ **Message Metadata**: Support for different message types (text, audio, video)  
-
-### **Backend Integration**
-✅ **RESTful API**: Complete chat API with session and message management  
-✅ **Database Storage**: SQLite/PostgreSQL storage for all chat data  
-✅ **User Authentication**: Secure access to chat history per user  
-✅ **Data Privacy**: User messages are encrypted and securely stored  
+### **Intelligent Fallback System**
+✅ **Contextual Fallbacks**: Smart fallback responses when API is unavailable  
+✅ **Crisis Support**: Crisis detection works even in fallback mode  
+✅ **Graceful Degradation**: Seamless user experience regardless of API status  
 
 ## 🏗️ Project Structure
 
@@ -70,15 +66,7 @@ heal/
 │   │   ├── resources/         # Resource library with audio narration
 │   │   └── globals.css        # Global styles with voice UI components
 │   ├── components/            # Reusable React components
-│   │   ├── ui/               # shadcn/ui components
-│   │   ├── DailyClientProvider.tsx
-│   │   ├── DialogWrapper.tsx
-│   │   ├── Timer.tsx
-│   │   └── Video.tsx
-│   ├── screens/              # Full-screen components
-│   │   ├── Conversation.tsx
-│   │   ├── ConversationError.tsx
-│   │   └── Instructions.tsx
+│   ├── screens/              # Full-screen components for video chat
 │   ├── hooks/                # Custom React hooks
 │   ├── lib/                  # Utility libraries
 │   │   ├── ai-services.ts   # Enhanced Gemini & ElevenLabs integration
@@ -86,19 +74,25 @@ heal/
 │   │   ├── auth.ts          # Authentication manager
 │   │   └── utils.ts         # Utility functions
 │   ├── store/               # Jotai state management
-│   ├── api/                 # API integration functions
 │   └── types/               # TypeScript type definitions
-├── backend/                 # Go backend API
+├── backend/                 # Go backend API (production-ready)
 │   ├── internal/
 │   │   ├── config/         # Configuration management
 │   │   ├── database/       # Database setup and migrations
-│   │   ├── handlers/       # HTTP request handlers (enhanced chat handler)
+│   │   ├── handlers/       # HTTP request handlers
 │   │   ├── middleware/     # HTTP middleware
-│   │   ├── models/         # Data models (enhanced with chat models)
-│   │   └── services/       # Business logic (enhanced chat service)
-│   ├── main.go            # Application entry point (updated routes)
-│   ├── go.mod             # Go module dependencies
+│   │   ├── models/         # Data models
+│   │   └── services/       # Business logic
+│   ├── main.go            # Application entry point
 │   └── README.md          # Backend documentation
+├── netlify/                # Netlify Functions (serverless backend)
+│   └── functions/         # Node.js serverless functions
+│       ├── shared-db.js   # Shared in-memory database
+│       ├── auth-*.js      # Authentication functions
+│       ├── chat-*.js      # Chat and messaging functions
+│       ├── user-*.js      # User management functions
+│       ├── resources.js   # Resource management
+│       └── health.js      # Health check endpoint
 └── README.md              # This file
 ```
 
@@ -111,306 +105,217 @@ heal/
 - **UI Components**: shadcn/ui component library
 - **State Management**: Jotai for atomic state management
 - **AI Services**: 
-  - Google Gemini AI for conversational responses
+  - Google Gemini 1.5 Flash for conversational responses
   - ElevenLabs for advanced text-to-speech with multiple voices
   - Tavus API for video AI conversations
 - **Video/Audio**: Daily.co for real-time video conversations
 - **Icons**: Lucide React
 - **Animations**: Framer Motion
-- **HTTP Client**: Custom API client with fetch
 
-### Backend
+### Backend Options
+
+#### Option 1: Netlify Functions (Serverless)
+- **Language**: Node.js with JavaScript
+- **Database**: In-memory SQLite with persistence
+- **Authentication**: JWT tokens with bcryptjs
+- **Deployment**: Serverless functions on Netlify
+- **AI Integration**: Direct Gemini API integration
+
+#### Option 2: Go Backend (Traditional)
 - **Language**: Go 1.21+
 - **Framework**: Gin (HTTP web framework)
-- **Database**: SQLite (development) / PostgreSQL (production ready)
-- **Authentication**: JWT tokens with bcrypt password hashing
-- **CORS**: Gin CORS middleware
-- **Environment**: godotenv for configuration
-- **UUID**: Google UUID for unique identifiers
+- **Database**: SQLite (development) / PostgreSQL (production)
+- **Authentication**: JWT tokens with bcrypt
+- **Deployment**: Any Go-compatible hosting
 
 ### External Services
-- **AI Text Generation**: Google Gemini AI
+- **AI Text Generation**: Google Gemini 1.5 Flash
 - **Text-to-Speech**: ElevenLabs with multiple voice models
 - **Video AI**: Tavus API for conversational AI
 - **Real-time Communication**: Daily.co for video/audio
-- **Deployment**: Netlify (frontend) / Any Go-compatible hosting (backend)
+- **Deployment**: Netlify (full-stack) or separate hosting
 
 ## 🚀 Getting Started
 
 ### Prerequisites
 
 - **Node.js** 18+ and npm
-- **Go** 1.21+
 - **Git**
 - **API Keys**:
-  - Google Gemini AI API key
+  - Google Gemini AI API key (required for chat)
   - ElevenLabs API key (for voice features)
-  - Tavus API key
-  - Daily.co API key
+  - Tavus API key (for video chat)
+  - Daily.co API key (for video infrastructure)
 
-### Backend Setup
+### Quick Setup (Netlify Full-Stack)
 
-1. **Navigate to backend directory**:
+1. **Clone and setup**:
    ```bash
-   cd backend
-   ```
-
-2. **Install Go dependencies**:
-   ```bash
-   go mod tidy
-   ```
-
-3. **Set up environment variables**:
-   ```bash
-   cp .env.example .env
-   ```
-   
-   Edit `.env` with your configuration:
-   ```env
-   DATABASE_URL=heal.db
-   JWT_SECRET=your-super-secret-jwt-key-change-in-production
-   PORT=8080
-   ENVIRONMENT=development
-   ```
-
-4. **Run the backend server**:
-   ```bash
-   go run main.go
-   ```
-
-   The backend will start on `http://localhost:8080`
-
-### Frontend Setup
-
-1. **Navigate to project root** (frontend is in root directory):
-   ```bash
-   cd ../  # if coming from backend directory
-   ```
-
-2. **Install dependencies**:
-   ```bash
+   git clone <your-repo>
+   cd heal
    npm install
    ```
 
-3. **Set up environment variables**:
-   Create a `.env.local` file in the root directory:
+2. **Set up environment variables**:
+   Create a `.env.local` file:
    ```env
-   # Backend API
-   NEXT_PUBLIC_API_URL=http://localhost:8080/api/v1
-   
-   # AI Services
+   # AI Services (Required)
    NEXT_PUBLIC_GEMINI_API_KEY=your-gemini-api-key-here
    NEXT_PUBLIC_ELEVENLABS_API_KEY=your-elevenlabs-api-key-here
    
-   # Video Services
+   # Video Services (Required for video chat)
    NEXT_PUBLIC_TAVUS_API_KEY=your-tavus-api-key-here
    NEXT_PUBLIC_DAILY_API_KEY=your-daily-api-key-here
+   
+   # Backend API (auto-configured for Netlify)
+   NEXT_PUBLIC_API_URL=http://localhost:8888/api/v1
+   
+   # Security (Required for backend)
+   JWT_SECRET=your-super-secret-jwt-key-minimum-32-characters-long
    ```
 
-4. **Get your API keys**:
+3. **Get your API keys**:
    - **Gemini AI**: Get from [Google AI Studio](https://makersuite.google.com/app/apikey)
    - **ElevenLabs**: Get from [ElevenLabs Dashboard](https://elevenlabs.io/app/settings/api-keys)
    - **Tavus**: Get from [Tavus Dashboard](https://platform.tavus.io/)
    - **Daily.co**: Get from [Daily Dashboard](https://dashboard.daily.co/)
 
-5. **Run the development server**:
+4. **Run locally with Netlify Functions**:
    ```bash
-   npm run dev
+   # Install Netlify CLI
+   npm install -g netlify-cli
+   
+   # Start development server with functions
+   netlify dev
    ```
 
-   The frontend will start on `http://localhost:3000`
+   This starts both frontend and backend functions locally.
 
-### Full Stack Development
+### Alternative: Separate Frontend/Backend
 
-To run both frontend and backend simultaneously:
+If you prefer to run the Go backend separately:
 
-1. **Terminal 1 - Backend**:
+1. **Backend setup**:
    ```bash
    cd backend
+   go mod tidy
+   cp .env.example .env
+   # Edit .env with your configuration
    go run main.go
    ```
 
-2. **Terminal 2 - Frontend**:
+2. **Frontend setup**:
    ```bash
+   # In project root
    npm run dev
    ```
 
-3. **Access the application**:
-   - Frontend: `http://localhost:3000`
-   - Backend API: `http://localhost:8080`
-   - API Health Check: `http://localhost:8080/health`
+## 🌐 **Netlify Deployment (Recommended)**
 
-## 🌐 **Netlify Deployment**
+### **Full-Stack Deployment**
 
-### **Frontend Deployment (Netlify)**
+1. **Connect to Netlify**:
+   - Go to [Netlify](https://netlify.com)
+   - Connect your Git repository
+   - Netlify will auto-detect the configuration
 
-#### **1. Prepare Your Repository**
-```bash
-# Ensure your code is committed and pushed to GitHub/GitLab/Bitbucket
-git add .
-git commit -m "Prepare for Netlify deployment"
-git push origin main
-```
-
-#### **2. Connect to Netlify**
-1. Go to [Netlify](https://netlify.com) and sign up/login
-2. Click "New site from Git"
-3. Connect your Git provider (GitHub, GitLab, or Bitbucket)
-4. Select your repository
-
-#### **3. Configure Build Settings**
-- **Build command**: `npm run build`
-- **Publish directory**: `out`
-- **Node version**: `18` (set in Environment variables)
-
-#### **4. Set Environment Variables**
-In Netlify dashboard → Site settings → Environment variables, add:
-
-```env
-# AI Services (Required)
-NEXT_PUBLIC_GEMINI_API_KEY=your-gemini-api-key-here
-NEXT_PUBLIC_ELEVENLABS_API_KEY=your-elevenlabs-api-key-here
-
-# Video Services (Required)
-NEXT_PUBLIC_TAVUS_API_KEY=your-tavus-api-key-here
-NEXT_PUBLIC_DAILY_API_KEY=your-daily-api-key-here
-
-# Backend API (Update with your backend URL)
-NEXT_PUBLIC_API_URL=https://your-backend-api.com/api/v1
-
-# Node Version
-NODE_VERSION=18
-```
-
-#### **5. Deploy**
-- Click "Deploy site"
-- Netlify will automatically build and deploy your site
-- Your site will be available at `https://your-site-name.netlify.app`
-
-### **Backend Deployment Options**
-
-Since Netlify only hosts static sites, you'll need to deploy your Go backend separately:
-
-#### **Option 1: Railway (Recommended)**
-1. Go to [Railway](https://railway.app)
-2. Connect your GitHub repository
-3. Select the `backend` folder
-4. Set environment variables:
+2. **Set Environment Variables** in Netlify dashboard:
    ```env
-   DATABASE_URL=postgresql://user:pass@host:port/dbname
-   JWT_SECRET=your-super-secret-jwt-key
-   PORT=8080
-   ENVIRONMENT=production
+   # AI Services (Required)
+   NEXT_PUBLIC_GEMINI_API_KEY=your-gemini-api-key-here
+   NEXT_PUBLIC_ELEVENLABS_API_KEY=your-elevenlabs-api-key-here
+   
+   # Video Services (Required)
+   NEXT_PUBLIC_TAVUS_API_KEY=your-tavus-api-key-here
+   NEXT_PUBLIC_DAILY_API_KEY=your-daily-api-key-here
+   
+   # Backend Security (Required)
+   JWT_SECRET=your-super-secret-jwt-key-minimum-32-characters-long
+   
+   # Node Version
+   NODE_VERSION=18
    ```
-5. Railway will automatically deploy your Go backend
 
-#### **Option 2: Heroku**
-1. Install Heroku CLI
-2. Create a new Heroku app
-3. Set buildpack: `heroku buildpacks:set heroku/go`
-4. Deploy: `git subtree push --prefix backend heroku main`
+3. **Deploy**:
+   - Push to your main branch
+   - Netlify automatically builds and deploys
+   - Both frontend and backend functions are deployed together
 
-#### **Option 3: DigitalOcean App Platform**
-1. Connect your repository
-2. Select Go as the runtime
-3. Set the source directory to `backend`
-4. Configure environment variables
+### **API Endpoints (Auto-configured)**
 
-### **6. Update Frontend with Backend URL**
-Once your backend is deployed, update the environment variable in Netlify:
-```env
-NEXT_PUBLIC_API_URL=https://your-backend-url.com/api/v1
+All API endpoints are automatically available at your Netlify URL:
+
 ```
+Frontend: https://your-site.netlify.app
+Backend:  https://your-site.netlify.app/api/v1
 
-### **7. Custom Domain (Optional)**
-1. In Netlify dashboard → Domain settings
-2. Add your custom domain
-3. Configure DNS settings as instructed
+Health:   GET  /api/v1/health
+Debug:    GET  /api/v1/debug
+Auth:     POST /api/v1/auth/register
+          POST /api/v1/auth/login
+Chat:     POST /api/v1/chat/message
+          GET  /api/v1/chat/history
+          GET  /api/v1/chat/sessions
+User:     GET  /api/v1/user/stats
+          POST /api/v1/user/mood
+Resources: GET  /api/v1/resources
+```
 
 ## 📱 Key Features & Pages
 
 ### Authentication (`/auth`)
-- User registration and login
-- JWT-based session management
-- Password reset functionality
-- Email verification (ready for implementation)
+- User registration and login with JWT tokens
+- Secure password hashing and validation
+- Session management with refresh tokens
 
 ### Dashboard (`/dashboard`)
-- Personalized user statistics
-- Mood tracking and analytics
-- Quick access to all features
-- Privacy and security status
+- Personalized user statistics and analytics
+- Mood tracking with visual charts
+- Quick access to all platform features
+- Privacy and security status indicators
 
 ### AI Chat (`/chat`)
-- **Enhanced Chat Interface**: 
-  - Session management with chat history
-  - Multiple conversation support
-  - Session switching and deletion
-  - Persistent message storage
-- **Advanced Voice Controls**: 
-  - Voice Off mode for silent conversations
-  - Female Voice (Bella) - warm and empathetic
-  - Male Voice (Adam) - calm and supportive
+- **Enhanced Gemini AI Integration**: 
+  - Real-time intelligent responses using Google's Gemini 1.5 Flash
+  - Mental health specialized prompts and safety settings
+  - Crisis detection with immediate intervention protocols
+  - Contextual responses for anxiety, depression, stress, and other conditions
+- **Advanced Session Management**: 
+  - Multiple conversation support with persistent history
+  - Session switching and deletion capabilities
+  - Message storage with rich metadata
+- **Multi-Voice Support**: 
+  - Voice Off, Female Voice (Bella), Male Voice (Adam)
   - Real-time voice switching with visual feedback
-- **Video AI**: Face-to-face conversations with Tavus AI
-- Real-time messaging with typing indicators
-- Crisis detection and intervention
-- Smart audio management and cleanup
+  - Smart audio management and cleanup
+- **Video AI**: Face-to-face conversations with Tavus AI integration
 
 ### Crisis Support (`/crisis`)
-- Emergency contact management
-- Local emergency services finder
-- Crisis intervention protocols
-- Safety planning tools
+- Emergency contact management with local services
+- Crisis intervention protocols with intelligent detection
+- Safety planning tools and resources
+- 24/7 support information for Kenya and international
 
 ### Resource Library (`/resources`)
 - **Enhanced Audio Features**:
-  - AI-generated narration for all resources
-  - Audio previews for quick browsing
-  - Playback controls (play, pause, stop, mute)
-  - High-quality voice synthesis
-- Categorized mental health resources
-- Progress tracking
-- Personalized recommendations
-- Favorite resources
+  - AI-generated narration for all resources using ElevenLabs
+  - Audio previews for quick content browsing
+  - Full playback controls (play, pause, stop, mute)
+- Categorized mental health resources with filtering
+- Progress tracking and completion analytics
+- Personalized recommendations based on user activity
 
-## 🔧 API Endpoints
-
-### Authentication
-- `POST /api/v1/auth/register` - User registration
-- `POST /api/v1/auth/login` - User login
-- `POST /api/v1/auth/logout` - User logout
-
-### User Management
-- `GET /api/v1/user/profile` - Get user profile
-- `PUT /api/v1/user/profile` - Update profile
-- `GET /api/v1/user/stats` - Get user statistics
-- `POST /api/v1/user/mood` - Log mood entry
-
-### Chat (Enhanced)
-- `POST /api/v1/chat/message` - Send message and get AI response
-- `GET /api/v1/chat/history` - Get chat history for a session
-- `GET /api/v1/chat/sessions` - Get all user chat sessions
-- `DELETE /api/v1/chat/session/:id` - Delete a chat session
-- `POST /api/v1/chat/feedback` - Submit feedback for AI responses
-
-### Resources
-- `GET /api/v1/resources` - Get resources (with filtering)
-- `GET /api/v1/resources/:id` - Get specific resource
-- `POST /api/v1/resources/:id/progress` - Update progress
-
-### Crisis Support
-- `POST /api/v1/crisis/alert` - Create crisis alert
-- `GET /api/v1/crisis/contacts` - Get emergency contacts
-- `GET /api/v1/crisis/services` - Get local services
-
-## 🤖 AI Integration
+## 🤖 AI Integration Details
 
 ### Gemini AI (Text Chat)
-- Advanced conversational AI for mental health support
-- Context-aware responses with conversation history
-- Crisis detection and appropriate responses
-- Empathetic and professional tone
+- **Model**: Google Gemini 1.5 Flash
+- **Specialization**: Mental health support with therapeutic boundaries
+- **Features**:
+  - Context-aware responses with conversation history
+  - Crisis detection with appropriate intervention
+  - Empathetic and professional tone
+  - Safety settings to block harmful content
+  - Intelligent fallback responses when API is unavailable
 
 ### ElevenLabs (Voice & Audio)
 - **Multi-Voice Support**: 
@@ -418,141 +323,181 @@ NEXT_PUBLIC_API_URL=https://your-backend-url.com/api/v1
   - Adam (Male) - Calm, supportive voice for comfortable interactions
 - **Advanced Features**:
   - High-quality text-to-speech conversion
-  - Smart text processing for natural speech
-  - Real-time voice switching
-  - Audio playback controls with visual feedback
-- **Resource Narration**:
-  - AI-generated narration for all mental health resources
-  - Audio previews for quick content browsing
-  - Optimized speech synthesis for educational content
+  - Smart text processing for natural speech patterns
+  - Real-time voice switching capabilities
+  - Resource narration with optimized speech synthesis
 
 ### Tavus (Video AI)
-- Face-to-face AI conversations
+- Face-to-face AI conversations with natural interaction
 - Real-time video and audio processing
-- Natural conversation flow with visual cues
 - Integration with Daily.co for video infrastructure
+- Customizable AI personas for different therapeutic approaches
 
 ## 💾 **Database Schema**
 
-### **Chat Tables**
+### **Core Tables**
 ```sql
+-- Users and authentication
+CREATE TABLE users (
+    id TEXT PRIMARY KEY,
+    email TEXT UNIQUE NOT NULL,
+    password_hash TEXT NOT NULL,
+    first_name TEXT NOT NULL,
+    last_name TEXT NOT NULL,
+    email_verified BOOLEAN DEFAULT FALSE,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
 -- Chat sessions for organizing conversations
 CREATE TABLE chat_sessions (
     id TEXT PRIMARY KEY,
     user_id TEXT NOT NULL,
     title TEXT,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
--- Individual chat messages
+-- Individual chat messages with AI responses
 CREATE TABLE chat_messages (
     id TEXT PRIMARY KEY,
     session_id TEXT NOT NULL,
     user_id TEXT NOT NULL,
     content TEXT NOT NULL,
     sender_type TEXT NOT NULL, -- 'user' or 'ai'
-    message_type TEXT DEFAULT 'text', -- 'text', 'audio', 'video'
-    metadata TEXT, -- JSON for additional data
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (session_id) REFERENCES chat_sessions(id) ON DELETE CASCADE,
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+    message_type TEXT DEFAULT 'text',
+    metadata TEXT, -- JSON for AI model info, timestamps, etc.
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Mood tracking and analytics
+CREATE TABLE mood_logs (
+    id TEXT PRIMARY KEY,
+    user_id TEXT NOT NULL,
+    mood_score INTEGER NOT NULL, -- 1-10 scale
+    notes TEXT,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Mental health resources
+CREATE TABLE resources (
+    id TEXT PRIMARY KEY,
+    title TEXT NOT NULL,
+    description TEXT NOT NULL,
+    content TEXT NOT NULL,
+    type TEXT NOT NULL, -- 'article', 'video', 'audio', 'exercise', 'contact'
+    category TEXT NOT NULL,
+    difficulty TEXT NOT NULL,
+    duration_minutes INTEGER,
+    rating REAL DEFAULT 0,
+    featured BOOLEAN DEFAULT FALSE
 );
 ```
 
-### **Key Features**
-- **Session Management**: Organize conversations into sessions
-- **Message Persistence**: All messages stored with timestamps
-- **User Privacy**: Messages tied to authenticated users
-- **Metadata Support**: Extensible JSON metadata for future features
-- **Cascade Deletion**: Clean up when users or sessions are deleted
-
-## 🎨 **Voice UI Design System**
-
-### **Color-Coded Voice States**
-- **Voice Off**: Gray theme with muted indicators
-- **Female Voice**: Pink theme with warm accents
-- **Male Voice**: Blue theme with calm accents
-
-### **Visual Feedback Elements**
-- **Header Status**: Real-time voice activity indicators
-- **Dropdown Menu**: Clean voice selection interface
-- **Message Indicators**: Voice icons on AI responses
-- **Status Banners**: Colored banners for active voice modes
-- **Playback Controls**: Intuitive audio control buttons
-
-### **Accessibility Features**
-- **Keyboard Navigation**: Full keyboard support for voice controls
-- **Screen Reader Support**: Proper ARIA labels and descriptions
-- **Visual Indicators**: Clear visual feedback for all voice states
-- **Error Handling**: Graceful fallbacks for voice generation failures
-
 ## 🔒 Security Features
 
-- **End-to-end encryption** for sensitive data
-- **JWT authentication** with secure token management
-- **CORS protection** for cross-origin requests
-- **Input validation** and sanitization
+- **End-to-end encryption** for sensitive data transmission
+- **JWT authentication** with secure token management and refresh
+- **CORS protection** configured for cross-origin requests
+- **Input validation** and sanitization on all endpoints
 - **SQL injection prevention** with prepared statements
-- **Password hashing** with bcrypt
+- **Password hashing** with bcrypt (12 rounds)
 - **HIPAA-compliant** data handling practices
 - **API key security** with environment variable management
 - **Audio data protection** with secure blob handling and cleanup
 - **Message privacy** with user-specific access controls
+- **Crisis detection** with appropriate escalation protocols
 
-## 🚀 Deployment
+## 🎯 **Testing Your Deployment**
 
-### Frontend (Netlify)
-1. Connect your repository to Netlify
-2. Set build command: `npm run build`
-3. Set publish directory: `out`
-4. Add environment variables in Netlify dashboard:
-   - `NEXT_PUBLIC_API_URL`
-   - `NEXT_PUBLIC_GEMINI_API_KEY`
-   - `NEXT_PUBLIC_ELEVENLABS_API_KEY`
-   - `NEXT_PUBLIC_TAVUS_API_KEY`
-   - `NEXT_PUBLIC_DAILY_API_KEY`
+### **Health Checks**
+```bash
+# Test health endpoint
+curl https://your-site.netlify.app/api/v1/health
 
-### Backend (Any Go hosting)
-1. Build the binary: `go build -o heal-api main.go`
-2. Set production environment variables
-3. Deploy to your preferred Go hosting service
-4. Ensure database is properly configured for production
+# Test debug endpoint (shows database status)
+curl https://your-site.netlify.app/api/v1/debug
+```
 
-## 🎧 **Voice Feature Usage**
+### **Authentication Testing**
+```bash
+# Test registration
+curl -X POST https://your-site.netlify.app/api/v1/auth/register \
+  -H "Content-Type: application/json" \
+  -d '{
+    "email": "test@example.com",
+    "password": "password123",
+    "confirmPassword": "password123",
+    "firstName": "Test",
+    "lastName": "User"
+  }'
 
-### **Chat Voice Controls**
-1. **Access Voice Menu**: Click the voice icon in the chat header
-2. **Select Voice Option**: Choose from Voice Off, Female Voice, or Male Voice
-3. **Real-time Switching**: Change voices during conversation without interruption
-4. **Visual Feedback**: See current voice status in header and input area
+# Test login
+curl -X POST https://your-site.netlify.app/api/v1/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{
+    "email": "test@example.com",
+    "password": "password123"
+  }'
+```
 
-### **Resource Audio Narration**
-1. **Browse Resources**: Navigate to any resource in the library
-2. **Play Audio**: Click the "Listen" button to hear AI narration
-3. **Control Playback**: Use play, pause, stop, and mute controls
-4. **Preview Mode**: Quick audio previews available on resource cards
+### **Chat Testing**
+```bash
+# Test chat with Gemini AI (requires auth token)
+curl -X POST https://your-site.netlify.app/api/v1/chat/message \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer YOUR_JWT_TOKEN" \
+  -d '{
+    "content": "I am feeling anxious today",
+    "sessionId": "",
+    "messageType": "text"
+  }'
+```
 
-### **Voice Quality Settings**
-- **Optimized for Mental Health**: Voices selected for warmth and empathy
-- **Natural Speech Patterns**: Smart text processing for conversational flow
-- **Consistent Quality**: High-fidelity audio generation across all features
-- **Responsive Performance**: Efficient audio generation and playback
+## 🔧 **Troubleshooting**
 
-## 💬 **Chat System Usage**
+### **Common Issues**
 
-### **Session Management**
-1. **Create New Chat**: Click "New Chat" to start a fresh conversation
-2. **Switch Sessions**: Use the chat sessions dropdown to switch between conversations
-3. **View History**: All previous messages are automatically loaded when switching sessions
-4. **Delete Sessions**: Remove unwanted chat sessions and all associated messages
+1. **Gemini AI not responding**:
+   - Check `NEXT_PUBLIC_GEMINI_API_KEY` is set correctly
+   - Verify API key has proper permissions
+   - Check function logs for API errors
+   - System falls back to intelligent responses if API fails
 
-### **Message Features**
-- **Auto-Save**: Messages are automatically saved as you type and send
-- **Persistent History**: Chat history is preserved across browser sessions
-- **Real-time Updates**: Messages appear instantly with typing indicators
-- **Voice Integration**: AI responses can be spoken aloud with voice controls
+2. **Messages not saving**:
+   - Verify JWT token is valid and not expired
+   - Check authentication headers in requests
+   - Use debug endpoint to verify database status
+
+3. **Voice features not working**:
+   - Ensure `NEXT_PUBLIC_ELEVENLABS_API_KEY` is configured
+   - Check browser permissions for audio playback
+   - Verify network connectivity for audio generation
+
+4. **CORS errors**:
+   - Ensure all functions have proper CORS headers
+   - Check API URL configuration in environment variables
+   - Clear browser cache and try again
+
+### **Debug Tools**
+
+- **Debug Endpoint**: `/api/v1/debug` shows system status
+- **Function Logs**: Check Netlify dashboard → Functions tab
+- **Browser Console**: Check for JavaScript errors
+- **Network Tab**: Monitor API requests and responses
+
+## 💰 **Cost Considerations**
+
+### **Netlify Free Tier**
+- **Bandwidth**: 100GB/month
+- **Build minutes**: 300 minutes/month
+- **Functions**: 125,000 requests/month
+- **Function runtime**: 100 hours/month
+
+### **AI Service Costs**
+- **Gemini AI**: Free tier with generous limits
+- **ElevenLabs**: Free tier with 10,000 characters/month
+- **Tavus**: Usage-based pricing for video AI
+- **Daily.co**: Free tier for development
 
 ## 🤝 Contributing
 
@@ -576,51 +521,53 @@ If you need help or have questions:
 
 ## 🔮 Roadmap
 
+### ✅ **Completed Features**
+- [x] **Real Gemini AI Integration** with mental health specialization
+- [x] **Persistent Chat Message Storage** with session management
+- [x] **Multi-voice text-to-speech system** with ElevenLabs
+- [x] **Resource audio narration** with playback controls
+- [x] **Netlify full-stack deployment** with serverless functions
+- [x] **Crisis detection and intervention** protocols
+- [x] **User authentication and authorization** with JWT
+- [x] **Mood tracking and analytics** with visual charts
+
+### 🚧 **In Progress**
 - [ ] Mobile app development (React Native)
-- [ ] Advanced AI therapy modules
-- [ ] Integration with wearable devices
-- [ ] Telehealth provider network
-- [ ] Group therapy sessions
-- [ ] Advanced analytics and insights
-- [x] ✅ **Multi-voice text-to-speech system**
-- [x] ✅ **Resource audio narration**
-- [x] ✅ **Voice control interface**
-- [x] ✅ **Persistent chat message storage**
-- [x] ✅ **Chat session management**
-- [x] ✅ **Message history and retrieval**
-- [x] ✅ **Netlify deployment configuration**
+- [ ] Advanced AI therapy modules with specialized models
+- [ ] Integration with wearable devices for health monitoring
+- [ ] Group therapy sessions with video conferencing
+
+### 🔮 **Future Plans**
+- [ ] Telehealth provider network integration
 - [ ] Voice-to-text for voice messages
 - [ ] Multi-language support with localized voices
 - [ ] Offline mode capabilities
 - [ ] Custom voice training for personalized experiences
 - [ ] Voice emotion detection and response adaptation
 - [ ] Advanced chat analytics and insights
-- [ ] Message search and filtering
-- [ ] Chat export functionality
+- [ ] Message search and filtering capabilities
+- [ ] Chat export functionality for therapy records
 
 ---
 
 **⚠️ Important**: This platform is designed for informational and support purposes only and does not replace professional medical advice. If you're experiencing a mental health crisis, please contact emergency services immediately.
 
-## 🎤 **Voice Technology Credits**
+## 🎤 **Technology Credits**
 
+- **AI Text Generation**: Powered by [Google Gemini](https://ai.google.dev/) 1.5 Flash
 - **Text-to-Speech**: Powered by [ElevenLabs](https://elevenlabs.io/) AI voice synthesis
-- **Voice Models**: 
-  - Bella (Female Voice) - Optimized for empathetic mental health support
-  - Adam (Male Voice) - Calibrated for calm, supportive interactions
-- **Audio Processing**: Advanced speech synthesis with natural language optimization
-- **Accessibility**: Full compliance with web accessibility standards for audio content
+- **Video AI**: Powered by [Tavus](https://tavus.io/) conversational AI
+- **Video Infrastructure**: Powered by [Daily.co](https://daily.co/) WebRTC platform
+- **Deployment**: Hosted on [Netlify](https://netlify.com/) with serverless functions
+- **Frontend**: Built with [Next.js](https://nextjs.org/) and [Tailwind CSS](https://tailwindcss.com/)
+- **Backend**: Node.js serverless functions with in-memory SQLite database
 
-## 💾 **Data Storage Credits**
+## 🌐 **Deployment Status**
 
-- **Backend Framework**: Built with [Go](https://golang.org/) and [Gin](https://gin-gonic.com/)
-- **Database**: SQLite for development, PostgreSQL-ready for production
-- **Message Storage**: Secure, encrypted storage with user privacy protection
-- **Session Management**: Efficient chat session organization and retrieval
-
-## 🌐 **Deployment Credits**
-
-- **Frontend Hosting**: [Netlify](https://netlify.com/) with automatic deployments
-- **Static Site Generation**: Next.js static export for optimal performance
-- **CDN**: Global content delivery for fast loading worldwide
-- **SSL**: Automatic HTTPS with Let's Encrypt certificates
+- **Frontend**: ✅ Deployed on Netlify with static site generation
+- **Backend**: ✅ Deployed as Netlify Functions (serverless)
+- **Database**: ✅ In-memory SQLite with persistence across function calls
+- **AI Services**: ✅ Integrated with proper error handling and fallbacks
+- **Authentication**: ✅ JWT-based with secure token management
+- **CORS**: ✅ Properly configured for cross-origin requests
+- **SSL**: ✅ Automatic HTTPS with Let's Encrypt certificates
