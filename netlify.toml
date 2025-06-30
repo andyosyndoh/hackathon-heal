@@ -85,10 +85,10 @@
   NEXT_PUBLIC_API_URL = "https://courageous-brigadeiros-7bc471.netlify.app/api/v1"
 
 [context.deploy-preview.environment]
-  NEXT_PUBLIC_API_URL = "https://deploy-preview-{REVIEW_ID}--your-netlify-site.netlify.app/api/v1"
+  NEXT_PUBLIC_API_URL = "https://deploy-preview-{REVIEW_ID}--courageous-brigadeiros-7bc471.netlify.app/api/v1"
 
 [context.branch-deploy.environment]
-  NEXT_PUBLIC_API_URL = "https://{BRANCH}--your-netlify-site.netlify.app/api/v1"
+  NEXT_PUBLIC_API_URL = "https://{BRANCH}--courageous-brigadeiros-7bc471.netlify.app/api/v1"
 
 [[plugins]]
   package = "@netlify/plugin-nextjs"
