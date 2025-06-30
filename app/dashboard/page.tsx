@@ -346,7 +346,7 @@ export default function DashboardPage() {
                   Get Crisis Support
                 </Link>
                 <p className="text-xs text-red-600 text-center">
-                  Or call 988 (Suicide & Crisis Lifeline)
+                  Or call 999 (Suicide & Crisis Lifeline)
                 </p>
               </div>
             </div>
