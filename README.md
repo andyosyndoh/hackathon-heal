@@ -121,7 +121,14 @@ heal/
 - **Deployment**: Serverless functions on Netlify
 - **AI Integration**: Direct Gemini API integration
 
-#### Option 2: Go Backend (Traditional)
+#### Option 2: Nest.JS Functions (Serverless)
+- **Language**: Node.js with JavaScript
+- **Database**: In-memory SQLite with persistence
+- **Authentication**: JWT tokens with bcryptjs
+- **Deployment**: Serverless functions on Netlify
+- **AI Integration**: Direct Gemini API integration
+
+#### Option 3: Go Backend (Traditional)
 - **Language**: Go 1.21+
 - **Framework**: Gin (HTTP web framework)
 - **Database**: SQLite (development) / PostgreSQL (production)
