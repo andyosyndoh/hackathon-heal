@@ -1,4 +1,3 @@
-const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const db = require('./shared-db');
 
@@ -47,17 +46,17 @@ exports.handler = async (event, context) => {
     }
 
     // Make sure the password field matches your DB
-    const passwordHash = user.password_hash || user.password || user.hash;
-    if (!passwordHash) {
+    const plainTextPassword = user.password;
+    if (!plainTextPassword) {
       return {
         statusCode: 500,
         headers,
-        body: JSON.stringify({ error: 'User record is missing password hash' })
+        body: JSON.stringify({ error: 'User record is missing password' })
       };
     }
 
     // Verify password
-    const isValidPassword = await bcrypt.compare(password, passwordHash);
+    const isValidPassword = password === plainTextPassword;
     if (!isValidPassword) {
       return {
         statusCode: 401,
