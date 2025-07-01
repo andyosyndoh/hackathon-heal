@@ -19,7 +19,8 @@ import {
   Loader2,
   ChevronDown,
   MessageSquare,
-  Trash2
+  Trash2,
+  X
 } from 'lucide-react';
 import Link from 'next/link';
 import { useAtom } from 'jotai';
@@ -50,13 +51,37 @@ interface ChatSession {
 
 type VoiceOption = 'off' | 'female' | 'male';
 
+// Choice Modal Component
+const ChoiceModal = ({ onSelect }: { onSelect: (choice: 'chat' | 'video') => void }) => (
+  <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-[100]">
+    <div className="bg-white rounded-2xl p-8 sm:p-10 shadow-xl text-center max-w-sm mx-4 transform transition-all duration-300 ease-out scale-95 animate-in fade-in-0 zoom-in-95">
+      <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-3">How would you like to connect?</h2>
+      <p className="text-gray-600 mb-8 text-sm sm:text-base">Choose your preferred method of communication.</p>
+      <div className="flex flex-col sm:flex-row justify-center space-y-3 sm:space-y-0 sm:space-x-4">
+        <button
+          onClick={() => onSelect('chat')}
+          className="heal-button w-full"
+        >
+          Start Chatting
+        </button>
+        <button
+          onClick={() => onSelect('video')}
+          className="heal-button-secondary w-full"
+        >
+          Start Video Call
+        </button>
+      </div>
+    </div>
+  </div>
+);
+
 export default function ChatPage() {
   const { user, isAuthenticated } = useAuth();
   const [currentSessionId, setCurrentSessionId] = useState<string | null>(null);
   const [sessions, setSessions] = useState<ChatSession[]>([]);
   const [showSessions, setShowSessions] = useState(false);
   const [loadingSessions, setLoadingSessions] = useState(false);
-  
+
   const [messages, setMessages] = useState<Message[]>([]);
   const [loadingHistory, setLoadingHistory] = useState(false);
 
@@ -67,10 +92,12 @@ export default function ChatPage() {
   const [showVoiceDropdown, setShowVoiceDropdown] = useState(false);
   const [showVideoModal, setShowVideoModal] = useState(false);
   const [showVideoConversation, setShowVideoConversation] = useState(false);
+  const [showChoiceModal, setShowChoiceModal] = useState(true);
+  const [showVideoTooltip, setShowVideoTooltip] = useState(true);
   const [isPlayingAudio, setIsPlayingAudio] = useState(false);
   const [currentAudio, setCurrentAudio] = useState<HTMLAudioElement | null>(null);
   const [, setScreenState] = useAtom(screenAtom);
-  
+
   // Refs for scrolling and responsive behavior
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const messagesContainerRef = useRef<HTMLDivElement>(null);
@@ -80,21 +107,21 @@ export default function ChatPage() {
 
   // Voice configuration
   const voiceConfigs = {
-    off: { 
-      label: 'Voice Off', 
-      icon: VolumeX, 
+    off: {
+      label: 'Voice Off',
+      icon: VolumeX,
       color: 'text-gray-600 bg-gray-100',
-      voiceId: null 
+      voiceId: null
     },
-    female: { 
-      label: 'Female Voice', 
-      icon: Volume2, 
+    female: {
+      label: 'Female Voice',
+      icon: Volume2,
       color: 'text-pink-600 bg-pink-100',
       voiceId: 'EXAVITQu4vr4xnSDxMaL' // Bella - warm and empathetic female voice
     },
-    male: { 
-      label: 'Male Voice', 
-      icon: Volume2, 
+    male: {
+      label: 'Male Voice',
+      icon: Volume2,
       color: 'text-blue-600 bg-blue-100',
       voiceId: 'pNInz6obpgDQGcFmaJgB' // Adam - calm and supportive male voice
     }
@@ -103,7 +130,7 @@ export default function ChatPage() {
   // Auto-scroll to bottom when new messages arrive
   useEffect(() => {
     if (messagesEndRef.current) {
-      messagesEndRef.current.scrollIntoView({ 
+      messagesEndRef.current.scrollIntoView({
         behavior: 'smooth',
         block: 'end'
       });
@@ -187,13 +214,15 @@ export default function ChatPage() {
 
   const createNewSession = () => {
     setCurrentSessionId(null);
-    setMessages([{
-      id: '1',
-      content: "Hello! I'm your AI companion. I'm here to provide emotional support and help you through whatever you're experiencing. How are you feeling today?",
-      sender: 'ai',
-      timestamp: new Date(),
-      type: 'text'
-    }]);
+    setMessages([
+      {
+        id: '1',
+        content: "Hello! I'm your AI companion. I'm here to provide emotional support and help you through whatever you're experiencing. How are you feeling today?",
+        sender: 'ai',
+        timestamp: new Date(),
+        type: 'text'
+      }
+    ]);
     setShowSessions(false);
   };
 
@@ -204,7 +233,7 @@ export default function ChatPage() {
 
   const deleteSession = async (sessionId: string, event: React.MouseEvent) => {
     event.stopPropagation();
-    
+
     if (!confirm('Are you sure you want to delete this chat session?')) {
       return;
     }
@@ -212,7 +241,7 @@ export default function ChatPage() {
     try {
       await apiClient.deleteChatSession(sessionId);
       setSessions(prev => prev.filter(s => s.id !== sessionId));
-      
+
       if (currentSessionId === sessionId) {
         createNewSession();
       }
@@ -223,10 +252,10 @@ export default function ChatPage() {
 
   const playAIResponse = async (text: string) => {
     if (voiceOption === 'off' || !process.env.NEXT_PUBLIC_ELEVENLABS_API_KEY) return;
-    
+
     try {
       setIsPlayingAudio(true);
-      
+
       // Stop any currently playing audio
       if (currentAudio) {
         currentAudio.pause();
@@ -234,7 +263,7 @@ export default function ChatPage() {
       }
 
       console.log(`Generating speech with ${voiceOption} voice for AI response`);
-      
+
       // Clean text for better speech synthesis
       const cleanText = text
         .replace(/\*\*(.*?)\*\*/g, '$1') // Remove markdown bold
@@ -246,21 +275,21 @@ export default function ChatPage() {
 
       const voiceId = voiceConfigs[voiceOption].voiceId;
       const audioBuffer = await elevenLabsService.textToSpeech(cleanText, voiceId);
-      
+
       // Create audio blob and URL
       const audioBlob = new Blob([audioBuffer], { type: 'audio/mpeg' });
       const audioUrl = URL.createObjectURL(audioBlob);
-      
+
       // Create and configure audio element
       const audio = new Audio(audioUrl);
       audio.volume = 0.7;
-      
+
       audio.onended = () => {
         setIsPlayingAudio(false);
         setCurrentAudio(null);
         URL.revokeObjectURL(audioUrl);
       };
-      
+
       audio.onerror = () => {
         console.error('Audio playback error');
         setIsPlayingAudio(false);
@@ -270,7 +299,7 @@ export default function ChatPage() {
 
       setCurrentAudio(audio);
       await audio.play();
-      
+
     } catch (error) {
       console.warn('Failed to play audio:', error);
       setIsPlayingAudio(false);
@@ -318,7 +347,7 @@ export default function ChatPage() {
     try {
       // Send message to backend
       const response = await apiClient.sendMessage(currentSessionId || '', inputMessage);
-      
+
       if (response.error) {
         throw new Error(response.error);
       }
@@ -355,7 +384,7 @@ export default function ChatPage() {
 
     } catch (error) {
       console.error('Error sending message:', error);
-      
+
       // Remove loading message and add error message
       setMessages(prev => {
         const filtered = prev.filter(msg => !msg.isLoading);
@@ -382,7 +411,7 @@ export default function ChatPage() {
   const handleVoiceOptionChange = (option: VoiceOption) => {
     setVoiceOption(option);
     setShowVoiceDropdown(false);
-    
+
     // Stop current audio if switching to off or changing voice
     if (isPlayingAudio) {
       stopCurrentAudio();
@@ -392,6 +421,13 @@ export default function ChatPage() {
   const toggleRecording = () => {
     setIsRecording(!isRecording);
     // Here you would implement actual voice recording functionality
+  };
+
+  const handleChoice = (choice: 'chat' | 'video') => {
+    setShowChoiceModal(false);
+    if (choice === 'video') {
+      setShowVideoConversation(true);
+    }
   };
 
   const [{ currentScreen }] = useAtom(screenAtom);
@@ -428,6 +464,7 @@ export default function ChatPage() {
 
   return (
     <div className="h-screen flex flex-col bg-gray-50 overflow-hidden">
+      {showChoiceModal && <ChoiceModal onSelect={handleChoice} />}
       {/* Header - Fixed */}
       <div className="bg-white shadow-sm border-b border-gray-200 px-3 sm:px-4 py-3 flex-shrink-0">
         <div className="flex items-center justify-between">
@@ -482,7 +519,7 @@ export default function ChatPage() {
                       New Chat
                     </button>
                   </div>
-                  
+
                   {loadingSessions ? (
                     <div className="p-4 text-center">
                       <Loader2 className="h-4 w-4 animate-spin mx-auto" />
@@ -495,9 +532,8 @@ export default function ChatPage() {
                     sessions.map((session) => (
                       <div
                         key={session.id}
-                        className={`px-3 py-2 hover:bg-gray-50 cursor-pointer flex items-center justify-between group ${
-                          currentSessionId === session.id ? 'bg-blue-50 text-blue-700' : 'text-gray-700'
-                        }`}
+                        className={`px-3 py-2 hover:bg-gray-50 cursor-pointer flex items-center justify-between group ${currentSessionId === session.id ? 'bg-blue-50 text-blue-700' : 'text-gray-700'
+                          }`}
                         onClick={() => selectSession(session.id)}
                       >
                         <div className="flex-1 min-w-0">
@@ -542,9 +578,8 @@ export default function ChatPage() {
                       <button
                         key={key}
                         onClick={() => handleVoiceOptionChange(key as VoiceOption)}
-                        className={`w-full px-3 py-2 text-left hover:bg-gray-50 flex items-center space-x-3 transition-colors ${
-                          voiceOption === key ? 'bg-blue-50 text-blue-700' : 'text-gray-700'
-                        }`}
+                        className={`w-full px-3 py-2 text-left hover:bg-gray-50 flex items-center space-x-3 transition-colors ${voiceOption === key ? 'bg-blue-50 text-blue-700' : 'text-gray-700'
+                          }`}
                       >
                         <OptionIcon className="h-4 w-4" />
                         <span className="text-sm">{config.label}</span>
@@ -555,8 +590,8 @@ export default function ChatPage() {
                     );
                   })}
                   <div className="px-3 py-2 text-xs text-gray-500 border-t border-gray-100 mt-1">
-                    {process.env.NEXT_PUBLIC_ELEVENLABS_API_KEY 
-                      ? 'Powered by ElevenLabs AI' 
+                    {process.env.NEXT_PUBLIC_ELEVENLABS_API_KEY
+                      ? 'Powered by ElevenLabs AI'
                       : 'API key required for voice'
                     }
                   </div>
@@ -564,13 +599,27 @@ export default function ChatPage() {
               )}
             </div>
 
-            <button
-              onClick={() => setShowVideoConversation(true)}
-              className="p-2 hover:bg-gray-100 rounded-lg transition-colors text-gray-600"
-              title="Start video conversation"
-            >
-              <Video className="h-4 w-4 sm:h-5 sm:w-5" />
-            </button>
+            <div className="relative">
+              <button
+                onClick={() => setShowVideoConversation(true)}
+                className="p-2 bg-blue-100 hover:bg-blue-200 rounded-lg transition-colors text-blue-600 relative"
+                title="Start video conversation"
+              >
+                <Video className="h-4 w-4 sm:h-5 sm:w-5" />
+                <span className="absolute top-0 right-0 block h-2 w-2 rounded-full bg-red-500 ring-2 ring-white"></span>
+              </button>
+              {showVideoTooltip && (
+                <div className="absolute top-full mt-2 right-1/2 translate-x-1/2 w-max bg-gray-800 text-white text-xs rounded py-1 px-2 shadow-lg z-20">
+                  Click here for a video chat!
+                  <button
+                    onClick={(e) => { e.stopPropagation(); setShowVideoTooltip(false); }}
+                    className="absolute -top-1 -right-1 bg-gray-600 hover:bg-gray-700 rounded-full p-0.5 leading-none"
+                  >
+                    <X className="h-2 w-2 text-white" />
+                  </button>
+                </div>
+              )}
+            </div>
             <Link href="/crisis" className="p-2 hover:bg-gray-100 rounded-lg transition-colors text-red-600">
               <Phone className="h-4 w-4 sm:h-5 sm:w-5" />
             </Link>
@@ -594,12 +643,10 @@ export default function ChatPage() {
 
       {/* Voice Status Banner - Fixed */}
       {voiceOption !== 'off' && process.env.NEXT_PUBLIC_ELEVENLABS_API_KEY && (
-        <div className={`border-b px-3 sm:px-4 py-2 flex-shrink-0 ${
-          voiceOption === 'female' ? 'bg-pink-50 border-pink-200' : 'bg-blue-50 border-blue-200'
-        }`}>
-          <div className={`flex items-center justify-center space-x-2 text-xs sm:text-sm ${
-            voiceOption === 'female' ? 'text-pink-700' : 'text-blue-700'
+        <div className={`border-b px-3 sm:px-4 py-2 flex-shrink-0 ${voiceOption === 'female' ? 'bg-pink-50 border-pink-200' : 'bg-blue-50 border-blue-200'
           }`}>
+          <div className={`flex items-center justify-center space-x-2 text-xs sm:text-sm ${voiceOption === 'female' ? 'text-pink-700' : 'text-blue-700'
+            }`}>
             <VoiceIcon className="h-3 w-3 sm:h-4 sm:w-4" />
             <span className="text-center">
               <span className="hidden sm:inline">{currentVoiceConfig.label} enabled • AI will speak responses aloud</span>
@@ -627,7 +674,7 @@ export default function ChatPage() {
         ) : (
           <>
             {/* Messages Container - Scrollable */}
-            <div 
+            <div
               ref={messagesContainerRef}
               className="flex-1 overflow-y-auto px-3 sm:px-4 py-4 sm:py-6 space-y-3 sm:space-y-4 min-h-0 chat-messages-container"
               style={{
@@ -648,15 +695,13 @@ export default function ChatPage() {
                     key={message.id}
                     className={`flex ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}
                   >
-                    <div className={`flex items-start space-x-2 sm:space-x-3 max-w-[85%] sm:max-w-xs md:max-w-md lg:max-w-lg xl:max-w-2xl ${
-                      message.sender === 'user' ? 'flex-row-reverse space-x-reverse' : ''
-                    }`}>
+                    <div className={`flex items-start space-x-2 sm:space-x-3 max-w-[85%] sm:max-w-xs md:max-w-md lg:max-w-lg xl:max-w-2xl ${message.sender === 'user' ? 'flex-row-reverse space-x-reverse' : ''
+                      }`}>
                       {/* Avatar */}
-                      <div className={`w-6 h-6 sm:w-8 sm:h-8 rounded-full flex items-center justify-center flex-shrink-0 ${
-                        message.sender === 'user'
+                      <div className={`w-6 h-6 sm:w-8 sm:h-8 rounded-full flex items-center justify-center flex-shrink-0 ${message.sender === 'user'
                           ? 'bg-blue-500'
                           : 'bg-gradient-to-r from-blue-500 to-green-500'
-                      }`}>
+                        }`}>
                         {message.sender === 'user' ?
                           <User className="h-3 w-3 sm:h-4 sm:w-4 text-white" /> :
                           <Bot className="h-3 w-3 sm:h-4 sm:w-4 text-white" />
@@ -664,11 +709,10 @@ export default function ChatPage() {
                       </div>
 
                       {/* Message Bubble */}
-                      <div className={`heal-chat-bubble ${
-                        message.sender === 'user'
+                      <div className={`heal-chat-bubble ${message.sender === 'user'
                           ? 'bg-blue-600 text-white'
                           : 'bg-white text-gray-900 border border-gray-200'
-                      }`}>
+                        }`}>
                         {message.isLoading ? (
                           <div className="flex items-center space-x-2">
                             <Loader2 className="h-3 w-3 sm:h-4 sm:w-4 animate-spin" />
@@ -678,18 +722,16 @@ export default function ChatPage() {
                           <>
                             <p className="text-xs sm:text-sm leading-relaxed break-words">{message.content}</p>
                             <div className="flex items-center justify-between mt-1">
-                              <p className={`text-xs ${
-                                message.sender === 'user' ? 'text-blue-100' : 'text-gray-500'
-                              }`}>
+                              <p className={`text-xs ${message.sender === 'user' ? 'text-blue-100' : 'text-gray-500'
+                                }`}>
                                 {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                               </p>
                               {/* Audio indicator for AI messages */}
                               {message.sender === 'ai' && voiceOption !== 'off' && !message.isLoading && (
                                 <div className="flex items-center space-x-1">
                                   {isPlayingAudio ? (
-                                    <Volume2 className={`h-3 w-3 ${
-                                      voiceOption === 'female' ? 'text-pink-600' : 'text-blue-600'
-                                    }`} />
+                                    <Volume2 className={`h-3 w-3 ${voiceOption === 'female' ? 'text-pink-600' : 'text-blue-600'
+                                      }`} />
                                   ) : (
                                     <VoiceIcon className="h-3 w-3 text-gray-400" />
                                   )}
@@ -727,11 +769,10 @@ export default function ChatPage() {
           <div className="flex items-end space-x-2 sm:space-x-3">
             <button
               onClick={toggleRecording}
-              className={`p-2 sm:p-3 rounded-full transition-all duration-200 flex-shrink-0 ${
-                isRecording
+              className={`p-2 sm:p-3 rounded-full transition-all duration-200 flex-shrink-0 ${isRecording
                   ? 'bg-red-500 text-white pulse-glow'
                   : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-              }`}
+                }`}
               title={isRecording ? 'Stop recording' : 'Start voice message'}
             >
               {isRecording ? <MicOff className="h-4 w-4 sm:h-5 sm:w-5" /> : <Mic className="h-4 w-4 sm:h-5 sm:w-5" />}
@@ -746,7 +787,7 @@ export default function ChatPage() {
                 placeholder="Type your message..."
                 className="w-full px-3 py-2 sm:px-4 sm:py-3 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none max-h-24 sm:max-h-32 bg-gray-50 text-sm sm:text-base"
                 rows={1}
-                style={{ 
+                style={{
                   minHeight: '40px',
                   maxHeight: '96px'
                 }}
@@ -757,11 +798,10 @@ export default function ChatPage() {
             <button
               onClick={sendMessage}
               disabled={!inputMessage.trim() || isTyping}
-              className={`p-2 sm:p-3 rounded-full transition-all duration-200 flex-shrink-0 ${
-                inputMessage.trim() && !isTyping
+              className={`p-2 sm:p-3 rounded-full transition-all duration-200 flex-shrink-0 ${inputMessage.trim() && !isTyping
                   ? 'bg-blue-600 text-white hover:bg-blue-700 transform hover:scale-105'
                   : 'bg-gray-100 text-gray-400 cursor-not-allowed'
-              }`}
+                }`}
               title="Send message"
             >
               {isTyping ? (
@@ -792,10 +832,9 @@ export default function ChatPage() {
 
             {/* Voice Status */}
             <div className="flex items-center space-x-1 sm:space-x-2 text-xs text-gray-500 ml-2 sm:ml-4 flex-shrink-0">
-              <div className={`w-2 h-2 rounded-full ${
-                voiceOption === 'off' ? 'bg-gray-400' : 
-                voiceOption === 'female' ? 'bg-pink-500' : 'bg-blue-500'
-              }`}></div>
+              <div className={`w-2 h-2 rounded-full ${voiceOption === 'off' ? 'bg-gray-400' :
+                  voiceOption === 'female' ? 'bg-pink-500' : 'bg-blue-500'
+                }`}></div>
               <span className="hidden sm:inline">{currentVoiceConfig.label}</span>
             </div>
           </div>
@@ -804,22 +843,19 @@ export default function ChatPage() {
           <div className="flex items-center justify-center mt-2 text-xs text-gray-500">
             <div className="flex items-center space-x-2 sm:space-x-4">
               <div className="flex items-center space-x-1">
-                <div className={`w-2 h-2 rounded-full ${
-                  process.env.NEXT_PUBLIC_GEMINI_API_KEY ? 'bg-green-500' : 'bg-red-500'
-                }`}></div>
+                <div className={`w-2 h-2 rounded-full ${process.env.NEXT_PUBLIC_GEMINI_API_KEY ? 'bg-green-500' : 'bg-red-500'
+                  }`}></div>
                 <span>Gemini AI</span>
               </div>
               <div className="flex items-center space-x-1">
-                <div className={`w-2 h-2 rounded-full ${
-                  process.env.NEXT_PUBLIC_ELEVENLABS_API_KEY ? 'bg-green-500' : 'bg-red-500'
-                }`}></div>
+                <div className={`w-2 h-2 rounded-full ${process.env.NEXT_PUBLIC_ELEVENLABS_API_KEY ? 'bg-green-500' : 'bg-red-500'
+                  }`}></div>
                 <span className="hidden sm:inline">Voice ({voiceOption})</span>
                 <span className="sm:hidden">Voice</span>
               </div>
               <div className="flex items-center space-x-1">
-                <div className={`w-2 h-2 rounded-full ${
-                  isAuthenticated ? 'bg-green-500' : 'bg-red-500'
-                }`}></div>
+                <div className={`w-2 h-2 rounded-full ${isAuthenticated ? 'bg-green-500' : 'bg-red-500'
+                  }`}></div>
                 <span>Backend</span>
               </div>
             </div>
