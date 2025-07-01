@@ -35,9 +35,11 @@ exports.handler = async (event, context) => {
     }
 
     // Get user by email
+    console.log('Attempting to find user with email:', email);
     const user = db.findUserByEmail(email);
 
     if (!user) {
+      console.error('Login failed: No user found for email:', email);
       return {
         statusCode: 401,
         headers,
@@ -45,9 +47,12 @@ exports.handler = async (event, context) => {
       };
     }
 
+    console.log('User found:', JSON.stringify(user, null, 2));
+
     // Make sure the password field matches your DB
     const plainTextPassword = user.password;
     if (!plainTextPassword) {
+      console.error('Login failed: User object is missing "password" field.', user);
       return {
         statusCode: 500,
         headers,
@@ -56,8 +61,11 @@ exports.handler = async (event, context) => {
     }
 
     // Verify password
+    console.log('Comparing provided password:', password);
+    console.log('With stored password:', plainTextPassword);
     const isValidPassword = password === plainTextPassword;
     if (!isValidPassword) {
+      console.error('Login failed: Password mismatch.');
       return {
         statusCode: 401,
         headers,
