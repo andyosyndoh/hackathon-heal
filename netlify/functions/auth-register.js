@@ -1,4 +1,3 @@
-const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { v4: uuidv4 } = require('uuid');
 const db = require('./shared-db');
@@ -62,10 +61,6 @@ exports.handler = async (event, context) => {
       };
     }
 
-    // Hash password
-    const saltRounds = 12;
-    const passwordHash = await bcrypt.hash(password, saltRounds);
-
     // Create user
     const userId = uuidv4();
     const now = new Date().toISOString();
@@ -73,7 +68,7 @@ exports.handler = async (event, context) => {
     const newUser = {
       id: userId,
       email,
-      password_hash: passwordHash,
+      password: password,
       first_name: firstName,
       last_name: lastName,
       email_verified: true,
