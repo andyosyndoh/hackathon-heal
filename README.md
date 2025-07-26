@@ -1,4 +1,4 @@
-# Heal - Mental Health Support Platform
+# Heal - Mental Health Platform
 
 A comprehensive mental health support platform that combines AI-powered assistance, crisis management, resource libraries, and real-time video conversations to provide accessible mental health care.
 
@@ -58,43 +58,41 @@ A comprehensive mental health support platform that combines AI-powered assistan
 heal/
 ├── frontend/                    # Next.js React application
 │   ├── app/                    # Next.js 13+ app directory
-│   │   ├── api/               # API routes (chat endpoint)
-│   │   ├── auth/              # Authentication pages
-│   │   ├── chat/              # Enhanced chat interface with session management
-│   │   ├── crisis/            # Crisis support pages
-│   │   ├── dashboard/         # User dashboard
-│   │   ├── resources/         # Resource library with audio narration
-│   │   └── globals.css        # Global styles with voice UI components
-│   ├── components/            # Reusable React components
-│   ├── screens/              # Full-screen components for video chat
-│   ├── hooks/                # Custom React hooks
-│   ├── lib/                  # Utility libraries
-│   │   ├── ai-services.ts   # Enhanced Gemini & ElevenLabs integration
-│   │   ├── api.ts           # Enhanced API client with chat endpoints
-│   │   ├── auth.ts          # Authentication manager
-│   │   └── utils.ts         # Utility functions
-│   ├── store/               # Jotai state management
-│   └── types/               # TypeScript type definitions
-├── backend/                 # Go backend API (production-ready)
-│   ├── internal/
-│   │   ├── config/         # Configuration management
-│   │   ├── database/       # Database setup and migrations
-│   │   ├── handlers/       # HTTP request handlers
-│   │   ├── middleware/     # HTTP middleware
-│   │   ├── models/         # Data models
-│   │   └── services/       # Business logic
-│   ├── main.go            # Application entry point
-│   └── README.md          # Backend documentation
-├── netlify/                # Netlify Functions (serverless backend)
-│   └── functions/         # Node.js serverless functions
-│       ├── shared-db.js   # Shared in-memory database
-│       ├── auth-*.js      # Authentication functions
-│       ├── chat-*.js      # Chat and messaging functions
-│       ├── user-*.js      # User management functions
-│       ├── resources.js   # Resource management
-│       └── health.js      # Health check endpoint
-└── README.md              # This file
+│   ├── components/             # Reusable React components
+│   ├── lib/                   # Utility libraries
+│   └── package.json           # Frontend dependencies
+├── server/                     # NestJS backend
+├── backend/                    # Go backend (alternative)
+└── package.json               # Root package.json with scripts
 ```
+
+## 🚀 Quick Start
+
+1. **Setup the project structure**:
+   ```bash
+   chmod +x setup.sh
+   ./setup.sh
+   ```
+
+2. **Run the full stack**:
+   ```bash
+   npm run dev:all
+   ```
+
+3. **Or run separately**:
+   ```bash
+   # Frontend only (http://localhost:3000)
+   npm run dev
+
+   # Backend only (http://localhost:3001)
+   npm run dev:server
+   ```
+
+## 📁 Directory Structure
+
+- `frontend/` - Next.js application with all UI components
+- `server/` - NestJS backend API
+- `backend/` - Alternative Go backend
 
 ## 🛠️ Technologies Used
 
