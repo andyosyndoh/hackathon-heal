@@ -73,14 +73,15 @@ export default function DonatePage() {
           </div>
         </div>
 
-        <div className="grid lg:grid-cols-2 gap-8">
-          {/* Left Column - Donation Form */}
-          <div className="space-y-6">
-            {/* Make a Donation Card */}
+        {/* Make a Donation - Centered */}
+        <div className="mb-12">
+          <div className="max-w-2xl mx-auto">
             <div className="bg-white rounded-lg shadow-sm p-6">
-              <div className="flex items-center gap-2 mb-6">
-                <Heart className="h-6 w-6 text-blue-600" />
-                <h2 className="text-xl font-bold text-gray-900">Make a Donation</h2>
+              <div className="text-center mb-6">
+                <div className="flex items-center justify-center gap-2 mb-2">
+                  <Heart className="h-6 w-6 text-blue-600" />
+                  <h2 className="text-xl font-bold text-gray-900">Make a Donation</h2>
+                </div>
               </div>
 
               {/* Donation Type */}
@@ -145,77 +146,60 @@ export default function DonatePage() {
                 />
               </div>
 
-              {/* Donor Information */}
+              {/* Payment Method Selection */}
               <div className="mb-6">
-                <h3 className="text-sm font-medium text-gray-700 mb-3">Donor Information</h3>
-                <div className="space-y-3">
-                  <div className="flex items-center gap-2">
-                    <input
-                      type="checkbox"
-                      id="anonymous"
-                      checked={donorInfo.anonymous}
-                      onChange={(e) => setDonorInfo({...donorInfo, anonymous: e.target.checked})}
-                      className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
-                    />
-                    <label htmlFor="anonymous" className="text-sm text-gray-600">
-                      Make this donation anonymous
-                    </label>
-                  </div>
-                  
-                  {!donorInfo.anonymous && (
-                    <>
-                      <div className="grid grid-cols-2 gap-3">
-                        <input
-                          type="text"
-                          placeholder="First Name"
-                          value={donorInfo.firstName}
-                          onChange={(e) => setDonorInfo({...donorInfo, firstName: e.target.value})}
-                          className="p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                        />
-                        <input
-                          type="text"
-                          placeholder="Last Name"
-                          value={donorInfo.lastName}
-                          onChange={(e) => setDonorInfo({...donorInfo, lastName: e.target.value})}
-                          className="p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                        />
-                      </div>
-                      <input
-                        type="email"
-                        placeholder="Email Address"
-                        value={donorInfo.email}
-                        onChange={(e) => setDonorInfo({...donorInfo, email: e.target.value})}
-                        className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                      />
-                    </>
-                  )}
+                <label className="block text-sm font-medium text-gray-700 mb-3">Payment Method</label>
+                <div className="grid grid-cols-2 gap-3">
+                  <button
+                    onClick={() => setSelectedCategory('mpesa')}
+                    className={`p-3 rounded-lg border text-sm font-medium transition-colors flex items-center justify-center gap-2 ${
+                      selectedCategory === 'mpesa'
+                        ? 'bg-green-50 border-green-500 text-green-700'
+                        : 'bg-gray-50 border-gray-300 text-gray-700 hover:bg-gray-100'
+                    }`}
+                  >
+                    <Smartphone className="h-4 w-4" />
+                    M-Pesa
+                  </button>
+                  <button
+                    onClick={() => setSelectedCategory('stellar')}
+                    className={`p-3 rounded-lg border text-sm font-medium transition-colors flex items-center justify-center gap-2 ${
+                      selectedCategory === 'stellar'
+                        ? 'bg-blue-50 border-blue-500 text-blue-700'
+                        : 'bg-gray-50 border-gray-300 text-gray-700 hover:bg-gray-100'
+                    }`}
+                  >
+                    <Wallet className="h-4 w-4" />
+                    Stellar
+                  </button>
                 </div>
-              </div>
-
-              {/* News/Updates Subscription */}
-              <div className="mb-6">
-                <textarea
-                  placeholder="News/Updates (optional)"
-                  rows={3}
-                  className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
-                />
               </div>
 
               {/* Donate Button */}
               <button
-                onClick={() => handleDonateClick('mental-health')}
-                className="w-full bg-blue-600 text-white py-4 px-6 rounded-lg font-medium hover:bg-blue-700 transition-colors flex items-center justify-center gap-2"
+                onClick={() => handleDonateClick(selectedCategory)}
+                className={`w-full py-4 px-6 rounded-lg font-medium transition-colors flex items-center justify-center gap-2 ${
+                  selectedCategory === 'mpesa'
+                    ? 'bg-green-600 hover:bg-green-700 text-white'
+                    : 'bg-blue-600 hover:bg-blue-700 text-white'
+                }`}
               >
-                <Heart className="h-5 w-5" />
-                Donate ${customAmount || selectedAmount.replace('$', '') || '0'}
+                {selectedCategory === 'mpesa' ? (
+                  <Smartphone className="h-5 w-5" />
+                ) : (
+                  <Wallet className="h-5 w-5" />
+                )}
+                Donate ${customAmount || selectedAmount.replace('$', '') || '0'} via {selectedCategory === 'mpesa' ? 'M-Pesa' : 'Stellar'}
               </button>
             </div>
           </div>
+        </div>
 
+        <div className="grid lg:grid-cols-2 gap-8">
           {/* Right Column - Impact Tracking */}
           <div className="space-y-6">
             {/* Track Your Impact */}
-            <div className="bg-white rounded-lg shadow-sm p-6">
+          { /* <div className="bg-white rounded-lg shadow-sm p-6">
               <h2 className="text-xl font-bold text-gray-900 mb-6">Track Your Impact</h2>
               
               <div className="space-y-4">
@@ -244,28 +228,11 @@ export default function DonatePage() {
                   );
                 })}
               </div>
-            </div>
-
-            {/* Recent Donations */}
-            <div className="bg-white rounded-lg shadow-sm p-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Recent Donations</h3>
-              <div className="space-y-3">
-                {recentDonations.map((donation, index) => (
-                  <div key={index} className="flex justify-between items-center py-2 border-b border-gray-100 last:border-b-0">
-                    <div>
-                      <div className="font-medium text-gray-900">{donation.donor}</div>
-                      <div className="text-sm text-gray-600">{donation.cause}</div>
-                    </div>
-                    <div className="text-right">
-                      <div className="font-medium text-green-600">{donation.amount}</div>
-                      <div className="text-xs text-gray-500">{donation.time}</div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
+            </div> */}
+      
+      
           </div>
-        </div>
+        </div> 
 
         {/* Other Ways to Help */}
         <div className="mt-12">
