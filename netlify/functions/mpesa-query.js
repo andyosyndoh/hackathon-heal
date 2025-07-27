@@ -5,6 +5,7 @@ const headers = {
   'Content-Type': 'application/json'
 };
 
+//Mpesa query function
 exports.handler = async (event, context) => {
   if (event.httpMethod === 'OPTIONS') {
     return { statusCode: 200, headers, body: '' };

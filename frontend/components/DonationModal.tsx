@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { X, Heart, Smartphone, Wallet, CreditCard } from 'lucide-react';
 import { StellarWallet } from '@/lib/stellar/wallet';
 import { mpesaClient } from '@/lib/mpesa/client';
@@ -23,6 +23,15 @@ export default function DonationModal({ isOpen, onClose, category = 'mental-heal
   const [isProcessing, setIsProcessing] = useState(false);
   const [walletConnected, setWalletConnected] = useState(false);
   const [selectedAsset, setSelectedAsset] = useState('XLM');
+
+  // Set payment method based on category prop
+  useEffect(() => {
+    if (category === 'mpesa') {
+      setPaymentMethod('mpesa');
+    } else if (category === 'stellar') {
+      setPaymentMethod('stellar');
+    }
+  }, [category]);
 
   const quickAmounts = ['10', '25', '50', '100', '250', '500'];
 
@@ -161,38 +170,62 @@ export default function DonationModal({ isOpen, onClose, category = 'mental-heal
               </div>
             </div>
 
-            {/* Amount Selection */}
+            {/* Amount Input with Quick Selection */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-3">
                 Amount {paymentMethod === 'mpesa' ? '(KES)' : `(${selectedAsset})`}
               </label>
+              
+              {/* Quick Amount Buttons */}
               <div className="grid grid-cols-3 gap-2 mb-3">
-                {quickAmounts.map((quickAmount) => (
+                {['100', '500', '1000'].map((quickAmount) => (
                   <button
                     key={quickAmount}
                     type="button"
                     onClick={() => setAmount(quickAmount)}
-                    className={`p-2 border rounded text-sm ${
-                      amount === quickAmount 
-                        ? 'border-blue-500 bg-blue-50 text-blue-700' 
-                        : 'border-gray-300 hover:border-gray-400'
+                    className={`p-3 rounded-lg border text-sm font-medium transition-colors ${
+                      amount === quickAmount
+                        ? paymentMethod === 'mpesa' 
+                          ? 'bg-green-600 border-green-600 text-white'
+                          : 'bg-blue-600 border-blue-600 text-white'
+                        : 'bg-white border-gray-300 text-gray-700 hover:bg-gray-50'
                     }`}
                   >
                     {paymentMethod === 'mpesa' ? 'KES' : selectedAsset} {quickAmount}
                   </button>
                 ))}
               </div>
+              
+              {/* Custom Amount Input */}
               <input
                 type="number"
                 value={amount}
                 onChange={(e) => setAmount(e.target.value)}
-                placeholder="Enter custom amount"
+                placeholder={`Enter custom amount in ${paymentMethod === 'mpesa' ? 'KES' : selectedAsset}`}
                 className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 required
+                autoFocus
               />
             </div>
 
-            {/* Stellar-specific fields */}
+            {/* M-Pesa Phone Number - Only if M-Pesa */}
+            {paymentMethod === 'mpesa' && (
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-3">
+                  Phone Number
+                </label>
+                <input
+                  type="tel"
+                  value={phoneNumber}
+                  onChange={(e) => setPhoneNumber(e.target.value)}
+                  placeholder="0712345678"
+                  className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  required
+                />
+              </div>
+            )}
+
+            {/* Stellar Asset Selection - Only if Stellar */}
             {paymentMethod === 'stellar' && (
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-3">
@@ -207,23 +240,6 @@ export default function DonationModal({ isOpen, onClose, category = 'mental-heal
                     <option key={asset} value={asset}>{asset}</option>
                   ))}
                 </select>
-              </div>
-            )}
-
-            {/* M-Pesa-specific fields */}
-            {paymentMethod === 'mpesa' && (
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-3">
-                  Phone Number
-                </label>
-                <input
-                  type="tel"
-                  value={phoneNumber}
-                  onChange={(e) => setPhoneNumber(e.target.value)}
-                  placeholder="0712345678"
-                  className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  required
-                />
               </div>
             )}
 
@@ -261,14 +277,19 @@ export default function DonationModal({ isOpen, onClose, category = 'mental-heal
             <button
               type="submit"
               disabled={isProcessing}
-              className="w-full bg-blue-600 text-white py-3 px-4 rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+              className={`w-full py-4 px-6 rounded-lg font-medium transition-colors flex items-center justify-center gap-2 ${
+                paymentMethod === 'mpesa'
+                  ? 'bg-green-600 hover:bg-green-700 text-white'
+                  : 'bg-blue-600 hover:bg-blue-700 text-white'
+              } disabled:opacity-50 disabled:cursor-not-allowed`}
             >
               {isProcessing ? (
                 <>Processing...</>
               ) : (
                 <>
                   <Heart className="h-5 w-5" />
-                  {paymentMethod === 'stellar' && !walletConnected ? 'Connect Wallet' : 'Donate Now'}
+                  {paymentMethod === 'stellar' && !walletConnected ? 'Connect Wallet & Donate' : 
+                   paymentMethod === 'mpesa' ? 'Send M-Pesa Prompt' : 'Donate Now'}
                 </>
               )}
             </button>
