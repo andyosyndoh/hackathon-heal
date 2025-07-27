@@ -1,5 +1,21 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
+# Node.js
+node_modules/
+.env
+.DS_Store
+.next/
+dist/
+build/
+coverage/
+*.log
+
+# VS Code
+.vscode/
+
+# MacOS system files
+Thumbs.db
+
 # dependencies
 /node_modules
 /server/node_modules
@@ -43,3 +59,53 @@ next-env.d.ts
 
 # Local Netlify folder
 .netlify
+
+# --- Node.js ---
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+.pnpm-debug.log
+
+# --- Next.js Build Files ---
+.next/
+out/
+dist/
+.vercel/
+.cache/
+
+# --- NestJS Build Files ---
+build/
+dist/
+
+# --- Environment Variables ---
+.env
+.env.*
+!.env.example
+
+# --- Logs ---
+logs/
+*.log
+debug.log
+
+# --- Git LFS large files ---
+*.node
+
+# --- OS Files ---
+.DS_Store
+Thumbs.db
+
+# --- Editor Files ---
+.vscode/
+.idea/
+*.swp
+
+# --- Optional: Linux binaries (like the one causing the error) ---
+**/next-swc*.node
+
+# Ignore all node_modules
+node_modules/
+
+# Explicitly ignore this SWC binary (optional redundancy)
+**/next-swc*.node
