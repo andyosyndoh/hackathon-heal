@@ -44,7 +44,7 @@ export default function RootLayout({
         <link rel="apple-touch-icon" href="/icon-192x192.png" />
         <link rel="manifest" href="/manifest.json" />
       </head>
-      <body className={`${inter.className} antialiased`}>
+      <body className={`${inter.className} antialiased bg-gradient-to-br from-blue-50 via-white to-green-50 min-h-screen`}>
         <DailyClientProvider>
           <div id="root">
             {children}

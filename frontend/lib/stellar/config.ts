@@ -1,4 +1,4 @@
-import { Networks, Server } from '@stellar/stellar-sdk';
+import { Networks, Horizon } from '@stellar/stellar-sdk';
 
 export const STELLAR_CONFIG = {
   // Use testnet for development, mainnet for production
@@ -26,12 +26,12 @@ export const STELLAR_CONFIG = {
   
   // Donation categories
   donationCategories: [
-    { id: 'mental-health', name: 'Mental Health Services', icon: '🧠' },
-    { id: 'operations', name: 'Operation Costs', icon: '⚙️' },
-    { id: 'ai-training', name: 'AI-Therapy Training', icon: '🤖' },
-    { id: 'crisis-support', name: 'Crisis Support', icon: '🆘' },
-    { id: 'research', name: 'Mental Health Research', icon: '🔬' }
+    { id: 'mental-health', name: 'Mental Health Services' },
+    { id: 'operations', name: 'Operation Costs' },
+    { id: 'ai-training', name: 'AI-Therapy Training' },
+    { id: 'crisis-support', name: 'Crisis Support'},
+    { id: 'research', name: 'Mental Health Research' }
   ]
 };
 
-export const stellarServer = new Server(STELLAR_CONFIG.horizonUrl);
+export const stellarServer = new Horizon.Server(STELLAR_CONFIG.horizonUrl);
