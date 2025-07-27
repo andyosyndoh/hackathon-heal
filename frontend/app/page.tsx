@@ -89,6 +89,10 @@ export default function HomePage() {
               <Link href="#testimonials" className="text-gray-700 hover:text-blue-600 transition-colors text-sm lg:text-base">
                 Testimonials
               </Link>
+              <Link href="/donate" className="flex items-center gap-2 text-gray-700 hover:text-blue-600 transition-colors text-sm lg:text-base">
+                <Heart className="h-4 w-4" />
+                Donate
+              </Link>
               <Link href="/auth" className="text-blue-600 hover:text-blue-700 font-medium text-sm lg:text-base">
                 Sign In
               </Link>
@@ -119,6 +123,10 @@ export default function HomePage() {
                 </Link>
                 <Link href="#testimonials" className="text-gray-700 hover:text-blue-600 transition-colors px-4 text-sm">
                   Testimonials
+                </Link>
+                <Link href="/donate" className="flex items-center gap-2 text-gray-700 hover:text-blue-600 transition-colors px-4 text-sm">
+                  <Heart className="h-4 w-4" />
+                  Donate
                 </Link>
                 <Link href="/auth" className="text-blue-600 hover:text-blue-700 font-medium px-4 text-sm">
                   Sign In
