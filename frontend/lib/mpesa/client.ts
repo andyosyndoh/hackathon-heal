@@ -1,39 +1,9 @@
-import { MPESA_CONFIG } from './config';
+import { LocalFallbackAPI } from '../api/local-fallback';
 
 export class MPesaClient {
-  private accessToken: string | null = null;
-  private tokenExpiry: number = 0;
-
-  async getAccessToken(): Promise<string> {
-    if (this.accessToken && Date.now() < this.tokenExpiry) {
-      return this.accessToken;
-    }
-
-    const auth = btoa(`${MPESA_CONFIG.consumerKey}:${MPESA_CONFIG.consumerSecret}`);
-    
-    try {
-      const response = await fetch(`${MPESA_CONFIG.baseUrl}/oauth/v1/generate?grant_type=client_credentials`, {
-        method: 'GET',
-        headers: {
-          'Authorization': `Basic ${auth}`,
-          'Content-Type': 'application/json'
-        }
-      });
-
-      const data = await response.json();
-      
-      if (data.access_token) {
-        this.accessToken = data.access_token;
-        this.tokenExpiry = Date.now() + (parseInt(data.expires_in) * 1000);
-        return this.accessToken;
-      }
-      
-      throw new Error('Failed to get M-Pesa access token');
-    } catch (error) {
-      console.error('M-Pesa auth error:', error);
-      throw error;
-    }
-  }
+  private baseUrl = '/.netlify/functions';
+  private isNetlifyDev = typeof window !== 'undefined' && window.location.port === '8888';
+  private isLocalDev = process.env.NODE_ENV === 'development' && !this.isNetlifyDev;
 
   async initiateStkPush({
     phoneNumber,
@@ -47,43 +17,72 @@ export class MPesaClient {
     message?: string;
   }) {
     try {
-      const accessToken = await this.getAccessToken();
-      const timestamp = new Date().toISOString().replace(/[^0-9]/g, '').slice(0, -3);
-      const password = btoa(`${MPESA_CONFIG.businessShortCode}${MPESA_CONFIG.passkey}${timestamp}`);
+      // Use local fallback in development without Netlify
+      if (this.isLocalDev) {
+        console.log('🔧 Using local development fallback for M-Pesa');
+        return await LocalFallbackAPI.handleMPesaRequest('mpesa-stk-push', {
+          phoneNumber, amount, category, message
+        });
+      }
 
-      const payload = {
-        BusinessShortCode: MPESA_CONFIG.businessShortCode,
-        Password: password,
-        Timestamp: timestamp,
-        TransactionType: 'CustomerPayBillOnline',
-        Amount: amount,
-        PartyA: phoneNumber,
-        PartyB: MPESA_CONFIG.businessShortCode,
-        PhoneNumber: phoneNumber,
-        CallBackURL: MPESA_CONFIG.callbackUrl,
-        AccountReference: `HEAL-${category.toUpperCase()}`,
-        TransactionDesc: message || `Donation for ${category}`
-      };
+      const apiUrl = this.isNetlifyDev 
+        ? `http://localhost:8888/.netlify/functions/mpesa-stk-push`
+        : `${this.baseUrl}/mpesa-stk-push`;
 
-      const response = await fetch(`${MPESA_CONFIG.baseUrl}/mpesa/stkpush/v1/processrequest`, {
+      const response = await fetch(apiUrl, {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${accessToken}`,
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify(payload)
+        body: JSON.stringify({
+          phoneNumber,
+          amount,
+          category,
+          message
+        })
       });
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error('M-Pesa API Error:', errorText);
+        
+        // Check if it's an HTML error page (404, etc.)
+        if (errorText.includes('<!DOCTYPE') || errorText.includes('<html>')) {
+          console.log('🔧 Netlify function not found, using local fallback');
+          return await LocalFallbackAPI.handleMPesaRequest('mpesa-stk-push', {
+            phoneNumber, amount, category, message
+          });
+        }
+        
+        let errorData;
+        try {
+          errorData = JSON.parse(errorText);
+        } catch {
+          throw new Error(`HTTP ${response.status}: ${errorText}`);
+        }
+        
+        throw new Error(errorData.error || 'Failed to initiate payment');
+      }
 
       const result = await response.json();
       
       return {
-        success: result.ResponseCode === '0',
-        checkoutRequestId: result.CheckoutRequestID,
-        merchantRequestId: result.MerchantRequestID,
-        message: result.ResponseDescription
+        success: result.success,
+        checkoutRequestId: result.checkoutRequestId,
+        merchantRequestId: result.merchantRequestId,
+        message: result.message || result.customerMessage
       };
     } catch (error) {
       console.error('M-Pesa STK Push error:', error);
+      
+      // Fallback to local API if network request fails
+      if (this.isLocalDev || error instanceof TypeError) {
+        console.log('🔧 Network error, using local fallback');
+        return await LocalFallbackAPI.handleMPesaRequest('mpesa-stk-push', {
+          phoneNumber, amount, category, message
+        });
+      }
+      
       return {
         success: false,
         error: error instanceof Error ? error.message : 'Unknown error'
@@ -93,29 +92,44 @@ export class MPesaClient {
 
   async queryTransaction(checkoutRequestId: string) {
     try {
-      const accessToken = await this.getAccessToken();
-      const timestamp = new Date().toISOString().replace(/[^0-9]/g, '').slice(0, -3);
-      const password = btoa(`${MPESA_CONFIG.businessShortCode}${MPESA_CONFIG.passkey}${timestamp}`);
+      if (this.isLocalDev) {
+        return await LocalFallbackAPI.handleMPesaRequest('mpesa-query', {
+          checkoutRequestId
+        });
+      }
 
-      const payload = {
-        BusinessShortCode: MPESA_CONFIG.businessShortCode,
-        Password: password,
-        Timestamp: timestamp,
-        CheckoutRequestID: checkoutRequestId
-      };
+      const apiUrl = this.isNetlifyDev 
+        ? `http://localhost:8888/.netlify/functions/mpesa-query`
+        : `${this.baseUrl}/mpesa-query`;
 
-      const response = await fetch(`${MPESA_CONFIG.baseUrl}/mpesa/stkpushquery/v1/query`, {
+      const response = await fetch(apiUrl, {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${accessToken}`,
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify(payload)
+        body: JSON.stringify({ checkoutRequestId })
       });
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        if (errorText.includes('<!DOCTYPE') || errorText.includes('<html>')) {
+          return await LocalFallbackAPI.handleMPesaRequest('mpesa-query', {
+            checkoutRequestId
+          });
+        }
+        throw new Error('Failed to query transaction');
+      }
 
       return await response.json();
     } catch (error) {
       console.error('M-Pesa query error:', error);
+      
+      if (this.isLocalDev || error instanceof TypeError) {
+        return await LocalFallbackAPI.handleMPesaRequest('mpesa-query', {
+          checkoutRequestId
+        });
+      }
+      
       throw error;
     }
   }
