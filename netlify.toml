@@ -7,9 +7,9 @@
   NODE_VERSION = "18"
 
 [dev]
-  command = "npm run dev"
-  port = 3000
-  targetPort = 3001
+  command = "cd frontend && npm run dev"
+  port = 8888
+  targetPort = 3002
   framework = "#custom"
 
 [[redirects]]

@@ -4,11 +4,11 @@
   "private": true,
   "scripts": {
     "dev": "node dev-setup.js",
-    "dev:next": "next dev",
+    "dev:next": "cd frontend && npm run dev",
     "dev:netlify": "npx netlify dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
+    "build": "cd frontend && npm run build",
+    "start": "cd frontend && npm run start",
+    "lint": "cd frontend && npm run lint"
   },
   "dependencies": {
     "concurrently": "^8.2.2"
