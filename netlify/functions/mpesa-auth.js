@@ -39,11 +39,14 @@ exports.handler = async (event, context) => {
       method: 'GET',
       headers: {
         'Authorization': `Basic ${auth}`,
-        'Content-Type': 'application/json'
       }
     });
-
     const data = await response.json();
+    
+        if (!response.ok){
+          console.error('Mpesa API returned error:', data);
+          throw new Error('Failed to get M-Pesa access token');
+        }
     
     if (data.access_token) {
       return {
