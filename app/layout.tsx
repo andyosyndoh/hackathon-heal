@@ -48,7 +48,7 @@ export default function RootLayout({
         <DailyClientProvider>
           <div id="root">
             {children}
-            <FloatingBoltLogo />
+            {/* <FloatingBoltLogo /> */}
           </div>
         </DailyClientProvider>
       </body>
