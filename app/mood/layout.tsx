@@ -1,14 +1,28 @@
+"use client";
+import { useState } from 'react';
 import type { Metadata } from 'next';
-
-export const metadata: Metadata = {
-  title: 'Mood Tracker - Heal',
-  description: 'Track your daily mood and emotional wellbeing with our comprehensive mood tracking system.',
-};
+import Layout from '@/components/layout/Layout';
+import { useAuth } from '@/hooks/use-auth';
 
 export default function MoodLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  return children;
+  const { user } = useAuth();
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+
+  const handleToggle = (collapsed: boolean) => {
+    setSidebarCollapsed(collapsed);
+  };
+
+  return (
+    <Layout
+      user={user || { firstName: '' }}
+      onToggle={handleToggle}
+      sidebarCollapsed={sidebarCollapsed}
+    >
+      {children}
+    </Layout>
+  );
 }
