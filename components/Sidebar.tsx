@@ -15,12 +15,6 @@ import {
   Shield,
   LogOut,
   Plus,
-  TrendingUp,
-  Calendar,
-  Clock,
-  Star,
-  AlertTriangle,
-  Loader2,
   ChevronDown,
   Trophy,
   Image,
@@ -28,6 +22,7 @@ import {
 } from 'lucide-react';
 import NextImage from 'next/image';
 import userImage from '@/public/images/heal-logo.png';
+import { link } from 'fs';
 
 interface SidebarProps {
   onToggle: (collapsed: boolean) => void;
@@ -39,13 +34,12 @@ const Sidebar: React.FC<SidebarProps> = ({ onToggle, user }) => {
   const sidebarRef = useRef<HTMLDivElement>(null);
 
   const navigationItems = [
-    { icon: Home, label: 'Dashboard', active: true, hasSubmenu: true },
-    { icon: Heart, label: 'Mood Tracker' },
+    { icon: Home, label: 'Dashboard', active: true, hasSubmenu: true, link: '/dashboard' },
+    { icon: Heart, label: 'Mood Tracker', link: '/mood' },
     { icon: BarChart3, label: 'Report' },
     { icon: BookOpen, label: 'Resources' },
     { icon: Bell, label: 'Notifications' },
     { icon: Settings, label: 'Settings' }
-
   ];
 
   const dashboardSubItems = [
@@ -78,6 +72,11 @@ const Sidebar: React.FC<SidebarProps> = ({ onToggle, user }) => {
     const newCollapsed = !isCollapsed;
     setIsCollapsed(newCollapsed);
     onToggle(newCollapsed);
+  };
+
+  const handleItemClick = (link: string, active: boolean) => {
+    window.location.href = link;
+    active = true;
   };
 
   return (
@@ -132,8 +131,10 @@ const Sidebar: React.FC<SidebarProps> = ({ onToggle, user }) => {
             <ul className="space-y-1 px-3">
               {navigationItems.map((item, index) => (
                 <li key={index}>
-                  <div className={`flex items-center justify-between px-3 py-2 rounded-lg cursor-pointer transition-colors ${item.active ? 'bg-gradient-to-r from-[#e2c68e] text-orange-800 shadow-sm' : 'text-gray-700 hover:bg-orange-50/40'
-                    }`}>
+                  <div 
+                  className={`flex items-center justify-between px-3 py-2 rounded-lg cursor-pointer transition-colors ${item.active ? 'bg-gradient-to-r from-[#e2c68e] text-orange-800 shadow-sm' : 'text-gray-700 hover:bg-orange-50/40'}`}
+                  onClick={() => handleItemClick(item?.link || '', item?.active || false)}
+                  >
                     <div className="flex items-center space-x-3">
                       <item.icon size={18} />
                       <span className="text-sm font-medium">{item.label}</span>
