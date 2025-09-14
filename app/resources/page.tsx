@@ -28,6 +28,14 @@ import {
 import Link from 'next/link';
 import { elevenLabsService } from '@/lib/ai-services';
 
+// Add Acme font
+if (typeof window !== 'undefined') {
+  const link = document.createElement('link');
+  link.href = 'https://fonts.googleapis.com/css2?family=Acme&display=swap';
+  link.rel = 'stylesheet';
+  document.head.appendChild(link);
+}
+
 interface Resource {
   id: string;
   title: string;
@@ -455,22 +463,28 @@ export default function ResourcesPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen" style={{ backgroundColor: '#FEF0D3', fontFamily: 'Acme, sans-serif' }}>
       {/* Header */}
-      <div className="bg-white shadow-sm border-b border-gray-200">
+      <div style={{ backgroundColor: '#012F35' }} className="shadow-lg">
         <div className="max-w-7xl mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-4">
-              <Link href="/dashboard" className="p-2 hover:bg-gray-100 rounded-lg transition-colors">
-                <ArrowLeft className="h-5 w-5 text-gray-600" />
-              </Link>
-              <div className="flex items-center space-x-2">
-                <BookOpen className="h-6 w-6 text-blue-600" />
-                <h1 className="text-xl font-bold text-gray-900">Resource Library</h1>
-              </div>
+            <div className="flex items-center space-x-3">
+              <img src="/images/heallogo.jpeg" alt="HEAL Logo" className="h-10 w-auto" style={{ mixBlendMode: 'multiply' }} />
+              <h1 className="text-2xl font-bold text-white">HEAL</h1>
             </div>
-            <div className="text-sm text-gray-600">
-              {filteredResources.length} resources available
+            
+            {/* Navigation Menu */}
+            <nav className="hidden md:flex items-center space-x-8">
+              <Link href="/" className="text-white hover:text-opacity-80 font-medium transition-colors" style={{ fontFamily: 'Acme, sans-serif' }}>HOME</Link>
+              <Link href="/about" className="text-white hover:text-opacity-80 font-medium transition-colors" style={{ fontFamily: 'Acme, sans-serif' }}>ABOUT HEAL</Link>
+              <Link href="/services" className="text-white hover:text-opacity-80 font-medium transition-colors" style={{ fontFamily: 'Acme, sans-serif' }}>SERVICES</Link>
+              <Link href="/resources" className="font-bold transition-colors" style={{ color: '#6EA7B4', fontFamily: 'Acme, sans-serif' }}>RESOURCES</Link>
+              <Link href="/report" className="text-white hover:text-opacity-80 font-medium transition-colors" style={{ fontFamily: 'Acme, sans-serif' }}>REPORT</Link>
+              <Link href="/contact" className="text-white hover:text-opacity-80 font-medium transition-colors" style={{ fontFamily: 'Acme, sans-serif' }}>CONTACT US</Link>
+            </nav>
+            
+            <div className="text-sm font-medium" style={{ color: '#6EA7B4' }}>
+              {filteredResources.length} resources
             </div>
           </div>
         </div>
@@ -497,19 +511,31 @@ export default function ResourcesPage() {
         <div className="mb-8">
           <div className="flex flex-col sm:flex-row gap-4 mb-6">
             <div className="flex-1 relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5" style={{ color: '#016A79' }} />
               <input
                 type="text"
                 placeholder="Search resources..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="heal-input pl-10"
+                className="w-full pl-12 pr-4 py-3 rounded-xl border-2 text-lg font-medium transition-colors focus:outline-none focus:ring-2"
+                style={{ 
+                  backgroundColor: 'white', 
+                  borderColor: '#6EA7B4',
+                  color: '#012F35',
+                  fontFamily: 'Acme, sans-serif'
+                }}
               />
             </div>
             <select
               value={selectedType}
               onChange={(e) => setSelectedType(e.target.value)}
-              className="heal-input w-full sm:w-auto"
+              className="w-full sm:w-auto px-4 py-3 rounded-xl border-2 text-lg font-medium transition-colors focus:outline-none focus:ring-2"
+              style={{ 
+                backgroundColor: 'white', 
+                borderColor: '#6EA7B4',
+                color: '#012F35',
+                fontFamily: 'Acme, sans-serif'
+              }}
             >
               {typeOptions.map(option => (
                 <option key={option.value} value={option.value}>
@@ -525,11 +551,13 @@ export default function ResourcesPage() {
               <button
                 key={category.id}
                 onClick={() => setSelectedCategory(category.id)}
-                className={`flex items-center space-x-2 px-4 py-2 rounded-full text-sm font-medium transition-colors ${
-                  selectedCategory === category.id
-                    ? 'bg-blue-600 text-white'
-                    : 'bg-white text-gray-700 hover:bg-gray-100 border border-gray-200'
-                }`}
+                className="flex items-center space-x-2 px-6 py-3 rounded-full text-lg font-bold transition-all transform hover:scale-105"
+                style={{
+                  backgroundColor: selectedCategory === category.id ? '#016A79' : 'white',
+                  color: selectedCategory === category.id ? 'white' : '#012F35',
+                  border: `2px solid ${selectedCategory === category.id ? '#016A79' : '#6EA7B4'}`,
+                  fontFamily: 'Acme, sans-serif'
+                }}
               >
                 <category.icon className="h-4 w-4" />
                 <span>{category.name}</span>
@@ -549,10 +577,10 @@ export default function ResourcesPage() {
                 const isPlaying = playingAudio === resource.id;
                 
                 return (
-                  <div key={resource.id} className="heal-card p-6 hover:shadow-lg transition-all duration-200 transform hover:scale-105 cursor-pointer">
+                  <div key={resource.id} className="p-6 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105 cursor-pointer border-2" style={{ backgroundColor: 'white', borderColor: '#6EA7B4' }}>
                     <div className="flex items-start justify-between mb-4">
-                      <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
-                        <IconComponent className="h-6 w-6 text-blue-600" />
+                      <div className="w-14 h-14 rounded-xl flex items-center justify-center" style={{ backgroundColor: '#6EA7B4' }}>
+                        <IconComponent className="h-7 w-7" style={{ color: '#012F35' }} />
                       </div>
                       <div className="flex items-center space-x-1">
                         <Star className="h-4 w-4 text-yellow-500 fill-current" />
@@ -560,8 +588,8 @@ export default function ResourcesPage() {
                       </div>
                     </div>
                     
-                    <h3 className="font-semibold text-gray-900 mb-2">{resource.title}</h3>
-                    <p className="text-gray-600 text-sm mb-4 line-clamp-2">{resource.description}</p>
+                    <h3 className="font-bold text-xl mb-2" style={{ color: '#012F35', fontFamily: 'Acme, sans-serif' }}>{resource.title}</h3>
+                    <p className="text-base mb-4 line-clamp-2" style={{ color: '#016A79', fontFamily: 'Acme, sans-serif' }}>{resource.description}</p>
                     
                     <div className="flex items-center justify-between text-sm mb-4">
                       <div className="flex items-center space-x-2 text-gray-500">
@@ -581,7 +609,8 @@ export default function ResourcesPage() {
                     <div className="flex space-x-2">
                       <button 
                         onClick={() => handleStartResource(resource)}
-                        className="flex-1 heal-button flex items-center justify-center space-x-2"
+                        className="flex-1 flex items-center justify-center space-x-2 px-4 py-3 rounded-xl font-bold text-lg transition-all transform hover:scale-105"
+                        style={{ backgroundColor: '#016A79', color: 'white', fontFamily: 'Acme, sans-serif' }}
                       >
                         <Play className="h-4 w-4" />
                         <span>{resource.type === 'contact' ? 'View Contact' : 'Start'}</span>
@@ -646,15 +675,15 @@ export default function ResourcesPage() {
                 const isPlaying = playingAudio === resource.id;
                 
                 return (
-                  <div key={resource.id} className="heal-card p-6 hover:shadow-lg transition-all duration-200 cursor-pointer">
+                  <div key={resource.id} className="p-6 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 cursor-pointer border-2" style={{ backgroundColor: 'white', borderColor: '#6EA7B4' }}>
                     <div className="flex items-start space-x-4">
-                      <div className="w-16 h-16 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                        <IconComponent className="h-8 w-8 text-blue-600" />
+                      <div className="w-16 h-16 rounded-xl flex items-center justify-center flex-shrink-0" style={{ backgroundColor: '#6EA7B4' }}>
+                        <IconComponent className="h-8 w-8" style={{ color: '#012F35' }} />
                       </div>
                       
                       <div className="flex-1 min-w-0">
                         <div className="flex items-start justify-between mb-2">
-                          <h3 className="font-semibold text-gray-900 text-lg">{resource.title}</h3>
+                          <h3 className="font-bold text-xl" style={{ color: '#012F35', fontFamily: 'Acme, sans-serif' }}>{resource.title}</h3>
                           <div className="flex items-center space-x-2">
                             {resource.featured && (
                               <span className="bg-yellow-100 text-yellow-800 text-xs font-medium px-2 py-1 rounded-full">
@@ -667,7 +696,7 @@ export default function ResourcesPage() {
                           </div>
                         </div>
                         
-                        <p className="text-gray-600 mb-4">{resource.description}</p>
+                        <p className="mb-4 text-lg" style={{ color: '#016A79', fontFamily: 'Acme, sans-serif' }}>{resource.description}</p>
                         
                         <div className="flex items-center space-x-6 text-sm text-gray-500 mb-4">
                           <div className="flex items-center space-x-1">
@@ -687,7 +716,8 @@ export default function ResourcesPage() {
                           <div className="flex space-x-3">
                             <button 
                               onClick={() => handleStartResource(resource)}
-                              className="heal-button flex items-center space-x-2"
+                              className="flex items-center space-x-2 px-6 py-3 rounded-xl font-bold text-lg transition-all transform hover:scale-105"
+                              style={{ backgroundColor: '#016A79', color: 'white', fontFamily: 'Acme, sans-serif' }}
                             >
                               <Play className="h-4 w-4" />
                               <span>{resource.type === 'contact' ? 'View Contact' : 'Start'}</span>
@@ -704,7 +734,8 @@ export default function ResourcesPage() {
                                   }
                                 }}
                                 disabled={isGenerating}
-                                className="bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded-lg transition-colors flex items-center space-x-2 disabled:opacity-50"
+                                className="font-bold py-3 px-6 rounded-xl transition-all transform hover:scale-105 flex items-center space-x-2 disabled:opacity-50"
+                                style={{ backgroundColor: '#6EA7B4', color: '#012F35', fontFamily: 'Acme, sans-serif' }}
                               >
                                 {isGenerating ? (
                                   <>
@@ -725,7 +756,7 @@ export default function ResourcesPage() {
                               </button>
                             )}
                             
-                            <button className="bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium py-2 px-4 rounded-lg transition-colors flex items-center space-x-2">
+                            <button className="font-bold py-3 px-6 rounded-xl transition-all transform hover:scale-105 flex items-center space-x-2 border-2" style={{ backgroundColor: 'white', color: '#016A79', borderColor: '#6EA7B4', fontFamily: 'Acme, sans-serif' }}>
                               <Download className="h-4 w-4" />
                               <span>Save</span>
                             </button>
