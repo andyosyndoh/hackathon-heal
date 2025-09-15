@@ -5,7 +5,6 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/heal/internal/config"
 	"github.com/heal/internal/database"
@@ -43,13 +42,13 @@ func main() {
 	router := gin.Default()
 
 	// CORS middleware
-	router.Use(cors.New(cors.Config{
-		AllowOrigins:     []string{"*"},
-		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
-		AllowHeaders:     []string{"Origin", "Content-Type", "Accept", "Authorization"},
-		ExposeHeaders:    []string{"Content-Length"},
-		AllowCredentials: true,
-	}))
+	// router.Use(cors.New(cors.Config{
+	// 	AllowOrigins:     []string{"*"},
+	// 	AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
+	// 	AllowHeaders:     []string{"Origin", "Content-Type", "Accept", "Authorization"},
+	// 	ExposeHeaders:    []string{"Content-Length"},
+	// 	AllowCredentials: true,
+	// }))
 
 	// Health check
 	router.GET("/health", func(c *gin.Context) {
