@@ -16,8 +16,7 @@ RUN go mod download
 # Copy source code
 COPY . .
 
-# Build the application with CGO enabled and static linking
-RUN CGO_ENABLED=1 GOOS=linux go build -a -ldflags '-extldflags "-static"' -o main .
+RUN CGO_ENABLED=1 GOOS=linux go build -a -tags "osusergo netgo sqlite_omit_syscall_vfs" -ldflags '-extldflags "-static"' -o main .
 
 # Final stage
 FROM alpine:latest
