@@ -70,36 +70,51 @@ export default function HomePage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50">
       {/* Navigation */}
-      <nav className="bg-white/80 backdrop-blur-md border-b border-gray-200 sticky top-0 z-50">
+      <nav className="bg-[#FCF4E3] border-b border-gray-200 sticky top-0 z-50" style={{ fontFamily: 'Acme, sans-serif' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-14 sm:h-16">
-            <div className="flex items-center space-x-2">
-              <Heart className="h-6 w-6 sm:h-8 sm:w-8 text-blue-600" />
-              <span className="text-xl sm:text-2xl font-bold text-gray-900">Heal</span>
+          <div className="flex justify-between items-center h-20">
+            {/* Logo */}
+            <div className="flex items-center">
+              <img 
+                src="/images/HealNavbarLogo.png" 
+                alt="HEAL Logo" 
+                className="h-16 w-auto"
+              />
             </div>
             
             {/* Desktop Navigation */}
-            <div className="hidden md:flex items-center space-x-6 lg:space-x-8">
-              <Link href="#features" className="text-gray-700 hover:text-blue-600 transition-colors text-sm lg:text-base">
-                Features
+            <div className="hidden lg:flex items-center space-x-10">
+              <Link href="/" className="text-[#061020] hover:text-[#044750] transition-colors text-base font-semibold">
+                HOME
               </Link>
-              <Link href="#about" className="text-gray-700 hover:text-blue-600 transition-colors text-sm lg:text-base">
-                About
+              <Link href="#about" className="text-[#044750] hover:text-[#061020] transition-colors text-base font-semibold">
+                ABOUT HEAL
               </Link>
-              <Link href="#testimonials" className="text-gray-700 hover:text-blue-600 transition-colors text-sm lg:text-base">
-                Testimonials
+              <Link href="/services" className="text-[#044750] hover:text-[#061020] transition-colors text-base font-semibold">
+                SERVICES
               </Link>
-              <Link href="/auth" className="text-blue-600 hover:text-blue-700 font-medium text-sm lg:text-base">
-                Sign In
+              <Link href="/resources" className="text-[#044750] hover:text-[#061020] transition-colors text-base font-semibold">
+                RESOURCES
               </Link>
-              <Link href="/auth?mode=signup" className="heal-button">
-                Get Started
+              <Link href="/report" className="text-[#044750] hover:text-[#061020] transition-colors text-base font-semibold">
+                REPORT
+              </Link>
+              <Link href="/contact" className="text-[#044750] hover:text-[#061020] transition-colors text-base font-semibold">
+                CONTACT US
+              </Link>
+            </div>
+
+            {/* Donate Button */}
+            <div className="hidden lg:block">
+              <Link href="/donate" className="bg-[#016A79] hover:bg-[#014d5a] text-white px-8 py-3 rounded-full text-base font-semibold transition-colors duration-200 flex items-center space-x-2">
+                <Heart className="h-5 w-5" />
+                <span>DONATE</span>
               </Link>
             </div>
 
             {/* Mobile menu button */}
             <button
-              className="md:hidden p-2 text-gray-700"
+              className="lg:hidden p-2 text-gray-800"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               aria-label="Toggle menu"
             >
@@ -109,23 +124,30 @@ export default function HomePage() {
 
           {/* Mobile Navigation */}
           {isMenuOpen && (
-            <div className="md:hidden bg-white border-t border-gray-200 py-4">
+            <div className="lg:hidden bg-[#FCF4E3] border-t border-gray-200 py-4">
               <div className="flex flex-col space-y-4">
-                <Link href="#features" className="text-gray-700 hover:text-blue-600 transition-colors px-4 text-sm">
-                  Features
+                <Link href="/" className="text-gray-800 hover:text-[#016A79] transition-colors px-4 text-sm font-medium">
+                  HOME
                 </Link>
-                <Link href="#about" className="text-gray-700 hover:text-blue-600 transition-colors px-4 text-sm">
-                  About
+                <Link href="#about" className="text-gray-800 hover:text-[#016A79] transition-colors px-4 text-sm font-medium">
+                  ABOUT HEAL
                 </Link>
-                <Link href="#testimonials" className="text-gray-700 hover:text-blue-600 transition-colors px-4 text-sm">
-                  Testimonials
+                <Link href="/services" className="text-gray-800 hover:text-[#016A79] transition-colors px-4 text-sm font-medium">
+                  SERVICES
                 </Link>
-                <Link href="/auth" className="text-blue-600 hover:text-blue-700 font-medium px-4 text-sm">
-                  Sign In
+                <Link href="/resources" className="text-gray-800 hover:text-[#016A79] transition-colors px-4 text-sm font-medium">
+                  RESOURCES
+                </Link>
+                <Link href="/report" className="text-gray-800 hover:text-[#016A79] transition-colors px-4 text-sm font-medium">
+                  REPORT
+                </Link>
+                <Link href="/contact" className="text-gray-800 hover:text-[#016A79] transition-colors px-4 text-sm font-medium">
+                  CONTACT US
                 </Link>
                 <div className="px-4">
-                  <Link href="/auth?mode=signup" className="heal-button block text-center">
-                    Get Started
+                  <Link href="/donate" className="bg-[#016A79] hover:bg-[#014d5a] text-white px-6 py-2 rounded-full text-sm font-medium transition-colors duration-200 flex items-center justify-center space-x-2">
+                    <Heart className="h-4 w-4" />
+                    <span>DONATE</span>
                   </Link>
                 </div>
               </div>
