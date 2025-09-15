@@ -19,6 +19,7 @@ import {
   CheckCircle
 } from 'lucide-react';
 import Link from 'next/link';
+import Layout from '@/components/layout/Layout';
 
 interface CrisisContact {
   id: string;
@@ -38,6 +39,7 @@ export default function CrisisPage() {
   const [crisisContacts, setCrisisContacts] = useState<CrisisContact[]>([]);
   const [loading, setLoading] = useState(true);
   const [copiedPhone, setCopiedPhone] = useState<string | null>(null);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
 
   useEffect(() => {
     // Get user's location for local emergency services
@@ -210,14 +212,15 @@ export default function CrisisPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-red-50 via-white to-pink-50">
+    <Layout onToggle={setSidebarCollapsed} sidebarCollapsed={sidebarCollapsed}>
+    <div className="min-h-screen">
       {/* Header */}
-      <div className="bg-white shadow-sm border-b border-gray-200">
+      <div className=" shadow-sm border-b border-gray-200">
         <div className="max-w-4xl mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
               <Link href="/dashboard" className="p-2 hover:bg-gray-100 rounded-lg transition-colors">
-                <ArrowLeft className="h-5 w-5 text-gray-600" />
+                <ArrowLeft className="h-5 w-5 text-gray-900" />
               </Link>
               <div className="flex items-center space-x-2">
                 <Heart className="h-6 w-6 text-red-500" />
@@ -226,7 +229,7 @@ export default function CrisisPage() {
             </div>
             <div className="flex items-center space-x-2">
               <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
-              <span className="text-sm text-gray-600">24/7 Available</span>
+              <span className="text-sm text-gray-900">24/7 Available</span>
             </div>
           </div>
         </div>
@@ -272,7 +275,7 @@ export default function CrisisPage() {
           {loading ? (
             <div className="text-center py-8">
               <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto"></div>
-              <p className="text-gray-600 mt-2">Loading crisis contacts...</p>
+              <p className="text-gray-900 mt-2">Loading crisis contacts...</p>
             </div>
           ) : (
             <div className="space-y-4">
@@ -292,8 +295,8 @@ export default function CrisisPage() {
                         </div>
                         <div className="flex-1">
                           <h3 className="font-semibold text-gray-900 text-lg">{contact.title}</h3>
-                          <p className="text-gray-600 text-sm mb-2">{contact.description}</p>
-                          <p className="text-gray-700 text-sm leading-relaxed">{contact.content}</p>
+                          <p className="text-gray-900 text-sm mb-2">{contact.description}</p>
+                          <p className="text-gray-900 text-sm leading-relaxed">{contact.content}</p>
                         </div>
                       </div>
                     </div>
@@ -310,7 +313,7 @@ export default function CrisisPage() {
                           </button>
                           <button
                             onClick={() => copyToClipboard(phone, 'phone')}
-                            className="p-2 text-gray-500 hover:text-gray-700 transition-colors"
+                            className="p-2 text-gray-500 hover:text-gray-900 transition-colors"
                             title="Copy phone number"
                           >
                             {copiedPhone === phone ? (
@@ -360,14 +363,14 @@ export default function CrisisPage() {
         <div className="mb-8">
           <h2 className="text-2xl font-bold text-gray-900 mb-6">Quick Calming Techniques</h2>
           <div className="heal-card p-6">
-            <p className="text-gray-600 mb-6">
+            <p className="text-gray-900 mb-6">
               While you're waiting for help or if you need to calm down right now, try these techniques:
             </p>
             <div className="space-y-4">
               {calmingTechniques.map((technique, index) => (
                 <div key={index} className="border-l-4 border-blue-500 pl-4 py-2">
                   <h3 className="font-semibold text-gray-900 mb-1">{technique.title}</h3>
-                  <p className="text-gray-700 text-sm mb-1">{technique.description}</p>
+                  <p className="text-gray-900 text-sm mb-1">{technique.description}</p>
                   <div className="flex items-center space-x-2 text-xs text-gray-500">
                     <Clock className="h-3 w-3" />
                     <span>{technique.duration}</span>
@@ -386,13 +389,13 @@ export default function CrisisPage() {
               <div>
                 <div className="flex items-center space-x-2 mb-4">
                   <MapPin className="h-5 w-5 text-green-600" />
-                  <span className="text-sm text-gray-600">Location detected - Kenya</span>
+                  <span className="text-sm text-gray-900">Location detected - Kenya</span>
                 </div>
                 <div className="space-y-3">
                   <div className="flex items-center justify-between py-3 border-b border-gray-100">
                     <div>
                       <h3 className="font-medium text-gray-900">Kenyatta National Hospital</h3>
-                      <p className="text-sm text-gray-600">Emergency Department • Open 24/7</p>
+                      <p className="text-sm text-gray-900">Emergency Department • Open 24/7</p>
                     </div>
                     <button 
                       onClick={() => makeCall('+254 20 2726300')}
@@ -404,7 +407,7 @@ export default function CrisisPage() {
                   <div className="flex items-center justify-between py-3 border-b border-gray-100">
                     <div>
                       <h3 className="font-medium text-gray-900">Nairobi Hospital</h3>
-                      <p className="text-sm text-gray-600">Emergency Services • 24/7 Available</p>
+                      <p className="text-sm text-gray-900">Emergency Services • 24/7 Available</p>
                     </div>
                     <button 
                       onClick={() => makeCall('+254 20 2845000')}
@@ -416,7 +419,7 @@ export default function CrisisPage() {
                   <div className="flex items-center justify-between py-3">
                     <div>
                       <h3 className="font-medium text-gray-900">Mathare Mental Hospital</h3>
-                      <p className="text-sm text-gray-600">Mental Health Emergency Services</p>
+                      <p className="text-sm text-gray-900">Mental Health Emergency Services</p>
                     </div>
                     <button 
                       onClick={() => makeCall('+254 20 2557104')}
@@ -430,7 +433,7 @@ export default function CrisisPage() {
             ) : (
               <div className="text-center py-8">
                 <MapPin className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-                <p className="text-gray-600 mb-4">
+                <p className="text-gray-900 mb-4">
                   Enable location services to find nearby emergency services
                 </p>
                 <button 
@@ -450,7 +453,7 @@ export default function CrisisPage() {
             <Shield className="h-6 w-6 text-green-600 mt-1 flex-shrink-0" />
             <div>
               <h3 className="font-semibold text-gray-900 mb-2">Your Safety & Privacy</h3>
-              <div className="space-y-2 text-sm text-gray-600">
+              <div className="space-y-2 text-sm text-gray-900">
                 <p>• All crisis conversations are encrypted and confidential</p>
                 <p>• Emergency services may be contacted if there's immediate danger</p>
                 <p>• Your location is used only to find nearby help when needed</p>
@@ -462,5 +465,6 @@ export default function CrisisPage() {
         </div>
       </div>
     </div>
+    </Layout>
   );
 }
