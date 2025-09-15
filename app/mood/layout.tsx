@@ -18,7 +18,7 @@ export default function MoodLayout({
 
   return (
     <Layout
-      user={user || { firstName: '' }}
+      // user={user || { firstName: '' }}
       onToggle={handleToggle}
       sidebarCollapsed={sidebarCollapsed}
     >
