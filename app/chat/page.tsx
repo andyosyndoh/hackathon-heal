@@ -20,9 +20,12 @@ import {
   ChevronDown,
   MessageSquare,
   Trash2,
-  X
+  X,
+  UserPlus,
+  LogIn
 } from 'lucide-react';
 import Link from 'next/link';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useAtom } from 'jotai';
 import { screenAtom } from '@/store/screens';
 import { Instructions } from '@/screens/Instructions';
@@ -76,11 +79,15 @@ const ChoiceModal = ({ onSelect }: { onSelect: (choice: 'chat' | 'video') => voi
 );
 
 export default function ChatPage() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
   const { user, isAuthenticated } = useAuth();
+  const [isAnonymous, setIsAnonymous] = useState(false);
   const [currentSessionId, setCurrentSessionId] = useState<string | null>(null);
   const [sessions, setSessions] = useState<ChatSession[]>([]);
   const [showSessions, setShowSessions] = useState(false);
   const [loadingSessions, setLoadingSessions] = useState(false);
+  const [showUpgradeModal, setShowUpgradeModal] = useState(false);
 
   const [messages, setMessages] = useState<Message[]>([]);
   const [loadingHistory, setLoadingHistory] = useState(false);
@@ -126,6 +133,25 @@ export default function ChatPage() {
       voiceId: 'pNInz6obpgDQGcFmaJgB' // Adam - calm and supportive male voice
     }
   };
+
+  // Check for anonymous mode
+  useEffect(() => {
+    const anonymous = searchParams.get('anonymous') === 'true';
+    setIsAnonymous(anonymous);
+    
+    if (anonymous) {
+      setMessages([
+        {
+          id: '1',
+          content: "Hello! I'm your AI companion. I'm here to provide emotional support and help you through whatever you're experiencing. This is an anonymous session - your conversation won't be saved. How are you feeling today?",
+          sender: 'ai',
+          timestamp: new Date(),
+          type: 'text'
+        }
+      ]);
+      setShowChoiceModal(false);
+    }
+  }, [searchParams]);
 
   // Auto-scroll to bottom when new messages arrive
   useEffect(() => {
@@ -315,7 +341,68 @@ export default function ChatPage() {
   };
 
   const sendMessage = async () => {
-    if (!inputMessage.trim() || !isAuthenticated) return;
+    if (!inputMessage.trim()) return;
+    
+    // Handle anonymous mode with Gemini AI directly
+    if (isAnonymous) {
+      const userMessage: Message = {
+        id: Date.now().toString(),
+        content: inputMessage,
+        sender: 'user',
+        timestamp: new Date(),
+        type: 'text'
+      };
+
+      setMessages(prev => [...prev, userMessage]);
+      setInputMessage('');
+      setIsTyping(true);
+      stopCurrentAudio();
+
+      const loadingMessage: Message = {
+        id: (Date.now() + 1).toString(),
+        content: '',
+        sender: 'ai',
+        timestamp: new Date(),
+        type: 'text',
+        isLoading: true
+      };
+      setMessages(prev => [...prev, loadingMessage]);
+
+      try {
+        const aiResponse = await geminiService.sendMessage(inputMessage);
+        
+        setMessages(prev => {
+          const filtered = prev.filter(msg => !msg.isLoading);
+          return [...filtered, {
+            id: (Date.now() + 2).toString(),
+            content: aiResponse,
+            sender: 'ai',
+            timestamp: new Date(),
+            type: 'text'
+          }];
+        });
+
+        if (voiceOption !== 'off' && aiResponse) {
+          setTimeout(() => playAIResponse(aiResponse), 500);
+        }
+      } catch (error) {
+        setMessages(prev => {
+          const filtered = prev.filter(msg => !msg.isLoading);
+          return [...filtered, {
+            id: (Date.now() + 2).toString(),
+            content: "I'm here to help. Could you tell me more about what you're experiencing?",
+            sender: 'ai',
+            timestamp: new Date(),
+            type: 'text'
+          }];
+        });
+      } finally {
+        setIsTyping(false);
+      }
+      return;
+    }
+    
+    if (!isAuthenticated) return;
 
     const userMessage: Message = {
       id: Date.now().toString(),
@@ -448,7 +535,7 @@ export default function ChatPage() {
   const currentVoiceConfig = voiceConfigs[voiceOption];
   const VoiceIcon = currentVoiceConfig.icon;
 
-  if (!isAuthenticated) {
+  if (!isAuthenticated && !isAnonymous) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
         <div className="text-center">
@@ -469,7 +556,7 @@ export default function ChatPage() {
       <div className="bg-white shadow-sm border-b border-gray-200 px-3 sm:px-4 py-3 flex-shrink-0">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-2 sm:space-x-4">
-            <Link href="/dashboard" className="p-2 hover:bg-gray-100 rounded-lg transition-colors">
+            <Link href={isAnonymous ? "/" : "/dashboard"} className="p-2 hover:bg-gray-100 rounded-lg transition-colors">
               <ArrowLeft className="h-4 w-4 sm:h-5 sm:w-5 text-gray-600" />
             </Link>
             <div className="flex items-center space-x-2 sm:space-x-3">
@@ -477,7 +564,9 @@ export default function ChatPage() {
                 <Bot className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
               </div>
               <div>
-                <h1 className="font-semibold text-gray-900 text-sm sm:text-base">AI Companion</h1>
+                <h1 className="font-semibold text-gray-900 text-sm sm:text-base">
+                  {isAnonymous ? 'Anonymous Chat' : 'AI Companion'}
+                </h1>
                 <p className="text-xs sm:text-sm text-green-600 flex items-center">
                   {isPlayingAudio ? (
                     <>
@@ -487,8 +576,12 @@ export default function ChatPage() {
                     </>
                   ) : (
                     <>
-                      <span className="hidden sm:inline">Online • Secure Session</span>
-                      <span className="sm:hidden">Online</span>
+                      <span className="hidden sm:inline">
+                        {isAnonymous ? 'Anonymous • Not Saved' : 'Online • Secure Session'}
+                      </span>
+                      <span className="sm:hidden">
+                        {isAnonymous ? 'Anonymous' : 'Online'}
+                      </span>
                     </>
                   )}
                 </p>
@@ -497,7 +590,18 @@ export default function ChatPage() {
           </div>
 
           <div className="flex items-center space-x-1 sm:space-x-2">
+            {isAnonymous && (
+              <div className="flex items-center space-x-2 mr-4">
+                <div className="text-xs text-orange-600 bg-orange-100 px-2 py-1 rounded-full">
+                  Anonymous Mode
+                </div>
+                <Link href="/auth" className="text-xs text-blue-600 hover:text-blue-700 underline">
+                  Sign Up for More Features
+                </Link>
+              </div>
+            )}
             {/* Chat Sessions Dropdown */}
+            {!isAnonymous && (
             <div className="relative" ref={sessionsRef}>
               <button
                 onClick={() => setShowSessions(!showSessions)}
@@ -555,6 +659,7 @@ export default function ChatPage() {
                 </div>
               )}
             </div>
+            )}
 
             {/* Voice Selection Dropdown */}
             <div className="relative" ref={dropdownRef}>
@@ -854,9 +959,9 @@ export default function ChatPage() {
                 <span className="sm:hidden">Voice</span>
               </div>
               <div className="flex items-center space-x-1">
-                <div className={`w-2 h-2 rounded-full ${isAuthenticated ? 'bg-green-500' : 'bg-red-500'
+                <div className={`w-2 h-2 rounded-full ${isAuthenticated || isAnonymous ? 'bg-green-500' : 'bg-red-500'
                   }`}></div>
-                <span>Backend</span>
+                <span>{isAnonymous ? 'Anonymous' : 'Backend'}</span>
               </div>
             </div>
           </div>
