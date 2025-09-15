@@ -4,8 +4,8 @@ FROM golang:1.21-alpine AS builder
 # Set working directory
 WORKDIR /app
 
-# Install git and ca-certificates
-RUN apk add --no-cache git ca-certificates
+# Install build dependencies, including 'build-base' for the C compiler (gcc)
+RUN apk add --no-cache git ca-certificates build-base
 
 # Copy go mod files
 COPY go.mod go.sum ./
@@ -16,8 +16,8 @@ RUN go mod download
 # Copy source code
 COPY . .
 
-# Build the application
-RUN CGO_ENABLED=1 GOOS=linux go build -a -installsuffix cgo -o main .
+# Build the application with CGO enabled and static linking
+RUN CGO_ENABLED=1 GOOS=linux go build -a -ldflags '-extldflags "-static"' -o main .
 
 # Final stage
 FROM alpine:latest
@@ -25,6 +25,7 @@ FROM alpine:latest
 # Install ca-certificates for HTTPS requests and sqlite
 RUN apk --no-cache add ca-certificates sqlite
 
+# Set the working directory
 WORKDIR /root/
 
 # Copy the binary from builder stage
