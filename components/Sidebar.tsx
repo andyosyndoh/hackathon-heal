@@ -16,6 +16,7 @@ import {
   LogOut,
   Plus,
   ChevronDown,
+  AlertTriangle,
   Trophy,
   Image,
   Menu
@@ -36,7 +37,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onToggle, user }) => {
   const navigationItems = [
     { icon: Home, label: 'Dashboard', active: true, hasSubmenu: true, link: '/dashboard' },
     { icon: Heart, label: 'Mood Tracker', link: '/mood' },
-    { icon: BarChart3, label: 'Report' },
+    { icon: AlertTriangle, label: 'Crisis', link: '/crisis' },
     { icon: BookOpen, label: 'Resources' },
     { icon: Bell, label: 'Notifications' },
     { icon: Settings, label: 'Settings' }
