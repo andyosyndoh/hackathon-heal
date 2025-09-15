@@ -1,11 +1,13 @@
-# Multi-stage build for Go application
-FROM golang:1.21-alpine AS builder
+# Stage 1: The Build Environment
+FROM golang:1.21-bullseye AS builder
 
 # Set working directory
 WORKDIR /app
 
-# Install build dependencies, including 'build-base' for the C compiler (gcc)
-RUN apk add --no-cache git ca-certificates build-base
+# Install build dependencies
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    git \
+    build-essential
 
 # Copy go mod files
 COPY go.mod go.sum ./
@@ -16,24 +18,27 @@ RUN go mod download
 # Copy source code
 COPY . .
 
-RUN CGO_ENABLED=1 GOOS=linux go build -a -tags "osusergo netgo sqlite_omit_syscall_vfs" -ldflags '-extldflags "-static"' -o main .
+# Build the application
+RUN CGO_ENABLED=1 GOOS=linux go build -o main .
 
-# Final stage
-FROM alpine:latest
+# Final Stage: The Production-Ready Image
+FROM debian:bullseye-slim
 
-# Install ca-certificates for HTTPS requests and sqlite
-RUN apk --no-cache add ca-certificates sqlite
+# Install necessary runtime dependencies
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    ca-certificates \
+    libsqlite3-0
 
 # Set the working directory
 WORKDIR /root/
 
-# Copy the binary from builder stage
+# Copy the built binary from builder stage
 COPY --from=builder /app/main .
 
-# Create directory for database
+# Create directory for the database
 RUN mkdir -p /data
 
-# Expose port
+# Expose the application port
 EXPOSE 8080
 
 # Run the application
