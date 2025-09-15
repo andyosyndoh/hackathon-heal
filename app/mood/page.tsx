@@ -350,7 +350,7 @@ export default function MoodTrackerPage() {
                 }`}>
                   <TrendingUp className={`h-6 w-6 ${
                     moodStats.trend === 'up' ? 'text-green-600' : 
-                    moodStats.trend === 'down' ? 'text-red-600' : 'text-white'
+                    moodStats.trend === 'down' ? 'text-red-600' : 'text-green-600'
                   }`} />
                 </div>
               </div>
