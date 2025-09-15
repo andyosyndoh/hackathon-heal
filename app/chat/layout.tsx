@@ -20,7 +20,6 @@ export default function ChatLayout({
       user={user || { firstName: "Guest" }}
       onToggle={handleToggle}
       sidebarCollapsed={sidebarCollapsed}
-      transparent
     >
       {children}
     </Layout>
