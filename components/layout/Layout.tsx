@@ -7,9 +7,6 @@ import { useEffect } from 'react';
 
 interface LayoutProps {
   children: React.ReactNode;
-  user: {
-    firstName: string;
-  };
   onToggle: (collapsed: boolean) => void;
   sidebarCollapsed: boolean;
 }
