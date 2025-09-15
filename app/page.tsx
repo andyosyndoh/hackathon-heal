@@ -11,17 +11,71 @@ import {
   Star,
   CheckCircle,
   Menu,
-  X
+  X,
+  Play,
+  Volume2,
+  MessageCircle
 } from 'lucide-react';
 import Link from 'next/link';
+import Image from 'next/image';
 
 export default function HomePage() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
+  const [showPrivacyModal, setShowPrivacyModal] = useState(false);
+  const [isPlayingAudio, setIsPlayingAudio] = useState(false);
 
   useEffect(() => {
     setIsLoaded(true);
   }, []);
+
+  const playWelcomeAudio = () => {
+    if (isPlayingAudio) return;
+    
+    setIsPlayingAudio(true);
+    const audio = new Audio('/sounds/Welcome_ to Heal_Text_to_Speech_audio.mp3');
+    audio.play().catch(console.error);
+    audio.onended = () => setIsPlayingAudio(false);
+    audio.onerror = () => setIsPlayingAudio(false);
+  };
+
+  const PrivacyModal = () => (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+      <div className="bg-white rounded-lg max-w-2xl w-full max-h-[80vh] overflow-y-auto">
+        <div className="p-6">
+          <div className="flex justify-between items-center mb-4">
+            <h2 className="text-2xl font-bold text-gray-900">Privacy Policy</h2>
+            <button onClick={() => setShowPrivacyModal(false)} className="text-gray-500 hover:text-gray-700">
+              <X className="h-6 w-6" />
+            </button>
+          </div>
+          <div className="prose max-w-none">
+            <p className="text-gray-600 mb-4">
+              At Heal, we prioritize your privacy and data security. This policy outlines how we collect, use, and protect your information.
+            </p>
+            <h3 className="text-lg font-semibold mb-2">Data Collection</h3>
+            <p className="text-gray-600 mb-4">
+              We collect only the information necessary to provide our mental health services, including account information and conversation data for AI improvement.
+            </p>
+            <h3 className="text-lg font-semibold mb-2">Data Protection</h3>
+            <p className="text-gray-600 mb-4">
+              All data is encrypted end-to-end and stored securely. We never share personal information with third parties without explicit consent.
+            </p>
+            <h3 className="text-lg font-semibold mb-2">Your Rights</h3>
+            <p className="text-gray-600 mb-4">
+              You have the right to access, modify, or delete your data at any time. Contact us for any privacy-related concerns.
+            </p>
+          </div>
+          <button 
+            onClick={() => setShowPrivacyModal(false)}
+            className="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors"
+          >
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+  );
 
   const features = [
     {
@@ -73,12 +127,15 @@ export default function HomePage() {
       <nav className="bg-[#FCF4E3] border-b border-gray-200 sticky top-0 z-50" style={{ fontFamily: 'Acme, sans-serif' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-20">
-            {/* Logo */}
+            {/* Logo - Enlarged */}
             <div className="flex items-center">
-              <img 
-                src="/images/HealNavbarLogo.png" 
+              <Image 
+                src="/images/healLOGO.png" 
                 alt="HEAL Logo" 
-                className="h-16 w-auto"
+                width={120}
+                height={120}
+                className="h-20 w-auto"
+                priority
               />
             </div>
             
@@ -156,50 +213,112 @@ export default function HomePage() {
         </div>
       </nav>
 
-      {/* Hero Section */}
-      <section className="relative overflow-hidden py-12 sm:py-20 lg:py-32">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center">
-            <div className={`${isLoaded ? 'fade-in-up' : 'opacity-0'}`}>
-              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-gray-900 mb-4 sm:mb-6">
-                Your Mental Health,
-                <br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-green-600">
-                  Our Priority
-                </span>
-              </h1>
-              <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-600 mb-6 sm:mb-8 max-w-3xl mx-auto leading-relaxed px-4">
-                Professional mental health support powered by AI, with 24/7 availability, 
-                crisis management, and privacy-first design. Your journey to wellness starts here.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center mb-8 sm:mb-12 px-4">
-                <Link href="/auth?mode=signup" className="heal-button text-base sm:text-lg px-6 sm:px-8 py-3 sm:py-4 w-full sm:w-auto">
-                  Start Your Journey
-                  <ArrowRight className="ml-2 h-4 w-4 sm:h-5 sm:w-5" />
-                </Link>
-                <Link href="/crisis" className="bg-red-600 hover:bg-red-700 text-white font-medium py-3 sm:py-4 px-6 sm:px-8 rounded-lg transition-all duration-200 text-base sm:text-lg w-full sm:w-auto text-center">
-                  Crisis Support
-                </Link>
+      {/* Hero Section - Exact replica of screenshot */}
+      <section className="relative min-h-screen bg-[#FCF4E3] flex flex-col overflow-hidden" style={{ fontFamily: 'Acme, sans-serif' }}>
+        {/* Decorative Stars scattered across the page */}
+        <div className="absolute inset-0 pointer-events-none opacity-80">
+          <Image src="/images/stars.png" alt="" width={120} height={120} className="absolute top-16 left-20" />
+          <Image src="/images/stars.png" alt="" width={100} height={100} className="absolute top-32 right-24" />
+          <Image src="/images/stars.png" alt="" width={90} height={90} className="absolute top-1/2 left-16" />
+          <Image src="/images/stars.png" alt="" width={110} height={110} className="absolute top-1/3 right-12" />
+          <Image src="/images/stars.png" alt="" width={85} height={85} className="absolute bottom-32 left-32" />
+          <Image src="/images/stars.png" alt="" width={120} height={120} className="absolute bottom-20 right-28" />
+          <Image src="/images/stars.png" alt="" width={95} height={95} className="absolute top-24 left-1/2" />
+          <Image src="/images/stars.png" alt="" width={80} height={80} className="absolute bottom-40 left-1/4" />
+          <Image src="/images/stars.png" alt="" width={105} height={105} className="absolute top-40 right-1/3" />
+        </div>
+        {/* Main Content Area */}
+        <div className="flex-1 flex flex-col justify-between">
+          <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex-1 flex items-center">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center w-full">
+              {/* Left Side - Illustration */}
+              <div className="flex justify-center lg:justify-start relative">
+
+                
+                <Image
+                  src="/images/HomeHerosection.png"
+                  alt="Caring couple illustration"
+                  width={400}
+                  height={400}
+                  className=""
+                  priority
+                />
+              </div>
+              
+              {/* Right Side - Text */}
+              <div className="text-center relative">
+
+                
+                <h1 className="text-5xl sm:text-6xl lg:text-8xl font-bold text-[#006775] mb-6 leading-tight">
+                  Welcome To HEAL
+                </h1>
+                <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#006775] leading-tight">
+                  Your Listening Caring Partner
+                </h2>
               </div>
             </div>
+          </div>
+          
+          {/* Anonymous Access Button - Right side above white band */}
+          <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-8">
+            <div className="flex items-center justify-end gap-4">
+              <Image
+                src="/images/homepagearrow1.png"
+                alt="Arrow pointing to button"
+                width={100}
+                height={100}
+                className=""
+              />
+              <Link 
+                href="/chat?anonymous=true" 
+                className="bg-[#006775] hover:bg-[#004d5a] text-white py-3 px-8 rounded-full text-sm transition-all duration-200 shadow-lg hover:shadow-xl"
+              >
+                Anonymous Access
+              </Link>
+            </div>
+          </div>
+        </div>
+        
+        {/* Bottom White Band */}
+        <div className="bg-white py-6 px-4 sm:px-6 lg:px-8 border-t border-gray-100">
+          <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-6">
+            {/* Left - Privacy Policy Text */}
+            <div className="text-base text-gray-700 text-center sm:text-left">
+              By clicking the arrow, you acknowledge and agree to our{' '}
+              <button 
+                onClick={() => setShowPrivacyModal(true)}
+                className="text-[#006775] hover:underline font-medium"
+              >
+                Privacy Policy
+              </button>
+              , and to activate your audio
+            </div>
             
-            {/* Trust Indicators */}
-            <div className={`${isLoaded ? 'fade-in-up' : 'opacity-0'} grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-8 mt-8 sm:mt-16 px-4`}>
-              <div className="flex items-center justify-center space-x-2">
-                <Shield className="h-4 w-4 sm:h-6 sm:w-6 text-green-600" />
-                <span className="text-gray-700 font-medium text-sm sm:text-base">HIPAA Compliant</span>
-              </div>
-              <div className="flex items-center justify-center space-x-2">
-                <CheckCircle className="h-4 w-4 sm:h-6 sm:w-6 text-green-600" />
-                <span className="text-gray-700 font-medium text-sm sm:text-base">Clinically Verified</span>
-              </div>
-              <div className="flex items-center justify-center space-x-2">
-                <Star className="h-4 w-4 sm:h-6 sm:w-6 text-yellow-500" />
-                <span className="text-gray-700 font-medium text-sm sm:text-base">5-Star Rated</span>
+            {/* Center - Audio Play Button */}
+            <button
+              onClick={playWelcomeAudio}
+              disabled={isPlayingAudio}
+              className="bg-[#006775] hover:bg-[#004d5a] text-white p-5 rounded-full shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105 disabled:opacity-50 flex items-center justify-center"
+              aria-label="Play welcome audio"
+            >
+              {isPlayingAudio ? (
+                <Volume2 className="h-7 w-7 animate-pulse" />
+              ) : (
+                <Play className="h-7 w-7" />
+              )}
+            </button>
+            
+            {/* Right - Audio Timer (countdown) */}
+            <div className="flex items-center gap-2">
+              <div className="text-base text-gray-600 font-mono bg-gray-50 px-4 py-2 rounded-full">
+                00:00 / 01:14:49
               </div>
             </div>
           </div>
         </div>
+        
+        {/* Privacy Modal */}
+        {showPrivacyModal && <PrivacyModal />}
       </section>
 
       {/* Features Section */}
