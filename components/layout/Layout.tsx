@@ -17,12 +17,20 @@ function Layout({ children, onToggle, sidebarCollapsed }: LayoutProps) {
   const router = useRouter();
 
   // Redirect if not authenticated
-    useEffect(() => {
-      if (!authLoading && !isAuthenticated) {
-        router.push('/auth');
-      }
-    }, [isAuthenticated, authLoading, router]);
-    
+  useEffect(() => {
+    if (!authLoading && !isAuthenticated) {
+      router.push('/auth');
+    }
+  }, [isAuthenticated, authLoading, router]);
+
+
+  if (authLoading) {
+    return (
+      <div className="h-screen overflow-hidden bg-cover bg-center bg-no-repeat flex"
+      style={{ backgroundImage: "linear-gradient(rgba(254, 240, 211, 0.3), rgba(254, 240, 211, 0.3)), url('/images/forestbg.jpg')" }}> 
+    </div>
+    )
+  }
   return (
     <div className="h-screen overflow-hidden bg-cover bg-center bg-no-repeat flex"
       style={{ backgroundImage: "linear-gradient(rgba(254, 240, 211, 0.3), rgba(254, 240, 211, 0.3)), url('/images/forestbg.jpg')" }}>
