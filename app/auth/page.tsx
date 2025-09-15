@@ -147,7 +147,39 @@ export default function AuthPage() {
       </div>
 
       {/* Left Side - Form */}
-      <div className="flex-1 flex items-center justify-center px-8 py-12">
+      <div className="flex-1 flex items-center justify-center px-8 py-12 relative">
+        {/* Left Side Star Clusters */}
+        <div className="absolute top-20 left-12" aria-hidden="true">
+          <svg width={60} height={60} viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
+            <rect x={22} y={6} rx={3} ry={3} width={8} height={20} fill="#EDC865" opacity={0.7} transform="rotate(0 30 30)" />
+            <rect x={22} y={6} rx={3} ry={3} width={8} height={20} fill="#EDC865" opacity={0.7} transform="rotate(45 30 30)" />
+            <rect x={22} y={6} rx={3} ry={3} width={8} height={20} fill="#EDC865" opacity={0.7} transform="rotate(90 30 30)" />
+            <rect x={22} y={6} rx={3} ry={3} width={8} height={20} fill="#EDC865" opacity={0.7} transform="rotate(135 30 30)" />
+            <rect x={22} y={6} rx={3} ry={3} width={8} height={20} fill="#EDC865" opacity={0.7} transform="rotate(180 30 30)" />
+            <rect x={22} y={6} rx={3} ry={3} width={8} height={20} fill="#EDC865" opacity={0.7} transform="rotate(225 30 30)" />
+          </svg>
+        </div>
+        
+        <div className="absolute bottom-24 left-8" aria-hidden="true">
+          <svg width={48} height={48} viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+            <rect x={18} y={5} rx={2.5} ry={2.5} width={6} height={16} fill="#EDC865" opacity={0.6} transform="rotate(0 24 24)" />
+            <rect x={18} y={5} rx={2.5} ry={2.5} width={6} height={16} fill="#EDC865" opacity={0.6} transform="rotate(60 24 24)" />
+            <rect x={18} y={5} rx={2.5} ry={2.5} width={6} height={16} fill="#EDC865" opacity={0.6} transform="rotate(120 24 24)" />
+            <rect x={18} y={5} rx={2.5} ry={2.5} width={6} height={16} fill="#EDC865" opacity={0.6} transform="rotate(180 24 24)" />
+            <rect x={18} y={5} rx={2.5} ry={2.5} width={6} height={16} fill="#EDC865" opacity={0.6} transform="rotate(240 24 24)" />
+          </svg>
+        </div>
+        
+        <div className="absolute top-1/2 left-4" aria-hidden="true">
+          <svg width={40} height={40} viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+            <rect x={15} y={4} rx={2} ry={2} width={5} height={14} fill="#EDC865" opacity={0.65} transform="rotate(0 20 20)" />
+            <rect x={15} y={4} rx={2} ry={2} width={5} height={14} fill="#EDC865" opacity={0.65} transform="rotate(72 20 20)" />
+            <rect x={15} y={4} rx={2} ry={2} width={5} height={14} fill="#EDC865" opacity={0.65} transform="rotate(144 20 20)" />
+            <rect x={15} y={4} rx={2} ry={2} width={5} height={14} fill="#EDC865" opacity={0.65} transform="rotate(216 20 20)" />
+            <rect x={15} y={4} rx={2} ry={2} width={5} height={14} fill="#EDC865" opacity={0.65} transform="rotate(288 20 20)" />
+          </svg>
+        </div>
+        
         <div className="w-full max-w-md">
           {/* Back to Home Link */}
           <Link href="/" className="inline-flex items-center space-x-2 text-[#016A79] hover:text-[#014d5a] mb-8">
@@ -383,12 +415,40 @@ export default function AuthPage() {
           </div>
         </div>
         
-        {/* Decorative Elements */}
-        <div className="absolute top-10 right-10 w-4 h-4 bg-yellow-400 rounded-full opacity-70"></div>
-        <div className="absolute top-20 right-20 w-2 h-2 bg-yellow-300 rounded-full opacity-60"></div>
-        <div className="absolute bottom-20 left-10 w-3 h-3 bg-yellow-400 rounded-full opacity-50"></div>
-        <div className="absolute bottom-32 left-20 w-2 h-2 bg-yellow-300 rounded-full opacity-70"></div>
-        <div className="absolute top-1/2 right-5 w-2 h-2 bg-yellow-400 rounded-full opacity-60"></div>
+        {/* Right Panel Star Clusters */}
+        <div className="absolute top-16 right-16" aria-hidden="true">
+          <svg width={56} height={56} viewBox="0 0 56 56" xmlns="http://www.w3.org/2000/svg">
+            <rect x={21} y={6} rx={3} ry={3} width={7} height={18} fill="#EDC865" opacity={0.8} transform="rotate(0 28 28)" />
+            <rect x={21} y={6} rx={3} ry={3} width={7} height={18} fill="#EDC865" opacity={0.8} transform="rotate(45 28 28)" />
+            <rect x={21} y={6} rx={3} ry={3} width={7} height={18} fill="#EDC865" opacity={0.8} transform="rotate(90 28 28)" />
+            <rect x={21} y={6} rx={3} ry={3} width={7} height={18} fill="#EDC865" opacity={0.8} transform="rotate(135 28 28)" />
+            <rect x={21} y={6} rx={3} ry={3} width={7} height={18} fill="#EDC865" opacity={0.8} transform="rotate(180 28 28)" />
+            <rect x={21} y={6} rx={3} ry={3} width={7} height={18} fill="#EDC865" opacity={0.8} transform="rotate(225 28 28)" />
+            <rect x={21} y={6} rx={3} ry={3} width={7} height={18} fill="#EDC865" opacity={0.8} transform="rotate(270 28 28)" />
+            <rect x={21} y={6} rx={3} ry={3} width={7} height={18} fill="#EDC865" opacity={0.8} transform="rotate(315 28 28)" />
+          </svg>
+        </div>
+        
+        <div className="absolute bottom-20 right-12" aria-hidden="true">
+          <svg width={44} height={44} viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg">
+            <rect x={17} y={5} rx={2.5} ry={2.5} width={5} height={14} fill="#EDC865" opacity={0.75} transform="rotate(0 22 22)" />
+            <rect x={17} y={5} rx={2.5} ry={2.5} width={5} height={14} fill="#EDC865" opacity={0.75} transform="rotate(60 22 22)" />
+            <rect x={17} y={5} rx={2.5} ry={2.5} width={5} height={14} fill="#EDC865" opacity={0.75} transform="rotate(120 22 22)" />
+            <rect x={17} y={5} rx={2.5} ry={2.5} width={5} height={14} fill="#EDC865" opacity={0.75} transform="rotate(180 22 22)" />
+            <rect x={17} y={5} rx={2.5} ry={2.5} width={5} height={14} fill="#EDC865" opacity={0.75} transform="rotate(240 22 22)" />
+            <rect x={17} y={5} rx={2.5} ry={2.5} width={5} height={14} fill="#EDC865" opacity={0.75} transform="rotate(300 22 22)" />
+          </svg>
+        </div>
+        
+        <div className="absolute top-1/3 right-4" aria-hidden="true">
+          <svg width={48} height={48} viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+            <rect x={18} y={5} rx={2.5} ry={2.5} width={6} height={16} fill="#EDC865" opacity={0.85} transform="rotate(0 24 24)" />
+            <rect x={18} y={5} rx={2.5} ry={2.5} width={6} height={16} fill="#EDC865" opacity={0.85} transform="rotate(72 24 24)" />
+            <rect x={18} y={5} rx={2.5} ry={2.5} width={6} height={16} fill="#EDC865" opacity={0.85} transform="rotate(144 24 24)" />
+            <rect x={18} y={5} rx={2.5} ry={2.5} width={6} height={16} fill="#EDC865" opacity={0.85} transform="rotate(216 24 24)" />
+            <rect x={18} y={5} rx={2.5} ry={2.5} width={6} height={16} fill="#EDC865" opacity={0.85} transform="rotate(288 24 24)" />
+          </svg>
+        </div>
       </div>
     </div>
   );
