@@ -134,31 +134,18 @@ export default function AuthPage() {
     <div className="min-h-screen bg-[#FCF4E3] flex" style={{ fontFamily: 'Acme, sans-serif' }}>
       {/* Left Side - Logo */}
       <div className="absolute top-6 left-6 z-10">
-        <div className="flex items-center space-x-3">
-          <Image
-            src="/images/healLOGO.png"
-            alt="HEAL Logo"
-            width={80}
-            height={80}
-            className="w-20 h-20"
-          />
-          <span className="text-2xl font-bold text-gray-800" style={{ fontFamily: 'Acme, sans-serif' }}>HEAL</span>
-        </div>
+        <Image
+          src="/images/healLOGO.png"
+          alt="HEAL Logo"
+          width={120}
+          height={120}
+          className="w-30 h-30"
+        />
       </div>
 
       {/* Left Side - Form */}
       <div className="flex-1 flex items-center justify-center px-8 py-12 relative">
-        {/* Left Side Star Clusters */}
-        <div className="absolute top-20 left-12" aria-hidden="true">
-          <svg width={60} height={60} viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
-            <rect x={22} y={6} rx={3} ry={3} width={8} height={20} fill="#EDC865" opacity={0.7} transform="rotate(0 30 30)" />
-            <rect x={22} y={6} rx={3} ry={3} width={8} height={20} fill="#EDC865" opacity={0.7} transform="rotate(45 30 30)" />
-            <rect x={22} y={6} rx={3} ry={3} width={8} height={20} fill="#EDC865" opacity={0.7} transform="rotate(90 30 30)" />
-            <rect x={22} y={6} rx={3} ry={3} width={8} height={20} fill="#EDC865" opacity={0.7} transform="rotate(135 30 30)" />
-            <rect x={22} y={6} rx={3} ry={3} width={8} height={20} fill="#EDC865" opacity={0.7} transform="rotate(180 30 30)" />
-            <rect x={22} y={6} rx={3} ry={3} width={8} height={20} fill="#EDC865" opacity={0.7} transform="rotate(225 30 30)" />
-          </svg>
-        </div>
+
         
         <div className="absolute bottom-24 left-8" aria-hidden="true">
           <svg width={48} height={48} viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
@@ -392,19 +379,19 @@ export default function AuthPage() {
 
       {/* Right Side - Image */}
       <div className="hidden lg:flex flex-1 bg-gradient-to-br from-[#016A79] to-[#014d5a] relative overflow-hidden items-center justify-center p-12">
-        <div className="bg-white bg-opacity-20 backdrop-blur-sm rounded-3xl p-8 max-w-md">
-          <div className="text-center mb-6">
-            <h2 className="text-white text-xl font-bold mb-2" style={{ fontFamily: 'Acme, sans-serif' }}>
+        <div className="bg-white bg-opacity-20 backdrop-blur-sm rounded-3xl p-12 max-w-2xl border-4 border-[#FCF4E3]">
+          <div className="text-center mb-8">
+            <h2 className="text-white text-2xl font-bold mb-3" style={{ fontFamily: 'Acme, sans-serif' }}>
               Streamline and optimize GBV
             </h2>
-            <h2 className="text-white text-xl font-bold mb-2" style={{ fontFamily: 'Acme, sans-serif' }}>
+            <h2 className="text-white text-2xl font-bold mb-3" style={{ fontFamily: 'Acme, sans-serif' }}>
               Case Management System
             </h2>
-            <h2 className="text-white text-xl font-bold" style={{ fontFamily: 'Acme, sans-serif' }}>
+            <h2 className="text-white text-2xl font-bold" style={{ fontFamily: 'Acme, sans-serif' }}>
               In Kenya
             </h2>
           </div>
-          <div className="relative w-full h-80 rounded-2xl overflow-hidden">
+          <div className="relative w-full h-[28rem] rounded-2xl overflow-hidden">
             <Image
               src="/images/authrightimage.png"
               alt="GBV Case Management System"
