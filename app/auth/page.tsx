@@ -123,33 +123,31 @@ export default function AuthPage() {
       <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50 flex items-center justify-center">
         <div className="flex items-center space-x-2">
           <Loader2 className="h-6 w-6 animate-spin text-blue-600" />
-          <span className="text-white">Loading...</span>
+          <span className="text-gray-600">Loading...</span>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8"
-         style={{ backgroundImage: "url('/images/forestbg.jpg')", backgroundSize: 'cover', backgroundPosition: 'center' }}>
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8">
         {/* Header */}
-        <div className="heal-card p-8">
         <div className="text-center">
-          <Link href="/" className="inline-flex items-center space-x-2 text-white hover:text-blue-700 mb-6">
+          <Link href="/" className="inline-flex items-center space-x-2 text-blue-600 hover:text-blue-700 mb-6">
             <ArrowLeft className="h-4 w-4" />
             <span>Back to Home</span>
           </Link>
           
           <div className="flex items-center justify-center space-x-2 mb-6">
-            <Heart className="h-8 w-8 text-white" />
-            <span className="text-2xl font-bold text-white">Heal</span>
+            <Heart className="h-8 w-8 text-blue-600" />
+            <span className="text-2xl font-bold text-gray-900">Heal</span>
           </div>
           
-          <h2 className="text-3xl font-bold text-white mb-2">
+          <h2 className="text-3xl font-bold text-gray-900 mb-2">
             {mode === 'signup' ? 'Create Your Account' : 'Welcome Back'}
           </h2>
-          <p className="text-white">
+          <p className="text-gray-600">
             {mode === 'signup' 
               ? 'Start your journey to better mental health' 
               : 'Sign in to access your personalized support'
@@ -158,7 +156,7 @@ export default function AuthPage() {
         </div>
 
         {/* Form */}
-        
+        <div className="heal-card p-8">
           {errors.general && (
             <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg">
               <p className="text-red-700 text-sm">{errors.general}</p>
@@ -169,7 +167,7 @@ export default function AuthPage() {
             {mode === 'signup' && (
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label htmlFor="firstName" className="block text-sm font-medium text-white mb-1">
+                  <label htmlFor="firstName" className="block text-sm font-medium text-gray-700 mb-1">
                     First Name
                   </label>
                   <div className="relative">
@@ -190,7 +188,7 @@ export default function AuthPage() {
                 </div>
                 
                 <div>
-                  <label htmlFor="lastName" className="block text-sm font-medium text-white mb-1">
+                  <label htmlFor="lastName" className="block text-sm font-medium text-gray-700 mb-1">
                     Last Name
                   </label>
                   <div className="relative">
@@ -213,7 +211,7 @@ export default function AuthPage() {
             )}
 
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-white mb-1">
+              <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
                 Email Address
               </label>
               <div className="relative">
@@ -234,7 +232,7 @@ export default function AuthPage() {
             </div>
 
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-white mb-1">
+              <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
                 Password
               </label>
               <div className="relative">
@@ -250,7 +248,7 @@ export default function AuthPage() {
                 />
                 <button
                   type="button"
-                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white"
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
                   onClick={() => setShowPassword(!showPassword)}
                 >
                   {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
@@ -263,7 +261,7 @@ export default function AuthPage() {
 
             {mode === 'signup' && (
               <div>
-                <label htmlFor="confirmPassword" className="block text-sm font-medium text-white mb-1">
+                <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 mb-1">
                   Confirm Password
                 </label>
                 <div className="relative">
@@ -295,7 +293,7 @@ export default function AuthPage() {
                     checked={formData.agreeToTerms}
                     onChange={handleInputChange}
                   />
-                  <label htmlFor="agreeToTerms" className="ml-2 text-sm text-white">
+                  <label htmlFor="agreeToTerms" className="ml-2 text-sm text-gray-600">
                     I agree to the{' '}
                     <Link href="/terms" className="text-blue-600 hover:text-blue-700">
                       Terms of Service
@@ -315,7 +313,7 @@ export default function AuthPage() {
                     checked={formData.agreeToPrivacy}
                     onChange={handleInputChange}
                   />
-                  <label htmlFor="agreeToPrivacy" className="ml-2 text-sm text-white">
+                  <label htmlFor="agreeToPrivacy" className="ml-2 text-sm text-gray-600">
                     I agree to the{' '}
                     <Link href="/privacy" className="text-blue-600 hover:text-blue-700">
                       Privacy Policy
@@ -347,7 +345,7 @@ export default function AuthPage() {
 
           {/* Switch Mode */}
           <div className="mt-6 text-center">
-            <p className="text-white">
+            <p className="text-gray-600">
               {mode === 'signup' ? 'Already have an account?' : "Don't have an account?"}{' '}
               <button
                 type="button"
