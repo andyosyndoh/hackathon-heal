@@ -133,7 +133,7 @@
   }
   
   .heal-emergency {
-    @apply bg-red-50 border-l-4 border-red-500 p-3 sm:p-4 rounded-r-lg;
+    @apply bg-red-100 border-l-4 border-red-500 p-3 sm:p-4 rounded-r-lg;
   }
 }
 
