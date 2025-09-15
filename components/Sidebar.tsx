@@ -25,6 +25,8 @@ import NextImage from 'next/image';
 import userImage from '@/public/images/heal-logo.png';
 import { link } from 'fs';
 
+import { authManager } from '@/lib/auth';
+
 interface SidebarProps {
   onToggle: (collapsed: boolean) => void;
   user: string;
@@ -187,7 +189,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onToggle, user }) => {
 
           {/* Logout Section */}
           <div className={`p-3 pr-7 flex h-20 justify-between items-center transition-opacity duration-300 ${isCollapsed ? 'opacity-0' : 'opacity-100'}`}>
-            <div className="flex items-center space-x-3 px-3 py-2 text-gray-700 hover:bg-red-50/40 hover:text-red-600 rounded-lg cursor-pointer transition-colors">
+            <div onClick={() => authManager.logout()} className="flex items-center space-x-3 px-3 py-2 text-gray-700 hover:bg-red-50/40 hover:text-red-600 rounded-lg cursor-pointer transition-colors">
               <LogOut size={18} />
               <span className="text-sm font-medium">Logout</span>
             </div>
