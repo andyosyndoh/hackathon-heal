@@ -2,7 +2,6 @@ import React from "react";
 import {
   FaTwitter,
   FaLinkedin,
-  FaLinkedinIn,
   FaInstagram,
   FaFacebook,
   FaYoutube,
@@ -124,7 +123,7 @@ const Footer = () => {
               href="#"
               className="hover:text-blue-700 transition-colors duration-300"
             >
-              <FaLinkedinIn />
+              <FaLinkedin />
             </a>
             <a
               href="#"
