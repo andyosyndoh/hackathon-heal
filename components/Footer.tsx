@@ -1,4 +1,5 @@
 import React from "react";
+import Image from "next/image";
 import {
   FaTwitter,
   FaLinkedin,
@@ -16,23 +17,13 @@ const Footer = () => {
         <div className="flex flex-col items-center md:items-start text-center md:text-left space-y-4">
           <div className="flex flex-col items-center md:items-start space-y-2">
             <div className="flex items-center space-x-2">
-              <div className="bg-gray-200 rounded-full w-12 h-12 flex items-center justify-center p-2">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="#123136"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="w-full h-full"
-                >
-                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z" />
-                  <path d="M12 16a4 4 0 1 0 0-8 4 4 0 0 0 0 8z" />
-                  <path d="M16 12a4 4 0 1 0-8 0 4 4 0 0 0 8 0z" />
-                  <path d="M16 12a4 4 0 1 0-8 0 4 4 0 0 0 8 0z" />
-                </svg>
-              </div>
+              <Image
+                src="/images/logo.png"
+                alt="HEAL Logo"
+                width={80}
+                height={80}
+                className="h-10 w-auto"
+              />
               <span className="text-3xl font-bold">HEAL</span>
             </div>
             <span className="text-xs">YOUR SUSTAINING CARE PARTNER</span>
