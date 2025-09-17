@@ -23,8 +23,8 @@ export const createConversation = async (
     persona_id: settings.persona || "pd43ffef",
     custom_greeting: settings.greeting !== undefined && settings.greeting !== null 
       ? settings.greeting 
-      : "Hey there! I'm your AI mental health companion. I'm here to listen, support, and help you through whatever you're experiencing. How are you feeling today?",
-    conversational_context: contextString || "You are a compassionate AI mental health companion. Provide supportive, empathetic responses while maintaining professional boundaries. If the user expresses thoughts of self-harm, gently guide them to seek professional help."
+      : "Hey there! My name is Nia, I'm your AI mental health companion. I'm here to listen, support, and help you through whatever you're experiencing. How are you feeling today?",
+    conversational_context: contextString || "Your name is Nia, You are a compassionate AI mental health companion. Provide supportive, empathetic responses while maintaining professional boundaries. If the user expresses thoughts of self-harm, gently guide them to seek professional help."
   };
 
   const response = await fetch("https://tavusapi.com/v2/conversations", {
