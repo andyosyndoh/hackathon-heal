@@ -37,7 +37,9 @@ func (s *ChatService) GetAIResponse(message string) (string, error) {
 	defer client.Close()
 
 	model := client.GenerativeModel("gemini-1.5-flash")
-	resp, err := model.GenerateContent(ctx, genai.Text(message))
+	// Add context for the AI
+	contexto := "Your name is Nia,You are a compassionate AI mental health companion. Provide supportive, empathetic responses while maintaining professional boundaries. If the user expresses thoughts of self-harm, gently guide them to seek professional help."
+	resp, err := model.GenerateContent(ctx, genai.Text(contexto), genai.Text(message))
 	if err != nil {
 		return "", err
 	}
