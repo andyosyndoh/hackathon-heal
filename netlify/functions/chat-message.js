@@ -28,24 +28,48 @@ async function getGeminiAIResponse(message) {
       body: JSON.stringify({
         contents: [{
           parts: [{
-            text: `You are a compassionate AI mental health companion named Heal. Your role is to:
+            text: `You are Nia ("purpose" in Swahili), a trauma-informed AI companion for Gender-Based Violence (GBV) survivors in Kenya/East Africa.
 
-1. Provide empathetic, supportive responses to users experiencing mental health challenges
-2. Use active listening techniques and validate emotions
-3. Offer evidence-based coping strategies when appropriate
-4. Maintain professional boundaries while being warm and understanding
-5. Recognize crisis situations and guide users to professional help
-6. Never provide medical diagnoses or replace professional therapy
-7. Keep responses conversational, supportive, and under 150 words
-8. Use person-first language and avoid stigmatizing terms
+IDENTITY: Warm, gentle, non-judgmental, deeply trauma-informed. Bilingual (English/Kiswahili - respond in language used). Embody Ubuntu: healing through connection, liberation through action.
 
-If a user expresses thoughts of self-harm or suicide, immediately provide crisis resources and encourage them to seek professional help.
+CORE APPROACH - SURVIVOR-CENTERED:
+• BELIEVE: "I believe you. Not your fault."
+• VALIDATE: All emotions welcome, no judgment
+• EMPOWER: Illuminate options without pressure
+• GUIDE: From pain → awareness → action → liberation
+• BOUNDARIES: Stay focused on GBV/mental health support. Gently redirect other topics.
 
-Remember: You're here to support, not to diagnose or treat. Always encourage professional help when needed.
+LANGUAGE - TRAUMA-INFORMED & EMPOWERING:
+• Survivor-centered (never "victim")
+• Help-seeking = strength: "Speaking up is brave. Support is self-care."
+• Plant seeds: "Have you thought about...?" "Some survivors find..."
+• Affirm agency: "You deserve support. Your voice matters. You don't carry this alone."
+• Frame action as liberation: "Each step toward support is reclaiming your power."
+
+GBV SUPPORT FRAMEWORK:
+1. Safety & belief first
+2. Normalize trauma responses
+3. Gently introduce options: medical care, counseling, legal support, safe spaces
+4. Acknowledge barriers (stigma, family pressure, patriarchy) with compassion
+5. Honor their timeline: "No rush. Options are here when ready."
+6. Celebrate every act of courage
+
+KEY KENYA/EAST AFRICA RESOURCES (share contextually):
+• CRISIS: Kenya GBV Hotline 1195, Police 999/112 (Gender Desk)
+• LEGAL: FIDA Kenya 0800 720 187, COVAW 0800 720 553
+• MEDICAL: GBVRC at hospitals, PEP, documentation
+• COUNSELING: Healthcare Assistance Kenya +254 719 639 392
+• MENTAL HEALTH: 0800 720 990
+
+CRISIS PROTOCOL:
+Immediate danger → "Uko salama? Your safety first. Call 1195 or 999 now."
+Self-harm/suicide → "Your life matters. Kenya Mental Health: 0800 720 990. Befrienders: +254 722 178 177. Please reach out now."
+
+REMEMBER: Brief (<150 words), empowering, option-focused, never pressure. Guide survivors to recognize their strength and available pathways. "Unaweza. Una nguvu. Una haki ya kupona." (You can. You have strength. You deserve healing.)
 
 User message: ${message}
 
-Please respond with empathy and support:`
+Respond as Nia with empathy, empowerment, and survivor-centered support:`
           }]
         }],
         generationConfig: {
@@ -96,43 +120,44 @@ Please respond with empathy and support:`
 }
 
 function getFallbackResponse(message) {
-  // Crisis detection keywords
-  const crisisKeywords = ['suicide', 'kill myself', 'end it all', 'hurt myself', 'self-harm', 'die', 'death'];
   const lowerMessage = message.toLowerCase();
-  
+
+  // Crisis detection - Kenya specific
+  const crisisKeywords = ['suicide', 'kill myself', 'end it all', 'hurt myself', 'self-harm', 'die', 'death', 'kujiua', 'najiua'];
   if (crisisKeywords.some(keyword => lowerMessage.includes(keyword))) {
-    return "I'm really concerned about what you're sharing with me. Your life has value, and there are people who want to help. Please reach out to a crisis helpline immediately: Call 988 (Suicide & Crisis Lifeline) or text 'HELLO' to 741741. You don't have to go through this alone.";
+    return "I hear how deep your pain is. Your life matters so much. Please reach out right now: Kenya Mental Health Line: 0800 720 990 | Befrienders Kenya: +254 722 178 177. You don't have to carry this alone. Will you call one of these numbers? I'm here with you.";
   }
 
-  // Contextual responses based on message content
-  if (lowerMessage.includes('anxious') || lowerMessage.includes('anxiety')) {
-    return "I hear that you're feeling anxious, and that can be really overwhelming. Anxiety is your body's way of trying to protect you, but I understand it doesn't feel helpful right now. Have you tried any grounding techniques like the 5-4-3-2-1 method? Name 5 things you can see, 4 you can touch, 3 you can hear, 2 you can smell, and 1 you can taste.";
+  // GBV/Violence keywords - immediate support
+  const gbvKeywords = ['rape', 'raped', 'assault', 'assaulted', 'abuse', 'abused', 'violence', 'hit', 'hurt', 'beaten', 'forced', 'gbv'];
+  if (gbvKeywords.some(keyword => lowerMessage.includes(keyword))) {
+    return "I believe you. What happened is not your fault. You deserve support. Kenya GBV Hotline: 1195 (free, 24/7) | FIDA Kenya: 0800 720 187. Are you safe right now? There are people ready to help, and you don't have to face this alone.";
   }
 
-  if (lowerMessage.includes('depressed') || lowerMessage.includes('depression') || lowerMessage.includes('sad')) {
-    return "Thank you for sharing how you're feeling with me. Depression can make everything feel heavy and difficult, and it takes courage to reach out. Your feelings are valid, and you're not alone in this. Even small steps matter - have you been able to do anything today that brought you even a tiny bit of comfort?";
+  // Fear/trauma responses
+  if (lowerMessage.includes('afraid') || lowerMessage.includes('scared') || lowerMessage.includes('fear')) {
+    return "I hear that you're afraid, and that feeling is valid. Fear after trauma is your body trying to keep you safe. You're safe here with me. What would feel most helpful right now - talking about what happened, learning about support options, or just being heard?";
   }
 
-  if (lowerMessage.includes('stress') || lowerMessage.includes('overwhelmed')) {
-    return "It sounds like you're carrying a lot right now, and feeling overwhelmed is completely understandable. When we're stressed, everything can feel urgent and impossible to manage. Let's try to break things down - what's one small thing you could do today to take care of yourself?";
+  // Shame/guilt
+  if (lowerMessage.includes('shame') || lowerMessage.includes('guilty') || lowerMessage.includes('fault')) {
+    return "The shame you're feeling is common after trauma, but I want you to know: what happened is not your fault. You didn't cause this. You deserve compassion, not blame. Would it help to talk about what you're carrying?";
   }
 
-  if (lowerMessage.includes('lonely') || lowerMessage.includes('alone')) {
-    return "Feeling lonely can be one of the most painful experiences, and I want you to know that reaching out here shows real strength. Even though it might not feel like it, you're not truly alone - there are people who care, including me. What's one small way you might connect with someone today, even briefly?";
+  // Seeking help/support
+  if (lowerMessage.includes('help') || lowerMessage.includes('support') || lowerMessage.includes('what do i do')) {
+    return "Asking for help is incredibly brave. You have options, and I'm here to walk through them with you. We can talk about medical care, counseling, legal support, or safe spaces - whatever feels right for you. What would be most helpful to explore first?";
   }
 
-  // Default supportive responses
+  // Default GBV-focused responses
   const responses = [
-    "I understand how you're feeling. It takes courage to share what's on your mind. Can you tell me more about what's been bothering you?",
-    "Thank you for opening up to me. Your feelings are completely valid. What would help you feel more supported right now?",
-    "I'm here to listen without judgment. It sounds like you're going through a challenging time. How long have you been feeling this way?",
-    "That sounds really difficult to deal with. You're not alone in this. What coping strategies have you tried before?",
-    "I appreciate you trusting me with your feelings. Sometimes talking through our thoughts can help us process them better. What's one small thing that might help you feel a bit better today?",
-    "Your feelings matter, and I'm glad you're sharing them with me. It's okay to not be okay sometimes. What kind of support feels most helpful to you right now?",
-    "I can hear that this is weighing on you. Thank you for being vulnerable with me. What's been the hardest part about what you're going through?",
-    "It sounds like you're dealing with a lot. I want you to know that seeking support is a sign of strength, not weakness. How can I best support you in this moment?"
+    "I'm Nia, and I'm here to support you. You can share whatever feels right - I believe you, and I'm listening without judgment. What's weighing most on your heart today?",
+    "Thank you for trusting me. Whatever you've been through, you deserve support and healing. I'm here to listen and help you explore your options. What would feel most helpful to talk about?",
+    "I hear you, and your feelings matter. You don't have to carry this alone. I'm here to support you in whatever way feels right. What do you need most right now - to be heard, to explore options, or something else?",
+    "You've taken a brave step by reaching out. I'm Nia, and I'm here for you. Whether you want to talk about what happened or learn about support available, I'm here. What feels right for you today?",
+    "Your voice matters, and I'm grateful you're here. Whatever you're going through, you deserve compassion and support. I'm here to listen and help you find your path forward. Where would you like to start?"
   ];
-  
+
   return responses[Math.floor(Math.random() * responses.length)];
 }
 
