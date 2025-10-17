@@ -217,7 +217,7 @@ export default function ChatPage() {
     setMessages([
       {
         id: '1',
-        content: "Hello! I'm your AI companion. I'm here to provide emotional support and help you through whatever you're experiencing. How are you feeling today?",
+        content: "Habari! My name is Nia, and I'm here for you. Ninaongea Kiswahili na Kiingereza. You are brave for being here, and I want you to know that this is your safe space. I'm here to listen, support , and walk with you through whatever you're experiencing. How are you feeling today? / Unajisikiaje leo?",
         sender: 'ai',
         timestamp: new Date(),
         type: 'text'
@@ -477,7 +477,7 @@ export default function ChatPage() {
                 <Bot className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
               </div>
               <div>
-                <h1 className="font-semibold text-gray-900 text-sm sm:text-base">Nia</h1>
+                <h1 className="font-semibold text-gray-900 text-sm sm:text-base">AI Companion</h1>
                 <p className="text-xs sm:text-sm text-green-600 flex items-center">
                   {isPlayingAudio ? (
                     <>
