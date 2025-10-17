@@ -43,3 +43,7 @@ next-env.d.ts
 
 # Local Netlify folder
 .netlify
+
+# AWS CLI files
+aws/
+awscliv2.zip
