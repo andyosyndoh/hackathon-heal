@@ -55,20 +55,20 @@ type VoiceOption = 'off' | 'female' | 'male';
 const ChoiceModal = ({ onSelect }: { onSelect: (choice: 'chat' | 'video') => void }) => (
   <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-[100]">
     <div className="bg-white rounded-2xl p-8 sm:p-10 shadow-xl text-center max-w-sm mx-4 transform transition-all duration-300 ease-out scale-95 animate-in fade-in-0 zoom-in-95">
-      <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-3">How would you like to connect?</h2>
-      <p className="text-gray-600 mb-8 text-sm sm:text-base">Choose your preferred method of communication.</p>
+      <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-3">Karibu! Welcome to Your Safe Space</h2>
+      <p className="text-gray-600 mb-8 text-sm sm:text-base">How would you like to connect with Nia today?</p>
       <div className="flex flex-col sm:flex-row justify-center space-y-3 sm:space-y-0 sm:space-x-4">
         <button
           onClick={() => onSelect('chat')}
           className="heal-button w-full"
         >
-          Start Chatting
+          Text Chat / Maandishi
         </button>
         <button
           onClick={() => onSelect('video')}
           className="heal-button-secondary w-full"
         >
-          Start Video Call
+          Video Chat / Video
         </button>
       </div>
     </div>
@@ -217,7 +217,7 @@ export default function ChatPage() {
     setMessages([
       {
         id: '1',
-        content: "Habari! My name is Nia, and I'm here for you. Ninaongea Kiswahili na Kiingereza. You are brave for being here, and I want you to know that this is your safe space. I'm here to listen, support , and walk with you through whatever you're experiencing. How are you feeling today? / Unajisikiaje leo?",
+        content: "Habari! I'm Nia - meaning 'purpose' in Swahili.Niaogea Kiswaili na Kiigereza. This is your safe space. Ninaongea Kiswahili na Kiingereza. You are brave for reaching out. I'm here to listen without judgment, and support you i a wa possible. Whatever you share stays between us. How are you feeling today? / Unajisikiaje leo?",
         sender: 'ai',
         timestamp: new Date(),
         type: 'text'
@@ -477,7 +477,7 @@ export default function ChatPage() {
                 <Bot className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
               </div>
               <div>
-                <h1 className="font-semibold text-gray-900 text-sm sm:text-base">AI Companion</h1>
+                <h1 className="font-semibold text-gray-900 text-sm sm:text-base">Nia - Your Safe Space</h1>
                 <p className="text-xs sm:text-sm text-green-600 flex items-center">
                   {isPlayingAudio ? (
                     <>
@@ -487,8 +487,8 @@ export default function ChatPage() {
                     </>
                   ) : (
                     <>
-                      <span className="hidden sm:inline">Online • Secure Session</span>
-                      <span className="sm:hidden">Online</span>
+                      <span className="hidden sm:inline">Here for you • Safe & Confidential</span>
+                      <span className="sm:hidden">Available</span>
                     </>
                   )}
                 </p>
@@ -635,8 +635,8 @@ export default function ChatPage() {
         <div className="flex items-center justify-center space-x-2 text-xs sm:text-sm text-blue-700">
           <Shield className="h-3 w-3 sm:h-4 sm:w-4" />
           <span className="text-center">
-            <span className="hidden sm:inline">End-to-end encrypted • Your conversation is private and secure</span>
-            <span className="sm:hidden">Encrypted • Private & Secure</span>
+            <span className="hidden sm:inline">Your privacy is protected • No one else will see this conversation / Mazungumzo yako ni siri</span>
+            <span className="sm:hidden">Private & Confidential</span>
           </span>
         </div>
       </div>
@@ -753,11 +753,11 @@ export default function ChatPage() {
             <div className="bg-red-50 border-t border-red-200 px-3 sm:px-4 py-2 flex-shrink-0">
               <div className="flex items-center justify-between">
                 <p className="text-xs sm:text-sm text-red-700">
-                  <span className="hidden sm:inline">If you're having thoughts of self-harm, please get help immediately.</span>
-                  <span className="sm:hidden">Need immediate help?</span>
+                  <span className="hidden sm:inline">In immediate danger? Your safety matters. / Uko hatarini? Usalama wako ni muhimu.</span>
+                  <span className="sm:hidden">Need urgent help?</span>
                 </p>
                 <Link href="/crisis" className="text-xs sm:text-sm font-medium text-red-600 hover:text-red-700">
-                  Crisis Support →
+                  Get Help Now →
                 </Link>
               </div>
             </div>
@@ -784,7 +784,7 @@ export default function ChatPage() {
                 value={inputMessage}
                 onChange={(e) => setInputMessage(e.target.value)}
                 onKeyPress={handleKeyPress}
-                placeholder="Type your message..."
+                placeholder="Type your message... / Andika ujumbe wako..."
                 className="w-full px-3 py-2 sm:px-4 sm:py-3 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none max-h-24 sm:max-h-32 bg-gray-50 text-sm sm:text-base"
                 rows={1}
                 style={{
@@ -815,17 +815,20 @@ export default function ChatPage() {
           {/* Quick Response Buttons - Responsive */}
           <div className="flex items-center justify-between mt-2 sm:mt-3">
             <div className="flex flex-wrap gap-1 sm:gap-2 flex-1 min-w-0">
-              {['I need support', 'Feeling anxious', 'Having a hard day', 'Need coping strategies'].map((quickResponse, index) => (
+              {[
+                { en: 'I need support', sw: 'Nahitaji msaada', short: 'Support' },
+                { en: 'Feeling unsafe', sw: 'Siko salama', short: 'Unsafe' },
+                { en: 'Need someone to talk to', sw: 'Nataka mtu wa kuongea naye', short: 'Talk' },
+                { en: 'Having a hard day', sw: 'Nina siku ngumu', short: 'Hard day' }
+              ].map((option, index) => (
                 <button
                   key={index}
-                  onClick={() => setInputMessage(quickResponse)}
+                  onClick={() => setInputMessage(`${option.en} / ${option.sw}`)}
                   className="px-2 py-1 sm:px-3 sm:py-1 bg-gray-100 hover:bg-gray-200 text-gray-700 text-xs sm:text-sm rounded-full transition-colors disabled:opacity-50 whitespace-nowrap"
                   disabled={isTyping}
                 >
-                  <span className="hidden sm:inline">{quickResponse}</span>
-                  <span className="sm:hidden">
-                    {index === 0 ? 'Support' : index === 1 ? 'Anxious' : index === 2 ? 'Hard day' : 'Coping'}
-                  </span>
+                  <span className="hidden sm:inline">{option.en}</span>
+                  <span className="sm:hidden">{option.short}</span>
                 </button>
               ))}
             </div>
