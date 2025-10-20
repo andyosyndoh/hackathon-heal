@@ -150,12 +150,15 @@ function getFallbackResponse(message) {
   }
 
   // Default GBV-focused responses
-  const responses = [
-    "I'm Nia, and I'm here to support you. You can share whatever feels right - I believe you, and I'm listening without judgment. What's weighing most on your heart today?",
-    "Thank you for trusting me. Whatever you've been through, you deserve support and healing. I'm here to listen and help you explore your options. What would feel most helpful to talk about?",
-    "I hear you, and your feelings matter. You don't have to carry this alone. I'm here to support you in whatever way feels right. What do you need most right now - to be heard, to explore options, or something else?",
-    "You've taken a brave step by reaching out. I'm Nia, and I'm here for you. Whether you want to talk about what happened or learn about support available, I'm here. What feels right for you today?",
-    "Your voice matters, and I'm grateful you're here. Whatever you're going through, you deserve compassion and support. I'm here to listen and help you find your path forward. Where would you like to start?"
+   const responses = [
+    "I understand how you're feeling. It takes courage to share what's on your mind. Can you tell me more about what's been bothering you?",
+    "Thank you for opening up to me. Your feelings are completely valid. What would help you feel more supported right now?",
+    "I'm here to listen without judgment. It sounds like you're going through a challenging time. How long have you been feeling this way?",
+    "That sounds really difficult to deal with. You're not alone in this. What coping strategies have you tried before? Are you safe",
+    "I appreciate you trusting me with your feelings. Sometimes talking through our thoughts can help us process them better. What's one small thing that might help you feel a bit better today?",
+    "Your feelings matter, and I'm glad you're sharing them with me. It's okay to not be okay sometimes. What kind of support feels most helpful to you right now?",
+    "I can hear that this is weighing on you. Thank you for being vulnerable with me. What's been the hardest part about what you're going through?",
+    "It sounds like you're dealing with a lot. I want you to know that seeking support is a sign of strength, not weakness. How can I best support you in this moment?"
   ];
 
   return responses[Math.floor(Math.random() * responses.length)];
