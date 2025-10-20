@@ -160,12 +160,21 @@ export class ChatService {
   }
 
   private async generateAIResponse(message: string): Promise<string> {
-    // Check for crisis keywords
-    const crisisKeywords = ['suicide', 'kill myself', 'end it all', 'hurt myself', 'self-harm', 'die', 'death'];
+    // Check for crisis keywords (GBV + mental health)
+    const crisisKeywords = ['suicide', 'kill myself', 'end it all', 'hurt myself', 'self-harm', 'die', 'death', 'rape', 'raped', 'assault', 'attacked', 'danger'];
     const lowerMessage = message.toLowerCase();
-    
+
     if (crisisKeywords.some(keyword => lowerMessage.includes(keyword))) {
-      return "I'm really concerned about what you're sharing with me. Your life has value, and there are people who want to help. Please reach out to a crisis helpline immediately: Call 988 (Suicide & Crisis Lifeline) or text 'HELLO' to 741741. You don't have to go through this alone.";
+      // Check for immediate danger
+      if (lowerMessage.includes('danger') || lowerMessage.includes('attack') || lowerMessage.includes('right now') || lowerMessage.includes('happening')) {
+        return "Uko salama? Your safety is the priority. If you're in immediate danger, please call 999 or 1195 (Kenya GBV Hotline) NOW. I'm here with you. Can you get somewhere safe?";
+      }
+      // Suicide/self-harm crisis
+      if (lowerMessage.includes('suicide') || lowerMessage.includes('kill myself') || lowerMessage.includes('end it') || lowerMessage.includes('die')) {
+        return "I'm really concerned about what you're sharing. Your life has value, and you deserve support. Please reach out now: Kenya Mental Health Helpline: 0800 720 990 (toll-free). Befrienders Kenya: +254 722 178 177 (24/7). You don't have to face this alone. Una haki ya kupona. (You deserve to heal.)";
+      }
+      // GBV crisis
+      return "I believe you. What happened is not your fault. Your safety matters. Kenya GBV Hotline: 1195 (toll-free, 24/7). Police Gender Desk: 999/112. FIDA Kenya: 0800 720 187. You're not alone in this.";
     }
 
     // Try Gemini AI if API key is available
@@ -177,20 +186,48 @@ export class ChatService {
           body: JSON.stringify({
             contents: [{
               parts: [{
-                text: `You are a compassionate AI mental health companion named Heal. Your role is to:
+                text: `You are Nia ("purpose" in Swahili), a trauma-informed AI companion for Gender-Based Violence (GBV) survivors in Kenya/East Africa.
 
-1. Provide empathetic, supportive responses to users experiencing mental health challenges
-2. Use active listening techniques and validate emotions
-3. Offer evidence-based coping strategies when appropriate
-4. Maintain professional boundaries while being warm and understanding
-5. Recognize crisis situations and guide users to professional help
-6. Never provide medical diagnoses or replace professional therapy
-7. Keep responses conversational, supportive, and under 150 words
-8. Use person-first language and avoid stigmatizing terms
+IDENTITY: Warm, gentle, non-judgmental, deeply trauma-informed. Bilingual (English/Kiswahili - respond in language used). Embody Ubuntu: healing through connection, liberation through action.
+
+CORE APPROACH - SURVIVOR-CENTERED:
+• BELIEVE: "I believe you. Not your fault."
+• VALIDATE: All emotions welcome, no judgment
+• EMPOWER: Illuminate options without pressure
+• GUIDE: From pain → awareness → action → liberation
+• BOUNDARIES: Stay focused on GBV/mental health support. Gently redirect other topics.
+
+LANGUAGE - TRAUMA-INFORMED & EMPOWERING:
+• Survivor-centered (never "victim")
+• Help-seeking = strength: "Speaking up is brave. Support is self-care."
+• Plant seeds: "Have you thought about...?" "Some survivors find..."
+• Affirm agency: "You deserve support. Your voice matters. You don't carry this alone."
+• Frame action as liberation: "Each step toward support is reclaiming your power."
+
+GBV SUPPORT FRAMEWORK:
+1. Safety & belief first
+2. Normalize trauma responses
+3. Gently introduce options: medical care, counseling, legal support, safe spaces
+4. Acknowledge barriers (stigma, family pressure, patriarchy) with compassion
+5. Honor their timeline: "No rush. Options are here when ready."
+6. Celebrate every act of courage
+
+KEY KENYA/EAST AFRICA RESOURCES (share contextually):
+• CRISIS: Kenya GBV Hotline 1195, Police 999/112 (Gender Desk)
+• LEGAL: FIDA Kenya 0800 720 187, COVAW 0800 720 553
+• MEDICAL: GBVRC at hospitals, PEP, documentation
+• COUNSELING: Healthcare Assistance Kenya +254 719 639 392
+• MENTAL HEALTH: 0800 720 990
+
+CRISIS PROTOCOL:
+Immediate danger → "Uko salama? Your safety first. Call 1195 or 999 now."
+Self-harm/suicide → "Your life matters. Kenya Mental Health: 0800 720 990. Befrienders: +254 722 178 177. Please reach out now."
+
+REMEMBER: Brief (<150 words), empowering, option-focused, never pressure. Guide survivors to recognize their strength and available pathways. "Unaweza. Una nguvu. Una haki ya kupona." (You can. You have strength. You deserve healing.)
 
 User message: ${message}
 
-Please respond with empathy and support:`
+Please respond with empathy, belief, and empowerment:`
               }]
             }],
             generationConfig: {
@@ -220,25 +257,31 @@ Please respond with empathy and support:`
   private getFallbackResponse(message: string): string {
     const lowerMessage = message.toLowerCase();
 
-    if (lowerMessage.includes('anxious') || lowerMessage.includes('anxiety')) {
-      return "I hear that you're feeling anxious, and that can be really overwhelming. Anxiety is your body's way of trying to protect you, but I understand it doesn't feel helpful right now. Have you tried any grounding techniques like the 5-4-3-2-1 method?";
+    // GBV-specific responses
+    if (lowerMessage.includes('abuse') || lowerMessage.includes('violence') || lowerMessage.includes('hurt')) {
+      return "I believe you. What happened is not your fault. You deserve safety and support. Kenya GBV Hotline: 1195 (toll-free, 24/7). FIDA Kenya: 0800 720 187. You don't have to carry this alone.";
     }
 
-    if (lowerMessage.includes('depressed') || lowerMessage.includes('depression') || lowerMessage.includes('sad')) {
-      return "Thank you for sharing how you're feeling with me. Depression can make everything feel heavy and difficult, and it takes courage to reach out. Your feelings are valid, and you're not alone in this.";
+    if (lowerMessage.includes('scared') || lowerMessage.includes('afraid') || lowerMessage.includes('fear')) {
+      return "Your fear is valid. Safety comes first. If you're in immediate danger, please call 999 or 1195. I'm here to support you. What would help you feel safer right now?";
     }
 
-    if (lowerMessage.includes('stress') || lowerMessage.includes('overwhelmed')) {
-      return "It sounds like you're carrying a lot right now, and feeling overwhelmed is completely understandable. When we're stressed, everything can feel urgent and impossible to manage. Let's try to break things down.";
+    if (lowerMessage.includes('anxious') || lowerMessage.includes('anxiety') || lowerMessage.includes('stress')) {
+      return "Anxiety after trauma is your body trying to protect you. It's exhausting, and you're doing your best. Grounding can help: Name 5 things you see, 4 you hear, 3 you touch. Kenya Mental Health: 0800 720 990. Unakwenda vizuri. (You're doing okay.)";
     }
 
+    if (lowerMessage.includes('depressed') || lowerMessage.includes('depression') || lowerMessage.includes('sad') || lowerMessage.includes('hopeless')) {
+      return "I hear you, and your feelings make sense. Trauma can make everything feel heavy. You're not alone. Befrienders Kenya: +254 722 178 177. Healthcare Assistance: +254 719 639 392. Small steps count. Una nguvu. (You have strength.)";
+    }
+
+    // Default GBV-informed responses
     const responses = [
-      "I understand how you're feeling. It takes courage to share what's on your mind. Can you tell me more about what's been bothering you?",
-      "Thank you for opening up to me. Your feelings are completely valid. What would help you feel more supported right now?",
-      "I'm here to listen without judgment. It sounds like you're going through a challenging time. How long have you been feeling this way?",
-      "That sounds really difficult to deal with. You're not alone in this. What coping strategies have you tried before?",
+      "You've taken a brave step by reaching out. I'm Nia, and I'm here to listen without judgment. You're safe here. What's on your mind?",
+      "I believe you, and I'm here for you. Whatever you share stays between us. How can I support you today?",
+      "Thank you for trusting me with this. Your feelings are completely valid. What would help you feel more supported right now?",
+      "I'm listening. You don't have to go through this alone. Take your time - I'm here. Uko salama. (You're safe.)",
     ];
-    
+
     return responses[Math.floor(Math.random() * responses.length)];
   }
 }
