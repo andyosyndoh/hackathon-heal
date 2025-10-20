@@ -20,7 +20,7 @@ export const createConversation = async (
   contextString += settings.context || "";
   
   const payload = {
-    persona_id: settings.persona || "p5d11710002a", // Gloria - African avatar
+    persona_id: settings.persona || "pd43ffef",
     custom_greeting: settings.greeting !== undefined && settings.greeting !== null
       ? settings.greeting
       : "Habari! I'm Nia - your AI companion. I'm here to listen and support you in what ever possible way. You're safe here. How are you feeling today?",
