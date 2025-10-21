@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { ChatService } from '../chat/chat.service';
 
 // Define clear menu states for readability and type safety
 type Menu =
@@ -24,6 +25,8 @@ interface UssdSession {
 @Injectable()
 export class UssdService {
   private sessions: Map<string, UssdSession> = new Map();
+
+  constructor(private readonly chatService: ChatService) {}
 
   async handleSession(sessionId: string, phoneNumber: string, text: string): Promise<string> {
     // Initialize session if new
@@ -150,44 +153,17 @@ export class UssdService {
     return `END Thank you for reporting. Our team will reach out soon.`;
   }
 
-  // AI response with trauma-informed empathy
+  // 🤖 Use real Gemini AI from ChatService (same AI as web chat)
   private async generateNiaResponse(message: string): Promise<string> {
-    const lowerMessage = message.toLowerCase();
-
-    // Crisis detection
-    const crisisKeywords = ['suicide', 'kill myself', 'hurt myself', 'rape', 'raped', 'assault', 'danger'];
-    if (crisisKeywords.some(keyword => lowerMessage.includes(keyword))) {
-      if (lowerMessage.includes('danger') || lowerMessage.includes('attack')) {
-        return "Are you safe? Call 1195 or 999 NOW if in danger. I'm here with you.";
-      }
-      if (lowerMessage.includes('suicide') || lowerMessage.includes('kill myself')) {
-        return "Your life has value. Kenya Mental Health: 0800 720 990. Befrienders: +254 722 178 177. You're not alone.";
-      }
-      return "I believe you. Not your fault. Kenya GBV Hotline: 1195 (24/7). You're not alone.";
+    try {
+      // Use the same AI that powers the web text chat
+      const aiResponse = await this.chatService.generateAIResponse(message);
+      return aiResponse;
+    } catch (error) {
+      console.error('Error getting AI response for USSD:', error);
+      // Fallback to crisis-informed response if AI fails
+      return "I'm here to listen. Your feelings are valid. If in immediate danger, call 1195 (GBV Hotline) or 999. You're not alone.";
     }
-
-    // Emotion-based responses
-    if (lowerMessage.includes('scared') || lowerMessage.includes('afraid')) {
-      return "Your fear is valid. Safety first. Call 1195 if in danger. What would help you feel safer?";
-    }
-
-    if (lowerMessage.includes('sad') || lowerMessage.includes('depressed') || lowerMessage.includes('hopeless')) {
-      return "I hear you. Your feelings make sense. Befrienders: +254 722 178 177. You have strength.";
-    }
-
-    if (lowerMessage.includes('abuse') || lowerMessage.includes('violence') || lowerMessage.includes('hurt')) {
-      return "I believe you. Not your fault. Kenya GBV Hotline: 1195. FIDA Kenya: 0800 720 187. Support is available.";
-    }
-
-    // Default supportive responses
-    const responses = [
-      "I'm here to listen without judgment. You're safe here. What's on your mind?",
-      "I believe you. Whatever you share stays between us. How can I support you?",
-      "Your feelings are valid. You don't have to go through this alone.",
-      "Thank you for trusting me. Take your time - I'm here. What would help you right now?",
-    ];
-
-    return responses[Math.floor(Math.random() * responses.length)];
   }
 
   // Keep USSD text short and readable
