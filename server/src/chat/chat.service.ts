@@ -1,4 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { ChatSession } from './entities/chat-session.entity';
@@ -19,12 +20,17 @@ export class ChatService {
     private chatMessageRepository: Repository<ChatMessage>,
     @InjectRepository(User)
     private userRepository: Repository<User>,
+    private configService: ConfigService,
   ) {
     // Initialize Gemini AI (same as frontend video chat)
-    if (process.env.GEMINI_API_KEY) {
-      this.genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+    const apiKey = this.configService.get<string>('GEMINI_API_KEY');
+    console.log(' GEMINI_API_KEY present:', !!apiKey);
+    console.log(' GEMINI_API_KEY value:', apiKey ? `${apiKey.substring(0, 10)}...` : 'NOT SET');
+
+    if (apiKey) {
+      this.genAI = new GoogleGenerativeAI(apiKey);
       this.model = this.genAI.getGenerativeModel({
-        model: 'gemini-1.5-flash-latest',
+        model: 'gemini-2.0-flash',
         systemInstruction: `You are Nia ("purpose" in Swahili), a trauma-informed AI companion for Gender-Based Violence (GBV) survivors in Kenya/East Africa.
 
 IDENTITY: Warm, gentle, non-judgmental, deeply trauma-informed. Bilingual (English/Kiswahili - respond in language used). Embody Ubuntu: healing through connection, liberation through action.
@@ -210,13 +216,16 @@ REMEMBER: Brief (<150 words), empowering, option-focused, never pressure. Guide 
   }
 
   async generateAIResponse(message: string): Promise<string> {
-    // 🤖 Use Google Generative AI SDK (same as frontend video chat)
+    //  Use Google Generative AI SDK (same as frontend video chat)
     if (!this.model) {
-      console.error('Gemini AI not initialized. GEMINI_API_KEY missing.');
+      console.error(' Gemini AI not initialized. GEMINI_API_KEY missing.');
+      console.error(' Falling back to default responses');
       return this.getFallbackResponse(message);
     }
 
     try {
+      console.log(' Sending message to Gemini AI:', message.substring(0, 50) + '...');
+
       // Add timeout to prevent hanging (important for USSD 10-sec limit)
       const timeoutPromise = new Promise<never>((_, reject) =>
         setTimeout(() => reject(new Error('AI response timeout')), 8000)
@@ -227,9 +236,13 @@ REMEMBER: Brief (<150 words), empowering, option-focused, never pressure. Guide 
       const result = await Promise.race([aiPromise, timeoutPromise]);
       const response = await result.response;
       const text = response.text();
+
+      console.log(' Gemini AI response received:', text.substring(0, 100) + '...');
       return text;
     } catch (error) {
-      console.error('Gemini AI error:', error);
+      console.error(' Gemini AI error:', error.message || error);
+      console.error(' Error details:', JSON.stringify(error, null, 2));
+      console.error(' Falling back to default responses');
       // Graceful fallback for rate limits, timeouts, or errors
       return this.getFallbackResponse(message);
     }
