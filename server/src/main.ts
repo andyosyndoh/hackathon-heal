@@ -6,11 +6,16 @@ import { AppModule } from './app.module';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
+
   // Enable CORS
   app.enableCors({
     origin: ['http://localhost:3000', 'http://localhost:5173', 'https://localhost:3000'],
     credentials: true,
   });
+
+  
+  //This ensures NestJS can read Africa’s Talking form data properly.
+   app.use(require('body-parser').urlencoded({ extended: true }));
 
   // Global validation pipe
   app.useGlobalPipes(new ValidationPipe({
@@ -19,8 +24,10 @@ async function bootstrap() {
     transform: true,
   }));
 
-  // API prefix
-  app.setGlobalPrefix('api/v1');
+  // API prefix (exclude USSD for Africa's Talking compatibility)
+  app.setGlobalPrefix('api/v1', {
+    exclude: ['ussd'],
+  });
 
   // Swagger documentation
   const config = new DocumentBuilder()
