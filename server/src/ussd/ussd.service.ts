@@ -1,231 +1,164 @@
 import { Injectable } from '@nestjs/common';
 
+// Define clear menu states for readability and type safety
+type Menu =
+  | 'language'
+  | 'main'
+  | 'chat'
+  | 'report_phone'
+  | 'report_location'
+  | 'report_type';
+
 interface UssdSession {
   phoneNumber: string;
-  currentMenu: string;
+  currentMenu: Menu;
   conversationHistory: string[];
-  language: 'en' | 'sw';
+  language: 'en' | 'sw' | null;
+  reportData?: {
+    phone?: string;
+    location?: string;
+    type?: string;
+  };
 }
 
 @Injectable()
 export class UssdService {
   private sessions: Map<string, UssdSession> = new Map();
 
-  constructor() {}
-
-  async handleSession(
-    sessionId: string,
-    phoneNumber: string,
-    text: string,
-  ): Promise<string> {
+  async handleSession(sessionId: string, phoneNumber: string, text: string): Promise<string> {
     // Initialize session if new
     if (!this.sessions.has(sessionId)) {
       this.sessions.set(sessionId, {
         phoneNumber,
-        currentMenu: 'main',
+        currentMenu: 'language',
         conversationHistory: [],
-        language: 'en',
+        language: null,
+        reportData: {},
       });
     }
 
     const session = this.sessions.get(sessionId);
-    const userInput = text.split('*').pop() || ''; // Get last input
+    const userInput = text.split('*').pop() || '';
 
-    // Main menu (when text is empty, it's the first request)
-    if (text === '') {
-      return this.getMainMenu(session.language);
-    }
-
-    // Route based on user selection
-    const level = text.split('*').length;
-
-    if (level === 1) {
-      return await this.handleMainMenuSelection(sessionId, userInput);
-    } else {
-      return await this.handleSubMenu(sessionId, text, userInput);
-    }
-  }
-
-  private getMainMenu(language: 'en' | 'sw'): string {
-    if (language === 'sw') {
-      return `CON Habari! Mimi ni Nia - nafasi yako salama.
-
-1. Ongea na Nia (AI Chat)
-2. Pata Msaada Sasa (Crisis)
-3. Jifunze kuhusu GBV
-4. Mpango wa Usalama
-5. Badilisha Lugha (English)`;
-    }
-
-    return `CON Habari! I'm Nia - your safe space for GBV support.
-
-1. Talk to Nia (AI Chat)
-2. Get Help Now (Crisis Resources)
-3. Learn About GBV
-4. Safety Planning
-5. Change Language (Kiswahili)`;
-  }
-
-  private async handleMainMenuSelection(
-    sessionId: string,
-    selection: string,
-  ): Promise<string> {
-    const session = this.sessions.get(sessionId);
-
-    switch (selection) {
-      case '1':
-        // Talk to Nia - AI Chat
-        session.currentMenu = 'chat';
-        return `CON I'm here to listen. What's on your mind?
-
-(Reply with your message)`;
-
-      case '2':
-        // Crisis Resources
-        return this.getCrisisResources(session.language);
-
-      case '3':
-        // Learn About GBV
-        return this.getGBVInfo(session.language);
-
-      case '4':
-        // Safety Planning
-        return this.getSafetyPlanning(session.language);
-
-      case '5':
-        // Change Language
-        session.language = session.language === 'en' ? 'sw' : 'en';
-        return this.getMainMenu(session.language);
-
-      default:
-        return `CON Invalid selection. Please try again.
-
-${this.getMainMenu(session.language)}`;
-    }
-  }
-
-  private async handleSubMenu(
-    sessionId: string,
-    fullText: string,
-    userInput: string,
-  ): Promise<string> {
-    const session = this.sessions.get(sessionId);
-
-    if (session.currentMenu === 'chat') {
-      // User is chatting with Nia AI
-      try {
-        // Generate AI response for USSD
-        const aiResponse = await this.generateNiaResponse(userInput);
-
-        // Truncate response to fit USSD (max 182 chars per screen)
-        const truncated = this.truncateForUssd(aiResponse);
-
-        session.conversationHistory.push(
-          `User: ${userInput}`,
-          `Nia: ${truncated}`,
-        );
-
-        return `CON ${truncated}
-
-Reply 0 to return to main menu
-Or continue chatting:`;
-      } catch (error) {
-        return `END Sorry, I couldn't process that. Please try again later.`;
+    //  Language selection
+    if (session.currentMenu === 'language') {
+      if (text === '') {
+        return `CON Welcome to HEAL - Your GBV Support Platform\n\n1. Continue in English\n2. Switch to Kiswahili`;
       }
+      if (userInput === '1') {
+        session.language = 'en';
+        session.currentMenu = 'main';
+        return this.getMainMenu('en');
+      }
+      if (userInput === '2') {
+        session.language = 'sw';
+        session.currentMenu = 'main';
+        return this.getMainMenu('sw');
+      }
+      return `CON Invalid option.\n\n1. English\n2. Kiswahili`;
     }
 
-    // Handle other sub-menu navigation
-    if (userInput === '0') {
+    //  Main menu
+    if (session.currentMenu === 'main') {
+      if (userInput === '1') {
+        session.currentMenu = 'chat';
+        return `CON I'm Nia, your AI therapist.\nWhat's on your mind?`;
+      }
+      if (userInput === '2') {
+        const response = this.getHelpResources(session.language);
+        this.sessions.delete(sessionId); // Clean up session after END
+        return response;
+      }
+      if (userInput === '3') {
+        session.currentMenu = 'report_phone';
+        return this.getPrompt(session.language, 'phone');
+      }
+
+      // Handle invalid input gracefully
+      return `CON Invalid choice. Please try again.\n${this.getMainMenu(session.language)}`;
+    }
+
+    //  Report a case flow
+    if (session.currentMenu === 'report_phone') {
+      session.reportData.phone = userInput;
+      session.currentMenu = 'report_location';
+      return this.getPrompt(session.language, 'location');
+    }
+
+    if (session.currentMenu === 'report_location') {
+      session.reportData.location = userInput;
+      session.currentMenu = 'report_type';
+      return this.getPrompt(session.language, 'type');
+    }
+
+    if (session.currentMenu === 'report_type') {
+      session.reportData.type = userInput === '1' ? 'Physical' : 'Sexual';
       session.currentMenu = 'main';
-      return this.getMainMenu(session.language);
+      const response = this.getConfirmation(session.language);
+      this.sessions.delete(sessionId); // Session cleanup
+      return response;
     }
 
-    return `END Thank you for using Nia. Stay safe.`;
-  }
-
-  private getCrisisResources(language: 'en' | 'sw'): string {
-    if (language === 'sw') {
-      return `END MSAADA WA HARAKA:
-
-• Hotline ya GBV Kenya: 1195
-• Polisi (Gender Desk): 999/112
-• Afya ya Akili: 0800 720 990
-• FIDA Kenya: 0800 720 187
-
-Unaweza. Una nguvu. Una haki ya kupona.`;
+    // Chat flow
+    if (session.currentMenu === 'chat') {
+      if (userInput === '0') {
+        session.currentMenu = 'main';
+        return this.getMainMenu(session.language);
+      }
+      const aiResponse = await this.generateNiaResponse(userInput);
+      return `CON ${this.truncateForUssd(aiResponse)}\n\nReply 0 to return to main menu`;
     }
 
-    return `END IMMEDIATE HELP:
-
-• Kenya GBV Hotline: 1195 (24/7)
-• Police Gender Desk: 999/112
-• Mental Health: 0800 720 990
-• FIDA Kenya: 0800 720 187
-• COVAW: 0800 720 553
-
-You deserve support. You're not alone.`;
+    // Default fallback
+    this.sessions.delete(sessionId);
+    return `END Thank you for using HEAL. Stay safe.`;
   }
 
-  private getGBVInfo(language: 'en' | 'sw'): string {
-    if (language === 'sw') {
-      return `END UFAHAMU WA GBV:
-
-GBV ni unyanyasaji wowote kwa sababu ya jinsia. Ni pamoja na:
-• Unyanyasaji wa kimwili
-• Unyanyasaji wa kingono
-• Unyanyasaji wa kihisia
-• Udhibiti wa kiuchumi
-
-KUMBUKA: Sio kosa lako. Una haki ya kupona.
-
-Piga 1195 kwa msaada.`;
+  //  Main menu (bilingual)
+  private getMainMenu(lang: 'en' | 'sw'): string {
+    if (lang === 'sw') {
+      return `CON Karibu kwenye HEAL:\n\n1. Ongea na Nia (AI Msaidizi)\n2. Pata Msaada Sasa\n3. Ripoti Kisa`;
     }
-
-    return `END UNDERSTANDING GBV:
-
-Gender-Based Violence (GBV) is ANY harm based on gender. Includes:
-• Physical abuse
-• Sexual violence
-• Emotional abuse
-• Economic control
-
-REMEMBER: It's NOT your fault. You deserve healing.
-
-Call 1195 for support.`;
+    return `CON Main Menu:\n\n1. Chat with Nia (AI Therapist)\n2. Get Help Now\n3. Report a Case`;
   }
 
-  private getSafetyPlanning(language: 'en' | 'sw'): string {
-    if (language === 'sw') {
-      return `END MPANGO WA USALAMA:
-
-1. Weka namba za dharura (1195, 999)
-2. Fikiria mahali salama pa kwenda
-3. Weka hati muhimu mahali salama
-4. Ambia mtu unayemwamini
-5. Panga ishara ya hatari na jirani
-
-Usalama wako ni muhimu. Piga 1195.`;
+  //  Emergency resources
+  private getHelpResources(lang: 'en' | 'sw'): string {
+    if (lang === 'sw') {
+      return `END MSAADA WA HARAKA:\n• Hotline ya GBV: 1195\n• Kituo cha Uokoaji: 0800 720 187\n• CHV Toll Free: 0800 720 553`;
     }
-
-    return `END SAFETY PLANNING:
-
-1. Save emergency numbers (1195, 999)
-2. Identify safe places to go
-3. Keep important documents safe
-4. Tell someone you trust
-5. Plan danger signal with neighbor
-
-Your safety matters. Call 1195 for help.`;
+    return `END EMERGENCY HELP:\n• GBV Hotline: 1195\n• Rescue Center: 0800 720 187\n• CHV Toll-Free: 0800 720 553`;
   }
 
+  // Prompts for report flow
+  private getPrompt(lang: 'en' | 'sw', step: 'phone' | 'location' | 'type'): string {
+    if (lang === 'sw') {
+      if (step === 'phone') return `CON Tafadhali weka namba yako ya simu:`; 
+      if (step === 'location') return `CON Weka eneo lako:`; 
+      if (step === 'type') return `CON Aina ya unyanyasaji:\n1. Kimwili\n2. Kingono`;
+    }
+    if (step === 'phone') return `CON Please enter your phone number:`; 
+    if (step === 'location') return `CON Enter your location:`; 
+    if (step === 'type') return `CON Type of abuse:\n1. Physical\n2. Sexual`;
+  }
+
+  // Confirmation after reporting
+  private getConfirmation(lang: 'en' | 'sw'): string {
+    if (lang === 'sw') {
+      return `END Asante kwa kuripoti. Timu yetu itawasiliana nawe hivi karibuni.`;
+    }
+    return `END Thank you for reporting. Our team will reach out soon.`;
+  }
+
+  // AI response with trauma-informed empathy
   private async generateNiaResponse(message: string): Promise<string> {
     const lowerMessage = message.toLowerCase();
 
-    // Crisis responses
+    // Crisis detection
     const crisisKeywords = ['suicide', 'kill myself', 'hurt myself', 'rape', 'raped', 'assault', 'danger'];
     if (crisisKeywords.some(keyword => lowerMessage.includes(keyword))) {
       if (lowerMessage.includes('danger') || lowerMessage.includes('attack')) {
-        return "Uko salama? Call 1195 or 999 NOW if in danger. I'm here with you.";
+        return "Are you safe? Call 1195 or 999 NOW if in danger. I'm here with you.";
       }
       if (lowerMessage.includes('suicide') || lowerMessage.includes('kill myself')) {
         return "Your life has value. Kenya Mental Health: 0800 720 990. Befrienders: +254 722 178 177. You're not alone.";
@@ -239,7 +172,7 @@ Your safety matters. Call 1195 for help.`;
     }
 
     if (lowerMessage.includes('sad') || lowerMessage.includes('depressed') || lowerMessage.includes('hopeless')) {
-      return "I hear you. Your feelings make sense. Befrienders: +254 722 178 177. You have strength. Una nguvu.";
+      return "I hear you. Your feelings make sense. Befrienders: +254 722 178 177. You have strength.";
     }
 
     if (lowerMessage.includes('abuse') || lowerMessage.includes('violence') || lowerMessage.includes('hurt')) {
@@ -250,36 +183,15 @@ Your safety matters. Call 1195 for help.`;
     const responses = [
       "I'm here to listen without judgment. You're safe here. What's on your mind?",
       "I believe you. Whatever you share stays between us. How can I support you?",
-      "Your feelings are valid. You don't have to go through this alone. Uko salama.",
+      "Your feelings are valid. You don't have to go through this alone.",
       "Thank you for trusting me. Take your time - I'm here. What would help you right now?",
     ];
 
     return responses[Math.floor(Math.random() * responses.length)];
   }
 
+  // Keep USSD text short and readable
   private truncateForUssd(text: string, maxLength: number = 160): string {
-    if (text.length <= maxLength) return text;
-
-    // Truncate at last complete sentence before maxLength
-    const truncated = text.substring(0, maxLength);
-    const lastPeriod = truncated.lastIndexOf('.');
-    const lastQuestion = truncated.lastIndexOf('?');
-    const lastExclamation = truncated.lastIndexOf('!');
-
-    const lastSentenceEnd = Math.max(lastPeriod, lastQuestion, lastExclamation);
-
-    if (lastSentenceEnd > 0) {
-      return truncated.substring(0, lastSentenceEnd + 1);
-    }
-
-    return truncated + '...';
-  }
-
-  // Clean up old sessions (call this periodically)
-  cleanupSessions() {
-    // Sessions older than 1 hour
-    const oneHourAgo = Date.now() - 60 * 60 * 1000;
-    // In production, you'd track timestamps and clean up
-    // For now, we'll let them expire naturally
+    return text.length <= maxLength ? text : text.substring(0, maxLength - 3) + '...';
   }
 }
