@@ -5,9 +5,13 @@ import { ChatSession } from './entities/chat-session.entity';
 import { ChatMessage } from './entities/chat-message.entity';
 import { User } from '../users/entities/user.entity';
 import { SendMessageDto } from './dto/send-message.dto';
+import { GoogleGenerativeAI } from '@google/generative-ai';
 
 @Injectable()
 export class ChatService {
+  private genAI: GoogleGenerativeAI;
+  private model: any;
+
   constructor(
     @InjectRepository(ChatSession)
     private chatSessionRepository: Repository<ChatSession>,
@@ -15,7 +19,53 @@ export class ChatService {
     private chatMessageRepository: Repository<ChatMessage>,
     @InjectRepository(User)
     private userRepository: Repository<User>,
-  ) {}
+  ) {
+    // Initialize Gemini AI (same as frontend video chat)
+    if (process.env.GEMINI_API_KEY) {
+      this.genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+      this.model = this.genAI.getGenerativeModel({
+        model: 'gemini-1.5-flash-latest',
+        systemInstruction: `You are Nia ("purpose" in Swahili), a trauma-informed AI companion for Gender-Based Violence (GBV) survivors in Kenya/East Africa.
+
+IDENTITY: Warm, gentle, non-judgmental, deeply trauma-informed. Bilingual (English/Kiswahili - respond in language used). Embody Ubuntu: healing through connection, liberation through action.
+
+CORE APPROACH - SURVIVOR-CENTERED:
+• BELIEVE: "I believe you. Not your fault."
+• VALIDATE: All emotions welcome, no judgment
+• EMPOWER: Illuminate options without pressure
+• GUIDE: From pain → awareness → action → liberation
+• BOUNDARIES: Stay focused on GBV/mental health support. Gently redirect other topics.
+
+LANGUAGE - TRAUMA-INFORMED & EMPOWERING:
+• Survivor-centered (never "victim")
+• Help-seeking = strength: "Speaking up is brave. Support is self-care."
+• Plant seeds: "Have you thought about...?" "Some survivors find..."
+• Affirm agency: "You deserve support. Your voice matters. You don't carry this alone."
+• Frame action as liberation: "Each step toward support is reclaiming your power."
+
+GBV SUPPORT FRAMEWORK:
+1. Safety & belief first
+2. Normalize trauma responses
+3. Gently introduce options: medical care, counseling, legal support, safe spaces
+4. Acknowledge barriers (stigma, family pressure, patriarchy) with compassion
+5. Honor their timeline: "No rush. Options are here when ready."
+6. Celebrate every act of courage
+
+KEY KENYA/EAST AFRICA RESOURCES (share contextually):
+• CRISIS: Kenya GBV Hotline 1195, Police 999/112 (Gender Desk)
+• LEGAL: FIDA Kenya 0800 720 187, COVAW 0800 720 553
+• MEDICAL: GBVRC at hospitals, PEP, documentation
+• COUNSELING: Healthcare Assistance Kenya +254 719 639 392
+• MENTAL HEALTH: 0800 720 990
+
+CRISIS PROTOCOL:
+Immediate danger → "Uko salama? Your safety first. Call 1195 or 999 now."
+Self-harm/suicide → "Your life matters. Kenya Mental Health: 0800 720 990. Befrienders: +254 722 178 177. Please reach out now."
+
+REMEMBER: Brief (<150 words), empowering, option-focused, never pressure. Guide survivors to recognize their strength and available pathways. "Unaweza. Una nguvu. Una haki ya kupona." (You can. You have strength. You deserve healing.)`
+      });
+    }
+  }
 
   async sendMessage(userId: string, sendMessageDto: SendMessageDto) {
     const { sessionId, content, messageType = 'text' } = sendMessageDto;
@@ -159,99 +209,30 @@ export class ChatService {
     return { message: 'Session deleted successfully' };
   }
 
-  private async generateAIResponse(message: string): Promise<string> {
-    // Check for crisis keywords (GBV + mental health)
-    const crisisKeywords = ['suicide', 'kill myself', 'end it all', 'hurt myself', 'self-harm', 'die', 'death', 'rape', 'raped', 'assault', 'attacked', 'danger'];
-    const lowerMessage = message.toLowerCase();
-
-    if (crisisKeywords.some(keyword => lowerMessage.includes(keyword))) {
-      // Check for immediate danger
-      if (lowerMessage.includes('danger') || lowerMessage.includes('attack') || lowerMessage.includes('right now') || lowerMessage.includes('happening')) {
-        return "Uko salama? Your safety is the priority. If you're in immediate danger, please call 999 or 1195 (Kenya GBV Hotline) NOW. I'm here with you. Can you get somewhere safe?";
-      }
-      // Suicide/self-harm crisis
-      if (lowerMessage.includes('suicide') || lowerMessage.includes('kill myself') || lowerMessage.includes('end it') || lowerMessage.includes('die')) {
-        return "I'm really concerned about what you're sharing. Your life has value, and you deserve support. Please reach out now: Kenya Mental Health Helpline: 0800 720 990 (toll-free). Befrienders Kenya: +254 722 178 177 (24/7). You don't have to face this alone. Una haki ya kupona. (You deserve to heal.)";
-      }
-      // GBV crisis
-      return "I believe you. What happened is not your fault. Your safety matters. Kenya GBV Hotline: 1195 (toll-free, 24/7). Police Gender Desk: 999/112. FIDA Kenya: 0800 720 187. You're not alone in this.";
+  async generateAIResponse(message: string): Promise<string> {
+    // 🤖 Use Google Generative AI SDK (same as frontend video chat)
+    if (!this.model) {
+      console.error('Gemini AI not initialized. GEMINI_API_KEY missing.');
+      return this.getFallbackResponse(message);
     }
 
-    // Try Gemini AI if API key is available
-    if (process.env.NEXT_PUBLIC_GEMINI_API_KEY) {
-      try {
-        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${process.env.NEXT_PUBLIC_GEMINI_API_KEY}`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            contents: [{
-              parts: [{
-                text: `You are Nia ("purpose" in Swahili), a trauma-informed AI companion for Gender-Based Violence (GBV) survivors in Kenya/East Africa.
+    try {
+      // Add timeout to prevent hanging (important for USSD 10-sec limit)
+      const timeoutPromise = new Promise<never>((_, reject) =>
+        setTimeout(() => reject(new Error('AI response timeout')), 8000)
+      );
 
-IDENTITY: Warm, gentle, non-judgmental, deeply trauma-informed. Bilingual (English/Kiswahili - respond in language used). Embody Ubuntu: healing through connection, liberation through action.
+      const aiPromise = this.model.generateContent(message);
 
-CORE APPROACH - SURVIVOR-CENTERED:
-• BELIEVE: "I believe you. Not your fault."
-• VALIDATE: All emotions welcome, no judgment
-• EMPOWER: Illuminate options without pressure
-• GUIDE: From pain → awareness → action → liberation
-• BOUNDARIES: Stay focused on GBV/mental health support. Gently redirect other topics.
-
-LANGUAGE - TRAUMA-INFORMED & EMPOWERING:
-• Survivor-centered (never "victim")
-• Help-seeking = strength: "Speaking up is brave. Support is self-care."
-• Plant seeds: "Have you thought about...?" "Some survivors find..."
-• Affirm agency: "You deserve support. Your voice matters. You don't carry this alone."
-• Frame action as liberation: "Each step toward support is reclaiming your power."
-
-GBV SUPPORT FRAMEWORK:
-1. Safety & belief first
-2. Normalize trauma responses
-3. Gently introduce options: medical care, counseling, legal support, safe spaces
-4. Acknowledge barriers (stigma, family pressure, patriarchy) with compassion
-5. Honor their timeline: "No rush. Options are here when ready."
-6. Celebrate every act of courage
-
-KEY KENYA/EAST AFRICA RESOURCES (share contextually):
-• CRISIS: Kenya GBV Hotline 1195, Police 999/112 (Gender Desk)
-• LEGAL: FIDA Kenya 0800 720 187, COVAW 0800 720 553
-• MEDICAL: GBVRC at hospitals, PEP, documentation
-• COUNSELING: Healthcare Assistance Kenya +254 719 639 392
-• MENTAL HEALTH: 0800 720 990
-
-CRISIS PROTOCOL:
-Immediate danger → "Uko salama? Your safety first. Call 1195 or 999 now."
-Self-harm/suicide → "Your life matters. Kenya Mental Health: 0800 720 990. Befrienders: +254 722 178 177. Please reach out now."
-
-REMEMBER: Brief (<150 words), empowering, option-focused, never pressure. Guide survivors to recognize their strength and available pathways. "Unaweza. Una nguvu. Una haki ya kupona." (You can. You have strength. You deserve healing.)
-
-User message: ${message}
-
-Please respond with empathy, belief, and empowerment:`
-              }]
-            }],
-            generationConfig: {
-              temperature: 0.7,
-              topK: 40,
-              topP: 0.95,
-              maxOutputTokens: 200,
-            },
-          })
-        });
-
-        if (response.ok) {
-          const data = await response.json();
-          if (data.candidates?.[0]?.content?.parts?.[0]?.text) {
-            return data.candidates[0].content.parts[0].text;
-          }
-        }
-      } catch (error) {
-        console.error('Gemini API error:', error);
-      }
+      const result = await Promise.race([aiPromise, timeoutPromise]);
+      const response = await result.response;
+      const text = response.text();
+      return text;
+    } catch (error) {
+      console.error('Gemini AI error:', error);
+      // Graceful fallback for rate limits, timeouts, or errors
+      return this.getFallbackResponse(message);
     }
-
-    // Fallback responses
-    return this.getFallbackResponse(message);
   }
 
   private getFallbackResponse(message: string): string {
