@@ -9,6 +9,7 @@ import { ResourcesModule } from './resources/resources.module';
 import { MoodModule } from './mood/mood.module';
 import { CrisisModule } from './crisis/crisis.module';
 import { HealthModule } from './health/health.module';
+import { UssdModule } from './ussd/ussd.module';
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import { HealthModule } from './health/health.module';
     MoodModule,
     CrisisModule,
     HealthModule,
+    UssdModule,
   ],
 })
 export class AppModule {}
