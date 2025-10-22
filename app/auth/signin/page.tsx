@@ -85,7 +85,7 @@ export default function SignInPage() {
         
         {/* LEFT SIDE */}
         <div className="flex flex-col justify-center items-center md:w-1/2 p-10 text-center">
-          <Link href="/" className="text-sm text-gray-500 mb-4 flex items-center gap-1 hover:underline">
+          <Link href="/" className="text-sm text-gray-500 mb-4 w-full flex items-left gap-1 hover:underline font-acme">
             <ArrowLeft className="h-4 w-4" /> Back to Home
           </Link>
           <h2 className="text-2xl font-semibold text-[#0B3C49]">Join Our Platform</h2>
