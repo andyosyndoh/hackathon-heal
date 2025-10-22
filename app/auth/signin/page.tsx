@@ -72,6 +72,11 @@ export default function SignInPage() {
 
   return (
     <main className="min-h-screen bg-[#FAEFD9] flex items-center justify-center p-6">
+      <Image src="/images/decoration.png" alt="Decoration" 
+              className="absolute top-0 left-0 w-auto h-auto"
+              width={100}
+              height={100}
+              priority />
       <div className="flex flex-col md:flex-row w-full max-w-5xl overflow-hidden">
         
         {/* LEFT SIDE */}
