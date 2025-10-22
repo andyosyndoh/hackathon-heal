@@ -72,7 +72,7 @@ export default function SignInPage() {
 
   return (
     <main className="min-h-screen bg-[#FAEFD9] flex items-center justify-center p-6">
-      <div className="bg-[#FAEFD9] flex flex-col md:flex-row w-full max-w-5xl overflow-hidden">
+      <div className="flex flex-col md:flex-row w-full max-w-5xl overflow-hidden">
         
         {/* LEFT SIDE */}
         <div className="flex flex-col justify-center items-center md:w-1/2 p-10 text-center">
@@ -84,7 +84,7 @@ export default function SignInPage() {
 
           <div className="my-8">
             <Image
-              src="/images/people-hug.png"
+              src="/images/hugging-friends.png"
               alt="Group hugging"
               width={220}
               height={220}
@@ -99,7 +99,9 @@ export default function SignInPage() {
         </div>
 
         {/* RIGHT SIDE */}
-        <div className="md:w-1/2 bg-[#758E8A] bg-opacity-40 rounded-l-3xl md:rounded-none flex flex-col items-center justify-center p-10">
+        <div className="md:w-1/2 flex flex-col items-center justify-center p-10">
+        <div className='bg-[#758E8A] bg-opacity-40 p-10 rounded-l-3xl md:rounded-none'>
+
           <div className="bg-[#758E8A] text-white rounded-2xl shadow-md w-full max-w-sm p-8">
             <h2 className="text-center text-xl font-semibold mb-6">Sign In</h2>
 
@@ -184,6 +186,7 @@ export default function SignInPage() {
               </button>
             </form>
           </div>
+        </div>
 
           {/* OR Divider */}
           <div className="flex items-center justify-center w-full max-w-sm my-6">
