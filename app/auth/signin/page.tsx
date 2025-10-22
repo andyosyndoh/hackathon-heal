@@ -3,22 +3,20 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/hooks/use-auth';
-import { Eye, EyeOff, Mail, Lock, Loader2, ArrowLeft, Heart } from 'lucide-react';
+import { Loader2, ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
+import Image from 'next/image';
 
 export default function SignInPage() {
   const router = useRouter();
   const { login, isAuthenticated, isLoading: authLoading } = useAuth();
-  
-  const [showPassword, setShowPassword] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [formData, setFormData] = useState({
-    email: '',
-    password: '',
-  });
-  const [errors, setErrors] = useState<Record<string, string>>({});
 
-  // Redirect if already authenticated
+  const [isLoading, setIsLoading] = useState(false);
+  const [formData, setFormData] = useState({ email: '', password: '' });
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [keepSignedIn, setKeepSignedIn] = useState(false);
+
+  // Redirect authenticated users
   useEffect(() => {
     if (isAuthenticated && !authLoading) {
       router.push('/dashboard');
@@ -27,50 +25,34 @@ export default function SignInPage() {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
-    
-    // Clear error when user starts typing
-    if (errors[name]) {
-      setErrors(prev => ({ ...prev, [name]: '' }));
-    }
+    setFormData(prev => ({ ...prev, [name]: value }));
+    if (errors[name]) setErrors(prev => ({ ...prev, [name]: '' }));
   };
 
   const validateForm = () => {
     const newErrors: Record<string, string> = {};
-
     if (!formData.email.trim()) {
       newErrors.email = 'Email is required';
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
       newErrors.email = 'Please enter a valid email';
     }
-
     if (!formData.password) {
       newErrors.password = 'Password is required';
     }
-
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
     if (!validateForm()) return;
-
     setIsLoading(true);
-    
+
     try {
       const result = await login(formData.email, formData.password);
-
-      if (result.success) {
-        router.push('/dashboard');
-      } else {
-        setErrors({ general: result.error || 'Authentication failed' });
-      }
-    } catch (error) {
+      if (result.success) router.push('/dashboard');
+      else setErrors({ general: result.error || 'Authentication failed' });
+    } catch (err) {
       setErrors({ general: 'An unexpected error occurred' });
     } finally {
       setIsLoading(false);
@@ -79,140 +61,155 @@ export default function SignInPage() {
 
   if (authLoading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50 flex items-center justify-center">
-        <div className="flex items-center space-x-2">
-          <div className="h-5 w-5 border-2 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
-          <span className="text-gray-600">Loading...</span>
+      <div className="min-h-screen bg-[#C8E1E7] flex items-center justify-center">
+        <div className="flex items-center space-x-2 text-[#0B3C49]">
+          <Loader2 className="h-5 w-5 animate-spin" />
+          <span>Loading...</span>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8">
-        <div className="text-center">
-          <Link href="/" className="inline-flex items-center space-x-2 text-blue-600 hover:text-blue-700 mb-6">
-            <ArrowLeft className="h-4 w-4" />
-            <span>Back to Home</span>
-          </Link>
-          
-          <div className="flex items-center justify-center space-x-2 mb-6">
-            <Heart className="h-8 w-8 text-blue-600" />
-            <span className="text-2xl font-bold text-gray-900">Heal</span>
-          </div>
-          
-          <h2 className="text-3xl font-bold text-gray-900 mb-2">Welcome Back</h2>
-          <p className="text-gray-600 mb-8">Sign in to your account to continue</p>
-        </div>
+    <main className="min-h-screen bg-[#FAEFD9] flex items-center justify-center p-6">
+      <div className="bg-[#FAEFD9] flex flex-col md:flex-row w-full max-w-5xl overflow-hidden">
         
-        <form className="space-y-6" onSubmit={handleSubmit}>
-          <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
-              Email address
-            </label>
-            <div className="relative">
-              <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
-              <input
-                id="email"
-                name="email"
-                type="email"
-                autoComplete="email"
-                className={`w-full px-4 py-2 pl-10 border rounded-md focus:ring-blue-500 focus:border-blue-500 ${
-                  errors.email ? 'border-red-500' : 'border-gray-300'
-                }`}
-                placeholder="you@example.com"
-                value={formData.email}
-                onChange={handleInputChange}
-              />
-            </div>
-            {errors.email && (
-              <p className="text-red-500 text-xs mt-1">{errors.email}</p>
-            )}
+        {/* LEFT SIDE */}
+        <div className="flex flex-col justify-center items-center md:w-1/2 p-10 text-center">
+          <Link href="/" className="text-sm text-gray-500 mb-4 flex items-center gap-1 hover:underline">
+            <ArrowLeft className="h-4 w-4" /> Back to Home
+          </Link>
+          <h2 className="text-2xl font-semibold text-[#0B3C49]">Join Our Platform</h2>
+          <p className="text-sm text-gray-600 mt-1">Get full access to all platform features</p>
+
+          <div className="my-8">
+            <Image
+              src="/images/people-hug.png"
+              alt="Group hugging"
+              width={220}
+              height={220}
+              className="rounded-lg object-cover"
+            />
           </div>
 
-          <div>
-            <div className="flex items-center justify-between">
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
-                Password
-              </label>
-              <Link href="/auth/forgot-password" className="text-sm text-blue-600 hover:text-blue-500">
-                Forgot password?
-              </Link>
-            </div>
-            <div className="relative">
-              <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
-              <input
-                id="password"
-                name="password"
-                type={showPassword ? 'text' : 'password'}
-                autoComplete="current-password"
-                className={`w-full px-4 py-2 pl-10 pr-10 border rounded-md focus:ring-blue-500 focus:border-blue-500 ${
-                  errors.password ? 'border-red-500' : 'border-gray-300'
-                }`}
-                placeholder="••••••••"
-                value={formData.password}
-                onChange={handleInputChange}
-              />
+          <p className="text-[#006C67] font-medium max-w-sm leading-relaxed">
+            “Access confidential, dignified mental health support anytime,
+            anywhere.” <span className="font-bold">24/7</span>
+          </p>
+        </div>
+
+        {/* RIGHT SIDE */}
+        <div className="md:w-1/2 bg-[#758E8A] bg-opacity-40 rounded-l-3xl md:rounded-none flex flex-col items-center justify-center p-10">
+          <div className="bg-[#758E8A] text-white rounded-2xl shadow-md w-full max-w-sm p-8">
+            <h2 className="text-center text-xl font-semibold mb-6">Sign In</h2>
+
+            <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+              {/* Email */}
+              <div>
+                <label htmlFor="email" className="block text-sm mb-1">
+                  Email Address
+                </label>
+                <input
+                  id="email"
+                  name="email"
+                  type="email"
+                  placeholder="Enter your email"
+                  value={formData.email}
+                  onChange={handleInputChange}
+                  className={`w-full rounded-md px-3 py-2 text-black outline-none border ${
+                    errors.email ? 'border-red-500' : 'border-gray-300'
+                  } focus:ring-2 focus:ring-[#0B3C49]`}
+                  required
+                />
+                {errors.email && (
+                  <p className="text-red-400 text-xs mt-1">{errors.email}</p>
+                )}
+              </div>
+
+              {/* Password */}
+              <div>
+                <label htmlFor="password" className="block text-sm mb-1">
+                  Password
+                </label>
+                <input
+                  id="password"
+                  name="password"
+                  type="password"
+                  placeholder="Enter your password"
+                  value={formData.password}
+                  onChange={handleInputChange}
+                  className={`w-full rounded-md px-3 py-2 text-black outline-none border ${
+                    errors.password ? 'border-red-500' : 'border-gray-300'
+                  } focus:ring-2 focus:ring-[#0B3C49]`}
+                  required
+                />
+                <div className="text-right text-xs mt-1 text-[#0B3C49] hover:underline cursor-pointer">
+                  Forgot your password?
+                </div>
+                {errors.password && (
+                  <p className="text-red-400 text-xs mt-1">{errors.password}</p>
+                )}
+              </div>
+
+              {/* Keep Signed In */}
+              <div className="flex items-center gap-2 text-sm">
+                <input
+                  type="checkbox"
+                  id="keepSignedIn"
+                  checked={keepSignedIn}
+                  onChange={() => setKeepSignedIn(!keepSignedIn)}
+                  className="accent-[#0B3C49]"
+                />
+                <label htmlFor="keepSignedIn">Keep me signed in</label>
+              </div>
+
+              {/* General error */}
+              {errors.general && (
+                <p className="text-red-400 text-sm text-center">{errors.general}</p>
+              )}
+
+              {/* Submit */}
               <button
-                type="button"
-                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-500"
-                onClick={() => setShowPassword(!showPassword)}
+                type="submit"
+                className="w-full mt-4 bg-[#0B3C49] text-white py-2 rounded-md hover:bg-[#092F3A] transition disabled:opacity-50"
+                disabled={isLoading}
               >
-                {showPassword ? (
-                  <EyeOff className="h-4 w-4" />
+                {isLoading ? (
+                  <span className="flex items-center justify-center gap-2">
+                    <Loader2 className="animate-spin h-4 w-4" /> Signing in...
+                  </span>
                 ) : (
-                  <Eye className="h-4 w-4" />
+                  'Sign In'
                 )}
               </button>
-            </div>
-            {errors.password && (
-              <p className="text-red-500 text-xs mt-1">{errors.password}</p>
-            )}
+            </form>
           </div>
 
-          {errors.general && (
-            <div className="rounded-md bg-red-50 p-4">
-              <div className="flex">
-                <div className="flex-shrink-0">
-                  <svg className="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
-                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
-                  </svg>
-                </div>
-                <div className="ml-3">
-                  <p className="text-sm font-medium text-red-800">{errors.general}</p>
-                </div>
-              </div>
-            </div>
-          )}
+          {/* OR Divider */}
+          <div className="flex items-center justify-center w-full max-w-sm my-6">
+            <div className="flex-1 h-px bg-gray-300" />
+            <span className="px-2 text-sm text-gray-600">OR</span>
+            <div className="flex-1 h-px bg-gray-300" />
+          </div>
 
-          <div>
+          {/* Anonymous Access */}
+          <div className="bg-[#FAEFD9] rounded-2xl shadow-sm w-full max-w-sm p-6 text-center">
+            <h3 className="text-[#0B3C49] font-medium mb-2">
+              Need Quick Help Access
+            </h3>
+            <p className="text-sm text-gray-600 mb-4">
+              Get help resources and access our AI text support without registration
+            </p>
             <button
-              type="submit"
-              className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50"
-              disabled={isLoading}
+              type="button"
+              onClick={() => router.push('/anonymous-access')}
+              className="bg-[#0B3C49] text-white px-4 py-2 rounded-md hover:bg-[#092F3A] transition text-sm"
             >
-              {isLoading ? (
-                <>
-                  <Loader2 className="animate-spin -ml-1 mr-2 h-4 w-4" />
-                  Signing in...
-                </>
-              ) : (
-                'Sign In'
-              )}
+              Anonymous Access →
             </button>
           </div>
-
-          <div className="text-center text-sm">
-            <p className="text-gray-600">
-              Don't have an account?{' '}
-              <Link href="/auth/signup" className="font-medium text-blue-600 hover:text-blue-500">
-                Sign up
-              </Link>
-            </p>
-          </div>
-        </form>
+        </div>
       </div>
-    </div>
+    </main>
   );
 }
