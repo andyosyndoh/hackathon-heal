@@ -3,7 +3,8 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/hooks/use-auth';
-import { Eye, EyeOff, Mail, Lock, User, Loader2, ArrowLeft, Heart, Check } from 'lucide-react';
+import { Eye, EyeOff, Mail, Lock, User, Loader2, ArrowLeft, Heart, Check, Headset } from 'lucide-react';
+import Image from 'next/image';
 import Link from 'next/link';
 
 export default function SignUpPage() {
@@ -30,20 +31,7 @@ export default function SignUpPage() {
     }
   }, [isAuthenticated, authLoading, router]);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value, type, checked } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: type === 'checkbox' ? checked : value
-    }));
-    
-    // Clear error when user starts typing
-    if (errors[name]) {
-      setErrors(prev => ({ ...prev, [name]: '' }));
-    }
-  };
-
-  const validateForm = () => {
+  const validateForm = (): boolean => {
     const newErrors: Record<string, string> = {};
 
     if (!formData.firstName.trim()) newErrors.firstName = 'First name is required';
@@ -64,12 +52,25 @@ export default function SignUpPage() {
     if (formData.password !== formData.confirmPassword) {
       newErrors.confirmPassword = 'Passwords do not match';
     }
-    
+
     if (!formData.agreeToTerms) newErrors.agreeToTerms = 'You must agree to the terms';
     if (!formData.agreeToPrivacy) newErrors.agreeToPrivacy = 'You must agree to the privacy policy';
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value, type, checked } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: type === 'checkbox' ? checked : value
+    }));
+    
+    // Clear error when user starts typing
+    if (errors[name as keyof typeof errors]) {
+      setErrors(prev => ({ ...prev, [name]: '' }));
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -112,258 +113,181 @@ export default function SignUpPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8">
-        <div className="text-center">
-          <Link href="/" className="inline-flex items-center space-x-2 text-blue-600 hover:text-blue-700 mb-6">
-            <ArrowLeft className="h-4 w-4" />
-            <span>Back to Home</span>
-          </Link>
-          
-          <div className="flex items-center justify-center space-x-2 mb-6">
-            <Heart className="h-8 w-8 text-blue-600" />
-            <span className="text-2xl font-bold text-gray-900">Heal</span>
-          </div>
-          
-          <h2 className="text-3xl font-bold text-gray-900 mb-2">Create Your Account</h2>
-          <p className="text-gray-600 mb-8">Join us today and start your journey</p>
-        </div>
+    <main className="min-h-screen bg-[#FAEFD9] flex items-center justify-center p-6 relative overflow-hidden">
+      {/* Decoration Images */}
+      <Image src="/images/decoration.png" alt="Decoration" 
+              className="absolute top-1/5 left-1/4 w-auto h-auto opacity-70 -rotate-12"
+              width={80}
+              height={80}
+              priority />
+      <Image src="/images/decoration.png" alt="Decoration" 
+              className="absolute top-1/3 right-1/5 w-auto h-auto opacity-60 rotate-25"
+              width={70}
+              height={70}
+              priority />
+      <Image src="/images/decoration.png" alt="Decoration" 
+              className="absolute bottom-1/3 left-1/2 w-auto h-auto opacity-50 -rotate-15"
+              width={90}
+              height={90}
+              priority />
+      <Image src="/images/decoration.png" alt="Decoration" 
+              className="absolute bottom-1/4 right-1/3 w-auto h-auto opacity-70 rotate-15"
+              width={60}
+              height={60}
+              priority />
+      <Image src="/images/decoration.png" alt="Decoration" 
+              className="absolute top-1/2 -right-8 w-auto h-auto opacity-60 -rotate-20"
+              width={70}
+              height={70}
+              priority />
+      <Image src="/images/decoration.png" alt="Decoration" 
+              className="absolute top-1/2 -left-8 w-auto h-auto opacity-50 rotate-30"
+              width={80}
+              height={80}
+              priority />
+      <Image src="/images/decoration.png" alt="Decoration" 
+              className="absolute bottom-1/5 right-1/2 w-auto h-auto opacity-70 -rotate-5"
+              width={65}
+              height={65}
+              priority />
+      <Image src="/images/decoration.png" alt="Decoration" 
+              className="absolute -top-8 -left-8 w-auto h-auto"
+              width={100}
+              height={100}
+              priority />
+      <Image src="/images/logo.png" alt='logo' className="absolute top-6 left-8 w-auto h-auto"
+              width={80}
+              height={80}
+              priority />
+      <div className="flex flex-col md:flex-row w-full max-w-5xl overflow-hidden">
         
-        <form className="space-y-6" onSubmit={handleSubmit}>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label htmlFor="firstName" className="block text-sm font-medium text-gray-700 mb-1">
-                First Name
-              </label>
-              <div className="relative">
-                <User className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
-                <input
-                  id="firstName"
-                  name="firstName"
-                  type="text"
-                  className={`w-full px-4 py-2 pl-10 border rounded-md focus:ring-blue-500 focus:border-blue-500 ${
-                    errors.firstName ? 'border-red-500' : 'border-gray-300'
-                  }`}
-                  placeholder="John"
-                  value={formData.firstName}
-                  onChange={handleInputChange}
-                />
-              </div>
-              {errors.firstName && (
-                <p className="text-red-500 text-xs mt-1">{errors.firstName}</p>
-              )}
-            </div>
-            
-            <div>
-              <label htmlFor="lastName" className="block text-sm font-medium text-gray-700 mb-1">
-                Last Name
-              </label>
-              <div className="relative">
-                <User className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
-                <input
-                  id="lastName"
-                  name="lastName"
-                  type="text"
-                  className={`w-full px-4 py-2 pl-10 border rounded-md focus:ring-blue-500 focus:border-blue-500 ${
-                    errors.lastName ? 'border-red-500' : 'border-gray-300'
-                  }`}
-                  placeholder="Doe"
-                  value={formData.lastName}
-                  onChange={handleInputChange}
-                />
-              </div>
-              {errors.lastName && (
-                <p className="text-red-500 text-xs mt-1">{errors.lastName}</p>
-              )}
-            </div>
+        {/* LEFT SIDE */}
+        <div className="flex flex-col justify-center items-center md:w-1/2 p-10 text-center">
+          <Link href="/" className="text-sm text-gray-500 mb-4 w-full flex items-left gap-1 hover:underline font-acme text-[18px]">
+            <ArrowLeft className="h-4 w-4" /> Back to Home
+          </Link>
+          <h2 className="text-[40px] font-acme font-semibold text-[#0B3C49]">Join Our Platform</h2>
+          <p className="text-[18px] text-gray-600 mt-1 italic">Create your account to get started</p>
+
+          <div className="my-8">
+            <Image
+              src="/images/hugging-friends.png"
+              alt="Group hugging"
+              width={220}
+              height={220}
+              className="rounded-lg object-cover"
+            />
           </div>
 
-          <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
-              Email address
-            </label>
-            <div className="relative">
-              <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+          <p className="text-[#006C67] font-acme text-[20px] font-bold max-w-sm leading-relaxed">
+            “Access confidential, dignified mental<br/>
+            health support anytime,<br/>
+            anywhere.” <span className="font-bold">24/7</span>
+          </p>
+        </div>
+
+        {/* RIGHT SIDE */}
+    <div className="md:w-1/2 flex flex-col items-center justify-center p-8">
+      <div className="w-full bg-[#C2BCAE]/30 p-6 rounded-3xl">
+        {/* Sign Up Card */}
+        <div className="w-full max-w-md bg-[#677E83] p-10 rounded-3xl shadow-lg text-[#FAEFD9]">
+          <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <input
-                id="email"
-                name="email"
-                type="email"
-                autoComplete="email"
-                className={`w-full px-4 py-2 pl-10 border rounded-md focus:ring-blue-500 focus:border-blue-500 ${
-                  errors.email ? 'border-red-500' : 'border-gray-300'
-                }`}
-                placeholder="you@example.com"
-                value={formData.email}
+                id="firstName"
+                name="firstName"
+                type="text"
+                placeholder="Enter your first name"
+                value={formData.firstName}
                 onChange={handleInputChange}
+                className="w-full rounded-full border border-[#FAEFD9] bg-transparent px-4 py-2 placeholder-[#FAEFD9] text-[#FAEFD9] focus:ring-2 focus:ring-[#FAEFD9] focus:outline-none"
+              />
+              <input
+                id="lastName"
+                name="lastName"
+                type="text"
+                placeholder="Enter your last name"
+                value={formData.lastName}
+                onChange={handleInputChange}
+                className="w-full rounded-full border border-[#FAEFD9] bg-transparent px-4 py-2 placeholder-[#FAEFD9] text-[#FAEFD9] focus:ring-2 focus:ring-[#FAEFD9] focus:outline-none"
               />
             </div>
-            {errors.email && (
-              <p className="text-red-500 text-xs mt-1">{errors.email}</p>
-            )}
-          </div>
 
-          <div>
-            <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
-              Password
-            </label>
-            <div className="relative">
-              <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+            <input
+              id="email"
+              name="email"
+              type="email"
+              placeholder="Enter your Email Address"
+              value={formData.email}
+              onChange={handleInputChange}
+              className="w-full rounded-full border border-[#FAEFD9] bg-transparent px-4 py-2 placeholder-[#FAEFD9] text-[#FAEFD9] focus:ring-2 focus:ring-[#FAEFD9] focus:outline-none"
+            />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <input
                 id="password"
                 name="password"
-                type={showPassword ? 'text' : 'password'}
-                autoComplete="new-password"
-                className={`w-full px-4 py-2 pl-10 pr-10 border rounded-md focus:ring-blue-500 focus:border-blue-500 ${
-                  errors.password ? 'border-red-500' : 'border-gray-300'
-                }`}
-                placeholder="••••••••"
+                type={showPassword ? "text" : "password"}
+                placeholder="Enter your password"
                 value={formData.password}
                 onChange={handleInputChange}
+                className="w-full rounded-full border border-[#FAEFD9] bg-transparent px-4 py-2 placeholder-[#FAEFD9] text-[#FAEFD9] focus:ring-2 focus:ring-[#FAEFD9] focus:outline-none"
               />
-              <button
-                type="button"
-                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-500"
-                onClick={() => setShowPassword(!showPassword)}
-              >
-                {showPassword ? (
-                  <EyeOff className="h-4 w-4" />
-                ) : (
-                  <Eye className="h-4 w-4" />
-                )}
-              </button>
-            </div>
-            {errors.password && (
-              <p className="text-red-500 text-xs mt-1">{errors.password}</p>
-            )}
-          </div>
 
-          <div>
-            <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 mb-1">
-              Confirm Password
-            </label>
-            <div className="relative">
-              <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
               <input
                 id="confirmPassword"
                 name="confirmPassword"
-                type={showPassword ? 'text' : 'password'}
-                autoComplete="new-password"
-                className={`w-full px-4 py-2 pl-10 pr-10 border rounded-md focus:ring-blue-500 focus:border-blue-500 ${
-                  errors.confirmPassword ? 'border-red-500' : 'border-gray-300'
-                }`}
-                placeholder="••••••••"
+                type={showPassword ? "text" : "password"}
+                placeholder="Confirm your password"
                 value={formData.confirmPassword}
                 onChange={handleInputChange}
+                className="w-full rounded-full border border-[#FAEFD9] bg-transparent px-4 py-2 placeholder-[#FAEFD9] text-[#FAEFD9] focus:ring-2 focus:ring-[#FAEFD9] focus:outline-none"
               />
-              <button
-                type="button"
-                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-500"
-                onClick={() => setShowPassword(!showPassword)}
-              >
-                {showPassword ? (
-                  <EyeOff className="h-4 w-4" />
-                ) : (
-                  <Eye className="h-4 w-4" />
-                )}
-              </button>
             </div>
-            {errors.confirmPassword && (
-              <p className="text-red-500 text-xs mt-1">{errors.confirmPassword}</p>
-            )}
-          </div>
-
-          <div className="space-y-3">
-            <div className="flex items-start">
-              <div className="flex items-center h-5">
-                <input
-                  id="agreeToTerms"
-                  name="agreeToTerms"
-                  type="checkbox"
-                  checked={formData.agreeToTerms}
-                  onChange={handleInputChange}
-                  className="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
-                />
-              </div>
-              <div className="ml-3 text-sm">
-                <label htmlFor="agreeToTerms" className="text-gray-700">
-                  I agree to the{' '}
-                  <Link href="/terms" className="text-blue-600 hover:underline">
-                    Terms of Service
-                  </Link>
-                </label>
-                {errors.agreeToTerms && (
-                  <p className="text-red-500 text-xs mt-1">{errors.agreeToTerms}</p>
-                )}
-              </div>
+            <div className="flex items-center justify-between text-xs mt-1 text-[#FAEFD9]/80">
+              <Link href="/privacy" className="hover:underline">
+                Privacy Policy
+              </Link>
+              <Link href="/terms" className="hover:underline">
+                Terms Of Services
+              </Link>
             </div>
 
-            <div className="flex items-start">
-              <div className="flex items-center h-5">
-                <input
-                  id="agreeToPrivacy"
-                  name="agreeToPrivacy"
-                  type="checkbox"
-                  checked={formData.agreeToPrivacy}
-                  onChange={handleInputChange}
-                  className="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
-                />
-              </div>
-              <div className="ml-3 text-sm">
-                <label htmlFor="agreeToPrivacy" className="text-gray-700">
-                  I agree to the{' '}
-                  <Link href="/privacy" className="text-blue-600 hover:underline">
-                    Privacy Policy
-                  </Link>
-                </label>
-                {errors.agreeToPrivacy && (
-                  <p className="text-red-500 text-xs mt-1">{errors.agreeToPrivacy}</p>
-                )}
-              </div>
-            </div>
-          </div>
-
-          {errors.general && (
-            <div className="rounded-md bg-red-50 p-4">
-              <div className="flex">
-                <div className="flex-shrink-0">
-                  <svg className="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
-                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
-                  </svg>
-                </div>
-                <div className="ml-3">
-                  <p className="text-sm font-medium text-red-800">{errors.general}</p>
-                </div>
-              </div>
-            </div>
-          )}
-
-          <div>
             <button
               type="submit"
-              className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50"
-              disabled={isLoading}
+              className="w-full mt-6 border border-[#FAEFD9] text-[#FAEFD9] py-2 rounded-full font-semibold hover:bg-[#FAEFD9] hover:text-[#0B3C49] transition-all"
             >
-              {isLoading ? (
-                <>
-                  <Loader2 className="animate-spin -ml-1 mr-2 h-4 w-4" />
-                  Creating Account...
-                </>
-              ) : (
-                'Create Account'
-              )}
+              Create Account
             </button>
-          </div>
+          </form>
+        </div>
 
-          <div className="text-center text-sm">
-            <p className="text-gray-600">
-              Already have an account?{' '}
-              <Link href="/auth/signin" className="font-medium text-blue-600 hover:text-blue-500">
-                Sign in
-              </Link>
-            </p>
-          </div>
-        </form>
-      </div>
     </div>
+    {/* Divider */}
+    <div className="flex items-center justify-center my-8">
+      <div className="flex-1 h-px bg-gray-300" />
+      <span className="px-3 text-gray-700 text-sm">OR</span>
+      <div className="flex-1 h-px bg-gray-300" />
+    </div>
+
+    {/* Anonymous Access */}
+    <div className="bg-[#C2D0D2] rounded-2xl w-full max-w-md p-6 text-center shadow-md">
+      <h3 className="text-[#0B3C49] text-lg font-bold mb-3 flex items-center justify-center gap-2">
+        <Headset className="h-6 w-6 text-[#0B3C49]" />
+        Need Quick Help Access
+      </h3>
+      <p className="text-sm text-[#0B3C49]/80 mb-4">
+        Get help resources and access our AI text support without registration
+      </p>
+      <button
+        type="button"
+        onClick={() => router.push('/anonymous-access')}
+        className="border border-[#0B3C49] text-[#0B3C49] px-6 py-2 rounded-full hover:bg-[#0B3C49] hover:text-[#FAEFD9] transition-all"
+      >
+        Anonymous Access →
+      </button>
+    </div>
+  </div>
+      </div>
+    </main>
   );
 }
