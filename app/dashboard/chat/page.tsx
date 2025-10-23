@@ -463,7 +463,7 @@ export default function ChatPage() {
   }
 
   return (
-    <div className="h-screen flex flex-col heal-bg-primary overflow-hidden">
+    <div className="h-screen flex flex-col heal-bg-primary overflow-hidden max-w-4xl mx-auto w-full">
       {showChoiceModal && <ChoiceModal onSelect={handleChoice} />}
       {/* Header - Fixed */}
       <div className="bg-white shadow-sm border-b border-gray-200 px-3 sm:px-4 py-3 flex-shrink-0">

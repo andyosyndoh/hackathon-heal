@@ -12,6 +12,7 @@ import {
   Settings, 
   User, 
   LogOut,
+  House,
   Menu,
   X
 } from 'lucide-react';
@@ -97,7 +98,7 @@ export default function DashboardLayout({
             className="flex items-center text-sm font-semibold heal-text-secondary mb-4 hover:heal-text-light-teal transition-colors"
             onClick={() => setIsMobileMenuOpen(false)}
           >
-            ← Back Home
+            <House className="w-5 h-5 mr-3" />← Back Home
           </Link>
 
           {navItems.map((item) => (

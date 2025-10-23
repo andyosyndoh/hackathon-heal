@@ -210,23 +210,23 @@ export default function CrisisPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-red-50 via-white to-pink-50">
+    <div className="min-h-screen heal-bg-primary">
       {/* Header */}
-      <div className="bg-white shadow-sm border-b border-gray-200">
+      <div className="heal-card shadow-sm border-b" style={{borderColor: 'var(--heal-beige)'}}>
         <div className="max-w-4xl mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
               <Link href="/dashboard" className="p-2 hover:bg-gray-100 rounded-lg transition-colors">
-                <ArrowLeft className="h-5 w-5 text-gray-600" />
+                <ArrowLeft className="h-5 w-5 heal-text-secondary" />
               </Link>
               <div className="flex items-center space-x-2">
                 <Heart className="h-6 w-6 text-red-500" />
-                <h1 className="text-xl font-bold text-gray-900">Crisis Support</h1>
+                <h1 className="text-xl font-bold heal-text-primary font-acme">Crisis Support</h1>
               </div>
             </div>
             <div className="flex items-center space-x-2">
               <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
-              <span className="text-sm text-gray-600">24/7 Available</span>
+              <span className="text-sm heal-text-secondary">24/7 Available</span>
             </div>
           </div>
         </div>
@@ -267,12 +267,12 @@ export default function CrisisPage() {
 
         {/* Crisis Contacts */}
         <div className="mb-8">
-          <h2 className="text-2xl font-bold text-gray-900 mb-6">Kenya Crisis Support Contacts</h2>
+          <h2 className="text-2xl font-bold heal-text-primary mb-6 font-acme">Kenya Crisis Support Contacts</h2>
           
           {loading ? (
             <div className="text-center py-8">
               <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto"></div>
-              <p className="text-gray-600 mt-2">Loading crisis contacts...</p>
+              <p className="heal-text-secondary mt-2">Loading crisis contacts...</p>
             </div>
           ) : (
             <div className="space-y-4">
@@ -291,9 +291,9 @@ export default function CrisisPage() {
                           <IconComponent className="h-6 w-6 text-white" />
                         </div>
                         <div className="flex-1">
-                          <h3 className="font-semibold text-gray-900 text-lg">{contact.title}</h3>
-                          <p className="text-gray-600 text-sm mb-2">{contact.description}</p>
-                          <p className="text-gray-700 text-sm leading-relaxed">{contact.content}</p>
+                          <h3 className="font-semibold heal-text-primary text-lg font-acme">{contact.title}</h3>
+                          <p className="heal-text-secondary text-sm mb-2">{contact.description}</p>
+                          <p className="heal-text-primary text-sm leading-relaxed">{contact.content}</p>
                         </div>
                       </div>
                     </div>

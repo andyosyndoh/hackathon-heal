@@ -454,16 +454,16 @@ export default function ResourceDetailClient() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50">
-        <div className="bg-white shadow-sm border-b border-gray-200">
+      <div className="min-h-screen heal-bg-primary">
+        <div className="heal-card shadow-sm border-b" style={{borderColor: 'var(--heal-beige)'}}>
           <div className="max-w-7xl mx-auto px-4 py-4">
             <div className="flex items-center space-x-4">
               <Link href="/resources" className="p-2 hover:bg-gray-100 rounded-lg transition-colors">
-                <ArrowLeft className="h-5 w-5 text-gray-600" />
+                <ArrowLeft className="h-5 w-5 heal-text-secondary" />
               </Link>
               <div className="flex items-center space-x-2">
-                <BookOpen className="h-6 w-6 text-blue-600" />
-                <h1 className="text-xl font-bold text-gray-900">Loading...</h1>
+                <BookOpen className="h-6 w-6 heal-text-accent" />
+                <h1 className="text-xl font-bold heal-text-primary font-acme">Loading...</h1>
               </div>
             </div>
           </div>
@@ -472,8 +472,8 @@ export default function ResourceDetailClient() {
         <div className="max-w-4xl mx-auto px-4 py-8">
           <div className="flex items-center justify-center py-20">
             <div className="flex items-center space-x-3">
-              <Loader2 className="h-6 w-6 animate-spin text-blue-600" />
-              <span className="text-gray-600">Loading resource...</span>
+              <Loader2 className="h-6 w-6 animate-spin heal-text-accent" />
+              <span className="heal-text-secondary">Loading resource...</span>
             </div>
           </div>
         </div>
@@ -483,16 +483,16 @@ export default function ResourceDetailClient() {
 
   if (error || !resource) {
     return (
-      <div className="min-h-screen bg-gray-50">
-        <div className="bg-white shadow-sm border-b border-gray-200">
+      <div className="min-h-screen heal-bg-primary">
+        <div className="heal-card shadow-sm border-b" style={{borderColor: 'var(--heal-beige)'}}>
           <div className="max-w-7xl mx-auto px-4 py-4">
             <div className="flex items-center space-x-4">
               <Link href="/resources" className="p-2 hover:bg-gray-100 rounded-lg transition-colors">
-                <ArrowLeft className="h-5 w-5 text-gray-600" />
+                <ArrowLeft className="h-5 w-5 heal-text-secondary" />
               </Link>
               <div className="flex items-center space-x-2">
-                <BookOpen className="h-6 w-6 text-blue-600" />
-                <h1 className="text-xl font-bold text-gray-900">Resource Not Found</h1>
+                <BookOpen className="h-6 w-6 heal-text-accent" />
+                <h1 className="text-xl font-bold heal-text-primary font-acme">Resource Not Found</h1>
               </div>
             </div>
           </div>
@@ -501,10 +501,10 @@ export default function ResourceDetailClient() {
         <div className="max-w-4xl mx-auto px-4 py-8">
           <div className="heal-card p-12 text-center">
             <AlertCircle className="h-16 w-16 text-gray-400 mx-auto mb-4" />
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">{error || 'Resource not found'}</h3>
-            <p className="text-gray-600 mb-6">The resource you're looking for doesn't exist or has been removed.</p>
+            <h3 className="text-lg font-semibold heal-text-primary mb-2 font-acme">{error || 'Resource not found'}</h3>
+            <p className="heal-text-secondary mb-6">The resource you're looking for doesn't exist or has been removed.</p>
             <div className="flex justify-center space-x-4">
-              <Link href="/resources" className="heal-button">
+              <Link href="/resources" className="heal-button-primary">
                 Back to Resources
               </Link>
               <button onClick={fetchResource} className="bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium py-2 px-4 rounded-lg transition-colors">
@@ -523,17 +523,17 @@ export default function ResourceDetailClient() {
   const website = extractWebsite(resource.content);
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen heal-bg-primary">
       {/* Header */}
-      <div className="bg-white shadow-sm border-b border-gray-200">
+      <div className="heal-card shadow-sm border-b" style={{borderColor: 'var(--heal-beige)'}}>
         <div className="max-w-7xl mx-auto px-4 py-4">
           <div className="flex items-center space-x-4">
             <Link href="/resources" className="p-2 hover:bg-gray-100 rounded-lg transition-colors">
-              <ArrowLeft className="h-5 w-5 text-gray-600" />
+              <ArrowLeft className="h-5 w-5 heal-text-secondary" />
             </Link>
             <div className="flex items-center space-x-2">
-              <IconComponent className="h-6 w-6 text-blue-600" />
-              <h1 className="text-xl font-bold text-gray-900">{resource.title}</h1>
+              <IconComponent className="h-6 w-6 heal-text-accent" />
+              <h1 className="text-xl font-bold heal-text-primary font-acme">{resource.title}</h1>
             </div>
           </div>
         </div>
@@ -546,10 +546,10 @@ export default function ResourceDetailClient() {
               <IconComponent className="h-8 w-8 text-blue-600" />
             </div>
             <div className="flex-1">
-              <h2 className="text-2xl font-bold text-gray-900 mb-2">{resource.title}</h2>
-              <p className="text-gray-600 mb-4">{resource.description}</p>
+              <h2 className="text-2xl font-bold heal-text-primary mb-2 font-acme">{resource.title}</h2>
+              <p className="heal-text-secondary mb-4">{resource.description}</p>
               
-              <div className="flex items-center space-x-6 text-sm text-gray-500">
+              <div className="flex items-center space-x-6 text-sm heal-text-secondary">
                 {resource.duration_minutes > 0 && (
                   <div className="flex items-center space-x-1">
                     <Clock className="h-4 w-4" />
@@ -621,8 +621,8 @@ export default function ResourceDetailClient() {
           <div className="prose prose-lg max-w-none mb-6">
             {resource.type === 'contact' ? (
               <div className="bg-blue-50 border border-blue-200 rounded-lg p-6">
-                <h3 className="text-lg font-semibold text-blue-900 mb-4">Contact Information</h3>
-                <div className="whitespace-pre-line text-blue-800 mb-6">
+                <h3 className="text-lg font-semibold heal-text-primary mb-4 font-acme">Contact Information</h3>
+                <div className="whitespace-pre-line heal-text-primary mb-6">
                   {resource.content}
                 </div>
                 
@@ -684,13 +684,13 @@ export default function ResourceDetailClient() {
               <div className="w-full bg-gradient-to-r from-blue-50 to-green-50 border border-blue-200 rounded-lg p-8">
                 <div className="text-center">
                   <Headphones className="h-16 w-16 text-blue-600 mx-auto mb-4" />
-                  <h3 className="text-lg font-semibold text-gray-900 mb-2">Audio Content Available</h3>
-                  <p className="text-gray-600 mb-6">Listen to this resource with AI-generated narration</p>
+                  <h3 className="text-lg font-semibold heal-text-primary mb-2 font-acme">Audio Content Available</h3>
+                  <p className="heal-text-secondary mb-6">Listen to this resource with AI-generated narration</p>
                   
                   <button
                     onClick={playAudioContent}
                     disabled={isGeneratingAudio || isPlayingAudio}
-                    className="heal-button flex items-center space-x-2 mx-auto mb-4"
+                    className="heal-button-primary flex items-center space-x-2 mx-auto mb-4"
                   >
                     {isGeneratingAudio ? (
                       <>
@@ -710,13 +710,13 @@ export default function ResourceDetailClient() {
                     )}
                   </button>
                   
-                  <div className="text-sm text-gray-500 max-w-md mx-auto">
+                  <div className="text-sm heal-text-secondary max-w-md mx-auto">
                     <p className="whitespace-pre-line">{resource.content}</p>
                   </div>
                 </div>
               </div>
             ) : (
-              <div className="whitespace-pre-line text-gray-700 leading-relaxed">
+              <div className="whitespace-pre-line heal-text-primary leading-relaxed">
                 {resource.content}
               </div>
             )}
@@ -727,7 +727,7 @@ export default function ResourceDetailClient() {
             <button 
               onClick={handleInteraction} 
               disabled={isGeneratingAudio}
-              className="heal-button flex items-center space-x-2"
+              className="heal-button-primary flex items-center space-x-2"
             >
               <Play className="h-4 w-4" />
               <span>
@@ -784,13 +784,13 @@ export default function ResourceDetailClient() {
 
         {/* Related Resources */}
         <div className="mt-8 heal-card p-6">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">Related Resources</h3>
-          <p className="text-gray-600 mb-4">
+          <h3 className="text-lg font-semibold heal-text-primary mb-4 font-acme">Related Resources</h3>
+          <p className="heal-text-secondary mb-4">
             Explore more resources in the {resource.category} category to continue your mental health journey.
           </p>
           <Link 
             href={`/resources?category=${encodeURIComponent(resource.category)}`}
-            className="heal-button inline-flex items-center space-x-2"
+            className="heal-button-primary inline-flex items-center space-x-2"
           >
             <BookOpen className="h-4 w-4" />
             <span>Browse {resource.category} Resources</span>

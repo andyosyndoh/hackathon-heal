@@ -427,16 +427,16 @@ export default function ResourcesPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50">
-        <div className="bg-white shadow-sm border-b border-gray-200">
+      <div className="min-h-screen heal-bg-primary">
+        <div className="heal-card shadow-sm border-b" style={{borderColor: 'var(--heal-beige)'}}>
           <div className="max-w-7xl mx-auto px-4 py-4">
             <div className="flex items-center space-x-4">
               <Link href="/dashboard" className="p-2 hover:bg-gray-100 rounded-lg transition-colors">
-                <ArrowLeft className="h-5 w-5 text-gray-600" />
+                <ArrowLeft className="h-5 w-5 heal-text-secondary" />
               </Link>
               <div className="flex items-center space-x-2">
-                <BookOpen className="h-6 w-6 text-blue-600" />
-                <h1 className="text-xl font-bold text-gray-900">Resource Library</h1>
+                <BookOpen className="h-6 w-6 heal-text-accent" />
+                <h1 className="text-xl font-bold heal-text-primary font-acme">Resource Library</h1>
               </div>
             </div>
           </div>
@@ -445,8 +445,8 @@ export default function ResourcesPage() {
         <div className="max-w-7xl mx-auto px-4 py-8">
           <div className="flex items-center justify-center py-20">
             <div className="flex items-center space-x-3">
-              <Loader2 className="h-6 w-6 animate-spin text-blue-600" />
-              <span className="text-gray-600">Loading resources...</span>
+              <Loader2 className="h-6 w-6 animate-spin heal-text-accent" />
+              <span className="heal-text-secondary">Loading resources...</span>
             </div>
           </div>
         </div>
@@ -455,21 +455,21 @@ export default function ResourcesPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen heal-bg-primary">
       {/* Header */}
-      <div className="bg-white shadow-sm border-b border-gray-200">
+      <div className="heal-card shadow-sm border-b" style={{borderColor: 'var(--heal-beige)'}}>
         <div className="max-w-7xl mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
               <Link href="/dashboard" className="p-2 hover:bg-gray-100 rounded-lg transition-colors">
-                <ArrowLeft className="h-5 w-5 text-gray-600" />
+                <ArrowLeft className="h-5 w-5 heal-text-secondary" />
               </Link>
               <div className="flex items-center space-x-2">
-                <BookOpen className="h-6 w-6 text-blue-600" />
-                <h1 className="text-xl font-bold text-gray-900">Resource Library</h1>
+                <BookOpen className="h-6 w-6 heal-text-accent" />
+                <h1 className="text-xl font-bold heal-text-primary font-acme">Resource Library</h1>
               </div>
             </div>
-            <div className="text-sm text-gray-600">
+            <div className="text-sm heal-text-secondary">
               {filteredResources.length} resources available
             </div>
           </div>
@@ -503,13 +503,13 @@ export default function ResourcesPage() {
                 placeholder="Search resources..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="heal-input pl-10"
+                className="heal-input-light pl-10"
               />
             </div>
             <select
               value={selectedType}
               onChange={(e) => setSelectedType(e.target.value)}
-              className="heal-input w-full sm:w-auto"
+              className="heal-input-light w-full sm:w-auto"
             >
               {typeOptions.map(option => (
                 <option key={option.value} value={option.value}>
@@ -541,7 +541,7 @@ export default function ResourcesPage() {
         {/* Featured Resources */}
         {selectedCategory === 'all' && searchTerm === '' && (
           <div className="mb-8">
-            <h2 className="text-2xl font-bold text-gray-900 mb-6">Featured Resources</h2>
+            <h2 className="text-2xl font-bold heal-text-primary mb-6 font-acme">Featured Resources</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {filteredResources.filter(r => r.featured).slice(0, 6).map((resource) => {
                 const IconComponent = getResourceIcon(resource.type);
@@ -560,11 +560,11 @@ export default function ResourcesPage() {
                       </div>
                     </div>
                     
-                    <h3 className="font-semibold text-gray-900 mb-2">{resource.title}</h3>
-                    <p className="text-gray-600 text-sm mb-4 line-clamp-2">{resource.description}</p>
+                    <h3 className="font-semibold heal-text-primary mb-2 font-acme">{resource.title}</h3>
+                    <p className="heal-text-secondary text-sm mb-4 line-clamp-2">{resource.description}</p>
                     
                     <div className="flex items-center justify-between text-sm mb-4">
-                      <div className="flex items-center space-x-2 text-gray-500">
+                      <div className="flex items-center space-x-2 heal-text-secondary">
                         <Clock className="h-4 w-4" />
                         <span>{resource.duration_minutes} min</span>
                       </div>
@@ -581,7 +581,7 @@ export default function ResourcesPage() {
                     <div className="flex space-x-2">
                       <button 
                         onClick={() => handleStartResource(resource)}
-                        className="flex-1 heal-button flex items-center justify-center space-x-2"
+                        className="flex-1 heal-button-primary flex items-center justify-center space-x-2"
                       >
                         <Play className="h-4 w-4" />
                         <span>{resource.type === 'contact' ? 'View Contact' : 'Start'}</span>
@@ -620,19 +620,19 @@ export default function ResourcesPage() {
 
         {/* All Resources */}
         <div>
-          <h2 className="text-2xl font-bold text-gray-900 mb-6">
+          <h2 className="text-2xl font-bold heal-text-primary mb-6 font-acme">
             {selectedCategory === 'all' ? 'All Resources' : `${categories.find(c => c.id === selectedCategory)?.name} Resources`}
           </h2>
           
           {filteredResources.length === 0 ? (
             <div className="heal-card p-12 text-center">
               <BookOpen className="h-16 w-16 text-gray-400 mx-auto mb-4" />
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">No resources found</h3>
-              <p className="text-gray-600">Try adjusting your search or filter criteria.</p>
+              <h3 className="text-lg font-semibold heal-text-primary mb-2 font-acme">No resources found</h3>
+              <p className="heal-text-secondary">Try adjusting your search or filter criteria.</p>
               {error && (
                 <button 
                   onClick={fetchResources}
-                  className="mt-4 heal-button"
+                  className="mt-4 heal-button-primary"
                 >
                   Reload Resources
                 </button>
@@ -654,7 +654,7 @@ export default function ResourcesPage() {
                       
                       <div className="flex-1 min-w-0">
                         <div className="flex items-start justify-between mb-2">
-                          <h3 className="font-semibold text-gray-900 text-lg">{resource.title}</h3>
+                          <h3 className="font-semibold heal-text-primary text-lg font-acme">{resource.title}</h3>
                           <div className="flex items-center space-x-2">
                             {resource.featured && (
                               <span className="bg-yellow-100 text-yellow-800 text-xs font-medium px-2 py-1 rounded-full">
@@ -667,9 +667,9 @@ export default function ResourcesPage() {
                           </div>
                         </div>
                         
-                        <p className="text-gray-600 mb-4">{resource.description}</p>
+                        <p className="heal-text-secondary mb-4">{resource.description}</p>
                         
-                        <div className="flex items-center space-x-6 text-sm text-gray-500 mb-4">
+                        <div className="flex items-center space-x-6 text-sm heal-text-secondary mb-4">
                           <div className="flex items-center space-x-1">
                             <Clock className="h-4 w-4" />
                             <span>{resource.duration_minutes} min</span>
@@ -687,7 +687,7 @@ export default function ResourcesPage() {
                           <div className="flex space-x-3">
                             <button 
                               onClick={() => handleStartResource(resource)}
-                              className="heal-button flex items-center space-x-2"
+                              className="heal-button-primary flex items-center space-x-2"
                             >
                               <Play className="h-4 w-4" />
                               <span>{resource.type === 'contact' ? 'View Contact' : 'Start'}</span>
@@ -757,8 +757,8 @@ export default function ResourcesPage() {
         {/* Personalized Recommendations */}
         {!error && filteredResources.length > 0 && (
           <div className="mt-12 heal-card p-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Personalized Recommendations</h3>
-            <p className="text-gray-600 mb-4">
+            <h3 className="text-lg font-semibold heal-text-primary mb-4 font-acme">Personalized Recommendations</h3>
+            <p className="heal-text-secondary mb-4">
               Based on your recent activities and preferences, we recommend these resources:
             </p>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -767,8 +767,8 @@ export default function ResourcesPage() {
                   <Brain className="h-4 w-4 text-blue-600" />
                 </div>
                 <div>
-                  <p className="font-medium text-gray-900">Anxiety Management Techniques</p>
-                  <p className="text-sm text-gray-600">Based on your mood patterns</p>
+                  <p className="font-medium heal-text-primary">Anxiety Management Techniques</p>
+                  <p className="text-sm heal-text-secondary">Based on your mood patterns</p>
                 </div>
               </div>
               <div className="flex items-center space-x-3 p-3 bg-green-50 rounded-lg">
@@ -776,8 +776,8 @@ export default function ResourcesPage() {
                   <Heart className="h-4 w-4 text-green-600" />
                 </div>
                 <div>
-                  <p className="font-medium text-gray-900">Self-Compassion Exercises</p>
-                  <p className="text-sm text-gray-600">Popular among similar users</p>
+                  <p className="font-medium heal-text-primary">Self-Compassion Exercises</p>
+                  <p className="text-sm heal-text-secondary">Popular among similar users</p>
                 </div>
               </div>
             </div>
