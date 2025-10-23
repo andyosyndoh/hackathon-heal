@@ -52,7 +52,7 @@ export default function RootLayout({
         <link rel="apple-touch-icon" href="/icon-192x192.png" />
         <link rel="manifest" href="/manifest.json" />
       </head>
-      <body className="antialiased">
+      <body className={`${inter.className} ${acme.variable} antialiased`}>
         <DailyClientProvider>
           <div id="root">
             {children}

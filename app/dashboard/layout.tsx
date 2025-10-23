@@ -50,7 +50,7 @@ export default function DashboardLayout({
       <div 
         className="fixed inset-0 -z-10"
         style={{
-          backgroundImage: 'linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.9)), url("/images/dashboard-bg.jpg")',
+          backgroundImage: 'linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)), url("/images/dashboard-bg.jpg")',
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundAttachment: 'fixed',
@@ -75,6 +75,27 @@ export default function DashboardLayout({
           md:translate-x-0
         `}
       >
+
+        <Image src="/images/decoration.png" alt="Decoration" 
+                      className="absolute top-1/5 left-1/4 w-auto h-auto opacity-70 -rotate-12"
+                      width={80}
+                      height={80}
+                      priority />
+              <Image src="/images/decoration.png" alt="Decoration" 
+                      className="absolute top-1/3 right-1/5 w-auto h-auto opacity-60 rotate-25"
+                      width={70}
+                      height={70}
+                      priority />
+              <Image src="/images/decoration.png" alt="Decoration" 
+                      className="absolute bottom-1/3 left-1/2 w-auto h-auto opacity-50 -rotate-15"
+                      width={90}
+                      height={90}
+                      priority />
+              <Image src="/images/decoration.png" alt="Decoration" 
+                      className="absolute bottom-1/4 right-1/3 w-auto h-auto opacity-70 rotate-15"
+                      width={60}
+                      height={60}
+                      priority />
         {/* Header / Logo */}
         <div className="px-6 py-6 border-b" style={{borderColor: 'var(--heal-beige)'}}>
         <Image
@@ -84,11 +105,11 @@ export default function DashboardLayout({
           height={150}
           className="mx-auto"
         />
-          {/* <h1 className="text-xl font-bold tracking-wide text-[#0B3C49] flex items-center justify-center gap-2">
+          <h1 className="text-xl font-bold tracking-wide text-[#0B3C49] flex items-center justify-center gap-2">
             <span className="font-semibold">WELCOME TO</span>
             <span className="text-[#1E675B]">HEAL</span>
           </h1>
-          <p className="text-xs text-center text-[#1E675B]/70 mt-1">Your Safe Space</p> */}
+          <p className="text-xs text-center text-[#1E675B]/70 mt-1">Your Safe Space</p>
         </div>
 
         {/* Navigation */}
@@ -98,7 +119,7 @@ export default function DashboardLayout({
             className="flex items-center text-sm font-semibold heal-text-secondary mb-4 hover:heal-text-light-teal transition-colors"
             onClick={() => setIsMobileMenuOpen(false)}
           >
-            <House className="w-5 h-5 mr-3" />← Back Home
+            <House className="w-5 h-5 mr-3" /> Back Home
           </Link>
 
           {navItems.map((item) => (

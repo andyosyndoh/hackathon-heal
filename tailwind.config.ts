@@ -11,8 +11,8 @@ const config: Config = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['var(--font-inter)'],
-        acme: ['var(--font-acme)'],
+        sans: ['var(--font-inter)', 'Inter', 'sans-serif'],
+        acme: ['var(--font-acme)', 'Acme', 'cursive'],
       },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',

@@ -526,7 +526,7 @@ export default function ChatPage() {
                     </div>
                   ) : sessions.length === 0 ? (
                     <div className="p-4 text-center text-gray-500 text-sm">
-                      No chat sessions yet
+                      No chat sessions yetsignup
                     </div>
                   ) : (
                     sessions.map((session) => (
@@ -699,8 +699,8 @@ export default function ChatPage() {
                       }`}>
                       {/* Avatar */}
                       <div className={`w-6 h-6 sm:w-8 sm:h-8 rounded-full flex items-center justify-center flex-shrink-0 ${message.sender === 'user'
-                          ? 'bg-blue-500'
-                          : 'bg-gradient-to-r from-blue-500 to-green-500'
+                          ? 'heal-text-primary'
+                          : 'heal-text-secondary'
                         }`}>
                         {message.sender === 'user' ?
                           <User className="h-3 w-3 sm:h-4 sm:w-4 text-white" /> :

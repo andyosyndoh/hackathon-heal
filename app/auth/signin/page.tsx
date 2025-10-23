@@ -1,5 +1,6 @@
 'use client';
 
+import './acme-font.css';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/hooks/use-auth';
@@ -121,10 +122,10 @@ export default function SignInPage() {
         
         {/* LEFT SIDE */}
         <div className="flex flex-col justify-center items-center md:w-1/2 p-10 text-center">
-          <Link href="/" className="text-sm text-gray-500 mb-4 w-full flex items-left gap-1 hover:underline font-acme text-[18px]">
+          <Link href="/" className="text-sm text-gray-500 mb-4 w-full flex items-left gap-1 hover:underline text-[18px]" style={{fontFamily: 'Acme, cursive'}}>
             <ArrowLeft className="h-4 w-4" /> Back to Home
           </Link>
-          <h2 className="text-[40px] font-acme font-semibold text-[#0B3C49]">Join Our Platform</h2>
+          <h2 className="text-[40px] font-semibold text-[#0B3C49]" style={{fontFamily: 'Acme, cursive'}}>Join Our Platform</h2>
           <p className="text-[18px] text-gray-600 mt-1 italic">Get full access to all platform features</p>
 
           <div className="my-8">
@@ -137,7 +138,7 @@ export default function SignInPage() {
             />
           </div>
 
-          <p className="text-[#006C67] font-acme text-[20px] font-bold max-w-sm leading-relaxed">
+          <p className="text-[#006C67] text-[20px] font-bold max-w-sm leading-relaxed" style={{fontFamily: 'Acme, cursive'}}>
             “Access confidential, dignified mental<br/>
             health support anytime,<br/>
             anywhere.” <span className="font-bold">24/7</span>
@@ -149,7 +150,7 @@ export default function SignInPage() {
           <div className='w-full bg-[#C2BCAE] bg-opacity-40 p-6 rounded-3xl'>
           {/* Sign In Card */}
           <div className="w-full max-w-md bg-[#677E83] p-8 rounded-3xl shadow-md text-[#0B3C49]">
-            <h2 className="text-center text-2xl font-semibold mb-8 text-[#0B3C49] font-acme">
+            <h2 className="text-center text-2xl font-semibold mb-8 text-[#0B3C49]" style={{fontFamily: 'Acme, cursive'}}>
               Sign In
             </h2>
 
@@ -246,7 +247,7 @@ export default function SignInPage() {
           {/* Anonymous Access */}
           <div className="bg-[#B0BEC0] rounded-2xl w-full max-w-md p-6 text-center shadow-sm">
             
-            <h3 className="text-[#0B3C49] text-[24px] font-semibold mb-2 flex items-center justify-center gap-2 font-acme">
+            <h3 className="text-[#0B3C49] text-[24px] font-semibold mb-2 flex items-center justify-center gap-2" style={{fontFamily: 'Acme, cursive'}}>
               <Headset className="h-8 w-8 text-[#0B3C49]" />
               <span>Need Quick Help Access</span>
             </h3>
