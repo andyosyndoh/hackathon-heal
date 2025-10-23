@@ -3,28 +3,22 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { 
-  Heart,
   MessageCircle,
   BookOpen,
   Phone,
   BarChart3,
-  Settings,
-  User,
-  Bell,
-  Shield,
-  LogOut,
-  Plus,
   TrendingUp,
   Calendar,
   Clock,
   Star,
+  Loader2,
   AlertTriangle,
-  Loader2
+  Shield
 } from 'lucide-react';
-import Link from 'next/link';
 import { useAuth } from '@/hooks/use-auth';
 import { apiClient } from '@/lib/api';
 import { MoodWidget } from '@/components/MoodWidget';
+import Link from 'next/link';
 
 export default function DashboardPage() {
   const router = useRouter();
@@ -69,7 +63,7 @@ export default function DashboardPage() {
       title: 'Start AI Chat', 
       description: 'Talk to your AI companion', 
       icon: MessageCircle, 
-      href: '/chat',
+      href: '/dashboard/chat',
       color: 'bg-blue-500',
       urgent: false
     },
@@ -77,7 +71,7 @@ export default function DashboardPage() {
       title: 'Track Mood', 
       description: 'Log your daily mood', 
       icon: BarChart3, 
-      href: '/mood',
+      href: '/dashboard/mood',
       color: 'bg-purple-500',
       urgent: false
     },
@@ -85,7 +79,7 @@ export default function DashboardPage() {
       title: 'Resource Library', 
       description: 'Browse self-help resources', 
       icon: BookOpen, 
-      href: '/resources',
+      href: '/dashboard/resources',
       color: 'bg-green-500',
       urgent: false
     },
@@ -93,7 +87,7 @@ export default function DashboardPage() {
       title: 'Crisis Support', 
       description: 'Get immediate help', 
       icon: Phone, 
-      href: '/crisis',
+      href: '/dashboard/crisis',
       color: 'bg-red-500',
       urgent: true
     }
@@ -115,56 +109,10 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Navigation */}
-      <nav className="bg-white shadow-sm border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-14 sm:h-16">
-            <div className="flex items-center space-x-3 sm:space-x-4">
-              <div className="flex items-center space-x-2">
-                <Heart className="h-6 w-6 sm:h-8 sm:w-8 text-blue-600" />
-                <span className="text-lg sm:text-xl font-bold text-gray-900">Heal</span>
-              </div>
-              <div className="hidden md:block">
-                <span className="text-gray-500 text-sm">Dashboard</span>
-              </div>
-            </div>
-            
-            <div className="flex items-center space-x-2 sm:space-x-4">
-              <button 
-                className="p-2 text-gray-400 hover:text-gray-600 relative"
-                aria-label="Notifications"
-              >
-                <Bell className="h-4 w-4 sm:h-5 sm:w-5" />
-                <span className="absolute top-0 right-0 h-2 w-2 bg-red-500 rounded-full"></span>
-              </button>
-              <button 
-                className="p-2 text-gray-400 hover:text-gray-600"
-                aria-label="Settings"
-              >
-                <Settings className="h-4 w-4 sm:h-5 sm:w-5" />
-              </button>
-              <div className="flex items-center space-x-2">
-                <div className="w-6 h-6 sm:w-8 sm:h-8 bg-blue-500 rounded-full flex items-center justify-center">
-                  <User className="h-3 w-3 sm:h-4 sm:w-4 text-white" />
-                </div>
-                <span className="hidden md:block text-sm font-medium text-gray-700">
-                  {user.firstName}
-                </span>
-              </div>
-              <button
-                onClick={handleLogout}
-                className="p-2 text-gray-400 hover:text-gray-600"
-                aria-label="Logout"
-              >
-                <LogOut className="h-4 w-4 sm:h-5 sm:w-5" />
-              </button>
-            </div>
-          </div>
-        </div>
-      </nav>
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+    <div className="w-full">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <h1 className="text-2xl font-bold text-gray-900 mb-8">Dashboard</h1>
+        
         {/* Welcome Section */}
         <div className="mb-6 sm:mb-8">
           <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 mb-2">
