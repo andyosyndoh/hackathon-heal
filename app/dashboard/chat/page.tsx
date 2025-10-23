@@ -53,14 +53,14 @@ type VoiceOption = 'off' | 'female' | 'male';
 
 // Choice Modal Component
 const ChoiceModal = ({ onSelect }: { onSelect: (choice: 'chat' | 'video') => void }) => (
-  <div className="fixed inset-0 bg-black flex items-center justify-center z-[100]">
-    <div className="rounded-2xl p-8 sm:p-10 shadow-xl text-center max-w-sm mx-4 transform transition-all duration-300 ease-out scale-95 animate-in fade-in-0 zoom-in-95">
-      <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-3">Karibu! Welcome to Your Safe Space</h2>
-      <p className="text-gray-600 mb-8 text-sm sm:text-base">How would you like to connect with Nia today?</p>
+  <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-[100]">
+    <div className="heal-card p-8 sm:p-10 shadow-xl text-center max-w-sm mx-4 transform transition-all duration-300 ease-out scale-95 animate-in fade-in-0 zoom-in-95">
+      <h2 className="text-xl sm:text-2xl font-bold heal-text-primary mb-3 font-acme">Karibu! Welcome to Your Safe Space</h2>
+      <p className="heal-text-secondary mb-8 text-sm sm:text-base">How would you like to connect with Nia today?</p>
       <div className="flex flex-col sm:flex-row justify-center space-y-3 sm:space-y-0 sm:space-x-4">
         <button
           onClick={() => onSelect('chat')}
-          className="heal-button w-full"
+          className="heal-button-primary w-full"
         >
           Text Chat / Maandishi
         </button>
@@ -463,7 +463,7 @@ export default function ChatPage() {
   }
 
   return (
-    <div className="h-screen flex flex-col bg-gray-50 overflow-hidden">
+    <div className="h-screen flex flex-col heal-bg-primary overflow-hidden">
       {showChoiceModal && <ChoiceModal onSelect={handleChoice} />}
       {/* Header - Fixed */}
       <div className="bg-white shadow-sm border-b border-gray-200 px-3 sm:px-4 py-3 flex-shrink-0">

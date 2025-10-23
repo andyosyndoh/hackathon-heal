@@ -68,14 +68,14 @@ export default function DashboardLayout({
       <aside
         className={`
           fixed inset-y-0 left-0 z-40 w-64 
-          bg-[#FAEFD9] text-[#0B3C49] shadow-[4px_0_12px_rgba(0,0,0,0.1)]
+          heal-bg-primary heal-text-primary shadow-[4px_0_12px_rgba(0,0,0,0.1)]
           flex flex-col justify-between transition-transform duration-300 ease-in-out
           ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'} 
           md:translate-x-0
         `}
       >
         {/* Header / Logo */}
-        <div className="px-6 py-6 border-b border-[#E6DCC1]/70">
+        <div className="px-6 py-6 border-b" style={{borderColor: 'var(--heal-beige)'}}>
         <Image
           src="/images/logo.png"
           alt="Logo"
@@ -94,7 +94,7 @@ export default function DashboardLayout({
         <nav className="flex-1 px-5 py-6 space-y-2">
           <Link
             href="/"
-            className="flex items-center text-sm font-semibold text-[#0B3C49]/80 mb-4 hover:text-[#1E675B] transition-colors"
+            className="flex items-center text-sm font-semibold heal-text-secondary mb-4 hover:heal-text-light-teal transition-colors"
             onClick={() => setIsMobileMenuOpen(false)}
           >
             ← Back Home
@@ -106,30 +106,36 @@ export default function DashboardLayout({
               href={item.href}
               className={`flex items-center px-4 py-3 rounded-xl transition-all duration-200 ${
                 isActive(item.href)
-                  ? 'bg-[#C2BCAE]/60 text-[#0B3C49] font-semibold shadow-inner'
-                  : 'hover:bg-[#F3EAD1]/80 hover:text-[#1E675B]'
+                  ? 'heal-text-primary font-semibold shadow-inner'
+                  : 'heal-text-secondary hover:heal-text-light-teal'
               }`}
+              style={{
+                backgroundColor: isActive(item.href) ? 'var(--heal-beige)' : 'transparent'
+              }}
               onClick={() => setIsMobileMenuOpen(false)}
             >
-              <item.icon className="w-5 h-5 mr-3 text-[#1E675B]" />
+              <item.icon className="w-5 h-5 mr-3" style={{color: 'var(--heal-light-teal)'}} />
               {item.name}
             </Link>
           ))}
         </nav>
 
         {/* Bottom Section */}
-        <div className="px-5 pb-6 border-t border-[#E6DCC1]/70">
+        <div className="px-5 pb-6 border-t" style={{borderColor: 'var(--heal-beige)'}}>
           <div className="space-y-2 text-sm">
             <Link
               href="/dashboard/profile"
               className={`flex items-center px-4 py-3 rounded-xl transition-all ${
                 isActive('/dashboard/profile')
-                  ? 'bg-[#C2BCAE]/60 text-[#0B3C49]'
-                  : 'hover:bg-[#F3EAD1]/80 hover:text-[#1E675B]'
+                  ? 'heal-text-primary'
+                  : 'heal-text-secondary hover:heal-text-light-teal'
               }`}
+              style={{
+                backgroundColor: isActive('/dashboard/profile') ? 'var(--heal-beige)' : 'transparent'
+              }}
               onClick={() => setIsMobileMenuOpen(false)}
             >
-              <User className="w-5 h-5 mr-3 text-[#1E675B]" />
+              <User className="w-5 h-5 mr-3" style={{color: 'var(--heal-light-teal)'}} />
               Profile
             </Link>
 
@@ -137,18 +143,21 @@ export default function DashboardLayout({
               href="/dashboard/settings"
               className={`flex items-center px-4 py-3 rounded-xl transition-all ${
                 isActive('/dashboard/settings')
-                  ? 'bg-[#C2BCAE]/60 text-[#0B3C49]'
-                  : 'hover:bg-[#F3EAD1]/80 hover:text-[#1E675B]'
+                  ? 'heal-text-primary'
+                  : 'heal-text-secondary hover:heal-text-light-teal'
               }`}
+              style={{
+                backgroundColor: isActive('/dashboard/settings') ? 'var(--heal-beige)' : 'transparent'
+              }}
               onClick={() => setIsMobileMenuOpen(false)}
             >
-              <Settings className="w-5 h-5 mr-3 text-[#1E675B]" />
+              <Settings className="w-5 h-5 mr-3" style={{color: 'var(--heal-light-teal)'}} />
               Settings
             </Link>
 
             <button
               onClick={logout}
-              className="w-full flex items-center px-4 py-3 rounded-xl text-[#A33C2F] hover:bg-[#FBE5E2] transition-all"
+              className="w-full flex items-center px-4 py-3 rounded-xl text-red-600 hover:bg-red-50 transition-all"
             >
               <LogOut className="w-5 h-5 mr-3" />
               Sign out
