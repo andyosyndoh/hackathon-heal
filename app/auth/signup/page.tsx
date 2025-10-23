@@ -187,12 +187,21 @@ export default function SignUpPage() {
         </div>
 
         {/* RIGHT SIDE */}
-    <div className="md:w-1/2 flex flex-col items-center justify-center p-8">
+    <div className="flex flex-col items-center justify-center p-8">
       <div className="w-full bg-[#C2BCAE]/30 p-6 rounded-3xl">
         {/* Sign Up Card */}
         <div className="w-full max-w-md bg-[#677E83] p-10 rounded-3xl shadow-lg text-[#FAEFD9]">
           <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+            <h2 className="text-center text-2xl font-semibold mb-8 text-[#0B3C49] font-acme">
+              Sign Up
+            </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <label htmlFor="firstName" className="block text-sm mb-1 text-[#044750] text-[20px] font-acme font-medium">
+                First Name
+              </label>
+              <label htmlFor="lastName" className="block text-sm mb-1 text-[#044750] text-[20px] font-acme font-medium">
+                Last Name
+              </label>
               <input
                 id="firstName"
                 name="firstName"
@@ -212,7 +221,7 @@ export default function SignUpPage() {
                 className="w-full rounded-full border border-[#FAEFD9] bg-transparent px-4 py-2 placeholder-[#FAEFD9] text-[#FAEFD9] focus:ring-2 focus:ring-[#FAEFD9] focus:outline-none"
               />
             </div>
-
+            <label htmlFor="email" className="block text-sm mb-1 text-[#044750] text-[20px] font-acme font-medium">Email Address</label>
             <input
               id="email"
               name="email"
@@ -223,6 +232,8 @@ export default function SignUpPage() {
               className="w-full rounded-full border border-[#FAEFD9] bg-transparent px-4 py-2 placeholder-[#FAEFD9] text-[#FAEFD9] focus:ring-2 focus:ring-[#FAEFD9] focus:outline-none"
             />
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <label htmlFor="password" className="block text-sm mb-1 text-[#044750] text-[20px] font-acme font-medium">Password</label>
+              <label htmlFor="confirmPassword" className="block text-sm mb-1 text-[#044750] text-[20px] font-acme font-medium">Confirm Password</label>
               <input
                 id="password"
                 name="password"
@@ -244,17 +255,17 @@ export default function SignUpPage() {
               />
             </div>
             <div className="flex items-center justify-between text-xs mt-1 text-[#FAEFD9]/80">
-              <Link href="/privacy" className="hover:underline">
+              <Link href="/privacy" className="text-[#2AB1F4] hover:underline">
                 Privacy Policy
               </Link>
-              <Link href="/terms" className="hover:underline">
+              <Link href="/terms" className="text-[#2AB1F4] hover:underline">
                 Terms Of Services
               </Link>
             </div>
 
             <button
               type="submit"
-              className="w-full mt-6 border border-[#FAEFD9] text-[#FAEFD9] py-2 rounded-full font-semibold hover:bg-[#FAEFD9] hover:text-[#0B3C49] transition-all"
+              className="w-full text-[18px] mt-6 border border-[#FAEFD9] text-[#044750] py-2 rounded-full font-semibold hover:bg-[#FAEFD9] hover:text-[#0B3C49] transition-all font-acme"
             >
               Create Account
             </button>
@@ -279,12 +290,12 @@ export default function SignUpPage() {
         Get help resources and access our AI text support without registration
       </p>
       <button
-        type="button"
-        onClick={() => router.push('/anonymous-access')}
-        className="border border-[#0B3C49] text-[#0B3C49] px-6 py-2 rounded-full hover:bg-[#0B3C49] hover:text-[#FAEFD9] transition-all"
-      >
-        Anonymous Access →
-      </button>
+              type="button"
+              onClick={() => router.push('/anonymous-access')}
+              className="bg-[#FBF9F4] text-[#0B3C49] px-6 py-2 shadow-sm hover:bg-[#092F3A] hover:text-[#FEF0D3] transition text-sm"
+            >
+              Anonymous Access →
+            </button>
     </div>
   </div>
       </div>

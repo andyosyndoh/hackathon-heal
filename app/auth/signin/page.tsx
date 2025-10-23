@@ -256,7 +256,7 @@ export default function SignInPage() {
             <button
               type="button"
               onClick={() => router.push('/anonymous-access')}
-              className="bg-[#FBF9F4] text-[#0B3C49] px-6 py-2 shadow-sm hover:bg-[#092F3A] transition text-sm"
+              className="bg-[#FBF9F4] text-[#0B3C49] px-6 py-2 shadow-sm hover:bg-[#092F3A] hover:text-[#FEF0D3] transition text-sm"
             >
               Anonymous Access →
             </button>
