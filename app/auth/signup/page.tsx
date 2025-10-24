@@ -163,10 +163,10 @@ export default function SignUpPage() {
         
         {/* LEFT SIDE */}
         <div className="flex flex-col justify-center items-center md:w-1/2 p-10 text-center">
-          <Link href="/" className="text-sm text-gray-500 mb-4 w-full flex items-left gap-1 hover:underline font-acme text-[18px]">
+          <Link href="/" className="text-sm text-gray-500 mb-4 w-full flex items-left gap-1 hover:underline text-[18px]" style={{fontFamily: 'Acme, cursive'}}>
             <ArrowLeft className="h-4 w-4" /> Back to Home
           </Link>
-          <h2 className="text-[40px] font-acme font-semibold text-[#0B3C49]">Join Our Platform</h2>
+          <h2 className="text-[40px] font-semibold text-[#0B3C49] font-acme">Join Our Platform</h2>
           <p className="text-[18px] text-gray-600 mt-1 italic">Create your account to get started</p>
 
           <div className="my-8">
@@ -179,7 +179,7 @@ export default function SignUpPage() {
             />
           </div>
 
-          <p className="text-[#006C67] font-acme text-[20px] font-bold max-w-sm leading-relaxed">
+          <p className="text-[#006C67] text-[20px] font-bold max-w-sm leading-relaxed" style={{fontFamily: 'Acme, cursive'}}>
             “Access confidential, dignified mental<br/>
             health support anytime,<br/>
             anywhere.” <span className="font-bold">24/7</span>

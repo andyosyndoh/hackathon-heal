@@ -105,7 +105,7 @@ export default function DashboardLayout({
           height={150}
           className="mx-auto"
         />
-          <h1 className="text-xl font-bold tracking-wide text-[#0B3C49] flex items-center justify-center gap-2">
+          <h1 className="text-xl font-bold tracking-wide text-[#0B3C49] font-acme flex items-center justify-center gap-2">
             <span className="font-semibold">WELCOME TO</span>
             <span className="text-[#1E675B]">HEAL</span>
           </h1>

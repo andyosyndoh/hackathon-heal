@@ -51,8 +51,11 @@ export default function RootLayout({
         <meta name="mobile-web-app-capable" content="yes" />
         <link rel="apple-touch-icon" href="/icon-192x192.png" />
         <link rel="manifest" href="/manifest.json" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link href="https://fonts.googleapis.com/css2?family=Acme&display=swap" rel="stylesheet" />
       </head>
-      <body className={`${inter.className} ${acme.variable} antialiased`}>
+      <body className={`${inter.variable} ${acme.variable} antialiased`}>
         <DailyClientProvider>
           <div id="root">
             {children}
