@@ -454,7 +454,7 @@ export default function ChatPage() {
         <div className="text-center">
           <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-4">Please Sign In</h2>
           <p className="text-gray-600 mb-6 text-sm sm:text-base">You need to be signed in to access the chat.</p>
-          <Link href="/auth" className="heal-button">
+          <Link href="/auth/signin" className="heal-button">
             Sign In
           </Link>
         </div>

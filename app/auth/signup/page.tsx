@@ -273,6 +273,17 @@ export default function SignUpPage() {
         </div>
 
     </div>
+    
+    {/* Sign In Link */}
+    <div className="text-center mb-6">
+      <p className="text-gray-600 text-sm">
+        Already have an account?{' '}
+        <Link href="/auth/signin" className="text-[#0B3C49] hover:underline font-medium">
+          Sign in here
+        </Link>
+      </p>
+    </div>
+
     {/* Divider */}
     <div className="flex items-center justify-center my-8">
       <div className="flex-1 h-px bg-gray-300" />

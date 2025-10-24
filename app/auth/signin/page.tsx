@@ -243,6 +243,16 @@ export default function SignInPage() {
             <div className="flex-1 h-px bg-gray-300" />
           </div>
 
+          {/* Sign Up Link */}
+          <div className="text-center mb-6">
+            <p className="text-gray-600 text-sm">
+              Don't have an account?{' '}
+              <Link href="/auth/signup" className="text-[#0B3C49] hover:underline font-medium">
+                Sign up here
+              </Link>
+            </p>
+          </div>
+
           {/* Anonymous Access */}
           <div className="bg-[#B0BEC0] rounded-2xl w-full max-w-md p-6 text-center shadow-sm">
             

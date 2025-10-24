@@ -29,7 +29,7 @@ export default function DashboardPage() {
   // Redirect if not authenticated
   useEffect(() => {
     if (!authLoading && !isAuthenticated) {
-      router.push('/auth');
+      router.push('/auth/signin');
     }
   }, [isAuthenticated, authLoading, router]);
 
