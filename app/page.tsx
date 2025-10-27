@@ -105,9 +105,9 @@ export default function HomePage() {
   ];
 
   return (
-    <div className="min-h-screen bg-[#FEF0D3]">
+    <div className="min-h-screen bg-[#FEF5E3]">
       {/* Navigation */}
-      <nav className="bg-[F1E4C9] sticky top-0 z-50">
+      <nav className="bg-[#EFE6D1] sticky top-0 z-50">
         <div className="max-w-[1400px] mx-auto px-6 lg:px-8">
           <div className="flex items-center justify-between h-20">
             {/* Logo - Left */}
@@ -324,6 +324,30 @@ export default function HomePage() {
             </div>
           </div>
         </div>
+           <br />
+           <br />
+           <br />
+           
+        {/* White footer section */}
+  <div className="bg-white mt-12 sm:mt-20 py-4 sm:py-6 text-center border-t border-gray-100">
+    <div className=" font-acme flex flex-col sm:flex-row justify-center items-center gap-3 sm:gap-6 text-sm sm:text-base text-gray-700">
+      <p>
+        By clicking the arrow, you acknowledge and agree to our{" "}
+        <Link href="/privacy-policy" className=" font-acme text-[#056173] underline">
+          Privacy Policy
+        </Link>
+        , and to activate your audio
+      </p>
+
+      <div className="flex items-center gap-2">
+        <button className="bg-[#056173] hover:bg-[#0C444B] text-white rounded-full p-3 transition-all duration-200">
+          <ArrowRight className="h-5 w-5" />
+        </button>
+        <span className="text-gray-600 text-sm">00:00 / 01:46:59</span>
+      </div>
+    </div>
+  </div>
+
       </section>
 
       {/* Features Section */}
