@@ -37,7 +37,7 @@ const config: Config = {
           dark: '#000000',       // Black
           accent: '#275960',     // Accent teal
           white: '#E8F4F7',      // Off-white
-          cream: '#FEF0D3',      // Light cream
+          cream: '#FEF5E3',      // Light cream
           offwhite: '#FFFFFF',   // Pure white
         },
         card: {
