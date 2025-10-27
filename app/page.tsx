@@ -89,10 +89,10 @@ export default function HomePage() {
               <Link href="#testimonials" className="text-gray-700 hover:text-blue-600 transition-colors text-sm lg:text-base">
                 Testimonials
               </Link>
-              <Link href="/auth" className="text-blue-600 hover:text-blue-700 font-medium text-sm lg:text-base">
+              <Link href="/auth/signin" className="text-blue-600 hover:text-blue-700 font-medium text-sm lg:text-base">
                 Sign In
               </Link>
-              <Link href="/auth?mode=signup" className="heal-button">
+              <Link href="/auth/signup" className="heal-button">
                 Get Started
               </Link>
             </div>
@@ -120,11 +120,11 @@ export default function HomePage() {
                 <Link href="#testimonials" className="text-gray-700 hover:text-blue-600 transition-colors px-4 text-sm">
                   Testimonials
                 </Link>
-                <Link href="/auth" className="text-blue-600 hover:text-blue-700 font-medium px-4 text-sm">
+                <Link href="/auth/signin" className="text-blue-600 hover:text-blue-700 font-medium px-4 text-sm">
                   Sign In
                 </Link>
                 <div className="px-4">
-                  <Link href="/auth?mode=signup" className="heal-button block text-center">
+                  <Link href="/auth/signup" className="heal-button block text-center">
                     Get Started
                   </Link>
                 </div>
@@ -151,7 +151,7 @@ export default function HomePage() {
                 crisis management, and privacy-first design. Your journey to wellness starts here.
               </p>
               <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center mb-8 sm:mb-12 px-4">
-                <Link href="/auth?mode=signup" className="heal-button text-base sm:text-lg px-6 sm:px-8 py-3 sm:py-4 w-full sm:w-auto">
+                <Link href="/auth/signup" className="heal-button text-base sm:text-lg px-6 sm:px-8 py-3 sm:py-4 w-full sm:w-auto">
                   Start Your Journey
                   <ArrowRight className="ml-2 h-4 w-4 sm:h-5 sm:w-5" />
                 </Link>
@@ -298,7 +298,7 @@ export default function HomePage() {
             Your mental health matters, and we're here to help every step of the way.
           </p>
           <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
-            <Link href="/auth?mode=signup" className="bg-white text-blue-600 hover:bg-gray-50 font-medium py-3 sm:py-4 px-6 sm:px-8 rounded-lg transition-all duration-200 text-base sm:text-lg">
+            <Link href="/auth/signup" className="bg-white text-blue-600 hover:bg-gray-50 font-medium py-3 sm:py-4 px-6 sm:px-8 rounded-lg transition-all duration-200 text-base sm:text-lg">
               Start Free Today
             </Link>
             <Link href="/crisis" className="border-2 border-white text-white hover:bg-white hover:text-blue-600 font-medium py-3 sm:py-4 px-6 sm:px-8 rounded-lg transition-all duration-200 text-base sm:text-lg">
