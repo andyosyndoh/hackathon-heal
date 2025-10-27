@@ -13,7 +13,7 @@ export const healTheme = {
     lightBlue: '#C8E1E7',
     accentBlue: '#2AB1F4',
     lightGray: '#B0BEC0',
-    offWhite: '#FEF0D3',
+    offWhite: '#FEF5E3',
     warmWhite: '#FBF9F4',
   },
   
@@ -28,7 +28,7 @@ export const healTheme = {
     '--heal-light-blue': '#C8E1E7',
     '--heal-accent-blue': '#2AB1F4',
     '--heal-light-gray': '#B0BEC0',
-    '--heal-off-white': '#FEF0D3',
+    '--heal-off-white': '#FEF5E3',
     '--heal-warm-white': '#FBF9F4',
   },
   
@@ -43,7 +43,7 @@ export const healTheme = {
       primary: '#0B3C49',
       secondary: '#677E83',
       accent: '#2AB1F4',
-      light: '#FEF0D3',
+      light: '#FEF5E3',
     },
     status: {
       success: '#006C67',
@@ -69,19 +69,19 @@ export const healTheme = {
       secondary: {
         background: 'transparent',
         color: '#044750',
-        border: '#FEF0D3',
+        border: '#FEF5E3',
         hover: {
           background: '#0B3C49',
-          color: '#FEF0D3',
+          color: '#FEF5E3',
         }
       }
     },
     input: {
       background: 'transparent',
-      border: '#FEF0D3',
-      color: '#FEF0D3',
-      placeholder: '#FEF0D3',
-      focus: '#FEF0D3',
+      border: '#FEF5E3',
+      color: '#FEF5E3',
+      placeholder: '#FEF5E3',
+      focus: '#FEF5E3',
     }
   },
   
