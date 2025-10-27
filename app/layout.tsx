@@ -1,13 +1,21 @@
 import './globals.css';
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
+import { Inter, Acme } from 'next/font/google';
 import DailyClientProvider from '@/components/DailyClientProvider';
 import { FloatingBoltLogo } from '@/components/FloatingBoltLogo';
 
-const inter = Inter({ 
+const inter = Inter({
   subsets: ['latin'],
   weight: ['300', '400', '500', '600', '700'],
   display: 'swap',
+  variable: '--font-inter',
+});
+
+const acme = Acme({
+  subsets: ['latin'],
+  weight: '400',
+  display: 'swap',
+  variable: '--font-acme',
 });
 
 export const metadata: Metadata = {
@@ -44,7 +52,7 @@ export default function RootLayout({
         <link rel="apple-touch-icon" href="/icon-192x192.png" />
         <link rel="manifest" href="/manifest.json" />
       </head>
-      <body className={`${inter.className} antialiased`}>
+      <body className={`${inter.variable} ${acme.variable} font-inter antialiased`}>
         <DailyClientProvider>
           <div id="root">
             {children}
