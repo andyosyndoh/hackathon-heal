@@ -55,7 +55,7 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link href="https://fonts.googleapis.com/css2?family=Acme&display=swap" rel="stylesheet" />
       </head>
-      <body className={`${inter.variable} ${acme.variable} font-inter antialiased`}>
+      <body className={`${inter.variable} ${acme.variable} font-inter antialiased bg-[#FEF5E3]`}>
         <DailyClientProvider>
           <div id="root">
             {children}
