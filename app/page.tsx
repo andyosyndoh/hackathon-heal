@@ -105,9 +105,9 @@ export default function HomePage() {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-brand-white via-brand-cream to-brand-light">
+    <div className="min-h-screen bg-[#FEF0D3]">
       {/* Navigation */}
-      <nav className="bg-brand-cream sticky top-0 z-50">
+      <nav className="bg-[F1E4C9] sticky top-0 z-50">
         <div className="max-w-[1400px] mx-auto px-6 lg:px-8">
           <div className="flex items-center justify-between h-20">
             {/* Logo - Left */}
@@ -285,16 +285,16 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <div className={`${isLoaded ? 'fade-in-up' : 'opacity-0'}`}>
-              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-gray-900 mb-4 sm:mb-6">
-                Your Mental Health,
+              <h1 className=" font-acme text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-gray-900 mb-4 sm:mb-6">
+                Welcome To Heal
                 <br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-green-600">
-                  Our Priority
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#056173] via-[#81A9AD] to-[#0C444B]">
+                  Your Listening, Caring Patner
                 </span>
               </h1>
               <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-600 mb-6 sm:mb-8 max-w-3xl mx-auto leading-relaxed px-4">
-                Professional mental health support powered by AI, with 24/7 availability, 
-                crisis management, and privacy-first design. Your journey to wellness starts here.
+                AI powered Mental health care and support anytime, anywhere
+                Immediate • Confidential • Judgment-Free and Culturally-sensitive Care designed with you in mind.
               </p>
               <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center mb-8 sm:mb-12 px-4">
                 <Link href="/auth/signup" className="heal-button text-base sm:text-lg px-6 sm:px-8 py-3 sm:py-4 w-full sm:w-auto">
@@ -327,7 +327,7 @@ export default function HomePage() {
       </section>
 
       {/* Features Section */}
-      <section id="features" className="py-12 sm:py-20 bg-white">
+      <section id="features" className="py-12 sm:py-20 bg-[#FEF5E3]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12 sm:mb-16">
             <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
@@ -354,7 +354,7 @@ export default function HomePage() {
       </section>
 
       {/* About Section */}
-      <section id="about" className="py-12 sm:py-20 bg-gray-50">
+      <section id="about" className="py-12 sm:py-20 bg-[#FEF5E3]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12 items-center">
             <div>
@@ -402,7 +402,7 @@ export default function HomePage() {
       </section>
 
       {/* Testimonials Section */}
-      <section id="testimonials" className="py-12 sm:py-20 bg-white">
+      <section id="testimonials" className="py-12 sm:py-20 bg-[#FEF5E3]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12 sm:mb-16">
             <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
