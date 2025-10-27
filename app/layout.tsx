@@ -4,7 +4,7 @@ import { Inter, Acme } from 'next/font/google';
 import DailyClientProvider from '@/components/DailyClientProvider';
 import { FloatingBoltLogo } from '@/components/FloatingBoltLogo';
 
-const inter = Inter({ 
+const inter = Inter({
   subsets: ['latin'],
   weight: ['300', '400', '500', '600', '700'],
   display: 'swap',
@@ -12,8 +12,8 @@ const inter = Inter({
 });
 
 const acme = Acme({
-  weight: '400', // Acme only has one weight
   subsets: ['latin'],
+  weight: '400',
   display: 'swap',
   variable: '--font-acme',
 });
@@ -55,7 +55,7 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link href="https://fonts.googleapis.com/css2?family=Acme&display=swap" rel="stylesheet" />
       </head>
-      <body className={`${inter.variable} ${acme.variable} antialiased`}>
+      <body className={`${inter.variable} ${acme.variable} font-inter antialiased`}>
         <DailyClientProvider>
           <div id="root">
             {children}
