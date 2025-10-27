@@ -32,11 +32,11 @@
     --heal-light-blue: #C8E1E7;
     --heal-accent-blue: #2AB1F4;
     --heal-light-gray: #B0BEC0;
-    --heal-off-white: #FEF0D3;
+    --heal-off-white: #FEF5E3;
     --heal-warm-white: #FBF9F4;
     
     /* CSS Variables for easy theming */
-    --background: 250 239 217; /* #FAEFD9 */
+    --background: 254 240 211; /* #FEF5E3 */
     --foreground: 11 60 73; /* #0B3C49 */
     --card: 255 255 255;
     --card-foreground: 11 60 73;
