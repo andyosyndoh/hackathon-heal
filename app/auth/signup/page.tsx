@@ -254,13 +254,37 @@ export default function SignUpPage() {
                 className="w-full rounded-full border border-[#FAEFD9] bg-transparent px-4 py-2 placeholder-[#FAEFD9] text-[#FAEFD9] focus:ring-2 focus:ring-[#FAEFD9] focus:outline-none"
               />
             </div>
-            <div className="flex items-center justify-between text-xs mt-1 text-[#FAEFD9]/80">
-              <Link href="/privacy" className="text-[#2AB1F4] hover:underline">
-                Privacy Policy
-              </Link>
-              <Link href="/terms" className="text-[#2AB1F4] hover:underline">
-                Terms Of Services
-              </Link>
+            <div className="space-y-2 mt-4">
+              <label className="flex items-center space-x-2 text-sm text-[#FAEFD9]">
+                <input
+                  type="checkbox"
+                  name="agreeToTerms"
+                  checked={formData.agreeToTerms}
+                  onChange={handleInputChange}
+                  className="rounded"
+                />
+                <span>
+                  I agree to the{' '}
+                  <Link href="/terms" className="text-[#2AB1F4] hover:underline">
+                    Terms of Service
+                  </Link>
+                </span>
+              </label>
+              <label className="flex items-center space-x-2 text-sm text-[#FAEFD9]">
+                <input
+                  type="checkbox"
+                  name="agreeToPrivacy"
+                  checked={formData.agreeToPrivacy}
+                  onChange={handleInputChange}
+                  className="rounded"
+                />
+                <span>
+                  I agree to the{' '}
+                  <Link href="/privacy" className="text-[#2AB1F4] hover:underline">
+                    Privacy Policy
+                  </Link>
+                </span>
+              </label>
             </div>
 
             <button
