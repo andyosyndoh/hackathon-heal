@@ -406,7 +406,7 @@ export default function MoodTrackerPage() {
                   value={notes}
                   onChange={(e) => setNotes(e.target.value)}
                   placeholder="What's contributing to your mood today? Any thoughts or feelings you'd like to record..."
-                  className="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:border-transparent resize-none" style={{borderColor: 'var(--heal-beige)', backgroundColor: 'var(--heal-cream)', color: 'var(--heal-dark-teal)', '--tw-ring-color': 'var(--heal-accent-blue)'}}
+                  className="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:border-transparent resize-none" style={{borderColor: 'var(--heal-beige)', backgroundColor: 'var(--heal-cream)', color: 'var(--heal-dark-teal)'}}
                   rows={4}
                 />
               </div>
@@ -441,7 +441,7 @@ export default function MoodTrackerPage() {
                 <select
                   value={timeFilter}
                   onChange={(e) => setTimeFilter(e.target.value as 'week' | 'month' | 'all')}
-                  className="px-4 py-2 border rounded-lg focus:ring-2 focus:border-transparent" style={{borderColor: 'var(--heal-beige)', '--tw-ring-color': 'var(--heal-accent-blue)'}}
+                  className="px-4 py-2 border rounded-lg focus:ring-2 focus:border-transparent" style={{borderColor: 'var(--heal-beige)'}}
                 >
                   <option value="week">Last Week</option>
                   <option value="month">Last Month</option>
