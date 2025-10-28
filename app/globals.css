@@ -32,11 +32,11 @@
     --heal-light-blue: #C8E1E7;
     --heal-accent-blue: #2AB1F4;
     --heal-light-gray: #B0BEC0;
-    --heal-off-white: #FEF0D3;
+    --heal-off-white: #FEF5E3;
     --heal-warm-white: #FBF9F4;
     
     /* CSS Variables for easy theming */
-    --background: 250 239 217; /* #FAEFD9 */
+    --background: 254 240 211; /* #FEF5E3 */
     --foreground: 11 60 73; /* #0B3C49 */
     --card: 255 255 255;
     --card-foreground: 11 60 73;
@@ -164,10 +164,10 @@
   
   /* Button Components */
   .heal-button {
-    @apply border border-current py-2 px-6 rounded-full font-medium transition-all duration-200 hover:scale-105 active:scale-95;
+    @apply border border-current font-medium transition-all duration-200 hover:scale-105 active:scale-95;
     background-color: transparent;
     color: var(--heal-medium-teal);
-    border-color: var(--heal-off-white);
+    border-color: var(--heal-sage);
   }
   
   .heal-button:hover {

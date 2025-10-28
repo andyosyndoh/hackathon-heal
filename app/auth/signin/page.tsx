@@ -166,8 +166,8 @@ export default function SignInPage() {
                   placeholder="Enter your Email Address"
                   value={formData.email}
                   onChange={handleInputChange}
-                  className={`w-full rounded-full px-4 py-2 text-[#FEF0D3] bg-[#677E83] placeholder-[#FEF0D3] border ${
-                    errors.email ? 'border-red-500' : 'border-[#FEF0D3]'
+                  className={`w-full rounded-full px-4 py-2 text-[#FEF5E3] bg-[#677E83] placeholder-[#FEF5E3] border ${
+                    errors.email ? 'border-red-500' : 'border-[#FEF5E3]'
                   } focus:ring-2 focus:ring-[#0B3C49] focus:outline-none`}
                   required
                 />
@@ -188,8 +188,8 @@ export default function SignInPage() {
                   placeholder="Enter your password"
                   value={formData.password}
                   onChange={handleInputChange}
-                  className={`w-full rounded-full px-4 py-2 text-[#FEF0D3] bg-[#677E83] placeholder-[#FEF0D3] border ${
-                    errors.password ? 'border-red-500' : 'border-[#FEF0D3]'
+                  className={`w-full rounded-full px-4 py-2 text-[#FEF5E3] bg-[#677E83] placeholder-[#FEF5E3] border ${
+                    errors.password ? 'border-red-500' : 'border-[#FEF5E3]'
                   } focus:ring-2 focus:ring-[#0B3C49] focus:outline-none`}
                   required
                 />
@@ -202,13 +202,13 @@ export default function SignInPage() {
               </div>
 
               {/* Keep Signed In */}
-              <div className="flex items-center gap-2 text-sm text-[#FEF0D3]">
+              <div className="flex items-center gap-2 text-sm text-[#FEF5E3]">
                 <input
                   type="checkbox"
                   id="keepSignedIn"
                   checked={keepSignedIn}
                   onChange={() => setKeepSignedIn(!keepSignedIn)}
-                  className="accent-[#FEF0D3]"
+                  className="accent-[#FEF5E3]"
                 />
                 <label htmlFor="keepSignedIn">Keep me signed in.</label>
               </div>
@@ -221,7 +221,8 @@ export default function SignInPage() {
               {/* Submit */}
               <button
                 type="submit"
-                className="w-full mt-2 border border-[#FEF0D3] text-[#044750] py-2 rounded-full font-medium hover:bg-[#092F3A] hover:text-[#FEF0D3] transition disabled:opacity-50"
+                className="w-full mt-2 border border-[#FEF5E3] text-[#044750] py-2 rounded-full font-medium hover:bg-[#092F3A] hover:text-[#FEF5E3
+                ] transition disabled:opacity-50"
                 disabled={isLoading}
               >
                 {isLoading ? (
@@ -266,7 +267,7 @@ export default function SignInPage() {
             <button
               type="button"
               onClick={() => router.push('/anonymous-access')}
-              className="bg-[#FBF9F4] text-[#0B3C49] px-6 py-2 shadow-sm hover:bg-[#092F3A] hover:text-[#FEF0D3] transition text-sm"
+              className="bg-[#FBF9F4] text-[#0B3C49] px-6 py-2 shadow-sm hover:bg-[#092F3A] hover:text-[#FEF5E3] transition text-sm"
             >
               Anonymous Access →
             </button>
