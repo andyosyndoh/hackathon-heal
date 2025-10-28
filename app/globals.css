@@ -164,10 +164,10 @@
   
   /* Button Components */
   .heal-button {
-    @apply border border-current py-2 px-6 rounded-full font-medium transition-all duration-200 hover:scale-105 active:scale-95;
+    @apply border border-current font-medium transition-all duration-200 hover:scale-105 active:scale-95;
     background-color: transparent;
     color: var(--heal-medium-teal);
-    border-color: var(--heal-off-white);
+    border-color: var(--heal-sage);
   }
   
   .heal-button:hover {
