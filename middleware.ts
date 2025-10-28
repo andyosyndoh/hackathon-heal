@@ -17,10 +17,10 @@ export function middleware(request: NextRequest) {
   const token = request.cookies.get('heal_access_token')?.value || 
                 request.headers.get('authorization')?.replace('Bearer ', '');
 
-  // If it's a protected route and there's no token, redirect to signin
+  // If it's a protected route and there's no token, redirect to auth
   if (isProtectedRoute && !token) {
     const url = request.nextUrl.clone();
-    url.pathname = '/auth/signin';
+    url.pathname = '/auth';
     return NextResponse.redirect(url);
   }
 

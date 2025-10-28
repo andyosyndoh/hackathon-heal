@@ -47,5 +47,3 @@ next-env.d.ts
 # AWS CLI files
 aws/
 awscliv2.zip
-
-THEME_GUIDE.md
