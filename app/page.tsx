@@ -1,12 +1,12 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { 
-  Heart, 
-  Shield, 
-  Brain, 
-  Users, 
-  Phone, 
+import { useState, useEffect, useRef } from 'react';
+import {
+  Heart,
+  Shield,
+  Brain,
+  Users,
+  Phone,
   ArrowRight,
   Star,
   CheckCircle,
@@ -14,14 +14,76 @@ import {
   X
 } from 'lucide-react';
 import Link from 'next/link';
+import Image from 'next/image';
+
+// Sign Up Toggle ComponentH
+function SignUpToggle() {
+  const [isSignUp, setIsSignUp] = useState(true);
+
+  return (
+    <div className="relative inline-flex">
+      {isSignUp ? (
+        <Link
+          href="/auth?mode=signup"
+          className="bg-brand-primary hover:bg-brand-accent border-4 border-brand-cream rounded-full pl-3 pr-6 py-2 flex items-center gap-2 transition-all shadow-md"
+        >
+          <div className="w-4 h-4 rounded-full bg-brand-cream" />
+          <span className="font-acme text-white text-sm uppercase tracking-wide">SIGN UP</span>
+        </Link>
+      ) : (
+        <Link
+          href="/chat"
+          className="bg-brand-primary hover:bg-brand-accent border-4 border-brand-cream rounded-full pl-6 pr-3 py-2 flex items-center gap-2 transition-all shadow-md"
+        >
+          <span className="font-acme text-white text-sm uppercase tracking-wide">GUEST</span>
+          <div className="w-4 h-4 rounded-full bg-brand-cream" />
+        </Link>
+      )}
+
+      {/* Toggle button */}
+      <button
+        onClick={() => setIsSignUp(!isSignUp)}
+        className="absolute right-2 top-1/2 -translate-y-1/2 text-brand-cream hover:text-white text-xs z-10"
+        aria-label="Toggle between Sign Up and Guest"
+      >
+        ⇄
+      </button>
+    </div>
+  );
+}
 
 export default function HomePage() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
+  const audioRef = useRef<HTMLAudioElement>(null);
 
   useEffect(() => {
     setIsLoaded(true);
   }, []);
+
+
+  // Pause audio when scrolling
+  useEffect(() => {
+    const handleScroll = () => {
+      if (audioRef.current && !audioRef.current.paused) {
+        audioRef.current.pause();
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  // Function to play audio
+  const handlePlayAudio = () => {
+    if (audioRef.current) {
+      audioRef.current.play().catch((error) => {
+        console.error('Audio playback failed:', error);
+        alert('Could not play audio. Check that /public/sounds/Heal_audio.mp3 exists and is a valid MP3 file.');
+      });
+    }
+  };
+
 
   const features = [
     {
@@ -68,64 +130,173 @@ export default function HomePage() {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50">
+    <div className="min-h-screen bg-[#FEF5E3]">
       {/* Navigation */}
-      <nav className="bg-white/80 backdrop-blur-md border-b border-gray-200 sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-14 sm:h-16">
-            <div className="flex items-center space-x-2">
-              <Heart className="h-6 w-6 sm:h-8 sm:w-8 text-blue-600" />
-              <span className="text-xl sm:text-2xl font-bold text-gray-900">Heal</span>
+      <nav className="bg-[#EFE6D1] sticky top-0 z-50">
+        <div className="max-w-[1400px] mx-auto px-6 lg:px-8">
+          <div className="flex items-center justify-between h-20">
+            {/* Logo - Left */}
+            <Link href="/" className="flex items-center space-x-3 group flex-shrink-0">
+              <Image
+                src="/Heal-logo.webp"
+                alt="HEAL Logo"
+                width={80}
+                height={80}
+                className="
+    h-30 w-30 
+    object-contain 
+    transition-all duration-500 
+    drop-shadow-[0_4px_10px_rgba(0,0,0,0.25)] 
+    group-hover:scale-115 
+    group-hover:rotate-3 
+    group-hover:drop-shadow-[0_6px_16px_rgba(0,0,0,0.35)]
+  "
+                priority
+              />
+
+              <span className="font-acme text-3xl font-bold text-brand-primary group-hover:text-brand-dark transition-all duration-300 group-hover:tracking-wider">
+                HEAL
+              </span>
+            </Link>
+
+            {/* Center Navigation */}
+            <div className="hidden lg:flex items-center justify-center flex-1 space-x-6 xl:space-x-8 mx-8">
+              <Link
+                href="/"
+                className="font-acme text-brand-primary hover:text-brand-dark transition-all duration-300 text-sm uppercase tracking-wide relative group/nav hover:scale-110 hover:tracking-wider"
+              >
+                HOME
+                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-brand-dark group-hover/nav:w-full transition-all duration-300"></span>
+              </Link>
+              <Link
+                href="#about"
+                className="font-acme text-brand-primary hover:text-brand-dark transition-all duration-300 text-sm uppercase tracking-wide relative group/nav hover:scale-110 hover:tracking-wider"
+              >
+                ABOUT HEAL
+                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-brand-dark group-hover/nav:w-full transition-all duration-300"></span>
+              </Link>
+              <Link
+                href="#services"
+                className="font-acme text-brand-primary hover:text-brand-dark transition-all duration-300 text-sm uppercase tracking-wide relative group/nav hover:scale-110 hover:tracking-wider"
+              >
+                SERVICES
+                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-brand-dark group-hover/nav:w-full transition-all duration-300"></span>
+              </Link>
+              <Link
+                href="#resources"
+                className="font-acme text-brand-primary hover:text-brand-dark transition-all duration-300 text-sm uppercase tracking-wide relative group/nav hover:scale-110 hover:tracking-wider"
+              >
+                RESOURCES
+                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-brand-dark group-hover/nav:w-full transition-all duration-300"></span>
+              </Link>
+              <Link
+                href="#report"
+                className="font-acme text-brand-primary hover:text-brand-dark transition-all duration-300 text-sm uppercase tracking-wide relative group/nav hover:scale-110 hover:tracking-wider"
+              >
+                REPORT
+                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-brand-dark group-hover/nav:w-full transition-all duration-300"></span>
+              </Link>
+
+              {/* Sign Up / Guest Toggle Switch */}
+              <SignUpToggle />
             </div>
-            
-            {/* Desktop Navigation */}
-            <div className="hidden md:flex items-center space-x-6 lg:space-x-8">
-              <Link href="#features" className="text-gray-700 hover:text-blue-600 transition-colors text-sm lg:text-base">
-                Features
+
+            {/* Right Side Buttons */}
+            <div className="hidden lg:flex items-center space-x-4 flex-shrink-0">
+              <Link
+                href="#contact"
+                className="font-acme text-brand-primary hover:text-brand-dark transition-all duration-300 text-sm uppercase tracking-wide relative group/nav hover:scale-110 hover:tracking-wider"
+              >
+                CONTACT US
+                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-brand-dark group-hover/nav:w-full transition-all duration-300"></span>
               </Link>
-              <Link href="#about" className="text-gray-700 hover:text-blue-600 transition-colors text-sm lg:text-base">
-                About
-              </Link>
-              <Link href="#testimonials" className="text-gray-700 hover:text-blue-600 transition-colors text-sm lg:text-base">
-                Testimonials
-              </Link>
-              <Link href="/auth" className="text-blue-600 hover:text-blue-700 font-medium text-sm lg:text-base">
-                Sign In
-              </Link>
-              <Link href="/auth?mode=signup" className="heal-button">
-                Get Started
+              <Link
+                href="#donate"
+                className="font-acme bg-brand-primary hover:bg-brand-accent text-white py-2.5 px-6 rounded-full transition-all duration-300 text-sm uppercase tracking-wide shadow-md hover:shadow-xl hover:scale-105 active:scale-95 hover:-translate-y-0.5"
+              >
+                DONATE
               </Link>
             </div>
 
             {/* Mobile menu button */}
             <button
-              className="md:hidden p-2 text-gray-700"
+              className="lg:hidden p-2 text-brand-primary rounded-lg hover:bg-brand-light/50 transition-colors"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               aria-label="Toggle menu"
             >
-              {isMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+              {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
             </button>
           </div>
 
           {/* Mobile Navigation */}
           {isMenuOpen && (
-            <div className="md:hidden bg-white border-t border-gray-200 py-4">
-              <div className="flex flex-col space-y-4">
-                <Link href="#features" className="text-gray-700 hover:text-blue-600 transition-colors px-4 text-sm">
-                  Features
+            <div className="lg:hidden bg-brand-cream border-t border-brand-light py-4">
+              <div className="flex flex-col space-y-3">
+                <Link
+                  href="/"
+                  className="font-acme text-brand-primary hover:text-brand-dark transition-all duration-300 px-4 py-2 text-sm uppercase tracking-wide hover:bg-brand-light/50 rounded-lg"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  HOME
                 </Link>
-                <Link href="#about" className="text-gray-700 hover:text-blue-600 transition-colors px-4 text-sm">
-                  About
+                <Link
+                  href="#about"
+                  className="font-acme text-brand-primary hover:text-brand-dark transition-all duration-300 px-4 py-2 text-sm uppercase tracking-wide hover:bg-brand-light/50 rounded-lg"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  ABOUT HEAL
                 </Link>
-                <Link href="#testimonials" className="text-gray-700 hover:text-blue-600 transition-colors px-4 text-sm">
-                  Testimonials
+                <Link
+                  href="#services"
+                  className="font-acme text-brand-primary hover:text-brand-dark transition-all duration-300 px-4 py-2 text-sm uppercase tracking-wide hover:bg-brand-light/50 rounded-lg"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  SERVICES
                 </Link>
-                <Link href="/auth" className="text-blue-600 hover:text-blue-700 font-medium px-4 text-sm">
-                  Sign In
+                <Link
+                  href="#resources"
+                  className="font-acme text-brand-primary hover:text-brand-dark transition-all duration-300 px-4 py-2 text-sm uppercase tracking-wide hover:bg-brand-light/50 rounded-lg"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  RESOURCES
                 </Link>
-                <div className="px-4">
-                  <Link href="/auth?mode=signup" className="heal-button block text-center">
-                    Get Started
+                <Link
+                  href="#report"
+                  className="font-acme text-brand-primary hover:text-brand-dark transition-all duration-300 px-4 py-2 text-sm uppercase tracking-wide hover:bg-brand-light/50 rounded-lg"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  REPORT
+                </Link>
+
+                {/* Mobile Auth buttons */}
+                <div className="px-4 pt-3 space-y-3 border-t border-brand-light mt-2">
+                  <Link
+                    href="/auth?mode=signup"
+                    className="font-acme block text-center bg-brand-primary hover:bg-brand-accent text-white py-3 px-6 rounded-full shadow-md text-sm uppercase tracking-wide transition-all duration-300 hover:scale-105"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    SIGN UP
+                  </Link>
+                  <Link
+                    href="/chat"
+                    className="font-acme block text-center text-brand-teal hover:text-brand-primary px-4 py-3 rounded-lg hover:bg-brand-light/50 transition-all duration-300 text-sm uppercase tracking-wide"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    GUEST
+                  </Link>
+                  <Link
+                    href="#contact"
+                    className="font-acme block text-center text-brand-primary hover:text-brand-dark px-4 py-3 text-sm uppercase tracking-wide transition-all duration-300"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    CONTACT US
+                  </Link>
+                  <Link
+                    href="#donate"
+                    className="font-acme block text-center bg-brand-primary hover:bg-brand-accent text-white py-3 px-6 rounded-full shadow-md text-sm uppercase tracking-wide transition-all duration-300 hover:scale-105"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    DONATE
                   </Link>
                 </div>
               </div>
@@ -135,23 +306,23 @@ export default function HomePage() {
       </nav>
 
       {/* Hero Section */}
-      <section className="relative overflow-hidden py-12 sm:py-20 lg:py-32">
+      {/* <section className="relative overflow-hidden py-12 sm:py-20 lg:py-32">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <div className={`${isLoaded ? 'fade-in-up' : 'opacity-0'}`}>
-              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-gray-900 mb-4 sm:mb-6">
-                Your Mental Health,
+              <h1 className=" font-acme text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-gray-900 mb-4 sm:mb-6">
+                Welcome To Heal
                 <br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-green-600">
-                  Our Priority
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#056173] via-[#81A9AD] to-[#0C444B]">
+                  Your Listening, Caring Patner
                 </span>
               </h1>
               <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-600 mb-6 sm:mb-8 max-w-3xl mx-auto leading-relaxed px-4">
-                Professional mental health support powered by AI, with 24/7 availability, 
-                crisis management, and privacy-first design. Your journey to wellness starts here.
+                AI powered Mental health care and support anytime, anywhere
+                Immediate • Confidential • Judgment-Free and Culturally-sensitive Care designed with you in mind.
               </p>
               <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center mb-8 sm:mb-12 px-4">
-                <Link href="/auth?mode=signup" className="heal-button text-base sm:text-lg px-6 sm:px-8 py-3 sm:py-4 w-full sm:w-auto">
+                <Link href="/auth/signup" className="heal-button text-base sm:text-lg px-6 sm:px-8 py-3 sm:py-4 w-full sm:w-auto">
                   Start Your Journey
                   <ArrowRight className="ml-2 h-4 w-4 sm:h-5 sm:w-5" />
                 </Link>
@@ -159,10 +330,10 @@ export default function HomePage() {
                   Crisis Support
                 </Link>
               </div>
-            </div>
-            
-            {/* Trust Indicators */}
-            <div className={`${isLoaded ? 'fade-in-up' : 'opacity-0'} grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-8 mt-8 sm:mt-16 px-4`}>
+            </div> */}
+
+      {/* Trust Indicators */}
+      {/* <div className={`${isLoaded ? 'fade-in-up' : 'opacity-0'} grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-8 mt-8 sm:mt-16 px-4`}>
               <div className="flex items-center justify-center space-x-2">
                 <Shield className="h-4 w-4 sm:h-6 sm:w-6 text-green-600" />
                 <span className="text-gray-700 font-medium text-sm sm:text-base">HIPAA Compliant</span>
@@ -178,21 +349,120 @@ export default function HomePage() {
             </div>
           </div>
         </div>
+           <br />
+           <br />
+           <br />   */}
+
+      {/* Hero Section */}
+      <section className="relative overflow-hidden py-12 sm:py-20 lg:py-32">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-row items-center space-x-10">
+            {/* Left: Image */}
+            <div className={`${isLoaded ? 'fade-in-up' : 'opacity-0'} flex justify-center lg:justify-start`}>
+              <Image
+                src="/Heal-hero-section.png"
+                alt="Heal Hero Section"
+                width={80}
+                height={80}
+                className="w-full object-contain"
+                priority
+              />
+            </div>
+            {/* Right: Text Content */}
+            <div className="text-center">
+              <div className={`${isLoaded ? 'fade-in-up' : 'opacity-0'}`}>
+                <h1 className="font-acme text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-gray-900 mb-4 sm:mb-6">
+                  Welcome To Heal
+                  <br />
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#056173] via-[#81A9AD] to-[#0C444B] whitespace-nowrap">
+                    Your Listening, Caring Patner
+                  </span>
+                </h1>
+                <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-600 mb-6 sm:mb-8 leading-relaxed">
+                  AI powered Mental health care and support anytime, anywhere
+                  Immediate • Confidential • Judgment-Free and Culturally-sensitive Care designed with you in mind.
+                </p>
+                <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center mb-8 sm:mb-12">
+                  <Link
+                    href="/auth/signup"
+                    className="heal-button text-base sm:text-lg px-6 sm:px-8 py-3 sm:py-4 w-full sm:w-auto inline-flex items-center justify-center whitespace-nowrap rounded-lg"
+                  >
+                    Start Your Journey
+                    <ArrowRight className="ml-2 h-4 w-4 sm:h-5 sm:w-5" />
+                  </Link>
+                  <Link href="/crisis" className="bg-red-600 hover:bg-red-700 text-white font-medium py-3 sm:py-4 px-6 sm:px-8 rounded-lg transition-all duration-200 text-base sm:text-lg w-full sm:w-auto text-center">
+                    Crisis Support
+                  </Link>
+                </div>
+              </div>
+              {/* Trust Indicators */}
+              <div className={`${isLoaded ? 'fade-in-up' : 'opacity-0'} grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6`}>
+                <div className="flex items-center justify-center space-x-2">
+                  <Shield className="h-4 w-4 sm:h-6 sm:w-6 text-green-600" />
+                  <span className="text-gray-700 font-medium text-sm sm:text-base">HIPAA Compliant</span>
+                </div>
+                <div className="flex items-center justify-center lg:justify-start space-x-2">
+                  <CheckCircle className="h-4 w-4 sm:h-6 sm:w-6 text-green-600" />
+                  <span className="text-gray-700 font-medium text-sm sm:text-base">Clinically Verified</span>
+                </div>
+                <div className="flex items-center justify-center lg:justify-start space-x-2">
+                  <Star className="h-4 w-4 sm:h-6 sm:w-6 text-yellow-500" />
+                  <span className="text-gray-700 font-medium text-sm sm:text-base">5-Star Rated</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <br />
+        <br />
+        <br />
+
+
+
+        {/* White footer section */}
+        <div className="bg-white mt-12 sm:mt-20 py-4 sm:py-6 text-center border-t border-gray-100">
+          <div className="font-acme flex flex-col sm:flex-row justify-center items-center gap-3 sm:gap-6 text-sm sm:text-base text-gray-700">
+            <p>
+              By clicking the arrow, you acknowledge and agree to our{" "}
+              <Link href="/privacy-policy" className="font-acme text-[#056173] underline hover:text-[#0C444B] transition-colors">
+                Privacy Policy
+              </Link>
+              , and to activate your audio
+            </p>
+
+            <div className="flex items-center gap-2">
+              <button
+                onClick={handlePlayAudio}
+                className="bg-[#056173] hover:bg-[#0C444B] text-white rounded-full p-3 transition-all duration-200 hover:scale-105"
+                aria-label="Play audio"
+              >
+                <ArrowRight className="h-5 w-5" />
+              </button>
+              <span className="text-gray-600 text-sm">00:00 / 01:46:59</span>
+            </div>
+          </div>
+
+          {/* Hidden audio element */}
+          <audio ref={audioRef} src="/sounds/Heal_audio.mp3" preload="auto" />
+
+        </div>
+
       </section>
 
+
       {/* Features Section */}
-      <section id="features" className="py-12 sm:py-20 bg-white">
+      <section id="features" className="py-12 sm:py-20 bg-[#FEF5E3]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12 sm:mb-16">
             <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
               Comprehensive Mental Health Support
             </h2>
             <p className="text-base sm:text-lg lg:text-xl text-gray-600 max-w-2xl mx-auto px-4">
-              Our platform combines cutting-edge AI technology with human expertise 
+              Our platform combines cutting-edge AI technology with human expertise
               to provide the support you need, when you need it.
             </p>
           </div>
-          
+
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
             {features.map((feature, index) => (
               <div key={index} className="heal-card p-4 sm:p-6 text-center hover:shadow-xl transition-all duration-300">
@@ -208,7 +478,7 @@ export default function HomePage() {
       </section>
 
       {/* About Section */}
-      <section id="about" className="py-12 sm:py-20 bg-gray-50">
+      <section id="about" className="py-12 sm:py-20 bg-[#FEF5E3]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12 items-center">
             <div>
@@ -216,7 +486,7 @@ export default function HomePage() {
                 Built by Mental Health Professionals
               </h2>
               <p className="text-base sm:text-lg text-gray-600 mb-4 sm:mb-6 leading-relaxed">
-                Heal was created by a team of licensed therapists, AI researchers, and security experts 
+                Heal was created by a team of licensed therapists, AI researchers, and security experts
                 to provide accessible, effective mental health support that prioritizes your privacy and safety.
               </p>
               <div className="space-y-3 sm:space-y-4">
@@ -245,8 +515,8 @@ export default function HomePage() {
                 </div>
                 <h3 className="text-lg sm:text-xl font-semibold text-gray-900 mb-3 sm:mb-4">Our Mission</h3>
                 <p className="text-gray-600 leading-relaxed text-sm sm:text-base">
-                  To make professional mental health support accessible to everyone, 
-                  breaking down barriers of cost, availability, and stigma through 
+                  To make professional mental health support accessible to everyone,
+                  breaking down barriers of cost, availability, and stigma through
                   innovative technology and compassionate care.
                 </p>
               </div>
@@ -256,18 +526,18 @@ export default function HomePage() {
       </section>
 
       {/* Testimonials Section */}
-      <section id="testimonials" className="py-12 sm:py-20 bg-white">
+      <section id="testimonials" className="py-12 sm:py-20 bg-[#FEF5E3]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12 sm:mb-16">
             <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
               Trusted by Thousands
             </h2>
             <p className="text-base sm:text-lg lg:text-xl text-gray-600 max-w-2xl mx-auto px-4">
-              See how Heal has made a difference in the lives of our users and 
+              See how Heal has made a difference in the lives of our users and
               earned the trust of mental health professionals.
             </p>
           </div>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
             {testimonials.map((testimonial, index) => (
               <div key={index} className="heal-card p-4 sm:p-6">
@@ -294,11 +564,11 @@ export default function HomePage() {
             Ready to Begin Your Healing Journey?
           </h2>
           <p className="text-base sm:text-lg lg:text-xl text-blue-100 mb-6 sm:mb-8 leading-relaxed">
-            Join thousands who have found support, healing, and hope through our platform. 
+            Join thousands who have found support, healing, and hope through our platform.
             Your mental health matters, and we're here to help every step of the way.
           </p>
           <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
-            <Link href="/auth?mode=signup" className="bg-white text-blue-600 hover:bg-gray-50 font-medium py-3 sm:py-4 px-6 sm:px-8 rounded-lg transition-all duration-200 text-base sm:text-lg">
+            <Link href="/auth/signup" className="bg-white text-blue-600 hover:bg-gray-50 font-medium py-3 sm:py-4 px-6 sm:px-8 rounded-lg transition-all duration-200 text-base sm:text-lg">
               Start Free Today
             </Link>
             <Link href="/crisis" className="border-2 border-white text-white hover:bg-white hover:text-blue-600 font-medium py-3 sm:py-4 px-6 sm:px-8 rounded-lg transition-all duration-200 text-base sm:text-lg">
@@ -318,7 +588,7 @@ export default function HomePage() {
                 <span className="text-lg sm:text-xl font-bold text-white">Heal</span>
               </div>
               <p className="text-gray-400 text-sm leading-relaxed">
-                Professional mental health support powered by AI, 
+                Professional mental health support powered by AI,
                 designed with privacy and safety as our top priorities.
               </p>
             </div>

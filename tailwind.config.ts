@@ -10,6 +10,10 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        'acme': ['Acme'],
+        'inter': ['Inter', 'sans-serif'],
+      },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
         'gradient-conic':
@@ -23,6 +27,19 @@ const config: Config = {
       colors: {
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',
+        // Brand colors
+        brand: {
+          primary: '#044750',    // Dark teal
+          secondary: '#0C444B',  // Teal dark
+          teal: '#498B8A',       // Medium teal
+          gray: '#81A9AD',       // Light teal gray
+          light: '#DBE2E4',      // Very light gray
+          dark: '#000000',       // Black
+          accent: '#275960',     // Accent teal
+          white: '#E8F4F7',      // Off-white
+          cream: '#FEF5E3',      // Light cream
+          offwhite: '#FFFFFF',   // Pure white
+        },
         card: {
           DEFAULT: 'hsl(var(--card))',
           foreground: 'hsl(var(--card-foreground))',
