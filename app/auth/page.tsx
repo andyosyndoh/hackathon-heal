@@ -160,6 +160,18 @@ export default function AuthPage() {
           {errors.general && (
             <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg">
               <p className="text-red-700 text-sm">{errors.general}</p>
+              {errors.general.includes('already exists') && mode === 'signup' && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setMode('signin');
+                    setErrors({});
+                  }}
+                  className="mt-2 text-blue-600 hover:text-blue-700 text-sm underline"
+                >
+                  Switch to Sign In
+                </button>
+              )}
             </div>
           )}
 

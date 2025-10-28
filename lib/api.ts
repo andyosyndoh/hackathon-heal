@@ -109,7 +109,18 @@ class ApiClient {
       const data = await response.json();
 
       if (!response.ok) {
-        return { error: data.error || 'An error occurred' };
+        let errorMessage = data.error || data.message || 'An error occurred';
+        
+        // Handle specific HTTP status codes
+        if (response.status === 409) {
+          errorMessage = 'An account with this email already exists';
+        } else if (response.status === 401) {
+          errorMessage = 'Invalid email or password';
+        } else if (response.status === 400) {
+          errorMessage = data.message || 'Invalid request data';
+        }
+        
+        return { error: errorMessage };
       }
 
       return { data };

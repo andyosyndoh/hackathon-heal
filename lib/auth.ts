@@ -121,7 +121,12 @@ class AuthManager {
       
       if (response.error) {
         this.setState({ isLoading: false });
-        return { success: false, error: response.error };
+        // Handle specific error cases
+        let errorMessage = response.error;
+        if (response.error.includes('already exists') || response.error.includes('conflict')) {
+          errorMessage = 'An account with this email already exists. Please try signing in instead.';
+        }
+        return { success: false, error: errorMessage };
       }
 
       if (response.data) {
