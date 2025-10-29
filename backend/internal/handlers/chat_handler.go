@@ -1,7 +1,6 @@
 package handlers
 
 import (
-	"fmt"
 	"net/http"
 	"strconv"
 
@@ -49,7 +48,6 @@ func (h *ChatHandler) SendMessage(c *gin.Context) {
 	// Create or get chat session
 	session, err := h.chatService.GetOrCreateSession(userID, req.SessionID)
 	if err != nil {
-		fmt.Println("getsession")
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
@@ -57,7 +55,6 @@ func (h *ChatHandler) SendMessage(c *gin.Context) {
 	// Save user message
 	userMessage, err := h.chatService.SaveMessage(session.ID, userID, req.Content, "user", req.MessageType)
 	if err != nil {
-		fmt.Println("saveusermessage")
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
@@ -66,7 +63,6 @@ func (h *ChatHandler) SendMessage(c *gin.Context) {
 	// We fetch with a limit of 10, you can adjust this
 	previousMessages, err := h.chatService.GetChatHistory(userID, session.ID, 10, 0)
 	if err != nil {
-		fmt.Println("getchathistory")
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to fetch chat history: " + err.Error()})
 		return
 	}
@@ -79,7 +75,6 @@ func (h *ChatHandler) SendMessage(c *gin.Context) {
 	// Get AI response
 	aiResponse, err := h.chatService.GetAIResponse(c.Request.Context(), req.Content, history)
 	if err != nil {
-		fmt.Println("getAIresponse")
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
@@ -87,7 +82,6 @@ func (h *ChatHandler) SendMessage(c *gin.Context) {
 	// Save AI message
 	aiMessage, err := h.chatService.SaveMessage(session.ID, userID, aiResponse, "ai", "text")
 	if err != nil {
-		fmt.Println("saveaimessage")
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
