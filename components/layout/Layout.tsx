@@ -4,16 +4,18 @@ import Sidebar from '../Sidebar';
 import { useAuth } from '@/hooks/use-auth';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
+import { User } from '@/lib/auth';
 
 interface LayoutProps {
   children: React.ReactNode;
   onToggle: (collapsed: boolean) => void;
   sidebarCollapsed: boolean;
+  user: User;
 }
 
-function Layout({ children, onToggle, sidebarCollapsed }: LayoutProps) {
+function Layout({ children, onToggle, sidebarCollapsed, user }: LayoutProps) {
 
-  const { user, isAuthenticated, isLoading: authLoading } = useAuth();
+  const { isAuthenticated, isLoading: authLoading } = useAuth();
   const router = useRouter();
 
   // Redirect if not authenticated

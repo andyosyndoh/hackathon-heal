@@ -1,6 +1,8 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useAuth } from '@/hooks/use-auth';
+import { User as UserType } from '@/lib/auth';
 import { 
   Phone,
   MessageCircle,
@@ -10,7 +12,7 @@ import {
   Heart,
   AlertTriangle,
   ArrowRight,
-  User,
+  User as UserIcon,
   Headphones,
   Users,
   ArrowLeft,
@@ -40,6 +42,7 @@ export default function CrisisPage() {
   const [loading, setLoading] = useState(true);
   const [copiedPhone, setCopiedPhone] = useState<string | null>(null);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const { user } = useAuth();
 
   useEffect(() => {
     // Get user's location for local emergency services
@@ -177,7 +180,7 @@ export default function CrisisPage() {
       case 'medical': return Heart;
       case 'mental_health': return Users;
       case 'support': return Shield;
-      case 'youth': return User;
+      case 'youth': return UserIcon;
       default: return Phone;
     }
   };
@@ -212,7 +215,7 @@ export default function CrisisPage() {
   ];
 
   return (
-    <Layout onToggle={setSidebarCollapsed} sidebarCollapsed={sidebarCollapsed}>
+    <Layout onToggle={setSidebarCollapsed} sidebarCollapsed={sidebarCollapsed} user={user as UserType}>
     <div className="min-h-screen">
       {/* Header */}
       <div className=" shadow-sm border-b border-gray-200">

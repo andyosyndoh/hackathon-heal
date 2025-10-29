@@ -19,6 +19,7 @@ import { useAuth } from '@/hooks/use-auth';
 import { apiClient } from '@/lib/api';
 import { MoodWidget } from '@/components/MoodWidget';
 import Layout from '@/components/layout/Layout';
+import Link from 'next/link';
 
 export default function DashboardPage() {
   const router = useRouter();
@@ -55,55 +56,35 @@ export default function DashboardPage() {
   }, [isAuthenticated]);
 
   const quickActions = [
-    { 
-      title: 'Start AI Chat', 
-      description: 'Talk to your AI companion', 
-      icon: MessageCircle, 
-      href: '/dashboard/chat',
     {
       title: 'Start AI Chat',
       description: 'Talk to your AI companion',
       icon: MessageCircle,
-      href: '/chat',
+      href: 'dashboard/chat',
       color: 'bg-blue-500',
       urgent: false
     },
-    { 
-      title: 'Track Mood', 
-      description: 'Log your daily mood', 
-      icon: BarChart3, 
-      href: '/dashboard/mood',
     {
       title: 'Track Mood',
       description: 'Log your daily mood',
       icon: BarChart3,
-      href: '/mood',
+      href: 'dashboard/mood',
       color: 'bg-purple-500',
       urgent: false
     },
-    { 
-      title: 'Resource Library', 
-      description: 'Browse self-help resources', 
-      icon: BookOpen, 
-      href: '/dashboard/resources',
     {
       title: 'Resource Library',
       description: 'Browse self-help resources',
       icon: BookOpen,
-      href: '/resources',
+      href: 'dashboard/resources',
       color: 'bg-green-500',
       urgent: false
     },
-    { 
-      title: 'Crisis Support', 
-      description: 'Get immediate help', 
-      icon: Phone, 
-      href: '/dashboard/crisis',
     {
       title: 'Crisis Support',
       description: 'Get immediate help',
       icon: Phone,
-      href: '/crisis',
+      href: 'dashboard/crisis',
       color: 'bg-red-500',
       urgent: true
     }
