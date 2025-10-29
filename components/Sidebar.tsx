@@ -20,7 +20,8 @@ import {
   Trophy,
   Image,
   Menu,
-  PanelLeftClose
+  PanelLeftClose,
+  ArrowLeft
 } from 'lucide-react';
 import NextImage from 'next/image';
 import Link from 'next/link';
@@ -182,6 +183,15 @@ const Sidebar: React.FC<SidebarProps> = ({ onToggle, user }) => {
               <PanelLeftClose size={18} className="text-gray-600" />
             </button>
           </div>
+            <div>
+              <Link
+            href="/"
+            className="flex items-center font-acme justify-left px-3 py-2 rounded-lg cursor-pointer transition-colors text-gray-700 hover:bg-orange-50/40 mt-2 mb-4"
+            // onClick={() => setIsMobileMenuOpen(false)}
+          >
+            <ArrowLeft className="w-5 h-5 mr-3" /> <span className='text-sm font-medium'>Back Home</span>
+          </Link>
+            </div>
 
           {/* Navigation Menu */}
           <nav className={`flex-1 py-4 transition-opacity duration-300 ${isCollapsed ? 'opacity-0' : 'opacity-100'}`}>
