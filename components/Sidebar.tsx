@@ -34,6 +34,7 @@ interface SidebarProps {
 
 const Sidebar: React.FC<SidebarProps> = ({ onToggle, user }) => {
   const [isCollapsed, setIsCollapsed] = useState(false);
+  const [isSubmenuOpen, setIsSubmenuOpen] = useState(false);
   const sidebarRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
   const router = useRouter();
@@ -50,7 +51,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onToggle, user }) => {
   const dashboardSubItems = [
     { icon: Shield, label: 'Safe Space', link: '/dashboard/chat' },
     { icon: MessageCircle, label: 'AI Chat', link: '/dashboard/chat' },
-    { icon: Trophy, label: 'Champions', link: '/dashboard/champions' }
+    { icon: Trophy, label: 'Champions', link: '#' }
   ];
 
   const chatHistory = [
@@ -86,6 +87,15 @@ const Sidebar: React.FC<SidebarProps> = ({ onToggle, user }) => {
 
   const handleItemClick = (link: string) => {
     if (link) router.push(link);
+  };
+
+  const toggleSubmenu = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setIsSubmenuOpen(!isSubmenuOpen);
+  };
+
+  const handleDashboardClick = () => {
+    handleItemClick('/dashboard');
   };
 
   return (
@@ -141,24 +151,32 @@ const Sidebar: React.FC<SidebarProps> = ({ onToggle, user }) => {
               {navigationItems.map((item, index) => (
                 <li key={index}>
                   <div 
-                  className={`flex items-center justify-between px-3 py-2 rounded-lg cursor-pointer transition-colors ${isActive(item.link || '') ? 'bg-gradient-to-r from-[#e2c68e] text-orange-800 shadow-sm' : 'text-gray-700 hover:bg-orange-50/40'}`}
-                  onClick={() => handleItemClick(item.link || '')}
+                  className={`flex items-center justify-between px-3 py-2 rounded-lg cursor-pointer transition-colors ${pathname === item.link ? 'bg-gradient-to-r from-[#e2c68e] text-orange-800 shadow-sm' : 'text-gray-700 hover:bg-orange-50/40'}`}
                   >
-                    <div className="flex items-center space-x-3">
+                    <div 
+                      className="flex items-center space-x-3 flex-1"
+                      onClick={() => handleItemClick(item.link || '')}
+                    >
                       <item.icon size={18} />
                       <span className="text-sm font-medium">{item.label}</span>
                     </div>
-                    {item.hasSubmenu && <ChevronDown size={16} className="text-gray-500" />}
+                    {item.hasSubmenu && (
+                      <ChevronDown 
+                        size={16} 
+                        className={`text-gray-500 transition-transform ${isSubmenuOpen ? 'rotate-180' : ''}`}
+                        onClick={toggleSubmenu}
+                      />
+                    )}
                   </div>
 
                   {/* Dashboard Submenu */}
-                  {isActive('/dashboard') && item.hasSubmenu && (
+                  {isSubmenuOpen && item.hasSubmenu && (
                     <ul className="ml-6 mt-2 space-y-1">
                       {dashboardSubItems.map((subItem, subIndex) => (
                         <li key={subIndex}>
                           <div 
                             className={`flex items-center space-x-3 px-3 py-2 text-sm cursor-pointer transition-colors rounded-md hover:bg-orange-50/30 ${
-                              isActive(subItem.link || '') ? 'text-orange-600 bg-orange-50/30' : 'text-gray-600 hover:text-orange-600'
+                              pathname === subItem.link ? 'text-orange-600 bg-orange-50/30' : 'text-gray-600 hover:text-orange-600'
                             }`}
                             onClick={() => handleItemClick(subItem.link || '')}
                           >
