@@ -109,7 +109,7 @@ export default function DashboardPage() {
 
         {/* Welcome Section */}
         <div className="mb-6 sm:mb-8">
-          <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-white mb-2 drop-shadow-lg">
+          <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-white mb-2 drop-shadow-lg font-acme">
             Welcome back, {user.firstName}!
           </h1>
           <p className="text-white/90 text-sm sm:text-base drop-shadow">
@@ -175,7 +175,7 @@ export default function DashboardPage() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8">
           {/* Quick Actions */}
           <div className="lg:col-span-2">
-            <h2 className="text-lg sm:text-xl font-semibold text-white mb-4 sm:mb-6 drop-shadow">Quick Actions</h2>
+            <h2 className="text-lg sm:text-xl font-semibold text-white mb-4 sm:mb-6 drop-shadow font-acme">Quick Actions</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 mb-6 sm:mb-8">
               {quickActions.map((action, index) => (
                 <Link
@@ -205,7 +205,7 @@ export default function DashboardPage() {
             </div>
 
             {/* Recent Activity */}
-            <h2 className="text-lg sm:text-xl font-semibold text-white mb-4 sm:mb-6 drop-shadow">Recent Activity</h2>
+            <h2 className="text-lg sm:text-xl font-semibold text-white mb-4 sm:mb-6 drop-shadow font-acme">Recent Activity</h2>
             <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-xl p-4 sm:p-6 shadow-lg">
               <p className="text-white/80 text-center py-6 sm:py-8 text-sm sm:text-base">
                 Your recent activities will appear here once you start using the platform.
@@ -222,7 +222,7 @@ export default function DashboardPage() {
 
             {/* Today's Reminder */}
             <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-xl p-4 sm:p-6 shadow-lg">
-              <h3 className="font-semibold text-white mb-3 sm:mb-4 text-sm sm:text-base drop-shadow">Today's Reminder</h3>
+              <h3 className="font-semibold text-white mb-3 sm:mb-4 text-sm sm:text-base drop-shadow font-acme">Today's Reminder</h3>
               <div className="bg-blue-500/20 border border-blue-400/30 rounded-lg p-3 sm:p-4">
                 <p className="text-xs sm:text-sm text-blue-200 mb-2">
                   "Progress, not perfection, is the goal."
@@ -235,7 +235,7 @@ export default function DashboardPage() {
 
             {/* Upcoming */}
             <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-xl p-4 sm:p-6 shadow-lg">
-              <h3 className="font-semibold text-white mb-3 sm:mb-4 text-sm sm:text-base drop-shadow">Upcoming</h3>
+              <h3 className="font-semibold text-white mb-3 sm:mb-4 text-sm sm:text-base drop-shadow font-acme">Upcoming</h3>
               <div className="space-y-3">
                 <div className="flex items-center space-x-3">
                   <div className="w-6 h-6 sm:w-8 sm:h-8 bg-green-500/20 rounded-lg flex items-center justify-center">
@@ -251,7 +251,7 @@ export default function DashboardPage() {
 
             {/* Privacy Status */}
             <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-xl p-4 sm:p-6 shadow-lg">
-              <h3 className="font-semibold text-white mb-3 sm:mb-4 text-sm sm:text-base drop-shadow">Privacy & Security</h3>
+              <h3 className="font-semibold text-white mb-3 sm:mb-4 text-sm sm:text-base drop-shadow font-acme">Privacy & Security</h3>
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-2">
@@ -279,7 +279,7 @@ export default function DashboardPage() {
 
             {/* Emergency Contact */}
             <div className="bg-red-500/20 backdrop-blur-md border border-red-400/30 rounded-xl p-4 sm:p-6 shadow-lg">
-              <h3 className="font-semibold text-red-200 mb-2 text-sm sm:text-base drop-shadow">Emergency Support</h3>
+              <h3 className="font-semibold text-red-200 mb-2 text-sm sm:text-base drop-shadow font-acme">Emergency Support</h3>
               <p className="text-xs sm:text-sm text-red-300 mb-3 sm:mb-4">
                 If you're having thoughts of self-harm or suicide, please reach out immediately.
               </p>

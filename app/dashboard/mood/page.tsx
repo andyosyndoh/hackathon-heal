@@ -256,7 +256,7 @@ export default function MoodTrackerPage() {
               </Link>
               <div className="flex items-center space-x-2">
                 <Heart className="h-6 w-6 text-pink-500" />
-                <h1 className="text-xl font-bold text-white">Mood Tracker</h1>
+                <h1 className="text-xl font-bold text-white font-acme">Mood Tracker</h1>
               </div>
             </div>
             
@@ -362,7 +362,7 @@ export default function MoodTrackerPage() {
         {view === 'log' && (
           <div className="max-w-2xl mx-auto">
             <div className="heal-card p-8">
-              <h2 className="text-2xl font-bold text-white mb-6 text-center">How are you feeling today?</h2>
+              <h2 className="text-2xl font-bold text-white mb-6 text-center font-acme">How are you feeling today?</h2>
               
               {/* Mood Scale */}
               <div className="mb-8">
@@ -436,7 +436,7 @@ export default function MoodTrackerPage() {
         {view === 'history' && (
           <div>
             <div className="flex items-center justify-between mb-6">
-              <h2 className="text-2xl font-bold text-white">Mood History</h2>
+              <h2 className="text-2xl font-bold text-white font-acme">Mood History</h2>
               <div className="flex items-center space-x-2">
                 <select
                   value={timeFilter}
@@ -453,7 +453,7 @@ export default function MoodTrackerPage() {
             {moodEntries.length === 0 ? (
               <div className="heal-card p-12 text-center">
                 <Heart className="h-16 w-16 text-gray-300 mx-auto mb-4" />
-                <h3 className="text-lg font-semibold text-white mb-2">No mood entries yet</h3>
+                <h3 className="text-lg font-semibold text-white mb-2 font-acme">No mood entries yet</h3>
                 <p className="text-white mb-6">Start tracking your mood to see your history here.</p>
                 <button
                   onClick={() => setView('log')}
@@ -506,12 +506,12 @@ export default function MoodTrackerPage() {
 
         {view === 'analytics' && moodStats && (
           <div>
-            <h2 className="text-2xl font-bold text-white mb-6">Mood Analytics</h2>
+            <h2 className="text-2xl font-bold text-white mb-6 font-acme">Mood Analytics</h2>
             
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
               {/* Detailed Stats */}
               <div className="heal-card p-6">
-                <h3 className="text-lg font-semibold text-white mb-4">Detailed Statistics</h3>
+                <h3 className="text-lg font-semibold text-white mb-4 font-acme">Detailed Statistics</h3>
                 <div className="space-y-4">
                   <div className="flex justify-between items-center">
                     <span className="text-white">Weekly Average:</span>
@@ -544,7 +544,7 @@ export default function MoodTrackerPage() {
 
               {/* Mood Distribution */}
               <div className="heal-card p-6">
-                <h3 className="text-lg font-semibold text-white mb-4">Mood Distribution</h3>
+                <h3 className="text-lg font-semibold text-white mb-4 font-acme">Mood Distribution</h3>
                 <div className="space-y-3">
                   {Object.entries(
                     moodEntries.reduce((acc, entry) => {
@@ -581,7 +581,7 @@ export default function MoodTrackerPage() {
 
             {/* Insights */}
             <div className="heal-card p-6 mt-8">
-              <h3 className="text-lg font-semibold text-white mb-4">Insights & Recommendations</h3>
+              <h3 className="text-lg font-semibold text-white mb-4 font-acme">Insights & Recommendations</h3>
               <div className="space-y-4">
                 {moodStats.trend === 'up' && (
                   <div className="p-4 bg-green-50 border border-green-200 rounded-lg">

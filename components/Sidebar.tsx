@@ -134,9 +134,9 @@ const Sidebar: React.FC<SidebarProps> = ({ onToggle, user }) => {
           } h-screen relative flex flex-col shadow-2xl transition-all duration-300 ease-in-out overflow-hidden`}
       >
               <NextImage src="/images/decoration.png" alt="Decoration" 
-                      className="absolute z-20 top-1/5 left-1/4 w-auto h-auto opacity-70 -rotate-12"
-                      width={60}
-                      height={60}
+                      className="absolute z-20 top-1/5 left-1/3 w-auto h-auto opacity-70 -rotate-12"
+                      width={40}
+                      height={40}
                       priority />
               <NextImage src="/images/decoration.png" alt="Decoration" 
                       className="absolute z-20 top-1/3 right-1/5 w-auto h-auto opacity-60 rotate-25"
@@ -170,8 +170,8 @@ const Sidebar: React.FC<SidebarProps> = ({ onToggle, user }) => {
                 <span className="text-white font-semibold text-sm">{user.charAt(0).toUpperCase()}</span>
               </div>
               <div>
-                <p className="text-xs text-gray-600 font-medium">WELCOME TO HEAL</p>
-                <p className="text-sm font-semibold text-gray-800">{user}</p>
+                <p className="text-xs text-gray-600 font-medium font-acme">WELCOME TO HEAL</p>
+                <p className="text-sm font-semibold text-gray-800 font-acme">{user}</p>
               </div>
             </div>
             <button
@@ -188,7 +188,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onToggle, user }) => {
               {navigationItems.map((item, index) => (
                 <li key={index}>
                   <div 
-                  className={`flex items-center justify-between px-3 py-2 rounded-lg cursor-pointer transition-colors ${pathname === item.link ? 'bg-gradient-to-r from-[#e2c68e] text-orange-800 shadow-sm' : 'text-gray-700 hover:bg-orange-50/40'}`}
+                  className={`flex items-center font-acme justify-between px-3 py-2 rounded-lg cursor-pointer transition-colors ${pathname === item.link ? 'bg-gradient-to-r from-[#e2c68e] text-orange-800 shadow-sm' : 'text-gray-700 hover:bg-orange-50/40'}`}
                   >
                     <div 
                       className="flex items-center space-x-3 flex-1"
@@ -212,7 +212,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onToggle, user }) => {
                       {dashboardSubItems.map((subItem, subIndex) => (
                         <li key={subIndex}>
                           <div 
-                            className={`flex items-center space-x-3 px-3 py-2 text-sm cursor-pointer transition-colors rounded-md hover:bg-orange-50/30 ${
+                            className={`flex items-center font-acme space-x-3 px-3 py-2 text-sm cursor-pointer transition-colors rounded-md hover:bg-orange-50/30 ${
                               pathname === subItem.link ? 'text-orange-600 bg-orange-50/30' : 'text-gray-600 hover:text-orange-600'
                             }`}
                             onClick={() => handleItemClick(subItem.link || '')}
@@ -231,13 +231,13 @@ const Sidebar: React.FC<SidebarProps> = ({ onToggle, user }) => {
             {/* Chat History Section */}
             <div className="mt-8 px-3">
               <div className="flex items-center justify-between mb-3">
-                <h3 className="text-sm font-semibold text-gray-700 uppercase tracking-wide">Chat History</h3>
+                <h3 className="text-sm font-semibold font-acme text-gray-700 uppercase tracking-wide">Chat History</h3>
                 <Plus size={16} className="text-gray-500 cursor-pointer hover:text-orange-600 transition-colors" />
               </div>
 
               <ul className="space-y-2">
                 {chatHistory.map((chat, index) => (
-                  <li key={index} className="px-3 py-2 text-sm text-gray-600 hover:bg-orange-50/40 rounded-lg cursor-pointer transition-colors">
+                  <li key={index} className="px-3 py-2 font-acme text-sm text-gray-600 hover:bg-orange-50/40 rounded-lg cursor-pointer transition-colors">
                     {chat}
                   </li>
                 ))}
@@ -252,7 +252,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onToggle, user }) => {
               onClick={() => handleItemClick('/dashboard/media')}
             >
               <Image size={18} />
-              <span className="text-sm font-medium">Media</span>
+              <span className="text-sm font-acme font-medium">Media</span>
             </div>
           </div>
 
@@ -260,7 +260,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onToggle, user }) => {
           <div className={`p-3 pr-7 flex h-20 justify-between items-center transition-opacity duration-300 ${isCollapsed ? 'opacity-0' : 'opacity-100'}`}>
             <div onClick={() => authManager.logout()} className="flex items-center space-x-3 px-3 py-2 text-gray-700 hover:bg-red-50/40 hover:text-red-600 rounded-lg cursor-pointer transition-colors">
               <LogOut size={18} />
-              <span className="text-sm font-medium">Logout</span>
+              <span className="text-sm font-medium font-acme">Logout</span>
             </div>
             <div>
               <NextImage src={userImage} alt="User" width={40} height={40} className="rounded-full" />

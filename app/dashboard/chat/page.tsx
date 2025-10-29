@@ -477,7 +477,7 @@ export default function ChatPage() {
                 <Bot className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
               </div>
               <div>
-                <h1 className="font-semibold text-gray-900 text-sm sm:text-base">Nia - Your Safe Space</h1>
+                <h1 className="font-semibold text-gray-900 text-sm sm:text-base font-acme">Nia - Your Safe Space</h1>
                 <p className="text-xs sm:text-sm text-green-600 flex items-center">
                   {isPlayingAudio ? (
                     <>
