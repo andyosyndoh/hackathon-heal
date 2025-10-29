@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"fmt"
 	"net/http"
 	"strconv"
 
@@ -17,24 +18,24 @@ func NewChatHandler(chatService *services.ChatService) *ChatHandler {
 	return &ChatHandler{chatService: chatService}
 }
 
-func (h *ChatHandler) HandleChat(c *gin.Context) {
-	var request struct {
-		Message string `json:"message" binding:"required"`
-	}
+// func (h *ChatHandler) HandleChat(c *gin.Context) {
+// 	var request struct {
+// 		Message string `json:"message" binding:"required"`
+// 	}
 
-	if err := c.ShouldBindJSON(&request); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
-	}
+// 	if err := c.ShouldBindJSON(&request); err != nil {
+// 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+// 		return
+// 	}
 
-	response, err := h.chatService.GetAIResponse(request.Message)
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		return
-	}
+// 	response, err := h.chatService.GetAIResponse(request.Message)
+// 	if err != nil {
+// 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+// 		return
+// 	}
 
-	c.JSON(http.StatusOK, gin.H{"response": response})
-}
+// 	c.JSON(http.StatusOK, gin.H{"response": response})
+// }
 
 func (h *ChatHandler) SendMessage(c *gin.Context) {
 	userID := c.GetString("user_id")
@@ -48,6 +49,7 @@ func (h *ChatHandler) SendMessage(c *gin.Context) {
 	// Create or get chat session
 	session, err := h.chatService.GetOrCreateSession(userID, req.SessionID)
 	if err != nil {
+		fmt.Println("getsession")
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
@@ -55,13 +57,29 @@ func (h *ChatHandler) SendMessage(c *gin.Context) {
 	// Save user message
 	userMessage, err := h.chatService.SaveMessage(session.ID, userID, req.Content, "user", req.MessageType)
 	if err != nil {
+		fmt.Println("saveusermessage")
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 
-	// Get AI response
-	aiResponse, err := h.chatService.GetAIResponse(req.Content)
+	// Fetch previous messages for context
+	// We fetch with a limit of 10, you can adjust this
+	previousMessages, err := h.chatService.GetChatHistory(userID, session.ID, 10, 0)
 	if err != nil {
+		fmt.Println("getchathistory")
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to fetch chat history: " + err.Error()})
+		return
+	}
+
+	var history []string
+	for _, msg := range previousMessages {
+		history = append(history, msg.Content)
+	}
+
+	// Get AI response
+	aiResponse, err := h.chatService.GetAIResponse(c.Request.Context(), req.Content, history)
+	if err != nil {
+		fmt.Println("getAIresponse")
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
@@ -69,6 +87,7 @@ func (h *ChatHandler) SendMessage(c *gin.Context) {
 	// Save AI message
 	aiMessage, err := h.chatService.SaveMessage(session.ID, userID, aiResponse, "ai", "text")
 	if err != nil {
+		fmt.Println("saveaimessage")
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}

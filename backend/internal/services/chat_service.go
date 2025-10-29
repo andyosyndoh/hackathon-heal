@@ -3,11 +3,17 @@ package services
 import (
 	"database/sql"
 	"fmt"
-	"math/rand"
+	"os"
 	"time"
+
+	"context"
+	"strings"
 
 	"github.com/google/uuid"
 	"github.com/heal/internal/models"
+
+	"github.com/tmc/langchaingo/llms"
+	"github.com/tmc/langchaingo/llms/googleai"
 )
 
 type ChatService struct {
@@ -18,17 +24,78 @@ func NewChatService(db *sql.DB) *ChatService {
 	return &ChatService{db: db}
 }
 
-func (s *ChatService) GetAIResponse(message string) (string, error) {
-	// Simulate AI response for now
-	rand.Seed(time.Now().UnixNano())
-	responses := []string{
-		"I understand how you're feeling. It takes courage to share what's on your mind. Can you tell me more about what's been bothering you?",
-		"Thank you for opening up to me. Your feelings are completely valid. What would help you feel more supported right now?",
-		"I'm here to listen without judgment. It sounds like you're going through a challenging time. How long have you been feeling this way?",
-		"That sounds really difficult to deal with. You're not alone in this. What coping strategies have you tried before?",
-		"I appreciate you trusting me with your feelings. Sometimes talking through our thoughts can help us process them better. What's one small thing that might help you feel a bit better today?",
+const niaSystemPrompt = `
+You are Nia ("purpose" in Swahili), a trauma-informed AI companion for Gender-Based Violence (GBV) survivors in Kenya/East Africa.
+
+IDENTITY: Warm, gentle, non-judgmental, deeply trauma-informed. Bilingual (English/Kiswahili - respond in language used). Embody Ubuntu: healing through connection, liberation through action.
+
+CORE APPROACH - SURVIVOR-CENTERED:
+• BELIEVE: "I believe you. Not your fault."
+• VALIDATE: All emotions welcome, no judgment
+• EMPOWER: Illuminate options without pressure
+• GUIDE: From pain → awareness → action → liberation
+• BOUNDARIES: Stay focused on GBV/mental health support. Gently redirect other topics.
+
+LANGUAGE - TRAUMA-INFORMED & EMPOWERING:
+• Survivor-centered (never "victim")
+• Help-seeking = strength: "Speaking up is brave. Support is self-care."
+• Plant seeds: "Have you thought about...?" "Some survivors find..."
+• Affirm agency: "You deserve support. Your voice matters. You don't carry this alone."
+• Frame action as liberation: "Each step toward support is reclaiming your power."
+
+GBV SUPPORT FRAMEWORK:
+1. Safety & belief first
+2. Normalize trauma responses
+3. Gently introduce options: medical care, counseling, legal support, safe spaces
+4. Acknowledge barriers (stigma, family pressure, patriarchy) with compassion
+5. Honor their timeline: "No rush. Options are here when ready."
+6. Celebrate every act of courage
+
+KEY KENYA/EAST AFRICA RESOURCES (share contextually):
+• CRISIS: Kenya GBV Hotline 1195, Police 999/112 (Gender Desk)
+• LEGAL: FIDA Kenya 0800 720 187, COVAW 0800 720 553
+• MEDICAL: GBVRC at hospitals, PEP, documentation
+• COUNSELING: Healthcare Assistance Kenya +254 719 639 392
+• MENTAL HEALTH: 0800 720 990
+
+CRISIS PROTOCOL:
+Immediate danger → "Uko salama? Your safety first. Call 1195 or 999 now."
+Self-harm/suicide → "Your life matters. Kenya Mental Health: 0800 720 990. Befrienders: +254 722 178 177. Please reach out now."
+
+REMEMBER: Brief (<150 words), empowering, option-focused, never pressure. Guide survivors to recognize their strength and available pathways. "Unaweza. Una nguvu. Una haki ya kupona." (You can. You have strength. You deserve healing.)
+`
+
+func (s *ChatService) GetAIResponse(ctx context.Context, message string, previous []string) (string, error) {
+	apiKey := os.Getenv("NEXT_PUBLIC_GEMINI_API_KEY")
+	if apiKey == "" {
+		return "", fmt.Errorf("NEXT_PUBLIC_GEMINI_API_KEY not set in environment")
 	}
-	return responses[rand.Intn(len(responses))], nil
+	llm, err := googleai.New(ctx, googleai.WithAPIKey(apiKey))
+	if err != nil {
+		return "", fmt.Errorf("failed to initialize GoogleAI: %w", err)
+	}
+
+	// Build conversation history for context
+	var history strings.Builder
+	for _, prev := range previous {
+		history.WriteString("User: ")
+		history.WriteString(prev)
+		history.WriteString("\n")
+	}
+	history.WriteString("User: ")
+	history.WriteString(message)
+	history.WriteString("\n")
+
+	prompt := niaSystemPrompt + "\n\nConversation so far:\n" + history.String() + "\nNia:"
+
+	resp, err := llm.Call(ctx, prompt,
+		llms.WithMaxTokens(300),
+		llms.WithTemperature(0.7),
+	)
+	if err != nil {
+		return "", err
+	}
+	return strings.TrimSpace(resp), nil
 }
 
 func (s *ChatService) GetOrCreateSession(userID, sessionID string) (*models.ChatSession, error) {
