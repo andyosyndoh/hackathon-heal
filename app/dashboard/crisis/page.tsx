@@ -219,7 +219,7 @@ export default function CrisisPage() {
     <div className="min-h-screen">
       {/* Header */}
       <div className=" shadow-sm border-b border-gray-200">
-        <div className="max-w-4xl mx-auto px-4 py-4">
+        <div className="mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
               <Link href="/dashboard" className="p-2 hover:bg-gray-100 rounded-lg transition-colors">

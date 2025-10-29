@@ -247,8 +247,8 @@ export default function MoodTrackerPage() {
   return (
     <div className="min-h-screen">
       {/* Header */}
-      <div className=" shadow-sm border-b border-gray-700">
-        <div className="max-w-7xl mx-auto px-4 py-4">
+      <div className="shadow-sm border-b border-gray-700">
+        <div className="mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
               <Link href="/dashboard" className="p-2 hover:bg-gray-800 rounded-lg transition-colors">
@@ -375,14 +375,14 @@ export default function MoodTrackerPage() {
                         onClick={() => setSelectedMood(mood)}
                         className={`p-4 rounded-xl border-2 transition-all duration-200 transform hover:scale-105 ${
                           selectedMood === mood
-                            ? 'border-blue-500 bg-blue-50 shadow-lg'
+                            ? 'border-blue-500 bg-white/30 shadow-lg'
                             : 'border-gray-700 hover:border-gray-600'
                         }`}
                       >
                         <div className="text-center">
                           <div className="text-3xl mb-2">{moodEmojis[mood as keyof typeof moodEmojis].emoji}</div>
                           <div className="text-xs font-medium text-white">{mood}</div>
-                          <div className="text-xs text-gray-300">{moodEmojis[mood as keyof typeof moodEmojis].label}</div>
+                          <div className="text-xs text-white">{moodEmojis[mood as keyof typeof moodEmojis].label}</div>
                         </div>
                       </button>
                     );
