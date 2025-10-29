@@ -1,8 +1,24 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, createContext, useContext, useEffect } from 'react';
 import { useAuth } from '@/hooks/use-auth';
+import { usePathname } from 'next/navigation';
 import Layout from '@/components/layout/Layout';
+
+interface SidebarContextType {
+  sidebarCollapsed: boolean;
+  setSidebarCollapsed: (collapsed: boolean) => void;
+}
+
+const SidebarContext = createContext<SidebarContextType | undefined>(undefined);
+
+export const useSidebar = () => {
+  const context = useContext(SidebarContext);
+  if (!context) {
+    throw new Error('useSidebar must be used within SidebarProvider');
+  }
+  return context;
+};
 
 export default function DashboardLayout({
   children,
@@ -10,7 +26,17 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   const { user } = useAuth();
+  const pathname = usePathname();
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+
+  // Auto-collapse sidebar for video chat pages
+  useEffect(() => {
+    // Only auto-manage sidebar for chat page, let other pages control their own
+    if (pathname === '/dashboard/chat') {
+      // Don't auto-collapse, let the page handle it
+      return;
+    }
+  }, [pathname]);
 
   if (!user) {
     return (
@@ -21,8 +47,10 @@ export default function DashboardLayout({
   }
 
   return (
-    <Layout user={user} onToggle={setSidebarCollapsed} sidebarCollapsed={sidebarCollapsed}>
-      {children}
-    </Layout>
+    <SidebarContext.Provider value={{ sidebarCollapsed, setSidebarCollapsed }}>
+      <Layout user={user} onToggle={setSidebarCollapsed} sidebarCollapsed={sidebarCollapsed}>
+        {children}
+      </Layout>
+    </SidebarContext.Provider>
   );
 }

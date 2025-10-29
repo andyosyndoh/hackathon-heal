@@ -61,8 +61,25 @@ const Sidebar: React.FC<SidebarProps> = ({ onToggle, user }) => {
 
   // Handle clicks outside sidebar
   useEffect(() => {
+    // Disable auto-collapse on chat page to prevent modal interference
+    if (pathname === '/dashboard/chat') {
+      return;
+    }
+
     const handleClickOutside = (event: MouseEvent) => {
-      if (sidebarRef.current && !sidebarRef.current.contains(event.target as Node)) {
+      const target = event.target as HTMLElement;
+      
+      // Don't collapse sidebar if clicking on navigation elements, back buttons, or modals
+      if (target.closest('a[href]') || 
+          target.closest('button[aria-label*="back"]') || 
+          target.closest('[data-navigation]') ||
+          target.closest('.fixed.inset-0') || // Modal overlay
+          target.closest('[role="dialog"]') || // Dialog elements
+          target.closest('.heal-card')) { // Modal content
+        return;
+      }
+      
+      if (sidebarRef.current && !sidebarRef.current.contains(target)) {
         setIsCollapsed(true);
         onToggle(true);
       }
@@ -72,7 +89,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onToggle, user }) => {
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, [onToggle]);
+  }, [onToggle, pathname]);
 
   const toggleSidebar = () => {
     const newCollapsed = !isCollapsed;
