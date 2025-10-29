@@ -23,8 +23,6 @@ export const metadata: Metadata = {
   description: 'Professional mental health support with AI-powered assistance, crisis management, and personalized care plans.',
   keywords: 'mental health, therapy, counseling, crisis support, AI therapy, emotional support',
   authors: [{ name: 'Heal Team' }],
-  viewport: 'width=device-width, initial-scale=1',
-  themeColor: '#3B82F6',
   robots: 'index, follow',
   openGraph: {
     title: 'Heal - Mental Health Support Platform',
@@ -33,6 +31,12 @@ export const metadata: Metadata = {
     locale: 'en_US',
   },
   metadataBase: new URL('http://localhost:3000'), // or your production URL
+  themeColor: '#3B82F6',
+};
+
+export const viewport = {
+  width: 'device-width',
+  initialScale: 1,
 };
 
 export default function RootLayout({
@@ -49,6 +53,7 @@ export default function RootLayout({
         <meta name="apple-mobile-web-app-title" content="Heal" />
         <meta name="format-detection" content="telephone=no" />
         <meta name="mobile-web-app-capable" content="yes" />
+        <link rel='icon' type="image/png" href="/images/heal-logo.png" />
         <link rel="apple-touch-icon" href="/icon-192x192.png" />
         <link rel="manifest" href="/manifest.json" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />

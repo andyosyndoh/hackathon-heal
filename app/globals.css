@@ -144,6 +144,7 @@
   
   /* Card Components */
   .heal-card {
+    @apply bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl shadow-lg;
     @apply bg-white/90 backdrop-blur-sm border border-gray-200/50 rounded-2xl shadow-lg;
   }
   
@@ -164,6 +165,7 @@
   
   /* Button Components */
   .heal-button {
+    @apply bg-gradient-to-r from-[#04aec9] to-[#04aec9] hover:from-blue-700 hover:to-blue-800 text-white font-medium py-2 px-4 sm:py-3 sm:px-6 rounded-lg transition-all duration-200 transform hover:scale-105 active:scale-95 shadow-lg hover:shadow-xl text-sm sm:text-base;
     @apply border border-current font-medium transition-all duration-200 hover:scale-105 active:scale-95;
     background-color: transparent;
     color: var(--heal-medium-teal);

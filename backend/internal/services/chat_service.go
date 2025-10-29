@@ -1,13 +1,17 @@
 package services
 
 import (
+	"context"
 	"database/sql"
 	"fmt"
-	"math/rand"
+	"log"
+	"os"
 	"time"
 
+	"github.com/google/generative-ai-go/genai"
 	"github.com/google/uuid"
 	"github.com/heal/internal/models"
+	"google.golang.org/api/option"
 )
 
 type ChatService struct {
@@ -19,16 +23,39 @@ func NewChatService(db *sql.DB) *ChatService {
 }
 
 func (s *ChatService) GetAIResponse(message string) (string, error) {
-	// Simulate AI response for now
-	rand.Seed(time.Now().UnixNano())
-	responses := []string{
-		"I understand how you're feeling. It takes courage to share what's on your mind. Can you tell me more about what's been bothering you?",
-		"Thank you for opening up to me. Your feelings are completely valid. What would help you feel more supported right now?",
-		"I'm here to listen without judgment. It sounds like you're going through a challenging time. How long have you been feeling this way?",
-		"That sounds really difficult to deal with. You're not alone in this. What coping strategies have you tried before?",
-		"I appreciate you trusting me with your feelings. Sometimes talking through our thoughts can help us process them better. What's one small thing that might help you feel a bit better today?",
+	apiKey := os.Getenv("NEXT_PUBLIC_GEMINI_API_KEY")
+	if apiKey == "" {
+		return "Gemini API key not configured", nil
 	}
-	return responses[rand.Intn(len(responses))], nil
+
+	ctx := context.Background()
+	client, err := genai.NewClient(ctx, option.WithAPIKey(apiKey))
+	if err != nil {
+		log.Fatal(err)
+		return "", err
+	}
+	defer client.Close()
+
+	model := client.GenerativeModel("gemini-1.5-flash")
+	// Add context for the AI
+	contexto := "Your name is Nia,You are a compassionate AI mental health companion. Provide supportive, empathetic responses while maintaining professional boundaries. If the user expresses thoughts of self-harm, gently guide them to seek professional help."
+	resp, err := model.GenerateContent(ctx, genai.Text(contexto), genai.Text(message))
+	if err != nil {
+		return "", err
+	}
+
+	var responseText string
+	for _, cand := range resp.Candidates {
+		if cand.Content != nil {
+			for _, part := range cand.Content.Parts {
+				if txt, ok := part.(genai.Text); ok {
+					responseText += string(txt)
+				}
+			}
+		}
+	}
+
+	return responseText, nil
 }
 
 func (s *ChatService) GetOrCreateSession(userID, sessionID string) (*models.ChatSession, error) {
