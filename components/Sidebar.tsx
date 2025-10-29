@@ -133,6 +133,26 @@ const Sidebar: React.FC<SidebarProps> = ({ onToggle, user }) => {
         className={`${isCollapsed ? 'w-0' : 'w-64'
           } h-screen relative flex flex-col shadow-2xl transition-all duration-300 ease-in-out overflow-hidden`}
       >
+              <NextImage src="/images/decoration.png" alt="Decoration" 
+                      className="absolute z-20 top-1/5 left-1/4 w-auto h-auto opacity-70 -rotate-12"
+                      width={60}
+                      height={60}
+                      priority />
+              <NextImage src="/images/decoration.png" alt="Decoration" 
+                      className="absolute z-20 top-1/3 right-1/5 w-auto h-auto opacity-60 rotate-25"
+                      width={70}
+                      height={70}
+                      priority />
+              <NextImage src="/images/decoration.png" alt="Decoration" 
+                      className="absolute z-20 bottom-1/3 left-1/2 w-auto h-auto opacity-50 -rotate-15"
+                      width={90}
+                      height={90}
+                      priority />
+              <NextImage src="/images/decoration.png" alt="Decoration" 
+                      className="absolute z-20 bottom-1/4 right-1/3 w-auto h-auto opacity-70 rotate-15"
+                      width={60}
+                      height={60}
+                      priority />
         {/* Main sidebar content with gradient background */}
         <div className="absolute w-[13rem] h-full inset-0 bg-[#FEF0D3]"></div>
 
