@@ -19,7 +19,8 @@ import {
   AlertTriangle,
   Trophy,
   Image,
-  Menu
+  Menu,
+  PanelLeftClose
 } from 'lucide-react';
 import NextImage from 'next/image';
 import Link from 'next/link';
@@ -178,7 +179,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onToggle, user }) => {
               onClick={toggleSidebar}
               className="p-1 hover:bg-orange-100/50 rounded transition-colors"
             >
-              <Menu size={18} className="text-gray-600" />
+              <PanelLeftClose size={18} className="text-gray-600" />
             </button>
           </div>
 
