@@ -86,10 +86,10 @@ export default function MoodTrackerPage() {
 
   // Redirect if not authenticated
   useEffect(() => {
-    if (!authLoading && !isAuthenticated) {
+    if (!authLoading && !isAuthenticated && !user) {
       router.push('/auth/signin');
     }
-  }, [isAuthenticated, authLoading, router]);
+  }, [isAuthenticated, authLoading, user, router]);
 
   // Load mood data
   useEffect(() => {
@@ -229,7 +229,7 @@ export default function MoodTrackerPage() {
     return 'bg-green-50';
   };
 
-  if (authLoading || isLoading) {
+  if ((authLoading || isLoading) && !user) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="flex items-center space-x-2">

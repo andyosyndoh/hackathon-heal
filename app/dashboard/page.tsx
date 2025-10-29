@@ -29,10 +29,10 @@ export default function DashboardPage() {
 
   // Redirect if not authenticated
   useEffect(() => {
-    if (!authLoading && !isAuthenticated) {
+    if (!authLoading && !isAuthenticated && !user) {
       router.push('/auth/signin');
     }
-  }, [isAuthenticated, authLoading, router]);
+  }, [isAuthenticated, authLoading, user, router]);
 
   // Load user stats
   useEffect(() => {
@@ -89,7 +89,7 @@ export default function DashboardPage() {
     }
   ];
 
-  if (authLoading || isLoading) {
+  if ((authLoading || isLoading) && !user) {
     return (
       <div className="h-screen bg-gray-50 bg-cover bg-center bg-no-repeat flex items-center justify-center" style={{ backgroundImage: "url('/images/forestbg.jpg')" }}>
         <div className="flex items-center space-x-2">
