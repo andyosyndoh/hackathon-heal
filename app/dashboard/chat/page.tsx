@@ -464,9 +464,9 @@ export default function ChatPage() {
 
   return (
     <div className="h-screen flex flex-col overflow-hidden">
-      {showChoiceModal && <ChoiceModal onSelect={handleChoice} />}
+      {/* {showChoiceModal && <ChoiceModal onSelect={handleChoice} />} */}
       {/* Header - Fixed */}
-      <div className="contaainer shadow-sm border-b border-gray-700 px-3 sm:px-4 py-3 flex-shrink-0">
+      <div className="container shadow-sm border-b border-gray-700 px-3 sm:px-4 py-3 flex-shrink-0">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-2 sm:space-x-4">
             <Link href="/dashboard" className="p-2 hover:bg-gray-800 rounded-lg transition-colors">

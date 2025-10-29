@@ -51,7 +51,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onToggle, user }) => {
 
   const dashboardSubItems = [
     { icon: Shield, label: 'Safe Space', link: '/dashboard/chat' },
-    { icon: MessageCircle, label: 'AI Chat', link: '/dashboard/chat' },
+    { icon: MessageCircle, label: 'Anonymous', link: '#' },
     { icon: Trophy, label: 'Champions', link: '#' }
   ];
 
