@@ -22,9 +22,9 @@ import {
   Menu
 } from 'lucide-react';
 import NextImage from 'next/image';
+import Link from 'next/link';
+import { usePathname, useRouter } from 'next/navigation';
 import userImage from '@/public/images/heal-logo.png';
-import { link } from 'fs';
-
 import { authManager } from '@/lib/auth';
 
 interface SidebarProps {
@@ -35,20 +35,22 @@ interface SidebarProps {
 const Sidebar: React.FC<SidebarProps> = ({ onToggle, user }) => {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const sidebarRef = useRef<HTMLDivElement>(null);
+  const pathname = usePathname();
+  const router = useRouter();
 
   const navigationItems = [
-    { icon: Home, label: 'Dashboard', active: true, hasSubmenu: true, link: '/dashboard' },
-    { icon: Heart, label: 'Mood Tracker', link: '/mood' },
-    { icon: AlertTriangle, label: 'Crisis', link: '/crisis' },
-    { icon: BookOpen, label: 'Resources' },
-    { icon: Bell, label: 'Notifications' },
-    { icon: Settings, label: 'Settings' }
+    { icon: Home, label: 'Dashboard', hasSubmenu: true, link: '/dashboard' },
+    { icon: Heart, label: 'Mood Tracker', link: '/dashboard/mood' },
+    { icon: AlertTriangle, label: 'Crisis', link: '/dashboard/crisis' },
+    { icon: BookOpen, label: 'Resources', link: '/dashboard/resources' },
+    { icon: Bell, label: 'Notifications', link: '/dashboard/notifications' },
+    { icon: Settings, label: 'Settings', link: '/dashboard/settings' }
   ];
 
   const dashboardSubItems = [
-    { icon: Shield, label: 'Safe Space' },
-    { icon: MessageCircle, label: 'Anonymous Chat' },
-    { icon: Trophy, label: 'Champions' }
+    { icon: Shield, label: 'Safe Space', link: '/dashboard/chat' },
+    { icon: MessageCircle, label: 'AI Chat', link: '/dashboard/chat' },
+    { icon: Trophy, label: 'Champions', link: '/dashboard/champions' }
   ];
 
   const chatHistory = [
@@ -77,9 +79,13 @@ const Sidebar: React.FC<SidebarProps> = ({ onToggle, user }) => {
     onToggle(newCollapsed);
   };
 
-  const handleItemClick = (link: string, active: boolean) => {
-    window.location.href = link;
-    active = true;
+  const isActive = (link: string) => {
+    if (link === '/dashboard') return pathname === '/dashboard';
+    return pathname.startsWith(link);
+  };
+
+  const handleItemClick = (link: string) => {
+    if (link) router.push(link);
   };
 
   return (
@@ -135,8 +141,8 @@ const Sidebar: React.FC<SidebarProps> = ({ onToggle, user }) => {
               {navigationItems.map((item, index) => (
                 <li key={index}>
                   <div 
-                  className={`flex items-center justify-between px-3 py-2 rounded-lg cursor-pointer transition-colors ${item.active ? 'bg-gradient-to-r from-[#e2c68e] text-orange-800 shadow-sm' : 'text-gray-700 hover:bg-orange-50/40'}`}
-                  onClick={() => handleItemClick(item?.link || '', item?.active || false)}
+                  className={`flex items-center justify-between px-3 py-2 rounded-lg cursor-pointer transition-colors ${isActive(item.link || '') ? 'bg-gradient-to-r from-[#e2c68e] text-orange-800 shadow-sm' : 'text-gray-700 hover:bg-orange-50/40'}`}
+                  onClick={() => handleItemClick(item.link || '')}
                   >
                     <div className="flex items-center space-x-3">
                       <item.icon size={18} />
@@ -146,11 +152,16 @@ const Sidebar: React.FC<SidebarProps> = ({ onToggle, user }) => {
                   </div>
 
                   {/* Dashboard Submenu */}
-                  {item.active && item.hasSubmenu && (
+                  {isActive('/dashboard') && item.hasSubmenu && (
                     <ul className="ml-6 mt-2 space-y-1">
                       {dashboardSubItems.map((subItem, subIndex) => (
                         <li key={subIndex}>
-                          <div className="flex items-center space-x-3 px-3 py-2 text-sm text-gray-600 hover:text-orange-600 cursor-pointer transition-colors rounded-md hover:bg-orange-50/30">
+                          <div 
+                            className={`flex items-center space-x-3 px-3 py-2 text-sm cursor-pointer transition-colors rounded-md hover:bg-orange-50/30 ${
+                              isActive(subItem.link || '') ? 'text-orange-600 bg-orange-50/30' : 'text-gray-600 hover:text-orange-600'
+                            }`}
+                            onClick={() => handleItemClick(subItem.link || '')}
+                          >
                             <subItem.icon size={16} />
                             <span>{subItem.label}</span>
                           </div>
@@ -181,7 +192,10 @@ const Sidebar: React.FC<SidebarProps> = ({ onToggle, user }) => {
 
           {/* Media Section */}
           <div className={`px-3 py-4 transition-opacity duration-300 ${isCollapsed ? 'opacity-0' : 'opacity-100'}`}>
-            <div className="flex items-center space-x-3 px-3 py-2 text-gray-700 hover:bg-orange-50/40 rounded-lg cursor-pointer transition-colors">
+            <div 
+              className="flex items-center space-x-3 px-3 py-2 text-gray-700 hover:bg-orange-50/40 rounded-lg cursor-pointer transition-colors"
+              onClick={() => handleItemClick('/dashboard/media')}
+            >
               <Image size={18} />
               <span className="text-sm font-medium">Media</span>
             </div>

@@ -18,7 +18,6 @@ import {
 import { useAuth } from '@/hooks/use-auth';
 import { apiClient } from '@/lib/api';
 import { MoodWidget } from '@/components/MoodWidget';
-import Layout from '@/components/layout/Layout';
 import Link from 'next/link';
 
 export default function DashboardPage() {
@@ -26,7 +25,7 @@ export default function DashboardPage() {
   const { user, isAuthenticated, isLoading: authLoading } = useAuth();
   const [stats, setStats] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+
 
   // Redirect if not authenticated
   useEffect(() => {
@@ -106,8 +105,7 @@ export default function DashboardPage() {
   }
 
   return (
-    <Layout user={user} onToggle={setSidebarCollapsed} sidebarCollapsed={sidebarCollapsed}>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
 
         {/* Welcome Section */}
         <div className="mb-6 sm:mb-8">
@@ -297,6 +295,5 @@ export default function DashboardPage() {
           </div>
         </div>
       </div>
-    </Layout>
   );
 }

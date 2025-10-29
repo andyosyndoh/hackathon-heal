@@ -215,7 +215,7 @@ export default function CrisisPage() {
   ];
 
   return (
-    <Layout onToggle={setSidebarCollapsed} sidebarCollapsed={sidebarCollapsed} user={user as UserType}>
+    
     <div className="min-h-screen">
       {/* Header */}
       <div className=" shadow-sm border-b border-gray-200">
@@ -468,6 +468,5 @@ export default function CrisisPage() {
         </div>
       </div>
     </div>
-    </Layout>
   );
 }
