@@ -17,24 +17,24 @@ func NewChatHandler(chatService *services.ChatService) *ChatHandler {
 	return &ChatHandler{chatService: chatService}
 }
 
-func (h *ChatHandler) HandleChat(c *gin.Context) {
-	var request struct {
-		Message string `json:"message" binding:"required"`
-	}
+// func (h *ChatHandler) HandleChat(c *gin.Context) {
+// 	var request struct {
+// 		Message string `json:"message" binding:"required"`
+// 	}
 
-	if err := c.ShouldBindJSON(&request); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
-	}
+// 	if err := c.ShouldBindJSON(&request); err != nil {
+// 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+// 		return
+// 	}
 
-	response, err := h.chatService.GetAIResponse(request.Message)
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		return
-	}
+// 	response, err := h.chatService.GetAIResponse(request.Message)
+// 	if err != nil {
+// 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+// 		return
+// 	}
 
-	c.JSON(http.StatusOK, gin.H{"response": response})
-}
+// 	c.JSON(http.StatusOK, gin.H{"response": response})
+// }
 
 func (h *ChatHandler) SendMessage(c *gin.Context) {
 	userID := c.GetString("user_id")
@@ -59,8 +59,21 @@ func (h *ChatHandler) SendMessage(c *gin.Context) {
 		return
 	}
 
+	// Fetch previous messages for context
+	// We fetch with a limit of 10, you can adjust this
+	previousMessages, err := h.chatService.GetChatHistory(userID, session.ID, 10, 0)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to fetch chat history: " + err.Error()})
+		return
+	}
+
+	var history []string
+	for _, msg := range previousMessages {
+		history = append(history, msg.Content)
+	}
+
 	// Get AI response
-	aiResponse, err := h.chatService.GetAIResponse(req.Content)
+	aiResponse, err := h.chatService.GetAIResponse(c.Request.Context(), req.Content, history)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
