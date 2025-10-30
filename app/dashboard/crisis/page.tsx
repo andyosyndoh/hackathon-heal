@@ -219,7 +219,7 @@ export default function CrisisPage() {
     <div className="min-h-screen">
       {/* Header */}
       <div className=" shadow-sm border-b border-gray-200">
-        <div className="max-w-4xl mx-auto px-4 py-4">
+        <div className="mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
               <Link href="/dashboard" className="p-2 hover:bg-gray-100 rounded-lg transition-colors">
@@ -364,7 +364,7 @@ export default function CrisisPage() {
 
         {/* Quick Calming Techniques */}
         <div className="mb-8">
-          <h2 className="text-2xl font-bold text-gray-900 mb-6">Quick Calming Techniques</h2>
+          <h2 className="text-2xl font-bold text-gray-900 mb-6 font-acme">Quick Calming Techniques</h2>
           <div className="heal-card p-6">
             <p className="text-gray-900 mb-6">
               While you're waiting for help or if you need to calm down right now, try these techniques:
@@ -386,7 +386,7 @@ export default function CrisisPage() {
 
         {/* Local Services */}
         <div className="mb-8" id="local-services">
-          <h2 className="text-2xl font-bold text-gray-900 mb-6">Local Emergency Services</h2>
+          <h2 className="text-2xl font-bold text-gray-900 mb-6 font-acme">Local Emergency Services</h2>
           <div className="heal-card p-6">
             {userLocation ? (
               <div>
@@ -455,7 +455,7 @@ export default function CrisisPage() {
           <div className="flex items-start space-x-3">
             <Shield className="h-6 w-6 text-green-600 mt-1 flex-shrink-0" />
             <div>
-              <h3 className="font-semibold text-gray-900 mb-2">Your Safety & Privacy</h3>
+              <h3 className="font-semibold text-gray-900 mb-2 font-acme">Your Safety & Privacy</h3>
               <div className="space-y-2 text-sm text-gray-900">
                 <p>• All crisis conversations are encrypted and confidential</p>
                 <p>• Emergency services may be contacted if there's immediate danger</p>

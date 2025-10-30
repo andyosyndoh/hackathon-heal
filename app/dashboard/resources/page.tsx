@@ -427,7 +427,7 @@ export default function ResourcesPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen heal-bg-primary">
+      <div className="min-h-screen bg-transparent">
         <div className="heal-card shadow-sm border-b" style={{borderColor: 'var(--heal-beige)'}}>
           <div className="max-w-7xl mx-auto px-4 py-4">
             <div className="flex items-center space-x-4">
@@ -455,10 +455,10 @@ export default function ResourcesPage() {
   }
 
   return (
-    <div className="min-h-screen heal-bg-primary">
+    <div className="min-h-screen bg-transparent">
       {/* Header */}
-      <div className="heal-card shadow-sm border-b" style={{borderColor: 'var(--heal-beige)'}}>
-        <div className="max-w-7xl mx-auto px-4 py-4">
+      <div className="shadow-sm border-b border-gray-200">
+        <div className="mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
               <Link href="/dashboard" className="p-2 hover:bg-gray-100 rounded-lg transition-colors">
@@ -481,7 +481,7 @@ export default function ResourcesPage() {
         {error && (
           <div className="mb-6 bg-yellow-50 border border-yellow-200 rounded-lg p-4">
             <div className="flex items-center space-x-2">
-              <AlertCircle className="h-5 w-5 text-yellow-600" />
+              <AlertCircle className="h-5 w-5 text-gray-600" />
               <p className="text-yellow-800">{error}</p>
               <button 
                 onClick={fetchResources}
@@ -556,17 +556,17 @@ export default function ResourcesPage() {
                       </div>
                       <div className="flex items-center space-x-1">
                         <Star className="h-4 w-4 text-yellow-500 fill-current" />
-                        <span className="text-sm text-gray-600">{resource.rating}</span>
+                        <span className="text-sm text-gray-700">{resource.rating}</span>
                       </div>
                     </div>
                     
                     <h3 className="font-semibold heal-text-primary mb-2 font-acme">{resource.title}</h3>
-                    <p className="heal-text-secondary text-sm mb-4 line-clamp-2">{resource.description}</p>
+                    <p className="text-gray-700 text-sm mb-4 line-clamp-2 font-medium">{resource.description}</p>
                     
-                    <div className="flex items-center justify-between text-sm mb-4">
+                    <div className="flex items-center justify-between mb-4">
                       <div className="flex items-center space-x-2 heal-text-secondary">
-                        <Clock className="h-4 w-4" />
-                        <span>{resource.duration_minutes} min</span>
+                        <Clock className="h-4 w-4 text-gray-700" />
+                        <span className="text-gray-700 text-sm line-clamp-2 font-medium">{resource.duration_minutes} min</span>
                       </div>
                       <div className="flex items-center space-x-2">
                         <span className={`px-2 py-1 rounded-full text-xs font-medium ${getDifficultyColor(resource.difficulty)}`}>
@@ -667,7 +667,7 @@ export default function ResourcesPage() {
                           </div>
                         </div>
                         
-                        <p className="heal-text-secondary mb-4">{resource.description}</p>
+                        <p className="text-gray-700 mb-4 font-medium">{resource.description}</p>
                         
                         <div className="flex items-center space-x-6 text-sm heal-text-secondary mb-4">
                           <div className="flex items-center space-x-1">

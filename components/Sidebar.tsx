@@ -19,7 +19,9 @@ import {
   AlertTriangle,
   Trophy,
   Image,
-  Menu
+  Menu,
+  PanelLeftClose,
+  ArrowLeft
 } from 'lucide-react';
 import NextImage from 'next/image';
 import Link from 'next/link';
@@ -34,6 +36,7 @@ interface SidebarProps {
 
 const Sidebar: React.FC<SidebarProps> = ({ onToggle, user }) => {
   const [isCollapsed, setIsCollapsed] = useState(false);
+  const [isSubmenuOpen, setIsSubmenuOpen] = useState(false);
   const sidebarRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
   const router = useRouter();
@@ -49,8 +52,8 @@ const Sidebar: React.FC<SidebarProps> = ({ onToggle, user }) => {
 
   const dashboardSubItems = [
     { icon: Shield, label: 'Safe Space', link: '/dashboard/chat' },
-    { icon: MessageCircle, label: 'AI Chat', link: '/dashboard/chat' },
-    { icon: Trophy, label: 'Champions', link: '/dashboard/champions' }
+    { icon: MessageCircle, label: 'Anonymous', link: '#' },
+    { icon: Trophy, label: 'Champions', link: '#' }
   ];
 
   const chatHistory = [
@@ -60,8 +63,25 @@ const Sidebar: React.FC<SidebarProps> = ({ onToggle, user }) => {
 
   // Handle clicks outside sidebar
   useEffect(() => {
+    // Disable auto-collapse on chat page to prevent modal interference
+    if (pathname === '/dashboard/chat') {
+      return;
+    }
+
     const handleClickOutside = (event: MouseEvent) => {
-      if (sidebarRef.current && !sidebarRef.current.contains(event.target as Node)) {
+      const target = event.target as HTMLElement;
+      
+      // Don't collapse sidebar if clicking on navigation elements, back buttons, or modals
+      if (target.closest('a[href]') || 
+          target.closest('button[aria-label*="back"]') || 
+          target.closest('[data-navigation]') ||
+          target.closest('.fixed.inset-0') || // Modal overlay
+          target.closest('[role="dialog"]') || // Dialog elements
+          target.closest('.heal-card')) { // Modal content
+        return;
+      }
+      
+      if (sidebarRef.current && !sidebarRef.current.contains(target)) {
         setIsCollapsed(true);
         onToggle(true);
       }
@@ -71,7 +91,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onToggle, user }) => {
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, [onToggle]);
+  }, [onToggle, pathname]);
 
   const toggleSidebar = () => {
     const newCollapsed = !isCollapsed;
@@ -86,6 +106,15 @@ const Sidebar: React.FC<SidebarProps> = ({ onToggle, user }) => {
 
   const handleItemClick = (link: string) => {
     if (link) router.push(link);
+  };
+
+  const toggleSubmenu = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setIsSubmenuOpen(!isSubmenuOpen);
+  };
+
+  const handleDashboardClick = () => {
+    handleItemClick('/dashboard');
   };
 
   return (
@@ -106,6 +135,26 @@ const Sidebar: React.FC<SidebarProps> = ({ onToggle, user }) => {
         className={`${isCollapsed ? 'w-0' : 'w-64'
           } h-screen relative flex flex-col shadow-2xl transition-all duration-300 ease-in-out overflow-hidden`}
       >
+              <NextImage src="/images/decoration.png" alt="Decoration" 
+                      className="absolute z-20 top-1/5 left-1/3 w-auto h-auto opacity-70 -rotate-12"
+                      width={40}
+                      height={40}
+                      priority />
+              <NextImage src="/images/decoration.png" alt="Decoration" 
+                      className="absolute z-20 top-1/3 right-1/5 w-auto h-auto opacity-60 rotate-25"
+                      width={70}
+                      height={70}
+                      priority />
+              <NextImage src="/images/decoration.png" alt="Decoration" 
+                      className="absolute z-20 bottom-1/3 left-1/2 w-auto h-auto opacity-50 -rotate-15"
+                      width={90}
+                      height={90}
+                      priority />
+              <NextImage src="/images/decoration.png" alt="Decoration" 
+                      className="absolute z-20 bottom-1/4 right-1/3 w-auto h-auto opacity-70 rotate-15"
+                      width={60}
+                      height={60}
+                      priority />
         {/* Main sidebar content with gradient background */}
         <div className="absolute w-[13rem] h-full inset-0 bg-[#FEF0D3]"></div>
 
@@ -123,17 +172,26 @@ const Sidebar: React.FC<SidebarProps> = ({ onToggle, user }) => {
                 <span className="text-white font-semibold text-sm">{user.charAt(0).toUpperCase()}</span>
               </div>
               <div>
-                <p className="text-xs text-gray-600 font-medium">WELCOME TO HEAL</p>
-                <p className="text-sm font-semibold text-gray-800">{user}</p>
+                <p className="text-xs text-gray-600 font-medium font-acme">WELCOME TO HEAL</p>
+                <p className="text-sm font-semibold text-gray-800 font-acme">{user}</p>
               </div>
             </div>
             <button
               onClick={toggleSidebar}
               className="p-1 hover:bg-orange-100/50 rounded transition-colors"
             >
-              <Menu size={18} className="text-gray-600" />
+              <PanelLeftClose size={18} className="text-gray-600" />
             </button>
           </div>
+            <div>
+              <Link
+            href="/"
+            className="flex items-center font-acme justify-left px-3 py-2 rounded-lg cursor-pointer transition-colors text-gray-700 hover:bg-orange-50/40 mt-2 mb-4"
+            // onClick={() => setIsMobileMenuOpen(false)}
+          >
+            <ArrowLeft className="w-5 h-5 mr-3" /> <span className='text-sm font-medium'>Back Home</span>
+          </Link>
+            </div>
 
           {/* Navigation Menu */}
           <nav className={`flex-1 py-4 transition-opacity duration-300 ${isCollapsed ? 'opacity-0' : 'opacity-100'}`}>
@@ -141,24 +199,32 @@ const Sidebar: React.FC<SidebarProps> = ({ onToggle, user }) => {
               {navigationItems.map((item, index) => (
                 <li key={index}>
                   <div 
-                  className={`flex items-center justify-between px-3 py-2 rounded-lg cursor-pointer transition-colors ${isActive(item.link || '') ? 'bg-gradient-to-r from-[#e2c68e] text-orange-800 shadow-sm' : 'text-gray-700 hover:bg-orange-50/40'}`}
-                  onClick={() => handleItemClick(item.link || '')}
+                  className={`flex items-center font-acme justify-between px-3 py-2 rounded-lg cursor-pointer transition-colors ${pathname === item.link ? 'bg-gradient-to-r from-[#e2c68e] text-orange-800 shadow-sm' : 'text-gray-700 hover:bg-orange-50/40'}`}
                   >
-                    <div className="flex items-center space-x-3">
+                    <div 
+                      className="flex items-center space-x-3 flex-1"
+                      onClick={() => handleItemClick(item.link || '')}
+                    >
                       <item.icon size={18} />
                       <span className="text-sm font-medium">{item.label}</span>
                     </div>
-                    {item.hasSubmenu && <ChevronDown size={16} className="text-gray-500" />}
+                    {item.hasSubmenu && (
+                      <ChevronDown 
+                        size={16} 
+                        className={`text-gray-500 transition-transform ${isSubmenuOpen ? 'rotate-180' : ''}`}
+                        onClick={toggleSubmenu}
+                      />
+                    )}
                   </div>
 
                   {/* Dashboard Submenu */}
-                  {isActive('/dashboard') && item.hasSubmenu && (
+                  {isSubmenuOpen && item.hasSubmenu && (
                     <ul className="ml-6 mt-2 space-y-1">
                       {dashboardSubItems.map((subItem, subIndex) => (
                         <li key={subIndex}>
                           <div 
-                            className={`flex items-center space-x-3 px-3 py-2 text-sm cursor-pointer transition-colors rounded-md hover:bg-orange-50/30 ${
-                              isActive(subItem.link || '') ? 'text-orange-600 bg-orange-50/30' : 'text-gray-600 hover:text-orange-600'
+                            className={`flex items-center font-acme space-x-3 px-3 py-2 text-sm cursor-pointer transition-colors rounded-md hover:bg-orange-50/30 ${
+                              pathname === subItem.link ? 'text-orange-600 bg-orange-50/30' : 'text-gray-600 hover:text-orange-600'
                             }`}
                             onClick={() => handleItemClick(subItem.link || '')}
                           >
@@ -176,13 +242,13 @@ const Sidebar: React.FC<SidebarProps> = ({ onToggle, user }) => {
             {/* Chat History Section */}
             <div className="mt-8 px-3">
               <div className="flex items-center justify-between mb-3">
-                <h3 className="text-sm font-semibold text-gray-700 uppercase tracking-wide">Chat History</h3>
+                <h3 className="text-sm font-semibold font-acme text-gray-700 uppercase tracking-wide">Chat History</h3>
                 <Plus size={16} className="text-gray-500 cursor-pointer hover:text-orange-600 transition-colors" />
               </div>
 
               <ul className="space-y-2">
                 {chatHistory.map((chat, index) => (
-                  <li key={index} className="px-3 py-2 text-sm text-gray-600 hover:bg-orange-50/40 rounded-lg cursor-pointer transition-colors">
+                  <li key={index} className="px-3 py-2 font-acme text-sm text-gray-600 hover:bg-orange-50/40 rounded-lg cursor-pointer transition-colors">
                     {chat}
                   </li>
                 ))}
@@ -197,15 +263,15 @@ const Sidebar: React.FC<SidebarProps> = ({ onToggle, user }) => {
               onClick={() => handleItemClick('/dashboard/media')}
             >
               <Image size={18} />
-              <span className="text-sm font-medium">Media</span>
+              <span className="text-sm font-acme font-medium">Media</span>
             </div>
           </div>
 
           {/* Logout Section */}
           <div className={`p-3 pr-7 flex h-20 justify-between items-center transition-opacity duration-300 ${isCollapsed ? 'opacity-0' : 'opacity-100'}`}>
-            <div onClick={() => authManager.logout()} className="flex items-center space-x-3 px-3 py-2 text-gray-700 hover:bg-red-50/40 hover:text-red-600 rounded-lg cursor-pointer transition-colors">
+            <div onClick={() => { authManager.logout(); router.push('/'); }} className="flex items-center space-x-3 px-3 py-2 text-gray-700 hover:bg-red-50/40 hover:text-red-600 rounded-lg cursor-pointer transition-colors">
               <LogOut size={18} />
-              <span className="text-sm font-medium">Logout</span>
+              <span className="text-sm font-medium font-acme">Logout</span>
             </div>
             <div>
               <NextImage src={userImage} alt="User" width={40} height={40} className="rounded-full" />
