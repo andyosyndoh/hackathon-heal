@@ -64,7 +64,7 @@ export default function DonatePage() {
           <h1 className="font-acme text-4xl md:text-5xl font-bold text-[#056173] mb-6">
             Support Our Mission
           </h1>
-          <p className="text-lg md:text-xl text-gray-700 max-w-3xl mx-auto leading-relaxed">
+          <p className="font-inter text-lg md:text-xl text-gray-700 max-w-3xl mx-auto leading-relaxed">
             Your donation helps us provide life-saving support, resources and advocacy for GBV 
             survivors across Kenya
           </p>
@@ -96,7 +96,7 @@ export default function DonatePage() {
                   <h3 className="font-acme text-2xl font-bold text-[#056173] mb-2">
                     {option.title}
                   </h3>
-                  <p className="text-gray-600 text-sm leading-relaxed">
+                  <p className="font-inter text-gray-600 text-sm leading-relaxed">
                     {option.description}
                   </p>
                 </div>
@@ -108,17 +108,17 @@ export default function DonatePage() {
           <div className="bg-white rounded-2xl p-8 shadow-lg max-w-2xl mx-auto mb-8 border border-gray-200">
             <div className="flex items-center gap-3 mb-6">
               <Heart className="h-6 w-6 text-[#056173]" />
-              <h3 className="text-xl font-semibold text-[#056173]">Make a Donation</h3>
+              <h3 className="font-acme text-xl font-semibold text-[#056173]">Make a Donation</h3>
             </div>
 
             {/* Donating type */}
             <div className="mb-6">
-              <label className="block text-sm font-medium text-[#056173] mb-3">Donating type</label>
+              <label className="font-inter block text-sm font-medium text-[#056173] mb-3">Donating type</label>
               <div className="grid grid-cols-2 gap-3">
-                <button className="bg-[#81A9AD] text-white py-2 px-4 rounded text-sm font-medium">
+                <button className="font-acme bg-[#81A9AD] text-white py-2 px-4 rounded text-sm font-medium">
                   One-Time
                 </button>
-                <button className="bg-[#81A9AD] text-white py-2 px-4 rounded text-sm font-medium">
+                <button className="font-acme bg-[#81A9AD] text-white py-2 px-4 rounded text-sm font-medium">
                   Monthly
                 </button>
               </div>
@@ -126,19 +126,19 @@ export default function DonatePage() {
 
             {/* Donation amount */}
             <div className="mb-6">
-              <label className="block text-sm font-medium text-[#056173] mb-3">Donation amount (USD$)</label>
+              <label className="font-inter block text-sm font-medium text-[#056173] mb-3">Donation amount (USD$)</label>
               <div className="grid grid-cols-3 gap-3 mb-3">
-                <button className="bg-[#056173] text-white py-2 px-4 rounded text-sm font-medium">$26</button>
-                <button className="bg-[#056173] text-white py-2 px-4 rounded text-sm font-medium">$50</button>
-                <button className="bg-[#056173] text-white py-2 px-4 rounded text-sm font-medium relative">
+                <button className="font-acme bg-[#056173] text-white py-2 px-4 rounded text-sm font-medium">$26</button>
+                <button className="font-acme bg-[#056173] text-white py-2 px-4 rounded text-sm font-medium">$50</button>
+                <button className="font-acme bg-[#056173] text-white py-2 px-4 rounded text-sm font-medium relative">
                   $100
                   <span className="absolute -top-2 -right-2 bg-blue-500 text-white text-xs px-1 rounded">✓</span>
                 </button>
               </div>
               <div className="grid grid-cols-3 gap-3 mb-3">
-                <button className="bg-[#056173] text-white py-2 px-4 rounded text-sm font-medium">$200</button>
-                <button className="bg-[#056173] text-white py-2 px-4 rounded text-sm font-medium">$800</button>
-                <button className="bg-[#056173] text-white py-2 px-4 rounded text-sm font-medium relative">
+                <button className="font-acme bg-[#056173] text-white py-2 px-4 rounded text-sm font-medium">$200</button>
+                <button className="font-acme bg-[#056173] text-white py-2 px-4 rounded text-sm font-medium">$800</button>
+                <button className="font-acme bg-[#056173] text-white py-2 px-4 rounded text-sm font-medium relative">
                   $1000
                   <span className="absolute -top-1 -right-1 bg-blue-500 text-white text-xs px-1 rounded">274 x 4%</span>
                 </button>
@@ -147,7 +147,7 @@ export default function DonatePage() {
                 <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500">$</span>
                 <input
                   type="text"
-                  className="w-full pl-8 pr-4 py-2 border border-gray-300 rounded bg-gray-50"
+                  className="font-inter w-full pl-8 pr-4 py-2 border border-gray-300 rounded bg-gray-50"
                   placeholder=""
                 />
               </div>
@@ -155,53 +155,90 @@ export default function DonatePage() {
 
             {/* Donor Information */}
             <div className="mb-6">
-              <h4 className="text-lg font-medium text-[#056173] mb-4">Donor Information</h4>
+              <h4 className="font-acme text-lg font-medium text-[#056173] mb-4">Donor Information</h4>
               <div className="mb-4">
-                <label className="flex items-center gap-2 text-sm text-[#056173]">
+                <label className="font-inter flex items-center gap-2 text-sm text-[#056173]">
                   <input type="checkbox" className="rounded" />
                   Make this donation anonymous
                 </label>
               </div>
               <div className="grid grid-cols-2 gap-4 mb-4">
                 <div>
-                  <label className="block text-sm font-medium text-[#056173] mb-1">Full Name*</label>
-                  <input type="text" className="w-full py-2 px-3 border border-gray-300 rounded bg-gray-50" />
+                  <label className="font-inter block text-sm font-medium text-[#056173] mb-1">Full Name*</label>
+                  <input type="text" className="font-inter w-full py-2 px-3 border border-gray-300 rounded bg-gray-50" />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-[#056173] mb-1">Email Address*</label>
-                  <input type="email" className="w-full py-2 px-3 border border-gray-300 rounded bg-gray-50" />
+                  <label className="font-inter block text-sm font-medium text-[#056173] mb-1">Email Address*</label>
+                  <input type="email" className="font-inter w-full py-2 px-3 border border-gray-300 rounded bg-gray-50" />
                 </div>
               </div>
               <div>
-                <label className="block text-sm font-medium text-[#056173] mb-1">Phone Number (optional)</label>
-                <input type="tel" className="w-full py-2 px-3 border border-gray-300 rounded bg-gray-50" />
+                <label className="font-inter block text-sm font-medium text-[#056173] mb-1">Phone Number (optional)</label>
+                <input type="tel" className="font-inter w-full py-2 px-3 border border-gray-300 rounded bg-gray-50" />
               </div>
             </div>
 
             {/* Donate Button */}
-            <button className="w-full bg-[#056173] hover:bg-[#0C444B] text-white py-3 px-6 rounded font-medium transition-colors flex items-center justify-center gap-2">
+            <button className="font-acme w-full bg-[#056173] hover:bg-[#0C444B] text-white py-3 px-6 rounded font-medium transition-colors flex items-center justify-center gap-2">
               <Heart className="h-4 w-4" />
               Donate$
             </button>
           </div>
 
-
-
-          {/* Trust Indicators */}
-          <div className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-8 mt-8 text-sm text-gray-600">
-            <div className="flex items-center space-x-2">
-              <Shield className="h-4 w-4 text-green-600" />
-              <span>Secure & Encrypted</span>
-            </div>
-            <div className="flex items-center space-x-2">
-              <Heart className="h-4 w-4 text-red-600" />
-              <span>100% Goes to Survivors</span>
-            </div>
-            <div className="flex items-center space-x-2">
-              <Users className="h-4 w-4 text-blue-600" />
-              <span>Trusted by 10,000+ Donors</span>
+          {/* Other Ways to Help */}
+          <div className="mb-8">
+            <h2 className="font-acme text-2xl font-semibold text-[#056173] text-center mb-6">Other Ways to Help</h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+              <div className="bg-white rounded-lg p-6 shadow-md text-center">
+                <Users className="h-8 w-8 text-[#056173] mx-auto mb-3" />
+                <h3 className="font-acme font-semibold text-[#056173] mb-2">Volunteer</h3>
+                <p className="font-inter text-sm text-gray-600 mb-4">Join our team of dedicated volunteers</p>
+                <button className="font-acme bg-[#056173] text-white px-4 py-2 rounded text-sm hover:bg-[#0C444B] transition-colors">
+                  Learn more
+                </button>
+              </div>
+              <div className="bg-white rounded-lg p-6 shadow-md text-center">
+                <Heart className="h-8 w-8 text-[#056173] mx-auto mb-3" />
+                <h3 className="font-acme font-semibold text-[#056173] mb-2">Spread Awareness</h3>
+                <p className="font-inter text-sm text-gray-600 mb-4">Share our mission with your network</p>
+                <button className="font-acme bg-[#056173] text-white px-4 py-2 rounded text-sm hover:bg-[#0C444B] transition-colors">
+                  Our Story
+                </button>
+              </div>
+              <div className="bg-white rounded-lg p-6 shadow-md text-center">
+                <Shield className="h-8 w-8 text-[#056173] mx-auto mb-3" />
+                <h3 className="font-acme font-semibold text-[#056173] mb-2">Corporate Partnership</h3>
+                <p className="font-inter text-sm text-gray-600 mb-4">Partner with us to make a bigger impact</p>
+                <button className="font-acme bg-[#056173] text-white px-4 py-2 rounded text-sm hover:bg-[#0C444B] transition-colors">
+                  Contact Us
+                </button>
+              </div>
             </div>
           </div>
+
+          {/* Secure & trusted */}
+          <div className="bg-white rounded-lg p-6 shadow-md max-w-2xl mx-auto text-center">
+            <Shield className="h-8 w-8 text-[#056173] mx-auto mb-3" />
+            <h3 className="font-acme text-lg font-semibold text-[#056173] mb-3">Secure & trusted</h3>
+            <p className="font-inter text-sm text-gray-600 mb-4 leading-relaxed">
+              Your is secure and will be used efficiently to support GBV survivors. We are committed to transparency and provide regular updates on how your contributions makes a difference
+            </p>
+            <div className="flex flex-wrap justify-center gap-3">
+              <span className="font-inter bg-gray-100 text-[#056173] px-3 py-1 rounded-full text-xs font-medium">
+                SSL Secured
+              </span>
+              <span className="font-inter bg-gray-100 text-[#056173] px-3 py-1 rounded-full text-xs font-medium">
+                Transparent Reporting
+              </span>
+              <span className="font-inter bg-gray-100 text-[#056173] px-3 py-1 rounded-full text-xs font-medium">
+                Direct Impact
+              </span>
+            </div>
+          </div>
+
+
+
+
         </div>
       </main>
     </div>
