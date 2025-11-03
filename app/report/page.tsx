@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
   Heart,
   Shield,
@@ -9,25 +9,58 @@ import {
   AlertTriangle,
   Phone,
   CheckCircle2,
+  Clock,
 } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
 import NextImage from 'next/image';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from '@/components/ui/dialog';
 
 export default function ReportPage() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [showCountdownModal, setShowCountdownModal] = useState(false);
+  const [countdown, setCountdown] = useState(300); // 5 minutes in seconds
   const [formData, setFormData] = useState({
     incidentType: '',
     urgencyLevel: '',
     description: '',
     submitAnonymously: false,
+    phoneNumber: '',
+    contactPreference: '',
   });
+
+  // Countdown timer effect
+  useEffect(() => {
+    let interval: NodeJS.Timeout;
+    if (showCountdownModal && countdown > 0) {
+      interval = setInterval(() => {
+        setCountdown((prev) => prev - 1);
+      }, 1000);
+    }
+    return () => clearInterval(interval);
+  }, [showCountdownModal, countdown]);
+
+  // Format countdown time as MM:SS
+  const formatTime = (seconds: number) => {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins}:${secs.toString().padStart(2, '0')}`;
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle form submission
+    // Mock form submission
     console.log('Form submitted:', formData);
-    alert('Report submitted successfully. Your safety is our priority.');
+
+    // Reset countdown and show modal
+    setCountdown(300);
+    setShowCountdownModal(true);
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -174,7 +207,7 @@ export default function ReportPage() {
       <main className="flex-1 py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
         <div className="max-w-4xl mx-auto relative min-h-[calc(100vh-10rem)]">
           {/* Decoration elements - positioned relative to the main content area */}
-          <div className="absolute z-10 w-full h-full">
+          <div className="absolute z-10 w-full h-full pointer-events-none">
             {/* Top left */}
             <div className="absolute top-[5%] left-[5%] transform -rotate-12">
               <NextImage 
@@ -235,9 +268,9 @@ export default function ReportPage() {
               />
             </div>
           </div>
-          
+
           {/* Header */}
-          <div className="text-center mb-8">
+          <div className="relative z-20 text-center mb-8">
             <h1 className="font-acme text-[72px] sm:text-5xl font-bold text-brand-primary mb-4">
               Report A Case
             </h1>
@@ -249,10 +282,10 @@ export default function ReportPage() {
             </p>
           </div>
 
-          
+
 
           {/* Emergency Situation Alert */}
-          <div className="bg-transparent p-6 pt-0 mb-8 ml-14">
+          <div className="relative z-20 bg-transparent p-6 pt-0 mb-8 ml-14">
             <div className="flex items-start gap-3">
               <div className="flex-1">
                 <div className="flex items-center gap-2 mb-2">
@@ -283,7 +316,7 @@ export default function ReportPage() {
           </div>
 
           {/* Report Form */}
-          <div className="bg-transparent p-6 sm:p-8">
+          <div className="relative z-20 bg-transparent p-6 sm:p-8">
             <div className="flex items-start gap-3 mb-6">
               <Shield className="h-18 w-18 text-brand-teal flex-shrink-0 mt-1" strokeWidth={3} />
               <div>
@@ -316,7 +349,7 @@ export default function ReportPage() {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
                   {/* Type of Incident */}
                   <div>
-                    <label className="font-acme text-lg font-medium text-brand-primary mb-2">
+                    <label className="block font-acme text-lg font-medium text-brand-primary mb-2">
                       Type of Incident <span className="text-red-500">*</span>
                     </label>
                     <select
@@ -324,7 +357,7 @@ export default function ReportPage() {
                       value={formData.incidentType}
                       onChange={handleChange}
                       required
-                      className="w-full px-4 py-2 bg-[#ECF5F7]  border border-brand-light rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-teal focus:border-transparent bg-white text-brand-primary"
+                      className="w-full px-4 py-2 bg-[#ECF5F7]  border border-brand-light rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-teal focus:border-transparent text-brand-primary"
                     >
                       <option value="">Select incident type</option>
                       <option value="physical">Physical Violence</option>
@@ -337,7 +370,7 @@ export default function ReportPage() {
 
                   {/* Urgency Level */}
                   <div>
-                    <label className="font-acme text-lg font-medium text-brand-primary mb-2">
+                    <label className="block font-acme text-lg font-medium text-brand-primary mb-2">
                       Urgency Level <span className="text-red-500">*</span>
                     </label>
                     <select
@@ -345,7 +378,7 @@ export default function ReportPage() {
                       value={formData.urgencyLevel}
                       onChange={handleChange}
                       required
-                      className="w-full px-4 py-2 bg-[#ECF5F7] border border-brand-light rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-teal focus:border-transparent bg-white text-brand-primary"
+                      className="w-full px-4 py-2 bg-[#ECF5F7] border border-brand-light rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-teal focus:border-transparent text-brand-primary"
                     >
                       <option value="">Select urgency level</option>
                       <option value="low">Low - Past incident</option>
@@ -358,7 +391,7 @@ export default function ReportPage() {
 
                 {/* Description */}
                 <div>
-                  <label className="font-acme text-lg font-medium text-brand-primary mb-2">
+                  <label className="block font-acme text-lg font-medium text-brand-primary mb-2">
                     Description of Incident <span className="text-red-500">*</span>
                   </label>
                   <textarea
@@ -368,10 +401,66 @@ export default function ReportPage() {
                     required
                     rows={6}
                     placeholder="Please tell us more about the incident"
-                    className="w-full px-4 py-3 bg-[#ECF5F7] border border-brand-light rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-teal focus:border-transparent resize-none bg-white text-brand-primary placeholder:text-brand-gray"
+                    className="w-full px-4 py-3 bg-[#ECF5F7] border border-brand-light rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-teal focus:border-transparent resize-none text-brand-primary placeholder:text-brand-gray"
                   />
                 </div>
               </div>
+
+              {/* Contact Section */}
+              {!formData.submitAnonymously && (
+                <div>
+                  <h3 className="font-acme text-lg text-brand-teal mb-4">Contact Information</h3>
+                  <p className="text-sm font-acme text-brand-secondary mb-4">
+                    Provide your contact details so we can reach you for immediate support.
+                  </p>
+
+                  <div className="space-y-4">
+                    {/* Phone Number */}
+                    <div>
+                      <label className="block font-acme text-lg font-medium text-brand-primary mb-2">
+                        Phone Number <span className="text-red-500">*</span>
+                      </label>
+                      <input
+                        type="tel"
+                        name="phoneNumber"
+                        value={formData.phoneNumber}
+                        onChange={handleChange}
+                        required={!formData.submitAnonymously}
+                        placeholder="e.g., +254 712 345 678"
+                        className="w-full px-4 py-2 bg-[#ECF5F7] border border-brand-light rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-teal focus:border-transparent text-brand-primary placeholder:text-brand-gray"
+                      />
+                    </div>
+
+                    {/* Contact Preference */}
+                    <div>
+                      <label className="block font-acme text-lg font-medium text-brand-primary mb-2">
+                        Preferred Contact Method <span className="text-red-500">*</span>
+                      </label>
+                      <select
+                        name="contactPreference"
+                        value={formData.contactPreference}
+                        onChange={handleChange}
+                        required={!formData.submitAnonymously}
+                        className="w-full px-4 py-2 bg-[#ECF5F7] border border-brand-light rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-teal focus:border-transparent text-brand-primary"
+                      >
+                        <option value="">Select contact preference</option>
+                        <option value="call">Call me - I&apos;m comfortable with a phone call</option>
+                        <option value="text">Text me - I prefer text messages</option>
+                        <option value="both">Either call or text - I&apos;m comfortable with both</option>
+                      </select>
+                    </div>
+
+                    <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                      <div className="flex items-start gap-2">
+                        <Phone className="h-5 w-5 text-blue-600 flex-shrink-0 mt-0.5" />
+                        <p className="text-sm text-blue-800">
+                          Our support team will contact you within 5 minutes using your preferred method to provide immediate assistance.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
 
               {/* Submit Button */}
               <div className="flex items-center justify-between pt-4 border-t border-brand-light">
@@ -438,6 +527,120 @@ export default function ReportPage() {
           </div>
         </div>
       </footer>
+
+      {/* Countdown Modal */}
+      <Dialog open={showCountdownModal} onOpenChange={setShowCountdownModal}>
+        <DialogContent className="sm:max-w-md bg-white">
+          <DialogHeader>
+            <DialogTitle className="font-acme text-2xl text-brand-primary flex items-center gap-2">
+              <CheckCircle2 className="h-6 w-6 text-green-600" />
+              Report Submitted Successfully
+            </DialogTitle>
+            <DialogDescription className="font-acme text-base text-brand-secondary pt-2">
+              Your safety is our priority. Our support team has been notified.
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="space-y-6 py-4">
+            {/* Countdown Display */}
+            <div className="bg-gradient-to-br from-brand-teal/20 to-brand-primary/10 rounded-xl p-6 text-center">
+              <div className="flex items-center justify-center gap-2 mb-3">
+                <Clock className="h-6 w-6 text-brand-primary animate-pulse" />
+                <p className="font-acme text-lg text-brand-primary">
+                  Expected Contact Time
+                </p>
+              </div>
+              <div className="text-5xl font-bold text-brand-primary font-mono">
+                {formatTime(countdown)}
+              </div>
+              <p className="text-sm text-brand-secondary mt-2 font-acme">
+                minutes remaining
+              </p>
+            </div>
+
+            {/* Contact Information */}
+            {!formData.submitAnonymously && formData.phoneNumber && (
+              <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                <p className="text-sm text-blue-900 font-acme mb-2">
+                  <strong>Contact Method:</strong>{' '}
+                  {formData.contactPreference === 'call' && 'Phone Call'}
+                  {formData.contactPreference === 'text' && 'Text Message'}
+                  {formData.contactPreference === 'both' && 'Phone Call or Text Message'}
+                </p>
+                <p className="text-sm text-blue-900 font-acme">
+                  <strong>Phone Number:</strong> {formData.phoneNumber}
+                </p>
+              </div>
+            )}
+
+            {/* What Happens Next */}
+            <div className="space-y-3">
+              <h4 className="font-acme text-lg text-brand-primary font-semibold">
+                What happens next:
+              </h4>
+              <ul className="space-y-2 text-sm text-brand-secondary">
+                <li className="flex items-start gap-2">
+                  <CheckCircle2 className="h-4 w-4 text-green-600 flex-shrink-0 mt-0.5" />
+                  <span className="font-acme">Your report has been securely submitted and encrypted</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <CheckCircle2 className="h-4 w-4 text-green-600 flex-shrink-0 mt-0.5" />
+                  <span className="font-acme">A trained support specialist is reviewing your case</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <CheckCircle2 className="h-4 w-4 text-green-600 flex-shrink-0 mt-0.5" />
+                  <span className="font-acme">
+                    {formData.submitAnonymously
+                      ? 'You will receive support through our anonymous channels'
+                      : 'You will be contacted within 5 minutes for immediate assistance'}
+                  </span>
+                </li>
+              </ul>
+            </div>
+
+            {/* Emergency Notice */}
+            <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+              <div className="flex items-start gap-2">
+                <AlertTriangle className="h-5 w-5 text-red-600 flex-shrink-0 mt-0.5" />
+                <div>
+                  <p className="text-sm font-semibold text-red-900 font-acme mb-1">
+                    In Immediate Danger?
+                  </p>
+                  <p className="text-sm text-red-800 font-acme mb-2">
+                    If you are in immediate danger, please call emergency services:
+                  </p>
+                  <div className="flex gap-2">
+                    <a
+                      href="tel:911"
+                      className="bg-red-600 hover:bg-red-700 text-white px-4 py-1.5 rounded-full font-acme text-sm transition-all inline-flex items-center gap-1"
+                    >
+                      <Phone className="h-3 w-3" />
+                      911
+                    </a>
+                    <a
+                      href="tel:1195"
+                      className="bg-red-500 hover:bg-red-600 text-white px-4 py-1.5 rounded-full font-acme text-sm transition-all inline-flex items-center gap-1"
+                    >
+                      <Phone className="h-3 w-3" />
+                      GBV Hotline: 1195
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Close Button */}
+            <div className="text-center pt-2">
+              <button
+                onClick={() => setShowCountdownModal(false)}
+                className="text-sm text-brand-secondary hover:text-brand-primary font-acme underline"
+              >
+                Close this window (you can safely close this)
+              </button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

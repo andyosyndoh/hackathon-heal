@@ -143,14 +143,14 @@ export default function HomePage() {
                 width={80}
                 height={80}
                 className="
-    h-30 w-30 
-    object-contain 
-    transition-all duration-500 
-    drop-shadow-[0_4px_10px_rgba(0,0,0,0.25)] 
-    group-hover:scale-115 
-    group-hover:rotate-3 
-    group-hover:drop-shadow-[0_6px_16px_rgba(0,0,0,0.35)]
-  "
+                  h-30 w-30 
+                  object-contain 
+                  transition-all duration-500 
+                  drop-shadow-[0_4px_10px_rgba(0,0,0,0.25)] 
+                  group-hover:scale-115 
+                  group-hover:rotate-3 
+                  group-hover:drop-shadow-[0_6px_16px_rgba(0,0,0,0.35)]
+                "
                 priority
               />
 
