@@ -10,6 +10,7 @@ import {
   Phone,
   CheckCircle2,
   Clock,
+  MapPin,
 } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -26,6 +27,7 @@ export default function ReportPage() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [showCountdownModal, setShowCountdownModal] = useState(false);
   const [countdown, setCountdown] = useState(300); // 5 minutes in seconds
+  const [userLocation, setUserLocation] = useState<{lat: number, lng: number} | null>(null);
   const [formData, setFormData] = useState({
     incidentType: '',
     urgencyLevel: '',
@@ -34,6 +36,32 @@ export default function ReportPage() {
     phoneNumber: '',
     contactPreference: '',
   });
+
+  // Get user's location
+  useEffect(() => {
+    if ('geolocation' in navigator) {
+      console.log('Requesting location permission...');
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          console.log('Location granted:', position.coords);
+          setUserLocation({
+            lat: position.coords.latitude,
+            lng: position.coords.longitude
+          });
+        },
+        (error) => {
+          console.log('Location access denied:', error.message);
+        },
+        {
+          enableHighAccuracy: true,
+          timeout: 5000,
+          maximumAge: 0
+        }
+      );
+    } else {
+      console.log('Geolocation not supported by browser');
+    }
+  }, []);
 
   // Countdown timer effect
   useEffect(() => {
@@ -64,7 +92,10 @@ export default function ReportPage() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     // Mock form submission
-    console.log('Form submitted:', formData);
+    console.log('Form submitted:', {
+      ...formData,
+      location: userLocation
+    });
 
     // Reset countdown and show modal
     setCountdown(300);
@@ -335,6 +366,21 @@ export default function ReportPage() {
               </div>
             </div>
 
+            {/* Location Status Indicator */}
+            <div className="mb-4">
+              {userLocation ? (
+                <div className="flex items-center gap-2 text-sm text-green-700 bg-green-50 border border-green-200 rounded-lg p-3">
+                  <MapPin className="h-4 w-4" />
+                  <span className="font-acme">Location detected - Your report will include location data to help authorities</span>
+                </div>
+              ) : (
+                <div className="flex items-center gap-2 text-sm text-amber-700 bg-amber-50 border border-amber-200 rounded-lg p-3">
+                  <MapPin className="h-4 w-4" />
+                  <span className="font-acme">Location not available - Please enable location services for better assistance</span>
+                </div>
+              )}
+            </div>
+
             {/* Anonymous Submission Toggle */}
             <div className="bg-brand-teal rounded-lg p-4 mb-6">
               <label className="flex items-center gap-3 cursor-pointer">
@@ -550,33 +596,52 @@ export default function ReportPage() {
           </DialogHeader>
 
           <div className="space-y-6 py-4">
-            {/* Countdown Display */}
-            <div className="bg-gradient-to-br from-brand-teal/20 to-brand-primary/10 rounded-xl p-6 text-center">
-              <div className="flex items-center justify-center gap-2 mb-3">
-                <Clock className="h-6 w-6 text-brand-primary animate-pulse" />
-                <p className="font-acme text-lg text-brand-primary">
-                  Expected Contact Time
-                </p>
-              </div>
-              <div className="text-5xl font-bold text-brand-primary font-mono">
-                {formatTime(countdown)}
-              </div>
-              <p className="text-sm text-brand-secondary mt-2 font-acme">
-                minutes remaining
-              </p>
-            </div>
+            {/* Countdown Display - Only for non-anonymous submissions */}
+            {!formData.submitAnonymously && (
+              <>
+                <div className="bg-gradient-to-br from-brand-teal/20 to-brand-primary/10 rounded-xl p-6 text-center">
+                  <div className="flex items-center justify-center gap-2 mb-3">
+                    <Clock className="h-6 w-6 text-brand-primary animate-pulse" />
+                    <p className="font-acme text-lg text-brand-primary">
+                      Expected Contact Time
+                    </p>
+                  </div>
+                  <div className="text-5xl font-bold text-brand-primary font-mono">
+                    {formatTime(countdown)}
+                  </div>
+                  <p className="text-sm text-brand-secondary mt-2 font-acme">
+                    minutes remaining
+                  </p>
+                </div>
 
-            {/* Confirmation Details */}
-            {!formData.submitAnonymously && formData.phoneNumber && (
-              <div className="w-full bg-gray-50 rounded-lg p-4 mt-4 text-center">
-                <p className="text-slate-600 font-acme text-sm">
-                  We will contact you at{' '}
-                  <span className="font-semibold font-acme text-slate-800">{maskPhoneNumber(formData.phoneNumber)}</span> via{' '}
-                  <span className="font-semibold font-acme text-slate-800">
-                    {formData.contactPreference === 'call' && 'Phone Call'}
-                    {formData.contactPreference === 'text' && 'Text Message'}
-                    {formData.contactPreference === 'both' && 'Phone Call or Text Message'}
-                  </span>.
+                {/* Confirmation Details */}
+                {formData.phoneNumber && (
+                  <div className="w-full bg-gray-50 rounded-lg p-4 mt-4 text-center">
+                    <p className="text-slate-600 font-acme text-sm">
+                      We will contact you at{' '}
+                      <span className="font-semibold font-acme text-slate-800">{maskPhoneNumber(formData.phoneNumber)}</span> via{' '}
+                      <span className="font-semibold font-acme text-slate-800">
+                        {formData.contactPreference === 'call' && 'Phone Call'}
+                        {formData.contactPreference === 'text' && 'Text Message'}
+                        {formData.contactPreference === 'both' && 'Phone Call or Text Message'}
+                      </span>.
+                    </p>
+                  </div>
+                )}
+              </>
+            )}
+
+            {/* Anonymous Submission Confirmation */}
+            {formData.submitAnonymously && (
+              <div className="bg-gradient-to-br from-green-50 to-teal-50 rounded-xl p-6 text-center">
+                <div className="flex items-center justify-center gap-2 mb-3">
+                  <Shield className="h-8 w-8 text-brand-teal" />
+                </div>
+                <h3 className="font-acme text-xl text-brand-primary font-semibold mb-2">
+                  Anonymous Report Received
+                </h3>
+                <p className="text-sm text-brand-secondary font-acme">
+                  Your report has been securely submitted. Your identity and location are protected.
                 </p>
               </div>
             )}
@@ -586,24 +651,49 @@ export default function ReportPage() {
               <h4 className="font-acme text-lg text-brand-primary font-semibold">
                 What happens next:
               </h4>
-              <ul className="space-y-2 text-sm text-brand-secondary">
-                <li className="flex items-start gap-2">
-                  <CheckCircle2 className="h-4 w-4 text-green-600 flex-shrink-0 mt-0.5" />
-                  <span className="font-acme">Your report has been securely submitted and encrypted</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <CheckCircle2 className="h-4 w-4 text-green-600 flex-shrink-0 mt-0.5" />
-                  <span className="font-acme">A trained support specialist is reviewing your case</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <CheckCircle2 className="h-4 w-4 text-green-600 flex-shrink-0 mt-0.5" />
-                  <span className="font-acme">
-                    {formData.submitAnonymously
-                      ? 'You will receive support through our anonymous channels'
-                      : 'You will be contacted within 5 minutes for immediate assistance'}
-                  </span>
-                </li>
-              </ul>
+              {formData.submitAnonymously ? (
+                <ul className="space-y-2 text-sm text-brand-secondary">
+                  <li className="flex items-start gap-2">
+                    <CheckCircle2 className="h-4 w-4 text-green-600 flex-shrink-0 mt-0.5" />
+                    <span className="font-acme">Your report has been securely submitted and encrypted</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <CheckCircle2 className="h-4 w-4 text-green-600 flex-shrink-0 mt-0.5" />
+                    <span className="font-acme">Your location has been recorded to help local authorities</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <CheckCircle2 className="h-4 w-4 text-green-600 flex-shrink-0 mt-0.5" />
+                    <span className="font-acme">A trained support specialist is reviewing your case</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <CheckCircle2 className="h-4 w-4 text-green-600 flex-shrink-0 mt-0.5" />
+                    <span className="font-acme">Resources and support are available through our platform</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <CheckCircle2 className="h-4 w-4 text-green-600 flex-shrink-0 mt-0.5" />
+                    <span className="font-acme">Your identity remains completely anonymous</span>
+                  </li>
+                </ul>
+              ) : (
+                <ul className="space-y-2 text-sm text-brand-secondary">
+                  <li className="flex items-start gap-2">
+                    <CheckCircle2 className="h-4 w-4 text-green-600 flex-shrink-0 mt-0.5" />
+                    <span className="font-acme">Your report has been securely submitted and encrypted</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <CheckCircle2 className="h-4 w-4 text-green-600 flex-shrink-0 mt-0.5" />
+                    <span className="font-acme">Your location has been recorded to help local authorities</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <CheckCircle2 className="h-4 w-4 text-green-600 flex-shrink-0 mt-0.5" />
+                    <span className="font-acme">A trained support specialist is reviewing your case</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <CheckCircle2 className="h-4 w-4 text-green-600 flex-shrink-0 mt-0.5" />
+                    <span className="font-acme">You will be contacted within 5 minutes for immediate assistance</span>
+                  </li>
+                </ul>
+              )}
             </div>
 
             {/* Emergency Notice */}
