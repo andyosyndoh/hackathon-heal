@@ -15,39 +15,6 @@ import Link from 'next/link';
 import Image from 'next/image';
 import Navbar from '@/components/Navbar';
 
-
-  return (
-    <div className="relative inline-flex">
-      {isSignUp ? (
-        <Link
-          href="/auth?mode=signup"
-          className="bg-brand-primary hover:bg-brand-accent border-4 border-brand-cream rounded-full pl-3 pr-6 py-2 flex items-center gap-2 transition-all shadow-md"
-        >
-          <div className="w-4 h-4 rounded-full bg-brand-cream" />
-          <span className="font-acme text-white text-sm uppercase tracking-wide">SIGN UP</span>
-        </Link>
-      ) : (
-        <Link
-          href="/anonymous"
-          className="bg-brand-primary hover:bg-brand-accent border-4 border-brand-cream rounded-full pl-6 pr-3 py-2 flex items-center gap-2 transition-all shadow-md"
-        >
-          <span className="font-acme text-white text-sm uppercase tracking-wide">GUEST</span>
-          <div className="w-4 h-4 rounded-full bg-brand-cream" />
-        </Link>
-      )}
-
-      {/* Toggle button */}
-      <button
-        onClick={() => setIsSignUp(!isSignUp)}
-        className="absolute right-2 top-1/2 -translate-y-1/2 text-brand-cream hover:text-white text-xs z-10"
-        aria-label="Toggle between Sign Up and Guest"
-      >
-        ⇄
-      </button>
-    </div>
-  );
-}
-
 export default function HomePage() {
   const [isLoaded, setIsLoaded] = useState(false);
   const audioRef = useRef<HTMLAudioElement>(null);

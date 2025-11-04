@@ -86,15 +86,15 @@ export default function Navbar() {
               SERVICES
               <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-brand-dark group-hover/nav:w-full transition-all duration-300"></span>
             </Link>
-            <Link
+            {/* <Link
               href="/#resources"
               className="font-acme text-brand-primary hover:text-brand-dark transition-all duration-300 text-sm uppercase tracking-wide relative group/nav hover:scale-110 hover:tracking-wider"
             >
               RESOURCES
               <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-brand-dark group-hover/nav:w-full transition-all duration-300"></span>
-            </Link>
+            </Link> */}
             <Link
-              href="/#report"
+              href="/report"
               className="font-acme text-brand-primary hover:text-brand-dark transition-all duration-300 text-sm uppercase tracking-wide relative group/nav hover:scale-110 hover:tracking-wider"
             >
               REPORT
