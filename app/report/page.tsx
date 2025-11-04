@@ -53,6 +53,14 @@ export default function ReportPage() {
     return `${mins}:${secs.toString().padStart(2, '0')}`;
   };
 
+  // Mask phone number to show only last 3 digits
+  const maskPhoneNumber = (phone: string) => {
+    if (!phone) return '';
+    const digits = phone.replace(/\D/g, ''); // Remove non-digit characters
+    const lastThree = digits.slice(-3);
+    return `(•••) •••-${lastThree}`;
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     // Mock form submission
@@ -210,61 +218,61 @@ export default function ReportPage() {
           <div className="absolute z-10 w-full h-full pointer-events-none">
             {/* Top left */}
             <div className="absolute top-[5%] left-[5%] transform -rotate-12">
-              <NextImage 
-                src="/images/decoration.png" 
-                alt="" 
+              <NextImage
+                src="/images/decoration.png"
+                alt=""
                 width={64}
                 height={64}
                 className="w-12 sm:w-20 sm:h-20"
-                priority 
+                priority
               />
             </div>
-            
+
             {/* Top right */}
             <div className="absolute top-[15%] right-[5%] transform rotate-25">
-              <NextImage 
-                src="/images/decoration.png" 
-                alt="" 
+              <NextImage
+                src="/images/decoration.png"
+                alt=""
                 width={80}
                 height={80}
                 className="w-18 h-18 sm:w-20 sm:h-20"
-                priority 
+                priority
               />
             </div>
-            
+
             {/* Middle left */}
             <div className="absolute top-[40%] left-[3%] transform -rotate-15">
-              <NextImage 
-                src="/images/decoration.png" 
-                alt="" 
+              <NextImage
+                src="/images/decoration.png"
+                alt=""
                 width={72}
                 height={72}
                 className="w-18 h-18 sm:w-20 sm:h-20"
-                priority 
+                priority
               />
             </div>
-            
+
             {/* Middle right */}
             <div className="absolute bottom-[30%] right-[5%] transform rotate-15">
-              <NextImage 
-                src="/images/decoration.png" 
-                alt="" 
+              <NextImage
+                src="/images/decoration.png"
+                alt=""
                 width={64}
                 height={64}
                 className="w-18 h-18 sm:w-20 sm:h-20"
-                priority 
+                priority
               />
             </div>
-            
+
             {/* Bottom center */}
             <div className="absolute bottom-[10%] left-1/2 -translate-x-1/2 transform rotate-12">
-              <NextImage 
-                src="/images/decoration.png" 
-                alt="" 
+              <NextImage
+                src="/images/decoration.png"
+                alt=""
                 width={56}
                 height={56}
                 className="w-18 h-18 sm:w-20 sm:h-20"
-                priority 
+                priority
               />
             </div>
           </div>
@@ -345,7 +353,7 @@ export default function ReportPage() {
               {/* Incident Information Section */}
               <div>
                 <h3 className="font-acme text-lg text-brand-teal mb-4">Incident Information</h3>
-                
+
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
                   {/* Type of Incident */}
                   <div>
@@ -410,7 +418,7 @@ export default function ReportPage() {
               {!formData.submitAnonymously && (
                 <div>
                   <h3 className="font-acme text-lg text-brand-teal mb-4">Contact Information</h3>
-                  <p className="text-sm font-acme text-brand-secondary mb-4">
+                  <p className="text-lg font-acme text-brand-secondary mb-4">
                     Provide your contact details so we can reach you for immediate support.
                   </p>
 
@@ -558,17 +566,17 @@ export default function ReportPage() {
               </p>
             </div>
 
-            {/* Contact Information */}
+            {/* Confirmation Details */}
             {!formData.submitAnonymously && formData.phoneNumber && (
-              <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                <p className="text-sm text-blue-900 font-acme mb-2">
-                  <strong>Contact Method:</strong>{' '}
-                  {formData.contactPreference === 'call' && 'Phone Call'}
-                  {formData.contactPreference === 'text' && 'Text Message'}
-                  {formData.contactPreference === 'both' && 'Phone Call or Text Message'}
-                </p>
-                <p className="text-sm text-blue-900 font-acme">
-                  <strong>Phone Number:</strong> {formData.phoneNumber}
+              <div className="w-full bg-gray-50 rounded-lg p-4 mt-4 text-center">
+                <p className="text-slate-600 font-acme text-sm">
+                  We will contact you at{' '}
+                  <span className="font-semibold font-acme text-slate-800">{maskPhoneNumber(formData.phoneNumber)}</span> via{' '}
+                  <span className="font-semibold font-acme text-slate-800">
+                    {formData.contactPreference === 'call' && 'Phone Call'}
+                    {formData.contactPreference === 'text' && 'Text Message'}
+                    {formData.contactPreference === 'both' && 'Phone Call or Text Message'}
+                  </span>.
                 </p>
               </div>
             )}
