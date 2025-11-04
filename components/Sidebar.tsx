@@ -52,7 +52,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onToggle, user }) => {
 
   const dashboardSubItems = [
     { icon: Shield, label: 'Safe Space', link: '/dashboard/chat' },
-    { icon: MessageCircle, label: 'Anonymous', link: '#' },
+    { icon: MessageCircle, label: 'Anonymous', link: '/anonymous', requiresLogout: true },
     { icon: Trophy, label: 'Champions', link: '#' }
   ];
 
@@ -106,6 +106,20 @@ const Sidebar: React.FC<SidebarProps> = ({ onToggle, user }) => {
 
   const handleItemClick = (link: string) => {
     if (link) router.push(link);
+  };
+
+  const handleAnonymousClick = async () => {
+    // Logout user and redirect to anonymous page
+    await authManager.logout();
+    router.push('/anonymous');
+  };
+
+  const handleSubItemClick = (subItem: any) => {
+    if (subItem.requiresLogout) {
+      handleAnonymousClick();
+    } else {
+      handleItemClick(subItem.link || '');
+    }
   };
 
   const toggleSubmenu = (e: React.MouseEvent) => {
@@ -222,11 +236,11 @@ const Sidebar: React.FC<SidebarProps> = ({ onToggle, user }) => {
                     <ul className="ml-6 mt-2 space-y-1">
                       {dashboardSubItems.map((subItem, subIndex) => (
                         <li key={subIndex}>
-                          <div 
+                          <div
                             className={`flex items-center font-acme space-x-3 px-3 py-2 text-sm cursor-pointer transition-colors rounded-md hover:bg-orange-50/30 ${
                               pathname === subItem.link ? 'text-orange-600 bg-orange-50/30' : 'text-gray-600 hover:text-orange-600'
                             }`}
-                            onClick={() => handleItemClick(subItem.link || '')}
+                            onClick={() => handleSubItemClick(subItem)}
                           >
                             <subItem.icon size={16} />
                             <span>{subItem.label}</span>
