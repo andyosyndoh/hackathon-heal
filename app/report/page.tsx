@@ -36,6 +36,12 @@ export default function ReportPage() {
     phoneNumber: '',
     contactPreference: '',
   });
+  // Store submitted data for modal display before clearing form
+  const [submittedData, setSubmittedData] = useState({
+    submitAnonymously: false,
+    phoneNumber: '',
+    contactPreference: '',
+  });
 
   // Get user's location
   useEffect(() => {
@@ -97,9 +103,26 @@ export default function ReportPage() {
       location: userLocation
     });
 
+    // Save submitted data for modal display
+    setSubmittedData({
+      submitAnonymously: formData.submitAnonymously,
+      phoneNumber: formData.phoneNumber,
+      contactPreference: formData.contactPreference,
+    });
+
     // Reset countdown and show modal
     setCountdown(300);
     setShowCountdownModal(true);
+
+    // Reset form data immediately after submission to improve anonymity
+    setFormData({
+      incidentType: '',
+      urgencyLevel: '',
+      description: '',
+      submitAnonymously: false,
+      phoneNumber: '',
+      contactPreference: '',
+    });
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -108,6 +131,26 @@ export default function ReportPage() {
       ...prev,
       [name]: type === 'checkbox' ? (e.target as HTMLInputElement).checked : value
     }));
+  };
+
+  const handleModalClose = (open: boolean) => {
+    setShowCountdownModal(open);
+    // If modal is being closed, ensure all data is cleared for anonymity
+    if (!open) {
+      setFormData({
+        incidentType: '',
+        urgencyLevel: '',
+        description: '',
+        submitAnonymously: false,
+        phoneNumber: '',
+        contactPreference: '',
+      });
+      setSubmittedData({
+        submitAnonymously: false,
+        phoneNumber: '',
+        contactPreference: '',
+      });
+    }
   };
 
   return (
@@ -583,7 +626,7 @@ export default function ReportPage() {
       </footer>
 
       {/* Countdown Modal */}
-      <Dialog open={showCountdownModal} onOpenChange={setShowCountdownModal}>
+      <Dialog open={showCountdownModal} onOpenChange={handleModalClose}>
         <DialogContent className="sm:max-w-md bg-white">
           <DialogHeader>
             <DialogTitle className="font-acme text-2xl text-brand-primary flex items-center gap-2">
@@ -597,7 +640,7 @@ export default function ReportPage() {
 
           <div className="space-y-6 py-4">
             {/* Countdown Display - Only for non-anonymous submissions */}
-            {!formData.submitAnonymously && (
+            {!submittedData.submitAnonymously && (
               <>
                 <div className="bg-gradient-to-br from-brand-teal/20 to-brand-primary/10 rounded-xl p-6 text-center">
                   <div className="flex items-center justify-center gap-2 mb-3">
@@ -615,15 +658,15 @@ export default function ReportPage() {
                 </div>
 
                 {/* Confirmation Details */}
-                {formData.phoneNumber && (
+                {submittedData.phoneNumber && (
                   <div className="w-full bg-gray-50 rounded-lg p-4 mt-4 text-center">
                     <p className="text-slate-600 font-acme text-sm">
                       We will contact you at{' '}
-                      <span className="font-semibold font-acme text-slate-800">{maskPhoneNumber(formData.phoneNumber)}</span> via{' '}
+                      <span className="font-semibold font-acme text-slate-800">{maskPhoneNumber(submittedData.phoneNumber)}</span> via{' '}
                       <span className="font-semibold font-acme text-slate-800">
-                        {formData.contactPreference === 'call' && 'Phone Call'}
-                        {formData.contactPreference === 'text' && 'Text Message'}
-                        {formData.contactPreference === 'both' && 'Phone Call or Text Message'}
+                        {submittedData.contactPreference === 'call' && 'Phone Call'}
+                        {submittedData.contactPreference === 'text' && 'Text Message'}
+                        {submittedData.contactPreference === 'both' && 'Phone Call or Text Message'}
                       </span>.
                     </p>
                   </div>
@@ -632,7 +675,7 @@ export default function ReportPage() {
             )}
 
             {/* Anonymous Submission Confirmation */}
-            {formData.submitAnonymously && (
+            {submittedData.submitAnonymously && (
               <div className="bg-gradient-to-br from-green-50 to-teal-50 rounded-xl p-6 text-center">
                 <div className="flex items-center justify-center gap-2 mb-3">
                   <Shield className="h-8 w-8 text-brand-teal" />
@@ -651,7 +694,7 @@ export default function ReportPage() {
               <h4 className="font-acme text-lg text-brand-primary font-semibold">
                 What happens next:
               </h4>
-              {formData.submitAnonymously ? (
+              {submittedData.submitAnonymously ? (
                 <ul className="space-y-2 text-sm text-brand-secondary">
                   <li className="flex items-start gap-2">
                     <CheckCircle2 className="h-4 w-4 text-green-600 flex-shrink-0 mt-0.5" />
