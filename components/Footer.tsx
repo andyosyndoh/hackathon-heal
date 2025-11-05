@@ -1,22 +1,22 @@
 'use client';
 
 import React from 'react';
+import Image from 'next/image';
 import {
   FacebookIcon,
   InstagramIcon,
   LinkedinIcon,
   TwitterIcon,
   YoutubeIcon,
+  PodcastIcon,
 } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 
 const quickLinks = [
-  { label: 'About Heal', href: '/#about' },
+  { label: 'About Heal', href: '/about' },
   { label: 'We Listen – Safe Space', href: '/anonymous' },
-  { label: 'Chat Anonymously – Chat Space', href: '/anonymous' },
+  // { label: 'Chat Anonymously – Chat Space', href: '/anonymous' },
   { label: 'Report - Seek Help', href: '/report' },
-  { label: 'Get In Touch', href: '/#contact' },
+  { label: 'Get In Touch', href: '/contact' },
 ];
 
 const contactEmails = [
@@ -32,33 +32,38 @@ const socialIcons = [
   { Icon: InstagramIcon, label: 'Instagram', href: '#' },
   { Icon: LinkedinIcon, label: 'LinkedIn', href: '#' },
   { Icon: YoutubeIcon, label: 'YouTube', href: '#' },
+  { Icon: PodcastIcon, label: 'Podcast', href: '#' },
 ];
 
-export const Footer = (): JSX.Element => {
+export default function Footer() {
   return (
-    <footer className="flex flex-col items-center w-full bg-[#2a4045]">
+    <footer className="flex flex-col items-center w-full bg-brand-primary">
       {/* Main Footer Content */}
-      <div className="w-full max-w-[1140px] px-6 lg:px-8 pt-[65px] pb-[15px]">
-        <div className="flex flex-col lg:flex-row items-start gap-8 lg:gap-0 justify-between">
-          {/* Logo and Tagline */}
-          <div className="w-full lg:w-[302px] flex flex-col items-start">
-            <div className="flex flex-col items-start pb-5 w-full">
-              <div className="w-full h-[95px] flex items-center justify-start">
-                {/* Logo placeholder - you can add your logo here */}
-              </div>
+      <div className="w-full w-auto lg:max-w-[1280px] px-6 lg:px-8 pt-[65px] pb-[15px]">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          {/* Logo and Tagline - Column 1 */}
+          <div className="col-span-1 lg:col-span-1 flex flex-col items-center">
+            <div className="flex flex-col items-center -mt-6 w-full">
+              <Image 
+                src="/images/heal_logo.png" 
+                alt="HEAL Logo"
+                width={100}
+                height={48}
+                className="h-40 w-auto"
+                priority
+              />
             </div>
-
-            <div className="flex flex-col items-start w-full">
-              <p className="font-acme text-[#b0b8b8] text-sm text-center lg:text-left leading-7">
-                Navigating Mental Health Care with your Listening, Caring Partner
+            <div className="flex flex-col font-acme text-[#b0b8b8] text-sm text-center leading-7">
+              <p className="">
+                Navigating Mental Health Care with your <br />Listening, Caring Partner
                 <br /> Anytime, Anywhere
               </p>
             </div>
           </div>
 
-          {/* Quick Links */}
-          <nav className="w-full lg:w-[268px] flex flex-col items-start">
-            <div className="flex flex-col items-start pb-5 w-full">
+          {/* Quick Links - Column 2 */}
+          <nav className="col-span-1 lg:col-span-1 flex flex-col items-start">
+            <div className="w-full">
               <h3 className="font-acme text-white text-[17px] tracking-[0] leading-7 whitespace-nowrap">
                 QUICK LINKS
               </h3>
@@ -108,25 +113,14 @@ export const Footer = (): JSX.Element => {
               </h3>
             </div>
 
-            <div className="flex flex-col gap-4 w-full">
-              <div className="flex gap-2 w-full">
-                <Input
-                  type="email"
-                  placeholder="Enter your email"
-                  className="flex-1 bg-transparent border-[#b0b8b8] text-white placeholder:text-[#b0b8b8] font-acme"
-                />
-                <Button className="bg-white text-[#2a4045] hover:bg-[#b0b8b8] h-auto font-acme">
-                  Subscribe
-                </Button>
-              </div>
-
-              <div className="flex gap-3 items-center">
+            <div className="w-full">
+              <div className="grid grid-cols-3 gap-2 w-full">
                 {socialIcons.map(({ Icon, label, href }, index) => (
                   <a
                     key={index}
                     href={href}
                     aria-label={label}
-                    className="text-white hover:text-[#b0b8b8] transition-colors"
+                    className="flex items-start text-white hover:text-[#b0b8b8] transition-colors p-2"
                   >
                     <Icon className="w-5 h-5" />
                   </a>
@@ -138,12 +132,12 @@ export const Footer = (): JSX.Element => {
       </div>
 
       {/* Divider */}
-      <div className="w-full max-w-[1140px] px-6 lg:px-8">
+      <div className="w-full max-w-[1280px] px-6 lg:px-8">
         <div className="border-t border-[#c9d0d8] my-2.5" />
       </div>
 
       {/* Copyright */}
-      <div className="w-full max-w-[1140px] px-6 lg:px-8 pb-[30px]">
+      <div className="w-full max-w-[1280px] px-6 lg:px-8 pb-[30px]">
         <div className="flex flex-col md:flex-row items-center justify-between gap-4">
           <div className="flex items-center py-2.5">
             <p className="font-acme text-[#6b7280] text-base tracking-[0] leading-7 whitespace-nowrap">
