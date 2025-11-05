@@ -31,12 +31,12 @@ export const metadata: Metadata = {
     locale: 'en_US',
   },
   metadataBase: new URL('http://localhost:3000'), // or your production URL
-  themeColor: '#3B82F6',
 };
 
 export const viewport = {
   width: 'device-width',
   initialScale: 1,
+  themeColor: '#3B82F6',
 };
 
 export default function RootLayout({
