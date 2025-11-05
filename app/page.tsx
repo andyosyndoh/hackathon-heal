@@ -14,6 +14,7 @@ import {
 import Link from 'next/link';
 import Image from 'next/image';
 import Navbar from '@/components/Navbar';
+import Footer from '@/components/Footer';
 
 export default function HomePage() {
   const [isLoaded, setIsLoaded] = useState(false);
@@ -368,53 +369,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="bg-gray-900 text-gray-300 py-8 sm:py-12">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8">
-            <div>
-              <div className="flex items-center space-x-2 mb-3 sm:mb-4">
-                <Heart className="h-5 w-5 sm:h-6 sm:w-6 text-blue-400" />
-                <span className="text-lg sm:text-xl font-bold text-white">Heal</span>
-              </div>
-              <p className="text-gray-400 text-sm leading-relaxed">
-                Professional mental health support powered by AI,
-                designed with privacy and safety as our top priorities.
-              </p>
-            </div>
-            <div>
-              <h3 className="text-white font-semibold mb-3 sm:mb-4 text-sm sm:text-base">Support</h3>
-              <ul className="space-y-2 text-sm">
-                <li><Link href="/crisis" className="hover:text-white transition-colors">Crisis Support</Link></li>
-                <li><Link href="/resources" className="hover:text-white transition-colors">Resources</Link></li>
-                <li><Link href="/help" className="hover:text-white transition-colors">Help Center</Link></li>
-                <li><Link href="/contact" className="hover:text-white transition-colors">Contact Us</Link></li>
-              </ul>
-            </div>
-            <div>
-              <h3 className="text-white font-semibold mb-3 sm:mb-4 text-sm sm:text-base">Company</h3>
-              <ul className="space-y-2 text-sm">
-                <li><Link href="/about" className="hover:text-white transition-colors">About</Link></li>
-                <li><Link href="/privacy" className="hover:text-white transition-colors">Privacy Policy</Link></li>
-                <li><Link href="/terms" className="hover:text-white transition-colors">Terms of Service</Link></li>
-                <li><Link href="/security" className="hover:text-white transition-colors">Security</Link></li>
-              </ul>
-            </div>
-            <div>
-              <h3 className="text-white font-semibold mb-3 sm:mb-4 text-sm sm:text-base">Emergency</h3>
-              <div className="space-y-2 text-sm">
-                <p className="text-red-400 font-medium">If you're in crisis:</p>
-                <p>Call 999 (Suicide & Crisis Lifeline)</p>
-                <p>Text "HELLO" to 741741</p>
-                <p>Or call 911</p>
-              </div>
-            </div>
-          </div>
-          <div className="border-t border-gray-800 mt-6 sm:mt-8 pt-6 sm:pt-8 text-center text-xs sm:text-sm text-gray-400">
-            <p>&copy; 2024 Heal. All rights reserved. This platform is designed for informational and support purposes only and does not replace professional medical advice.</p>
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 }

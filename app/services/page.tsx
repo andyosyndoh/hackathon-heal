@@ -34,77 +34,76 @@ export default function ServicesPage() {
             src="/sparkj2-svg-11.svg"
           />
 
-          {/* Header Section */}
-          <section className="w-full relative py-12 px-8">
-            <div className="max-w-[880px] mx-auto">
-              <div className="font-acme text-[#012f35] text-xl tracking-[0] leading-[normal] mb-[34px]">
-                WELCOME TO HEAL
-              </div>
+          {/* Combined Header and Hero Section */}
+          <section className="w-full min-h-screen items-center justify-center relative py-12 px-8">
+            <div className="max-w-[1728px] mx-auto flex flex-col lg:flex-row items-center justify-center gap-12">
+              {/* Left side - Header Content */}
+              <div className="w-full lg:w-1/2 max-w-[600px]">
+                <div className="font-acme text-[#012f35] text-xl tracking-[0] leading-[normal] mb-[32px]">
+                  WELCOME TO HEAL
+                </div>
 
-              <h1 className="font-acme text-[#40707b] text-4xl lg:text-[73px] tracking-[0] leading-tight lg:leading-[87.6px] mb-[60px]">
-                Your Listening, Caring Partner
-                <br />
-                Anywhere, Anytime
-              </h1>
+                <h1 className="font-acme text-[#40707b] text-4xl lg:text-[73px] tracking-[0] leading-tight lg:leading-[87.6px] mb-[60px]">
+                  Your Listening, Caring Partner
+                  <br />
+                  Anywhere, Anytime
+                </h1>
 
-              <p className="max-w-[381px] font-acme text-[#221f1f] text-base tracking-[0] leading-[27px] ml-0 lg:ml-[52px] mb-[68px]">
-                &quot;You don&apos;t have to go through it alone. With HEAL, your voice
-                matters, you are safe and heard, and you deserve quality support,
-                care, and justice. Every step you take, HEAL is with you—always and
-                everywhere.&quot;
-              </p>
+                <p className="max-w-[381px] font-acme text-[#221f1f] text-base tracking-[0] leading-[27px] mb-[68px]">
+                  &quot;You don't have to go through it alone. With HEAL, your voice
+                  matters, you are safe and heard, and you deserve quality support,
+                  care, and justice. Every step you take, HEAL is with you—always and
+                  everywhere.&quot;
+                </p>
 
-              <div className="flex flex-col sm:flex-row gap-[34px] ml-0 lg:ml-[37px] mb-[70px]">
-                <Link
-                  href="/auth/signup"
-                  className="w-full sm:w-[186px] h-[78px] bg-[#40707b] hover:bg-[#40707b]/90 rounded-[20px] font-acme text-white text-xl tracking-[0] leading-[normal] flex items-center justify-center transition-all"
-                >
-                  Get Started
-                </Link>
+                <div className="flex flex-col sm:flex-row gap-[34px] mb-[50px]">
+                  <Link
+                    href="/auth/signup"
+                    className="w-full sm:w-[186px] h-[78px] bg-[#40707b] hover:bg-[#40707b]/90 rounded-[20px] font-acme text-white text-xl tracking-[0] leading-[normal] flex items-center justify-center transition-all"
+                  >
+                    Get Started
+                  </Link>
 
-                <Link
-                  href="#contact"
-                  className="w-full sm:w-[190px] h-[82px] rounded-[20px] border-2 border-[#40707b] text-[#40707b] hover:bg-[#40707b]/10 font-acme text-xl tracking-[0] leading-[normal] flex items-center justify-center transition-all"
-                >
-                  Contact Us
-                </Link>
-              </div>
+                  <Link
+                    href="#contact"
+                    className="w-full sm:w-[190px] h-[82px] rounded-[20px] border-2 border-[#40707b] text-[#40707b] hover:bg-[#40707b]/10 font-acme text-xl tracking-[0] leading-[normal] flex items-center justify-center transition-all"
+                  >
+                    Contact Us
+                  </Link>
+                </div>
 
-              <div className="flex flex-col sm:flex-row gap-[60px] ml-0 lg:ml-[52px]">
-                <div className="flex flex-col gap-2.5">
-                  <div className="flex items-start gap-[7px]">
-                    <div className="font-acme text-[#2a4045] text-[64px] tracking-[0] leading-[75px] whitespace-nowrap">
-                      800
+                <div className="flex flex-col sm:flex-row gap-[60px]">
+                  <div className="flex flex-col gap-2.5">
+                    <div className="flex items-start gap-[7px]">
+                      <div className="font-acme text-[#2a4045] text-[64px] tracking-[0] leading-[75px] whitespace-nowrap">
+                        800
+                      </div>
+                      <div className="font-acme text-[#ecf4f3] text-2xl tracking-[0] leading-[normal] whitespace-nowrap">
+                        +
+                      </div>
                     </div>
-                    <div className="font-acme text-[#ecf4f3] text-2xl tracking-[0] leading-[normal] whitespace-nowrap">
-                      +
+                    <div className="font-acme text-[#221f1f] text-base tracking-[0] leading-[normal] max-w-[163px]">
+                      Positive Reviews
                     </div>
                   </div>
-                  <div className="font-acme text-[#221f1f] text-base tracking-[0] leading-[normal] max-w-[163px]">
-                    Positive Reviews
+                  <div className="flex flex-col gap-2.5">
+                    <div className="flex items-start gap-[7px]">
+                      <div className="font-acme text-[#2a4045] text-[64px] tracking-[0] leading-[75px] whitespace-nowrap">
+                        550
+                      </div>
+                      <div className="font-acme text-[#ecf4f3] text-2xl tracking-[0] leading-[normal] whitespace-nowrap">
+                        +
+                      </div>
+                    </div>
+                    <div className="font-acme text-[#221f1f] text-base tracking-[0] leading-[normal] max-w-[163px]">
+                      Community Health Volunteers
+                    </div>
                   </div>
                 </div>
-                <div className="flex flex-col gap-2.5">
-                  <div className="flex items-start gap-[7px]">
-                    <div className="font-acme text-[#2a4045] text-[64px] tracking-[0] leading-[75px] whitespace-nowrap">
-                      550
-                    </div>
-                    <div className="font-acme text-[#ecf4f3] text-2xl tracking-[0] leading-[normal] whitespace-nowrap">
-                      +
-                    </div>
-                  </div>
-                  <div className="font-acme text-[#221f1f] text-base tracking-[0] leading-[normal] max-w-[163px]">
-                    Community Health Volunteers
-                  </div>
-                </div>
               </div>
-            </div>
-          </section>
 
-          {/* Hero Image Section */}
-          <section className="relative w-full flex justify-center pt-[105px]">
-            <div className="relative w-full max-w-[1728px] px-[47px]">
-              <div className="relative flex items-start justify-center lg:justify-end">
+              {/* Right side - Hero Image and Info Cards */}
+              <div className="w-full lg:w-1/2 relative">
                 <div className="relative">
                   <Image
                     className="w-full max-w-[568px] h-auto object-cover"
@@ -114,54 +113,65 @@ export default function ServicesPage() {
                     height={821}
                   />
 
-                  <div className="absolute bottom-[90px] left-[29px] w-[378px] h-[174px] hidden lg:block">
-                    <div className="absolute top-0 left-0 w-[374px] h-[174px] bg-[#40707b]" />
-                    <div className="absolute top-7 left-5 w-[60px] h-[60px] bg-white rounded-[30px] flex items-center justify-center">
-                      <Image
-                        className="w-[40px] h-[28px]"
-                        alt="Vector icon"
-                        src="/vector-2.svg"
-                        width={40}
-                        height={28}
-                      />
-                    </div>
-                    <div className="absolute top-[46px] left-[91px] font-acme text-white text-xl tracking-[0] leading-[normal] whitespace-nowrap">
-                      Strong Referral Pathways
-                    </div>
-                    <div className="absolute top-[76px] left-[91px] w-52 font-acme text-white text-xl tracking-[0] leading-[26.2px]">
-                      Improve access to comprehensive care
-                    </div>
-                  </div>
+                  {/* Cards Container - positioned absolutely at the bottom */}
+                  <div className="absolute bottom-0 left-0 right-0 w-full px-4 lg:px-0">
+                    <div className="relative w-full max-w-[650px] mx-auto">
+                      {/* First Card */}
+                      <div className="absolute bottom-0 left-0 w-full max-w-[378px] h-[174px] hidden lg:block">
+                        <div className="relative w-full h-full">
+                          <div className="absolute top-0 left-0 w-full h-full bg-[#40707b]" />
+                          <div className="absolute top-7 left-5 w-[60px] h-[60px] bg-white rounded-[30px] flex items-center justify-center">
+                            <Image
+                              className="w-[40px] h-[28px]"
+                              alt="Vector icon"
+                              src="/vector-2.svg"
+                              width={40}
+                              height={28}
+                            />
+                          </div>
+                          <div className="absolute top-[46px] left-[91px] font-acme text-white text-xl tracking-[0] leading-[normal] whitespace-nowrap">
+                            Strong Referral Pathways
+                          </div>
+                          <div className="absolute top-[76px] left-[91px] w-52 font-acme text-white text-xl tracking-[0] leading-[26.2px]">
+                            Improve access to comprehensive care
+                          </div>
+                        </div>
+                      </div>
 
-                  <div className="absolute bottom-[190px] right-[-29px] w-[322px] h-[273px] backdrop-blur-[2.5px] backdrop-brightness-[100%] [-webkit-backdrop-filter:blur(2.5px)_brightness(100%)] hidden lg:block">
-                    <div className="absolute top-0 left-0 w-[314px] h-[273px] bg-[#2a3c45]" />
-                    <div className="absolute top-[23px] left-[17px] w-[60px] h-[60px] bg-white rounded-[30px] flex items-center justify-center">
-                      <Image
-                        className="w-[29px] h-[36px]"
-                        alt="Vector icon"
-                        src="/vector-5.svg"
-                        width={29}
-                        height={36}
-                      />
-                    </div>
-                    <div className="absolute top-[41px] left-[88px] font-acme text-white text-xl tracking-[0] leading-[normal] whitespace-nowrap">
-                      Anonymous Report
-                    </div>
-                    <div className="absolute top-[71px] left-[88px] w-52 font-acme text-white text-xl tracking-[0] leading-[26.2px]">
-                      Lorem ipsum dolor sit amet, consectetur.
-                    </div>
-                    <Image
-                      className="absolute top-[148px] left-[17px] w-[60px] h-[60px]"
-                      alt="Icon"
-                      src="/icon-10.png"
-                      width={60}
-                      height={60}
-                    />
-                    <div className="absolute top-[166px] left-[88px] font-acme text-white text-xl tracking-[0] leading-[normal]">
-                      24/7 AI Therapist
-                    </div>
-                    <div className="absolute top-[196px] left-[88px] w-52 font-acme text-white text-xl tracking-[0] leading-[26.2px]">
-                      Removing mental access barriers
+                      {/* Second Card */}
+                      <div className="absolute bottom-0 right-0 w-full max-w-[322px] h-[273px] hidden lg:block">
+                        <div className="relative w-full h-full">
+                          <div className="absolute top-0 left-0 w-full h-full bg-[#2a3c45]" />
+                          <div className="absolute top-[23px] left-[17px] w-[60px] h-[60px] bg-white rounded-[30px] flex items-center justify-center">
+                            <Image
+                              className="w-[29px] h-[36px]"
+                              alt="Vector icon"
+                              src="/vector-5.svg"
+                              width={29}
+                              height={36}
+                            />
+                          </div>
+                          <div className="absolute top-[41px] left-[88px] font-acme text-white text-xl tracking-[0] leading-[normal] whitespace-nowrap">
+                            Anonymous Report
+                          </div>
+                          <div className="absolute top-[71px] left-[88px] w-52 font-acme text-white text-xl tracking-[0] leading-[26.2px]">
+                            Lorem ipsum dolor sit amet, consectetur.
+                          </div>
+                          <Image
+                            className="absolute top-[148px] left-[17px] w-[60px] h-[60px]"
+                            alt="Icon"
+                            src="/icon-10.png"
+                            width={60}
+                            height={60}
+                          />
+                          <div className="absolute top-[166px] left-[88px] font-acme text-white text-xl tracking-[0] leading-[normal]">
+                            24/7 AI Therapist
+                          </div>
+                          <div className="absolute top-[196px] left-[88px] w-52 font-acme text-white text-xl tracking-[0] leading-[26.2px]">
+                            Removing mental access barriers
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
