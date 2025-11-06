@@ -110,7 +110,7 @@ export default function ChatPage() {
     off: {
       label: 'Voice Off',
       icon: VolumeX,
-      color: 'text-gray-300 bg-transparent',
+      color: 'text-gray-600 bg-gray-100',
       voiceId: null
     },
     female: {
@@ -122,7 +122,7 @@ export default function ChatPage() {
     male: {
       label: 'Male Voice',
       icon: Volume2,
-      color: 'text-blue-600 bg-blue-100',
+      color: 'text-teal-600 bg-teal-100',
       voiceId: 'pNInz6obpgDQGcFmaJgB' // Adam - calm and supportive male voice
     }
   };
@@ -214,15 +214,7 @@ export default function ChatPage() {
 
   const createNewSession = () => {
     setCurrentSessionId(null);
-    setMessages([
-      {
-        id: '1',
-        content: "Habari! I'm Nia - meaning 'purpose' in Swahili.Niaogea Kiswaili na Kiigereza. This is your safe space. Ninaongea Kiswahili na Kiingereza. You are brave for reaching out. I'm here to listen without judgment, and support you i a wa possible. Whatever you share stays between us. How are you feeling today? / Unajisikiaje leo?",
-        sender: 'ai',
-        timestamp: new Date(),
-        type: 'text'
-      }
-    ]);
+    setMessages([]);
     setShowSessions(false);
   };
 
@@ -463,22 +455,25 @@ export default function ChatPage() {
   }
 
   return (
-    <div className="h-screen flex flex-col overflow-hidden">
-      {/* {showChoiceModal && <ChoiceModal onSelect={handleChoice} />} */}
+    <div className="h-screen flex flex-col overflow-hidden bg-gradient-to-br from-green-100 via-blue-50 to-teal-100" style={{
+      backgroundImage: `url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="leaves" patternUnits="userSpaceOnUse" width="20" height="20"><circle cx="10" cy="10" r="1" fill="%23059669" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23leaves)"/></svg>')`,
+      backgroundSize: '200px 200px'
+    }}>
+      {showChoiceModal && <ChoiceModal onSelect={handleChoice} />}
       {/* Header - Fixed */}
-      <div className="container shadow-sm border-b border-gray-700 px-3 sm:px-4 py-3 flex-shrink-0">
+      <div className="bg-white/80 backdrop-blur-sm shadow-sm border-b border-gray-200 px-3 sm:px-4 py-3 flex-shrink-0">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-2 sm:space-x-4">
-            <Link href="/dashboard" className="p-2 hover:bg-gray-800 rounded-lg transition-colors">
-              <ArrowLeft className="h-4 w-4 sm:h-5 sm:w-5 text-gray-300" />
+            <Link href="/dashboard" className="p-2 hover:bg-gray-100 rounded-lg transition-colors">
+              <ArrowLeft className="h-4 w-4 sm:h-5 sm:w-5 text-gray-600" />
             </Link>
             <div className="flex items-center space-x-2 sm:space-x-3">
-              <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-r from-blue-500 to-green-500 rounded-full flex items-center justify-center">
+              <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-r from-teal-500 to-green-500 rounded-full flex items-center justify-center">
                 <Bot className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
               </div>
               <div>
-                <h1 className="font-semibold text-gray-900 text-sm sm:text-base font-acme">Nia - Your Safe Space</h1>
-                <p className="text-xs sm:text-sm text-green-600 flex items-center">
+                <h1 className="font-semibold text-gray-800 text-sm sm:text-base">AI Support Companion</h1>
+                <p className="text-xs sm:text-sm text-gray-600 flex items-center">
                   {isPlayingAudio ? (
                     <>
                       <Volume2 className="h-3 w-3 mr-1" />
@@ -487,7 +482,7 @@ export default function ChatPage() {
                     </>
                   ) : (
                     <>
-                      <span className="hidden sm:inline">Here for you • Safe & Confidential</span>
+                      <span className="hidden sm:inline">Safe space to share - available 24/7</span>
                       <span className="sm:hidden">Available</span>
                     </>
                   )}
@@ -501,20 +496,20 @@ export default function ChatPage() {
             <div className="relative" ref={sessionsRef}>
               <button
                 onClick={() => setShowSessions(!showSessions)}
-                className="p-2 hover:bg-gray-800 rounded-lg transition-colors flex items-center space-x-1"
+                className="p-2 hover:bg-gray-100 rounded-lg transition-colors flex items-center space-x-1"
                 title="Chat Sessions"
               >
-                <MessageSquare className="h-4 w-4 sm:h-5 sm:w-5 text-gray-300" />
-                <ChevronDown className="h-3 w-3 text-gray-300 hidden sm:block" />
+                <MessageSquare className="h-4 w-4 sm:h-5 sm:w-5 text-gray-600" />
+                <ChevronDown className="h-3 w-3 text-gray-600 hidden sm:block" />
               </button>
 
               {showSessions && (
-                <div className="absolute right-0 top-full mt-2 w-72 sm:w-80 bg-transparent rounded-lg shadow-lg border border-gray-700 py-2 z-50 max-h-96 overflow-y-auto">
-                  <div className="px-3 py-2 text-xs font-medium text-gray-300 border-b border-gray-700 flex items-center justify-between">
+                <div className="absolute right-0 top-full mt-2 w-72 sm:w-80 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-50 max-h-96 overflow-y-auto">
+                  <div className="px-3 py-2 text-xs font-medium text-gray-600 border-b border-gray-200 flex items-center justify-between">
                     <span>Chat Sessions</span>
                     <button
                       onClick={createNewSession}
-                      className="text-blue-600 hover:text-blue-300 text-xs"
+                      className="text-teal-600 hover:text-teal-700 text-xs"
                     >
                       New Chat
                     </button>
@@ -525,26 +520,26 @@ export default function ChatPage() {
                       <Loader2 className="h-4 w-4 animate-spin mx-auto" />
                     </div>
                   ) : sessions.length === 0 ? (
-                    <div className="p-4 text-center text-gray-300 text-sm">
+                    <div className="p-4 text-center text-gray-600 text-sm">
                       No chat sessions yet
                     </div>
                   ) : (
                     sessions.map((session) => (
                       <div
                         key={session.id}
-                        className={`px-3 py-2 hover:bg-transparent cursor-pointer flex items-center justify-between group ${currentSessionId === session.id ? 'bg-blue-500/20 text-blue-300' : 'text-gray-200'
+                        className={`px-3 py-2 hover:bg-gray-50 cursor-pointer flex items-center justify-between group ${currentSessionId === session.id ? 'bg-teal-50 text-teal-700' : 'text-gray-700'
                           }`}
                         onClick={() => selectSession(session.id)}
                       >
                         <div className="flex-1 min-w-0">
                           <p className="text-sm font-medium truncate">{session.title}</p>
-                          <p className="text-xs text-gray-300">
+                          <p className="text-xs text-gray-500">
                             {new Date(session.updatedAt).toLocaleDateString()}
                           </p>
                         </div>
                         <button
                           onClick={(e) => deleteSession(session.id, e)}
-                          className="opacity-0 group-hover:opacity-100 p-1 hover:bg-red-100 rounded text-red-600 transition-opacity"
+                          className="opacity-0 group-hover:opacity-100 p-1 hover:bg-red-50 rounded text-red-600 transition-opacity"
                           title="Delete session"
                         >
                           <Trash2 className="h-3 w-3" />
@@ -568,8 +563,8 @@ export default function ChatPage() {
               </button>
 
               {showVoiceDropdown && (
-                <div className="absolute right-0 top-full mt-2 w-44 sm:w-48 bg-transparent rounded-lg shadow-lg border border-gray-700 py-2 z-50">
-                  <div className="px-3 py-2 text-xs font-medium text-gray-300 border-b border-gray-700">
+                <div className="absolute right-0 top-full mt-2 w-44 sm:w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-50">
+                  <div className="px-3 py-2 text-xs font-medium text-gray-600 border-b border-gray-200">
                     Voice Options
                   </div>
                   {Object.entries(voiceConfigs).map(([key, config]) => {
@@ -578,18 +573,18 @@ export default function ChatPage() {
                       <button
                         key={key}
                         onClick={() => handleVoiceOptionChange(key as VoiceOption)}
-                        className={`w-full px-3 py-2 text-left hover:bg-transparent flex items-center space-x-3 transition-colors ${voiceOption === key ? 'bg-blue-500/20 text-blue-300' : 'text-gray-200'
+                        className={`w-full px-3 py-2 text-left hover:bg-gray-50 flex items-center space-x-3 transition-colors ${voiceOption === key ? 'bg-teal-50 text-teal-700' : 'text-gray-700'
                           }`}
                       >
                         <OptionIcon className="h-4 w-4" />
                         <span className="text-sm">{config.label}</span>
                         {voiceOption === key && (
-                          <div className="ml-auto w-2 h-2 bg-blue-600 rounded-full"></div>
+                          <div className="ml-auto w-2 h-2 bg-teal-600 rounded-full"></div>
                         )}
                       </button>
                     );
                   })}
-                  <div className="px-3 py-2 text-xs text-gray-300 border-t border-gray-700 mt-1">
+                  <div className="px-3 py-2 text-xs text-gray-500 border-t border-gray-200 mt-1">
                     {process.env.NEXT_PUBLIC_ELEVENLABS_API_KEY
                       ? 'Powered by ElevenLabs AI'
                       : 'API key required for voice'
@@ -602,7 +597,7 @@ export default function ChatPage() {
             <div className="relative">
               <button
                 onClick={() => setShowVideoConversation(true)}
-                className="p-2 bg-blue-100 hover:bg-blue-200 rounded-lg transition-colors text-blue-600 relative"
+                className="p-2 bg-teal-100 hover:bg-teal-200 rounded-lg transition-colors text-teal-600 relative"
                 title="Start video conversation"
               >
                 <Video className="h-4 w-4 sm:h-5 sm:w-5" />
@@ -620,250 +615,301 @@ export default function ChatPage() {
                 </div>
               )}
             </div>
-            <Link href="/crisis" className="p-2 hover:bg-gray-800 rounded-lg transition-colors text-red-600">
+            <Link href="/crisis" className="p-2 hover:bg-gray-100 rounded-lg transition-colors text-red-600">
               <Phone className="h-4 w-4 sm:h-5 sm:w-5" />
             </Link>
-            <button className="p-2 hover:bg-gray-800 rounded-lg transition-colors">
-              <MoreVertical className="h-4 w-4 sm:h-5 sm:w-5 text-gray-300" />
+            <button className="p-2 hover:bg-gray-100 rounded-lg transition-colors">
+              <MoreVertical className="h-4 w-4 sm:h-5 sm:w-5 text-gray-600" />
             </button>
           </div>
         </div>
       </div>
 
-      {/* Privacy Notice - Fixed */}
-      <div className="bg-blue-500/20 border-b border-blue-500/50 px-3 sm:px-4 py-2 flex-shrink-0">
-        <div className="flex items-center justify-center space-x-2 text-xs sm:text-sm text-blue-300">
-          <Shield className="h-3 w-3 sm:h-4 sm:w-4" />
-          <span className="text-center">
-            <span className="hidden sm:inline">Your privacy is protected • No one else will see this conversation / Mazungumzo yako ni siri</span>
-            <span className="sm:hidden">Private & Confidential</span>
-          </span>
-        </div>
-      </div>
 
-      {/* Voice Status Banner - Fixed */}
-      {voiceOption !== 'off' && process.env.NEXT_PUBLIC_ELEVENLABS_API_KEY && (
-        <div className={`border-b px-3 sm:px-4 py-2 flex-shrink-0 ${voiceOption === 'female' ? 'bg-pink-500/20 border-pink-500/50' : 'bg-blue-500/20 border-blue-500/50'
-          }`}>
-          <div className={`flex items-center justify-center space-x-2 text-xs sm:text-sm ${voiceOption === 'female' ? 'text-pink-300' : 'text-blue-300'
-            }`}>
-            <VoiceIcon className="h-3 w-3 sm:h-4 sm:w-4" />
-            <span className="text-center">
-              <span className="hidden sm:inline">{currentVoiceConfig.label} enabled • AI will speak responses aloud</span>
-              <span className="sm:hidden">{currentVoiceConfig.label} enabled</span>
-            </span>
-          </div>
-        </div>
-      )}
+
+
 
       {/* Main Content - Flexible */}
       <div className="flex-1 flex flex-col min-h-0 overflow-hidden">
         {showVideoConversation ? (
-          <div className="flex-1 flex flex-col min-h-0 justify-center items-center relative">
-            <div className="absolute inset-0 flex flex-col h-full items-center rounded-lg justify-center">
+          <div className="flex-1 flex flex-col min-h-0 justify-center items-center relative bg-gray-900">
+            <div className="absolute inset-0 flex flex-col h-full items-center justify-center">
               {renderScreen()}
+              
+              {/* Video Controls Overlay */}
+              <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 flex items-center space-x-4 bg-gray-800/80 backdrop-blur-sm rounded-full px-6 py-3">
+                <button className="p-3 bg-gray-700 hover:bg-gray-600 rounded-full transition-colors">
+                  <Settings className="h-5 w-5 text-white" />
+                </button>
+                <button className="p-3 bg-gray-700 hover:bg-gray-600 rounded-full transition-colors">
+                  <Mic className="h-5 w-5 text-white" />
+                </button>
+                <button className="p-3 bg-gray-700 hover:bg-gray-600 rounded-full transition-colors">
+                  <Video className="h-5 w-5 text-white" />
+                </button>
+                <button 
+                  onClick={() => setShowVideoConversation(false)}
+                  className="p-3 bg-red-600 hover:bg-red-700 rounded-full transition-colors"
+                >
+                  <Phone className="h-5 w-5 text-white transform rotate-135" />
+                </button>
+              </div>
+              
+              {/* Close button */}
               <button
                 onClick={() => setShowVideoConversation(false)}
-                className="absolute top-4 right-4 bg-transparent/80 hover:bg-transparent text-gray-200 rounded-full p-2 sm:p-3 shadow-lg z-10 transition-all duration-200"
+                className="absolute top-4 right-4 bg-gray-800/80 hover:bg-gray-700 text-white rounded-full p-2 shadow-lg z-10 transition-all duration-200"
                 aria-label="Close video conversation"
               >
-                ✕
-              </button> 
+                <X className="h-5 w-5" />
+              </button>
             </div>
           </div>
         ) : (
-          <>
-            {/* Messages Container - Scrollable */}
-            <div
-              ref={messagesContainerRef}
-              className="flex-1 overflow-y-auto px-3 sm:px-4 py-4 sm:py-6 space-y-3 sm:space-y-4 min-h-0 chat-messages-container"
-              style={{
-                scrollBehavior: 'smooth',
-                overscrollBehavior: 'contain'
-              }}
-            >
-              {loadingHistory ? (
-                <div className="flex items-center justify-center py-8">
-                  <div className="flex items-center space-x-2">
-                    <Loader2 className="h-4 w-4 sm:h-5 sm:w-5 animate-spin text-blue-600" />
-                    <span className="text-gray-300 text-sm sm:text-base">Loading chat history...</span>
-                  </div>
-                </div>
-              ) : (
-                messages.map((message) => (
-                  <div
-                    key={message.id}
-                    className={`flex ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}
-                  >
-                    <div className={`flex items-start space-x-2 sm:space-x-3 max-w-[85%] sm:max-w-xs md:max-w-md lg:max-w-lg xl:max-w-2xl ${message.sender === 'user' ? 'flex-row-reverse space-x-reverse' : ''
-                      }`}>
-                      {/* Avatar */}
-                      <div className={`w-6 h-6 sm:w-8 sm:h-8 rounded-full flex items-center justify-center flex-shrink-0 ${message.sender === 'user'
-                          ? 'heal-text-primary'
-                          : 'heal-text-secondary'
-                        }`}>
-                        {message.sender === 'user' ?
-                          <User className="h-3 w-3 sm:h-4 sm:w-4 text-white" /> :
-                          <Bot className="h-3 w-3 sm:h-4 sm:w-4 text-white" />
-                        }
+          <div className="flex-1 flex flex-col items-center justify-center px-4 py-8">
+            {messages.length === 0 ? (
+              /* Welcome Screen */
+              <>
+                <div className="w-full max-w-2xl mx-auto bg-white/90 backdrop-blur-sm rounded-3xl shadow-xl overflow-hidden">
+                  {/* Chat Header */}
+                  <div className="bg-gradient-to-r from-teal-500 to-green-500 px-6 py-4 text-center">
+                    <div className="flex items-center justify-center space-x-3 mb-2">
+                      <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
+                        <Bot className="h-6 w-6 text-white" />
                       </div>
-
-                      {/* Message Bubble */}
-                      <div className={`heal-chat-bubble ${message.sender === 'user'
-                          ? 'bg-blue-600 text-white'
-                          : 'bg-transparent text-white border border-gray-700'
-                        }`}>
-                        {message.isLoading ? (
-                          <div className="flex items-center space-x-2">
-                            <Loader2 className="h-3 w-3 sm:h-4 sm:w-4 animate-spin" />
-                            <span className="text-xs sm:text-sm">Thinking...</span>
-                          </div>
-                        ) : (
-                          <>
-                            <p className="text-xs sm:text-sm leading-relaxed break-words">{message.content}</p>
-                            <div className="flex items-center justify-between mt-1">
-                              <p className={`text-xs ${message.sender === 'user' ? 'text-blue-100' : 'text-gray-300'
-                                }`}>
-                                {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                              </p>
-                              {/* Audio indicator for AI messages */}
-                              {message.sender === 'ai' && voiceOption !== 'off' && !message.isLoading && (
-                                <div className="flex items-center space-x-1">
-                                  {isPlayingAudio ? (
-                                    <Volume2 className={`h-3 w-3 ${voiceOption === 'female' ? 'text-pink-600' : 'text-blue-600'
-                                      }`} />
-                                  ) : (
-                                    <VoiceIcon className="h-3 w-3 text-gray-300" />
-                                  )}
-                                </div>
-                              )}
-                            </div>
-                          </>
-                        )}
+                      <div>
+                        <h2 className="text-xl font-semibold text-white">AI Support Companion</h2>
+                        <p className="text-teal-100 text-sm">Safe space to share - available 24/7</p>
+                      </div>
+                      <div className="text-right">
+                        <span className="text-white text-sm font-medium">Anne</span>
                       </div>
                     </div>
                   </div>
-                ))
-              )}
 
-              <div ref={messagesEndRef} />
-            </div>
+                  {/* Welcome Message */}
+                  <div className="px-6 py-8 text-center">
+                    <h3 className="text-2xl font-bold text-gray-800 mb-2">Hey!</h3>
+                    <h4 className="text-xl font-semibold text-gray-700 mb-6">Can I help you with anything?</h4>
+                    
+                    <div className="flex items-center justify-center space-x-3 mb-6 text-gray-600">
+                      <MessageSquare className="h-5 w-5" />
+                      <p className="text-sm">This is a safe space to share your thoughts and feelings</p>
+                    </div>
+                    <p className="text-sm text-gray-500 mb-8">Completely without judgement</p>
+                  </div>
 
-            {/* Crisis Support Banner - Fixed */}
-            <div className="bg-red-500/20 border-t border-red-500/50 px-3 sm:px-4 py-2 flex-shrink-0">
-              <div className="flex items-center justify-between">
-                <p className="text-xs sm:text-sm text-red-300">
-                  <span className="hidden sm:inline">If you're having thoughts of self-harm, please get help immediately.</span>
-                  <span className="sm:hidden">Need immediate help?</span>
-                </p>
-                <Link href="/crisis" className="text-xs sm:text-sm font-medium text-red-600 hover:text-red-700">
-                  Crisis Support →
-                </Link>
-              </div>
-            </div>
-          </>
-        )}
+                  {/* Input Area */}
+                  <div className="px-6 pb-6">
+                    <div className="relative">
+                      <textarea
+                        ref={inputRef}
+                        value={inputMessage}
+                        onChange={(e) => setInputMessage(e.target.value)}
+                        onKeyPress={handleKeyPress}
+                        placeholder="Type your message here... Share what's on your mind"
+                        className="w-full px-4 py-4 pr-12 border border-gray-200 rounded-2xl focus:ring-2 focus:ring-teal-500 focus:border-transparent resize-none bg-gray-50 text-gray-800 placeholder-gray-500"
+                        rows={3}
+                        disabled={isTyping}
+                      />
+                      <button 
+                        onClick={toggleRecording}
+                        className="absolute bottom-3 right-3 p-2 text-gray-400 hover:text-gray-600"
+                      >
+                        <Mic className="h-5 w-5" />
+                      </button>
+                    </div>
+                    
+                    <button
+                      onClick={sendMessage}
+                      disabled={!inputMessage.trim() || isTyping}
+                      className="w-full mt-4 bg-gradient-to-r from-teal-600 to-green-600 hover:from-teal-700 hover:to-green-700 text-white font-medium py-3 px-6 rounded-2xl transition-all duration-200 flex items-center justify-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      {isTyping ? (
+                        <Loader2 className="h-5 w-5 animate-spin" />
+                      ) : (
+                        <>
+                          <Send className="h-5 w-5" />
+                          <span>Send Message</span>
+                        </>
+                      )}
+                    </button>
+                  </div>
+                </div>
 
-        {/* Input Area - Fixed at bottom */}
-        <div className="bg-transparent border-t border-gray-700 px-3 sm:px-4 py-3 sm:py-4 flex-shrink-0">
-          <div className="flex items-end space-x-2 sm:space-x-3">
-            <button
-              onClick={toggleRecording}
-              className={`p-2 sm:p-3 rounded-full transition-all duration-200 flex-shrink-0 ${isRecording
-                  ? 'bg-red-500/200 text-white pulse-glow'
-                  : 'bg-transparent text-gray-300 hover:bg-white/20'
-                }`}
-              title={isRecording ? 'Stop recording' : 'Start voice message'}
-            >
-              {isRecording ? <MicOff className="h-4 w-4 sm:h-5 sm:w-5" /> : <Mic className="h-4 w-4 sm:h-5 sm:w-5" />}
-            </button>
+                {/* Privacy Notice */}
+                <div className="mt-6 text-center text-sm text-gray-600 max-w-md">
+                  <div className="flex items-center justify-center space-x-2 mb-2">
+                    <Shield className="h-4 w-4" />
+                    <span>This is a safe space to share your thoughts and feelings</span>
+                  </div>
+                  <p>Completely without judgement</p>
+                </div>
+              </>
+            ) : (
+              /* Chat Messages View */
+              <div className="w-full max-w-4xl mx-auto bg-white/90 backdrop-blur-sm rounded-3xl shadow-xl overflow-hidden flex flex-col h-[80vh]">
+                {/* Chat Header */}
+                <div className="bg-gradient-to-r from-teal-500 to-green-500 px-6 py-4 flex-shrink-0">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center space-x-3">
+                      <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
+                        <Bot className="h-6 w-6 text-white" />
+                      </div>
+                      <div>
+                        <h2 className="text-lg font-semibold text-white">AI Support Companion</h2>
+                        <p className="text-teal-100 text-sm">Safe space to share - available 24/7</p>
+                      </div>
+                    </div>
+                    <div className="text-right">
+                      <span className="text-white text-sm font-medium">Anne</span>
+                    </div>
+                  </div>
+                </div>
 
-            <div className="flex-1 relative min-w-0">
-              <textarea
-                ref={inputRef}
-                value={inputMessage}
-                onChange={(e) => setInputMessage(e.target.value)}
-                onKeyPress={handleKeyPress}
-                placeholder="Type your message..."
-                className="w-full px-3 py-2 sm:px-4 sm:py-3 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none max-h-24 sm:max-h-32 bg-transparent text-sm sm:text-base"
-                rows={1}
-                style={{
-                  minHeight: '40px',
-                  maxHeight: '96px'
-                }}
-                disabled={isTyping}
-              />
-            </div>
-
-            <button
-              onClick={sendMessage}
-              disabled={!inputMessage.trim() || isTyping}
-              className={`p-2 sm:p-3 rounded-full transition-all duration-200 flex-shrink-0 ${inputMessage.trim() && !isTyping
-                  ? 'bg-blue-600 text-white hover:bg-blue-700 transform hover:scale-105'
-                  : 'bg-transparent text-gray-300 cursor-not-allowed'
-                }`}
-              title="Send message"
-            >
-              {isTyping ? (
-                <Loader2 className="h-4 w-4 sm:h-5 sm:w-5 animate-spin" />
-              ) : (
-                <Send className="h-4 w-4 sm:h-5 sm:w-5" />
-              )}
-            </button>
-          </div>
-
-          {/* Quick Response Buttons - Responsive */}
-          <div className="flex items-center justify-between mt-2 sm:mt-3">
-            <div className="flex flex-wrap gap-1 sm:gap-2 flex-1 min-w-0">
-              {[
-                { en: 'I need support', sw: 'Nahitaji msaada', short: 'Support' },
-                { en: 'Feeling unsafe', sw: 'Siko salama', short: 'Unsafe' },
-                { en: 'Need someone to talk to', sw: 'Nataka mtu wa kuongea naye', short: 'Talk' },
-                { en: 'Having a hard day', sw: 'Nina siku ngumu', short: 'Hard day' }
-              ].map((option, index) => (
-                <button
-                  key={index}
-                  onClick={() => setInputMessage(`${option.en} / ${option.sw}`)}
-                  className="px-2 py-1 sm:px-3 sm:py-1 bg-gray-100 hover:bg-gray-200 text-gray-700 text-xs sm:text-sm rounded-full transition-colors disabled:opacity-50 whitespace-nowrap"
-                  disabled={isTyping}
+                {/* Messages Container */}
+                <div
+                  ref={messagesContainerRef}
+                  className="flex-1 overflow-y-auto px-6 py-4 space-y-4"
+                  style={{
+                    scrollBehavior: 'smooth',
+                    overscrollBehavior: 'contain'
+                  }}
                 >
-                  <span className="hidden sm:inline">{option.en}</span>
-                  <span className="sm:hidden">{option.short}</span>
-                </button>
-              ))}
-            </div>
+                  {loadingHistory ? (
+                    <div className="flex items-center justify-center py-8">
+                      <div className="flex items-center space-x-2">
+                        <Loader2 className="h-5 w-5 animate-spin text-teal-600" />
+                        <span className="text-gray-600">Loading chat history...</span>
+                      </div>
+                    </div>
+                  ) : (
+                    messages.map((message) => (
+                      <div
+                        key={message.id}
+                        className={`flex ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}
+                      >
+                        <div className={`flex items-start space-x-3 max-w-[80%] ${message.sender === 'user' ? 'flex-row-reverse space-x-reverse' : ''}`}>
+                          {/* Avatar */}
+                          <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${message.sender === 'user'
+                              ? 'bg-blue-500'
+                              : 'bg-teal-500'
+                            }`}>
+                            {message.sender === 'user' ?
+                              <User className="h-4 w-4 text-white" /> :
+                              <Bot className="h-4 w-4 text-white" />
+                            }
+                          </div>
 
-            {/* Voice Status */}
-            <div className="flex items-center space-x-1 sm:space-x-2 text-xs text-gray-300 ml-2 sm:ml-4 flex-shrink-0">
-              <div className={`w-2 h-2 rounded-full ${voiceOption === 'off' ? 'bg-gray-400' :
-                  voiceOption === 'female' ? 'bg-pink-500/200' : 'bg-blue-500/200'
-                }`}></div>
-              <span className="hidden sm:inline">{currentVoiceConfig.label}</span>
-            </div>
-          </div>
+                          {/* Message Bubble */}
+                          <div className={`px-4 py-3 rounded-2xl ${message.sender === 'user'
+                              ? 'bg-blue-500 text-white'
+                              : 'bg-gray-100 text-gray-800'
+                            }`}>
+                            {message.isLoading ? (
+                              <div className="flex items-center space-x-2">
+                                <Loader2 className="h-4 w-4 animate-spin" />
+                                <span className="text-sm">Thinking...</span>
+                              </div>
+                            ) : (
+                              <>
+                                <p className="text-sm leading-relaxed break-words">{message.content}</p>
+                                <div className="flex items-center justify-between mt-2">
+                                  <p className={`text-xs ${message.sender === 'user' ? 'text-blue-100' : 'text-gray-500'}`}>
+                                    {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                                  </p>
+                                  {/* Audio indicator for AI messages */}
+                                  {message.sender === 'ai' && voiceOption !== 'off' && !message.isLoading && (
+                                    <div className="flex items-center space-x-1">
+                                      {isPlayingAudio ? (
+                                        <Volume2 className="h-3 w-3 text-teal-600" />
+                                      ) : (
+                                        <VoiceIcon className="h-3 w-3 text-gray-400" />
+                                      )}
+                                    </div>
+                                  )}
+                                </div>
+                              </>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    ))
+                  )}
+                  <div ref={messagesEndRef} />
+                </div>
 
-          {/* AI Service Status */}
-          <div className="flex items-center justify-center mt-2 text-xs text-gray-300">
-            <div className="flex items-center space-x-2 sm:space-x-4">
-              <div className="flex items-center space-x-1">
-                <div className={`w-2 h-2 rounded-full ${process.env.NEXT_PUBLIC_GEMINI_API_KEY ? 'bg-green-500' : 'bg-red-500/200'
-                  }`}></div>
-                <span>Gemini AI</span>
+                {/* Input Area */}
+                <div className="px-6 py-4 border-t border-gray-200 flex-shrink-0">
+                  <div className="flex items-end space-x-3">
+                    <button
+                      onClick={toggleRecording}
+                      className={`p-3 rounded-full transition-all duration-200 flex-shrink-0 ${isRecording
+                          ? 'bg-red-500 text-white'
+                          : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                        }`}
+                      title={isRecording ? 'Stop recording' : 'Start voice message'}
+                    >
+                      {isRecording ? <MicOff className="h-5 w-5" /> : <Mic className="h-5 w-5" />}
+                    </button>
+
+                    <div className="flex-1 relative">
+                      <textarea
+                        ref={inputRef}
+                        value={inputMessage}
+                        onChange={(e) => setInputMessage(e.target.value)}
+                        onKeyPress={handleKeyPress}
+                        placeholder="Type your message..."
+                        className="w-full px-4 py-3 border border-gray-200 rounded-2xl focus:ring-2 focus:ring-teal-500 focus:border-transparent resize-none bg-gray-50 text-gray-800"
+                        rows={1}
+                        style={{
+                          minHeight: '48px',
+                          maxHeight: '120px'
+                        }}
+                        disabled={isTyping}
+                      />
+                    </div>
+
+                    <button
+                      onClick={sendMessage}
+                      disabled={!inputMessage.trim() || isTyping}
+                      className={`p-3 rounded-full transition-all duration-200 flex-shrink-0 ${inputMessage.trim() && !isTyping
+                          ? 'bg-teal-500 text-white hover:bg-teal-600'
+                          : 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                        }`}
+                      title="Send message"
+                    >
+                      {isTyping ? (
+                        <Loader2 className="h-5 w-5 animate-spin" />
+                      ) : (
+                        <Send className="h-5 w-5" />
+                      )}
+                    </button>
+                  </div>
+
+                  {/* Quick Response Buttons */}
+                  <div className="flex flex-wrap gap-2 mt-3">
+                    {[
+                      { en: 'I need support', short: 'Support' },
+                      { en: 'Feeling unsafe', short: 'Unsafe' },
+                      { en: 'Need someone to talk to', short: 'Talk' },
+                      { en: 'Having a hard day', short: 'Hard day' }
+                    ].map((option, index) => (
+                      <button
+                        key={index}
+                        onClick={() => setInputMessage(option.en)}
+                        className="px-3 py-1 bg-gray-100 hover:bg-gray-200 text-gray-700 text-sm rounded-full transition-colors disabled:opacity-50"
+                        disabled={isTyping}
+                      >
+                        {option.short}
+                      </button>
+                    ))}
+                  </div>
+                </div>
               </div>
-              <div className="flex items-center space-x-1">
-                <div className={`w-2 h-2 rounded-full ${process.env.NEXT_PUBLIC_ELEVENLABS_API_KEY ? 'bg-green-500' : 'bg-red-500/200'
-                  }`}></div>
-                <span className="hidden sm:inline">Voice ({voiceOption})</span>
-                <span className="sm:hidden">Voice</span>
-              </div>
-              <div className="flex items-center space-x-1">
-                <div className={`w-2 h-2 rounded-full ${isAuthenticated ? 'bg-green-500' : 'bg-red-500/200'
-                  }`}></div>
-                <span>Backend</span>
-              </div>
-            </div>
+            )}
           </div>
-        </div>
+        )}
       </div>
     </div>
   );
