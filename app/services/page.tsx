@@ -180,31 +180,49 @@ export default function ServicesPage() {
           </section>
 
           {/* Partners Section */}
-          <section className="relative w-full mt-[112px] bg-[#2a4045] backdrop-blur-[2.0px] backdrop-brightness-[110%] [-webkit-backdrop-filter:blur(2.0px)_brightness(110%)] shadow-[inset_0_1px_0_rgba(255,255,255,0.40),inset_1px_0_0_rgba(255,255,255,0.32),inset_0_-1px_1px_rgba(0,0,0,0.13),inset_-1px_0_1px_rgba(0,0,0,0.11)] py-[140px]">
-            <div className="flex flex-col items-center gap-[110px] px-4">
-              <div className="font-acme text-white text-[40px] tracking-[0] leading-[normal] text-center">
-                Trusted by 50+ Partners Worldwide
-              </div>
-              <div className="flex flex-wrap items-center justify-center gap-[60px] lg:gap-[141px]">
-                {[
-                  { src: '/client-9-1536x768.png', alt: 'Client 9' },
-                  { src: '/client-4-1536x768.png', alt: 'Client 4' },
-                  { src: '/client-2-1536x768.png', alt: 'Client 2' },
-                  { src: '/client-5-1536x768.png', alt: 'Client 5' },
-                  { src: '/client-6-1536x768.png', alt: 'Client 6' },
-                ].map((logo, index) => (
-                  <Image
-                    key={`partner-${index}`}
-                    className="w-[159px] h-[79px] object-cover"
-                    alt={logo.alt}
-                    src={logo.src}
-                    width={159}
-                    height={79}
-                  />
-                ))}
-              </div>
-            </div>
-          </section>
+<section className="relative w-full bg-[#2a4045] py-[80px]">
+ {/* <div className="absolute inset-0 bg-grey rounded-xl pointer-events-none" /> */}
+  <div className="flex flex-col items-center gap-[80px] px-4">
+    <div className="font-acme text-white text-[40px] tracking-[0] leading-[normal] text-center">
+      Trusted by 50+ Partners Worldwide
+    </div>
+
+    {/* Curved Logos Layout */}
+    <div className="relative w-full max-w-[1000px] flex justify-center flex-wrap lg:flex-nowrap gap-[60px] lg:gap-[120px]">
+     
+
+      {[
+        { src: '/client-9-1536x768.png', alt: 'Client 9' },
+        { src: '/client-4-1536x768.png', alt: 'Client 4' },
+        { src: '/client-2-1536x768.png', alt: 'Client 2' },
+        { src: '/client-5-1536x768.png', alt: 'Client 5' },
+        { src: '/client-6-1536x768.png', alt: 'Client 6' },
+      ].map((logo, index) => {
+        // curve logic: center logo higher, sides lower
+        const curveHeights = [0, 10, 10, 10, 0];
+        return (
+          <div
+            key={`partner-${index}`}
+            className="transition-transform duration-300 hover:scale-105"
+            style={{
+              transform: `translateY(-${curveHeights[index]}px)`,
+            }}
+          >
+            <Image
+              className="w-[159px] h-[79px] object-contain opacity-50 hover:opacity-100 transition-opacity"
+              alt={logo.alt}
+              src={logo.src}
+              width={159}
+              height={79}
+            />
+          </div>
+        );
+      })}
+    </div>
+  </div>
+</section>
+
+
 
           {/* Services Section */}
           <section className="relative w-full flex justify-center pt-[200px] lg:pt-[448px]">
