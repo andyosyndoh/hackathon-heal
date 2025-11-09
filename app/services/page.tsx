@@ -237,51 +237,51 @@ export default function ServicesPage() {
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-4xl">
                     {[
                       {
-                        icon: <Headset className="w-8 h-8 text-[#2a4045]" />,
+                        icon: <Headset className="w-8 h-8 text-[#044750]" />,
                         title: '24/7 Digital Support',
                         description:
                           'Confidential AI-powered chat & voice support—available anytime, anywhere.',
                       },
                       {
-                        icon: <Brain className="w-8 h-8 text-[#2a4045]" />,
+                        icon: <Brain className="w-8 h-8 text-[#044750]" />,
                         title: 'Mental Health',
                         description:
                           'Access trauma-informed therapists and peer mentors who walk with you step by step.',
                       },
                       {
-                        icon: <HeartPulse className="w-8 h-8 text-[#2a4045]" />,
+                        icon: <HeartPulse className="w-8 h-8 text-[#044750]" />,
                         title: 'Care & protection',
                         description:
                           'Guided, secure referrals to trusted hospitals and clinics for PEP, emergency care, and follow-up.',
                       },
                       {
-                        icon: <MessageSquare className="w-8 h-8 text-[#2a4045]" />,
+                        icon: <MessageSquare className="w-8 h-8 text-[#044750]" />,
                         title: 'Justice pathways',
                         description:
                           'Learn your rights and connect with vetted lawyers, police units, and legal advocates.',
                       },
                       {
-                        icon: <Globe className="w-8 h-8 text-[#2a4045]" />,
+                        icon: <Globe className="w-8 h-8 text-[#044750]" />,
                         title: 'Survivors Communities',
                         description:
                           'Join private, anonymous group spaces to share, heal, and grow with others who understand.',
                       },
                       {
-                        icon: <Database className="w-8 h-8 text-[#2a4045]" />,
+                        icon: <Database className="w-8 h-8 text-[#044750]" />,
                         title: 'Resources & Education',
                         description:
                           'Explore survivor-centered guides on mental health, safety planning, and empowerment.',
                       },
                     ].map((card, index) => (
-                      <div key={index} className="bg-[#012f35] border-none rounded-lg">
+                      <div key={index} className="bg-[#044750] border-none rounded-lg hover:bg-[#056173] transition-all duration-300 hover:scale-105 hover:shadow-xl cursor-pointer group">
                         <div className="flex flex-col items-start p-6 gap-5">
-                          <div className="w-[60px] h-[60px] bg-[#fef0d3] rounded-full flex items-center justify-center">
+                          <div className="w-[60px] h-[60px] bg-[#FEF5E3] rounded-full flex items-center justify-center group-hover:bg-[#81A9AD] transition-colors duration-300">
                             {card.icon}
                           </div>
-                          <h3 className="font-acme text-[#fef0d3] text-[32px] leading-[1.1]">
+                          <h3 className="font-acme text-[#FEF5E3] text-[32px] leading-[1.1] group-hover:text-white transition-colors duration-300">
                             {card.title}
                           </h3>
-                          <p className="font-acme text-[#c5e6ea] text-xl leading-[26.2px]">
+                          <p className="font-acme text-[#81A9AD] text-xl leading-[26.2px] group-hover:text-[#FEF5E3] transition-colors duration-300">
                             {card.description}
                           </p>
                         </div>
