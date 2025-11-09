@@ -628,7 +628,7 @@ export default function ChatPage() {
       {/* Main Content - Flexible */}
       <div className="flex-1 flex flex-col min-h-0 overflow-hidden relative z-0">
         {showVideoConversation ? (
-          <div className="flex-1 flex flex-col min-h-0 justify-center items-center relative bg-gray-900">
+          <div className="flex-1 flex flex-col min-h-0 justify-center items-center relative">
             <div className="absolute inset-0 flex flex-col h-full items-center justify-center">
               {renderScreen()}
 
