@@ -103,12 +103,12 @@ export default function SignUpPage() {
 
   if (authLoading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50 flex items-center justify-center">
+      <main className="min-h-screen bg-[#FAEFD9] flex items-center justify-center p-6 relative overflow-hidden">
         <div className="flex items-center space-x-2">
           <div className="h-5 w-5 border-2 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
           <span className="text-gray-600">Loading...</span>
         </div>
-      </div>
+      </main>
     );
   }
 
