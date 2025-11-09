@@ -461,7 +461,7 @@ export default function ChatPage() {
     }}>
       {showChoiceModal && <ChoiceModal onSelect={handleChoice} />}
       {/* Header - Fixed */}
-      <div className="bg-white/80 backdrop-blur-sm shadow-sm border-b border-gray-200 px-3 sm:px-4 py-3 flex-shrink-0">
+      <div className="backdrop-blur-sm shadow-sm border-b px-3 sm:px-4 py-3 flex-shrink-0">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-2 sm:space-x-4">
             <Link href="/dashboard" className="p-2 hover:bg-gray-100 rounded-lg transition-colors">
@@ -472,8 +472,8 @@ export default function ChatPage() {
                 <Bot className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
               </div>
               <div>
-                <h1 className="font-semibold text-gray-800 text-sm sm:text-base">AI Support Companion</h1>
-                <p className="text-xs sm:text-sm text-gray-600 flex items-center">
+                <h1 className="font-semibold text-white text-sm sm:text-base">AI Support Companion</h1>
+                <p className="text-xs sm:text-sm text-white flex items-center">
                   {isPlayingAudio ? (
                     <>
                       <Volume2 className="h-3 w-3 mr-1" />
@@ -499,8 +499,8 @@ export default function ChatPage() {
                 className="p-2 hover:bg-gray-100 rounded-lg transition-colors flex items-center space-x-1"
                 title="Chat Sessions"
               >
-                <MessageSquare className="h-4 w-4 sm:h-5 sm:w-5 text-gray-600" />
-                <ChevronDown className="h-3 w-3 text-gray-600 hidden sm:block" />
+                <MessageSquare className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
+                <ChevronDown className="h-3 w-3 text-white hidden sm:block" />
               </button>
 
               {showSessions && (
@@ -619,7 +619,7 @@ export default function ChatPage() {
               <Phone className="h-4 w-4 sm:h-5 sm:w-5" />
             </Link>
             <button className="p-2 hover:bg-gray-100 rounded-lg transition-colors">
-              <MoreVertical className="h-4 w-4 sm:h-5 sm:w-5 text-gray-600" />
+              <MoreVertical className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
             </button>
           </div>
         </div>
@@ -670,9 +670,9 @@ export default function ChatPage() {
             {messages.length === 0 ? (
               /* Welcome Screen */
               <>
-                <div className="w-full max-w-2xl mx-auto bg-white/90 backdrop-blur-sm rounded-3xl shadow-xl overflow-hidden">
+                <div className="w-full mx-auto backdrop-blur-sm rounded-3xl shadow-xl overflow-hidden">
                   {/* Chat Header */}
-                  <div className="bg-gradient-to-r from-teal-500 to-green-500 px-6 py-4 text-center">
+                  <div className="bg-gray-100 px-6 py-4 text-center">
                     <div className="flex items-center justify-center space-x-3 mb-2">
                       <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
                         <Bot className="h-6 w-6 text-white" />
@@ -680,9 +680,6 @@ export default function ChatPage() {
                       <div>
                         <h2 className="text-xl font-semibold text-white">AI Support Companion</h2>
                         <p className="text-teal-100 text-sm">Safe space to share - available 24/7</p>
-                      </div>
-                      <div className="text-right">
-                        <span className="text-white text-sm font-medium">Anne</span>
                       </div>
                     </div>
                   </div>
