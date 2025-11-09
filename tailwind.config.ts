@@ -31,7 +31,7 @@ const config: Config = {
         brand: {
           primary: '#044750',    // Dark teal
           secondary: '#0C444B',  // Teal dark
-          teal: '#498B8A',       // Medium teal
+          teal: '#016A79',       // Medium teal
           gray: '#81A9AD',       // Light teal gray
           light: '#DBE2E4',      // Very light gray
           dark: '#000000',       // Black

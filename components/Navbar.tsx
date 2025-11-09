@@ -21,7 +21,7 @@ function SignUpToggle() {
         </Link>
       ) : (
         <Link
-          href="/chat"
+          href="/anonymous"
           className="bg-brand-primary hover:bg-brand-accent border-4 border-brand-cream rounded-full pl-6 pr-3 py-2 flex items-center gap-2 transition-all shadow-md"
         >
           <span className="font-acme text-white text-sm uppercase tracking-wide">GUEST</span>
@@ -80,21 +80,21 @@ export default function Navbar() {
               <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-brand-dark group-hover/nav:w-full transition-all duration-300"></span>
             </Link>
             <Link
-              href="/#services"
+              href="/services"
               className="font-acme text-brand-primary hover:text-brand-dark transition-all duration-300 text-sm uppercase tracking-wide relative group/nav hover:scale-110 hover:tracking-wider"
             >
               SERVICES
               <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-brand-dark group-hover/nav:w-full transition-all duration-300"></span>
             </Link>
-            <Link
+            {/* <Link
               href="/#resources"
               className="font-acme text-brand-primary hover:text-brand-dark transition-all duration-300 text-sm uppercase tracking-wide relative group/nav hover:scale-110 hover:tracking-wider"
             >
               RESOURCES
               <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-brand-dark group-hover/nav:w-full transition-all duration-300"></span>
-            </Link>
+            </Link> */}
             <Link
-              href="/#report"
+              href="/report"
               className="font-acme text-brand-primary hover:text-brand-dark transition-all duration-300 text-sm uppercase tracking-wide relative group/nav hover:scale-110 hover:tracking-wider"
             >
               REPORT
