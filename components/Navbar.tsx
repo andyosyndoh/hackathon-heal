@@ -73,7 +73,7 @@ export default function Navbar() {
               <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-brand-dark group-hover/nav:w-full transition-all duration-300"></span>
             </Link>
             <Link
-              href="/#about"
+              href="/about"
               className="font-acme text-brand-primary hover:text-brand-dark transition-all duration-300 text-sm uppercase tracking-wide relative group/nav hover:scale-110 hover:tracking-wider"
             >
               ABOUT HEAL
@@ -144,7 +144,7 @@ export default function Navbar() {
                 HOME
               </Link>
               <Link
-                href="/#about"
+                href="/about"
                 className="font-acme text-brand-primary hover:text-brand-dark transition-all duration-300 px-4 py-2 text-sm uppercase tracking-wide hover:bg-brand-light/50 rounded-lg"
                 onClick={() => setIsMenuOpen(false)}
               >

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { Menu, X, Headset, Brain, HeartPulse, MessageSquare, Users, Shield, Smartphone, Video, Database, Heart, Globe, Check } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -225,10 +225,10 @@ export default function ServicesPage() {
 
 
           {/* Services Section */}
-          <section className="relative w-full flex justify-center py-3 lg:py-10">
+          <section className="relative w-full flex justify-center py-3 lg:py-10 bg-[#FEF5E3]">
             <div className="relative w-full max-w-[1440px] px-4 lg:px-[128px]">
               <div className="flex flex-col items-center gap-[20px] lg:gap-[60px]">
-                <div className="w-full max-w-[1148px] font-acme text-[#2a4045] text-3xl lg:text-5xl text-center tracking-[0] leading-tight lg:leading-[70px]">
+                <div className="w-full max-w-[1148px] font-acme text-[#056173] text-3xl lg:text-5xl text-center tracking-[0] leading-tight lg:leading-[70px]">
                   Discover Safe, Confidential, and Empowering Support with HEAL
                 </div>
 
@@ -237,51 +237,53 @@ export default function ServicesPage() {
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-4xl">
                     {[
                       {
-                        icon: <Headset className="w-8 h-8 text-[#2a4045]" />,
+                        icon: <Headset className="w-8 h-8 text-[#056173]" />,
                         title: '24/7 Digital Support',
                         description:
                           'Confidential AI-powered chat & voice support—available anytime, anywhere.',
                       },
                       {
-                        icon: <Brain className="w-8 h-8 text-[#2a4045]" />,
+                        icon: <Brain className="w-8 h-8 text-[#056173]" />,
                         title: 'Mental Health',
                         description:
                           'Access trauma-informed therapists and peer mentors who walk with you step by step.',
                       },
                       {
-                        icon: <HeartPulse className="w-8 h-8 text-[#2a4045]" />,
+                        icon: <HeartPulse className="w-8 h-8 text-[#056173]" />,
                         title: 'Care & protection',
                         description:
                           'Guided, secure referrals to trusted hospitals and clinics for PEP, emergency care, and follow-up.',
                       },
                       {
-                        icon: <MessageSquare className="w-8 h-8 text-[#2a4045]" />,
+                        icon: <MessageSquare className="w-8 h-8 text-[#056173]" />,
                         title: 'Justice pathways',
                         description:
                           'Learn your rights and connect with vetted lawyers, police units, and legal advocates.',
                       },
                       {
-                        icon: <Globe className="w-8 h-8 text-[#2a4045]" />,
+                        icon: <Globe className="w-8 h-8 text-[#056173]" />,
                         title: 'Survivors Communities',
                         description:
                           'Join private, anonymous group spaces to share, heal, and grow with others who understand.',
                       },
                       {
-                        icon: <Database className="w-8 h-8 text-[#2a4045]" />,
+                        icon: <Database className="w-8 h-8 text-[#056173]" />,
                         title: 'Resources & Education',
                         description:
                           'Explore survivor-centered guides on mental health, safety planning, and empowerment.',
                       },
                     ].map((card, index) => (
-                      <div key={index} className="bg-[#012f35] border-none rounded-lg">
+                      <div key={index} className="bg-white border-2 border-transparent rounded-lg hover:border-[#056173] hover:shadow-xl hover:scale-105 transition-all duration-300 cursor-pointer group shadow-md">
                         <div className="flex flex-col items-start p-6 gap-5">
-                          <div className="w-[60px] h-[60px] bg-[#fef0d3] rounded-full flex items-center justify-center">
-                            {card.icon}
+                          <div className="w-[60px] h-[60px] bg-[#81A9AD] rounded-full flex items-center justify-center group-hover:bg-[#056173] transition-colors duration-300">
+                            <div className="text-white group-hover:text-white transition-colors duration-300">
+                              {React.cloneElement(card.icon, { className: 'w-8 h-8 text-white' })}
+                            </div>
                           </div>
-                          <h3 className="font-acme text-[#fef0d3] text-[32px] leading-[1.1]">
+                          <h3 className="font-acme text-[#056173] text-[28px] leading-[1.1] group-hover:text-[#0C444B] transition-colors duration-300">
                             {card.title}
                           </h3>
-                          <p className="font-acme text-[#c5e6ea] text-xl leading-[26.2px]">
+                          <p className="font-acme text-gray-600 text-lg leading-[26.2px] group-hover:text-[#056173] transition-colors duration-300">
                             {card.description}
                           </p>
                         </div>
@@ -294,57 +296,59 @@ export default function ServicesPage() {
                     {/* Left Column: Capability Boxes */}
                     <div className="flex flex-col gap-6 w-full lg:w-1/2 justify-center align-center">
                       {[
-                        { icon: <Headset className="w-6 h-6 text-[#fef0d3]" />, title: '24/7 Digital Support' },
-                        { icon: <Brain className="w-6 h-6 text-[#fef0d3]" />, title: 'Mental Health' },
-                        { icon: <HeartPulse className="w-6 h-6 text-[#fef0d3]" />, title: 'Care & Protection' },
-                        { icon: <Globe className="w-6 h-6 text-[#fef0d3]" />, title: 'Survivor Communities' },
+                        { icon: <Headset className="w-6 h-6 text-white" />, title: '24/7 Digital Support' },
+                        { icon: <Brain className="w-6 h-6 text-white" />, title: 'Mental Health' },
+                        { icon: <HeartPulse className="w-6 h-6 text-white" />, title: 'Care & Protection' },
+                        { icon: <Globe className="w-6 h-6 text-white" />, title: 'Survivor Communities' },
                       ].map((cap, index) => (
                         <div
                           key={index}
-                          className="bg-[#2a4045] flex items-center gap-4 py-4 px-6 rounded-lg shadow-md hover:shadow-lg transition-all"
+                          className="bg-[#056173] flex items-center gap-4 py-4 px-6 rounded-lg shadow-md hover:shadow-xl hover:scale-105 hover:bg-[#0C444B] transition-all duration-300 cursor-pointer group"
                         >
-                          <div className="w-[40px] h-[40px] bg-[#012f35] rounded-full flex items-center justify-center">
-                            {cap.icon}
+                          <div className="w-[40px] h-[40px] bg-[#81A9AD] rounded-full flex items-center justify-center group-hover:bg-white transition-colors duration-300">
+                            <div className="text-white group-hover:text-[#056173] transition-colors duration-300">
+                              {React.cloneElement(cap.icon, { className: 'w-6 h-6' })}
+                            </div>
                           </div>
-                          <span className="font-acme text-[#fef0d3] text-lg lg:text-xl">{cap.title}</span>
+                          <span className="font-acme text-white text-lg lg:text-xl group-hover:text-[#FEF5E3] transition-colors duration-300">{cap.title}</span>
                         </div>
                       ))}
                     </div>
 
                     {/* Right Column: Text */}
-                    <div className="flex flex-col gap-4 w-full lg:w-1/2 text-[#2a4045]">
-                      <h3 className="text-lg font-semibold tracking-wide">OUR CAPABILITIES</h3>
-                      <h2 className="text-3xl lg:text-5xl font-acme leading-tight">
+                    <div className="flex flex-col gap-4 w-full lg:w-1/2 text-[#056173]">
+                      <h3 className="text-lg font-semibold tracking-wide text-[#81A9AD] uppercase">OUR CAPABILITIES</h3>
+                      <h2 className="text-3xl lg:text-5xl font-acme leading-tight text-[#056173]">
                         From Silence to Strength,<br /> We Walk With You
                       </h2>
-                      <p className="text-[#2a4045] text-base leading-relaxed">
+                      <p className="text-gray-600 text-base leading-relaxed">
                         At HEAL, we combine empathy, innovation, and confidentiality to ensure survivors of
                         GBV access holistic support whenever they need it most.
                       </p>
-                      <ul className="space-y-3 text-[#2a4045]">
+                      <ul className="space-y-3 text-gray-700">
                         <li className="flex items-start gap-2">
-                          <Check className="w-5 h-5 text-[#40707b] flex-shrink-0 mt-0.5" />
+                          <Check className="w-5 h-5 text-[#056173] flex-shrink-0 mt-0.5" />
                           <span>Private, stigma-free digital counselling available 24/7.</span>
                         </li>
                         <li className="flex items-start gap-2">
-                          <Check className="w-5 h-5 text-[#40707b] flex-shrink-0 mt-0.5" />
+                          <Check className="w-5 h-5 text-[#056173] flex-shrink-0 mt-0.5" />
                           <span>Safe referrals to trusted medical, legal, and community services.</span>
                         </li>
                         <li className="flex items-start gap-2">
-                          <Check className="w-5 h-5 text-[#40707b] flex-shrink-0 mt-0.5" />
+                          <Check className="w-5 h-5 text-[#056173] flex-shrink-0 mt-0.5" />
                           <span>Empowered and guided healing through digital tools.</span>
                         </li>
                         <li className="flex items-start gap-2">
-                          <Check className="w-5 h-5 text-[#40707b] flex-shrink-0 mt-0.5" />
+                          <Check className="w-5 h-5 text-[#056173] flex-shrink-0 mt-0.5" />
                           <span>24/7 survivor-centered support, wherever you are.</span>
                         </li>
                       </ul>
                       <div className="flex pt-10">
                         <Link
-                          href="#"
-                          className="w-full sm:w-[186px] h-auto py-4 px-6 bg-[#40707b] hover:bg-[#40707b]/90 rounded-[20px] font-acme text-[#fef0d3] text-xl tracking-[0] leading-[normal] flex items-center justify-center transition-all"
+                          href="/auth/signup"
+                          className="w-full sm:w-[186px] h-auto py-4 px-6 bg-[#056173] hover:bg-[#0C444B] hover:scale-105 rounded-[20px] font-acme text-white text-xl tracking-[0] leading-[normal] flex items-center justify-center transition-all duration-300 shadow-md hover:shadow-lg"
                         >
-                          More Details
+                          Get Started
                         </Link>
                       </div>
 
@@ -356,34 +360,34 @@ export default function ServicesPage() {
           </section>
 
           {/* Testimonials Section */}
-          <section className="relative w-full bg-[#40707b] overflow-hidden py-12 lg:py-20 px-4 lg:px-[184px]">
+          <section className="relative w-full bg-[#056173] overflow-hidden py-12 lg:py-20 px-4 lg:px-[184px]">
             <div className="grid grid-cols-1 lg:grid-cols-2 items-center gap-8 mx-auto relative">
               {/* LEFT CONTENT */}
               <div className="flex flex-col gap-6 z-10">
-                <div className="font-acme text-[#fef0d3] text-sm uppercase tracking-wide">
+                <div className="font-acme text-[#81A9AD] text-sm uppercase tracking-wide">
                   GET STARTED
                 </div>
 
-                <h2 className="font-acme text-[#fef0d3] text-4xl lg:text-6xl leading-tight">
+                <h2 className="font-acme text-white text-4xl lg:text-6xl leading-tight">
                   Let&#39;s Start Here! <br />
                   Safe Space for World
                 </h2>
 
-                <p className="font-acme text-[#d4d4d4] text-base leading-[27px] max-w-[500px]">
+                <p className="font-acme text-[#FEF5E3] text-base leading-[27px] max-w-[500px]">
                   Hope Empowerment Action Love, Anywhere, Anytime: HEALing every afflicted life without barriers.
                 </p>
 
                 <div className="flex flex-wrap gap-4 mt-6">
                   <Link
                     href="/auth/signup"
-                    className="px-6 py-3 bg-[#fef0d3] hover:bg-[#fef0d3]/90 rounded-[20px] text-[#016a79] font-acme text-lg transition-all"
+                    className="px-6 py-3 bg-[#FEF5E3] hover:bg-white hover:scale-105 rounded-[20px] text-[#056173] font-acme text-lg transition-all duration-300 shadow-md hover:shadow-lg"
                   >
                     Get Started
                   </Link>
 
                   <Link
                     href="#contact"
-                    className="px-6 py-3 border-2 border-[#fef0d3] text-[#fef0d3] hover:bg-[#fef0d3]/10 rounded-[20px] font-acme text-lg transition-all"
+                    className="px-6 py-3 border-2 border-[#FEF5E3] text-[#FEF5E3] hover:bg-[#FEF5E3]/10 hover:scale-105 rounded-[20px] font-acme text-lg transition-all duration-300"
                   >
                     Join our CHVs
                   </Link>
@@ -414,16 +418,16 @@ export default function ServicesPage() {
               />
             </div> */}
             {/* FLOATING INFO CARD */}
-                <div className="absolute bottom-[40%] right-0 bg-[#17444e] text-white p-6 shadow-lg w-[250px] lg:w-[400px] font-acme text-sm leading-relaxed">
+                <div className="absolute bottom-[40%] right-0 bg-[#0C444B] text-white p-6 shadow-xl rounded-lg w-[250px] lg:w-[400px] font-acme text-sm leading-relaxed border border-[#81A9AD]/20">
                   <ul className="space-y-1">
                     <li className="flex items-center gap-2">
-                      <span className="text-[#5bd4c4] text-lg">✔</span> Strong Referral Pathways
+                      <span className="text-[#81A9AD] text-lg">✔</span> Strong Referral Pathways
                     </li>
                     <li className="flex items-center gap-2">
-                      <span className="text-[#5bd4c4] text-lg">✔</span> Anonymous Report
+                      <span className="text-[#81A9AD] text-lg">✔</span> Anonymous Report
                     </li>
                     <li className="flex items-center gap-2">
-                      <span className="text-[#5bd4c4] text-lg">✔</span> 24/7 AI Therapist
+                      <span className="text-[#81A9AD] text-lg">✔</span> 24/7 AI Therapist
                     </li>
                   </ul>
                 </div>
@@ -431,14 +435,14 @@ export default function ServicesPage() {
 
 
           {/* Newsletter Section */}
-        <section className="flex items-center justify-center w-full bg-[#fef0d3] py-20 px-4">
-          <div className="w-full max-w-7xl rounded-[20px] shadow-sm bg-gradient-to-r from-white to-[#e8f3ff] flex flex-col lg:flex-row items-center justify-between gap-10 px-8 lg:px-16 py-12">
+        <section className="flex items-center justify-center w-full bg-[#FEF5E3] py-20 px-4">
+          <div className="w-full max-w-7xl rounded-[20px] shadow-lg bg-gradient-to-r from-white to-[#EFE6D1] flex flex-col lg:flex-row items-center justify-between gap-10 px-8 lg:px-16 py-12 border border-[#81A9AD]/20">
             {/* LEFT CONTENT */}
             <div className="flex flex-col w-full align-center justify-end lg:w-1/2">
-              <h2 className="font-acme text-[#2a4045] text-2xl lg:text-[34px] leading-[42px] mb-3">
+              <h2 className="font-acme text-[#056173] text-2xl lg:text-[34px] leading-[42px] mb-3">
                 Sign up for our newsletter!
               </h2>
-              <p className="font-acme text-[#6b7c93] text-base lg:text-lg leading-7 max-w-[480px]">
+              <p className="font-acme text-gray-600 text-base lg:text-lg leading-7 max-w-[480px]">
                 Get notified about updates, join us in building a world where mental health care is accessible without barriers.
               </p>
             </div>
@@ -448,22 +452,22 @@ export default function ServicesPage() {
               <input
                 type="text"
                 placeholder="Enter Your First Name"
-                className="flex-1 w-full px-5 py-[14px] bg-white rounded-[25px] border border-[#ecf2f7] shadow-sm font-acme text-[#7a7a7a] focus:outline-none focus:ring-2 focus:ring-[#016a79]"
+                className="flex-1 w-full px-5 py-[14px] bg-white rounded-[25px] border border-[#81A9AD]/30 shadow-sm font-acme text-gray-700 focus:outline-none focus:ring-2 focus:ring-[#056173] focus:border-transparent transition-all duration-300"
               />
               <input
                 type="text"
                 placeholder="Enter Your Last Name"
-                className="flex-1 w-full px-5 py-[14px] bg-white rounded-[25px] border border-[#ecf2f7] shadow-sm font-acme text-[#7a7a7a] focus:outline-none focus:ring-2 focus:ring-[#016a79]"
+                className="flex-1 w-full px-5 py-[14px] bg-white rounded-[25px] border border-[#81A9AD]/30 shadow-sm font-acme text-gray-700 focus:outline-none focus:ring-2 focus:ring-[#056173] focus:border-transparent transition-all duration-300"
               />
               <input
                 type="email"
                 placeholder="Enter Your Email"
-                className="flex-1 w-full px-5 py-[14px] bg-white rounded-[25px] border border-[#ecf2f7] shadow-sm font-acme text-[#6b7c93] focus:outline-none focus:ring-2 focus:ring-[#016a79]"
+                className="flex-1 w-full px-5 py-[14px] bg-white rounded-[25px] border border-[#81A9AD]/30 shadow-sm font-acme text-gray-700 focus:outline-none focus:ring-2 focus:ring-[#056173] focus:border-transparent transition-all duration-300"
               />
               <div className="flex w-full">
                 <button
                   type="submit"
-                  className="mt-2 ml-auto h-auto px-8 py-[13px] bg-[#1a1a1a] rounded-[25px] font-acme text-white text-sm uppercase tracking-[0.5px] hover:bg-[#333] transition-all"
+                  className="mt-2 ml-auto h-auto px-8 py-[13px] bg-[#056173] rounded-[25px] font-acme text-white text-sm uppercase tracking-[0.5px] hover:bg-[#0C444B] hover:scale-105 transition-all duration-300 shadow-md hover:shadow-lg"
                 >
                   Subscribe
                 </button>

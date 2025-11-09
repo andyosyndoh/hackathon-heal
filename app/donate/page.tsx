@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { Heart, Users, Shield, Target } from 'lucide-react';
 import Navbar from '@/components/Navbar';
+import Footer from '@/components/Footer';
 
 export default function DonatePage() {
   console.log('Donate page is loading!');
@@ -257,6 +258,9 @@ export default function DonatePage() {
 
         </div>
       </main>
+      
+      {/* Footer */}
+      <Footer />
     </div>
   );
 }
