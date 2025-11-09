@@ -1,4 +1,6 @@
 import React from "react";
+import Link from "next/link";
+import Image from "next/image";
 import { CaliforniaPrivacyRightsSection } from "./sections/CaliforniaPrivacyRightsSection";
 import { ChildrenPrivacySection } from "./sections/ChildrenPrivacySection";
 import { ContactInformationSection } from "./sections/ContactInformationSection";
@@ -16,7 +18,28 @@ import { UserRightsSection } from "./sections/UserRightsSection";
 
 export const CandidatesPrivacy = (): React.JSX.Element => {
   return (
-    <div className="bg-[#fcf4e3] overflow-hidden lg:px-80 w-full min-h-[3410px] flex flex-col gap-[87px] p-6">
+    <div className="bg-[#fcf4e3] overflow-hidden w-full min-h-screen flex flex-col">
+      {/* Header */}
+      <header className="flex items-center justify-around bg-transparent shadow-sm">
+        <div className="flex items-center">
+          <Image
+            src="/images/heal-logo.png"
+            alt="Heal Logo"
+            width={120}
+            height={40}
+            className="h-30 w-20 object-contain transition-all duration-500 drop-shadow-[0_4px_10px_rgba(0,0,0,0.25)] group-hover:scale-115 group-hover:rotate-3 group-hover:drop-shadow-[0_6px_16px_rgba(0,0,0,0.35)]"
+          />
+        </div>
+        <Link
+          href="/"
+          className="font-acme bg-brand-primary hover:bg-brand-accent text-white py-2.5 px-6 rounded-full transition-all duration-300 text-sm uppercase tracking-wide shadow-md hover:shadow-xl hover:scale-105 active:scale-95 hover:-translate-y-0.5"
+            >
+          Back Home
+        </Link>
+      </header>
+      
+      {/* Content */}
+      <div className="lg:px-80 flex flex-col gap-[87px] p-6">
       <UserRightsSection />
       <div className="flex h-[6240.05px] w-full self-center relative flex-col gap-3.5">
         <LastUpdatedSection />
@@ -500,6 +523,7 @@ export const CandidatesPrivacy = (): React.JSX.Element => {
         </div>
 
         <ChildrenPrivacySection />
+      </div>
       </div>
     </div>
   );
