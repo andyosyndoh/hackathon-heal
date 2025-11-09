@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { Facebook, Twitter, Linkedin, Youtube, Instagram, MessageCircle } from 'lucide-react';
 
 export function GetInTouch() {
   return (
@@ -17,36 +18,38 @@ export function GetInTouch() {
 
       {/* Foreground Content */}
       <div className="relative z-10 flex flex-col items-center justify-center w-full">
-        <h1 className="text-white font-extrabold text-[4rem] md:text-[5rem] text-center drop-shadow-lg">
+        <h1 className="text-white font-extrabold font-acme text-[4rem] md:text-[5rem] text-center drop-shadow-lg">
           Get In Touch
         </h1>
-        <p className="text-white text-lg text-center mt-2 font-semibold max-w-xl">
+        <p className="text-white text-lg text-center mt-2 font-semibold max-w-xl font-acme">
           We love hearing from you, and we take your feedback very seriously.
           <br />
           Email us at{" "}
-          <span className="font-bold">contactheal.org@gmail.com</span>
+          <span className="font-bold font-acme">contactheal.org@gmail.com</span>
         </p>
-        <div className="mt-8 text-white text-xl font-semibold text-center">
+        <div className="mt-8 text-white text-xl font-semibold text-center font-acme">
           Subscribe To Our Socials:
         </div>
         <div className="flex flex-wrap justify-center gap-5 mt-6">
           {/* Social Buttons */}
           {[
-            { label: "FACE BOOK", url: "#" },
-            { label: "TWITTER", url: "#" },
-            { label: "LINKED IN", url: "#" },
-            { label: "YOU TUBE", url: "#" },
-            { label: "INSTAGRAM", url: "#" },
-            { label: "WHATS-APP", url: "#" },
-          ].map(({ label, url }) => (
+            { icon: <Facebook className="w-5 h-5" />, label: "Facebook", url: "#" },
+            { icon: <Twitter className="w-5 h-5" />, label: "Twitter", url: "#" },
+            { icon: <Linkedin className="w-5 h-5" />, label: "LinkedIn", url: "#" },
+            { icon: <Youtube className="w-5 h-5" />, label: "YouTube", url: "#" },
+            { icon: <Instagram className="w-5 h-5" />, label: "Instagram", url: "#" },
+            { icon: <MessageCircle className="w-5 h-5" />, label: "WhatsApp", url: "#" },
+          ].map(({ icon, label, url }) => (
             <a
               key={label}
               href={url}
               target="_blank"
               rel="noopener noreferrer"
-              className="bg-[#444b50] text-white font-semibold rounded-full px-8 py-3 text-base tracking-wide shadow-md hover:bg-[#666] transition"
+              className="bg-[#444b50] text-white rounded-full p-3 shadow-md hover:bg-[#666] transition-all hover:scale-110"
+              aria-label={label}
+              title={label}
             >
-              {label}
+              {icon}
             </a>
           ))}
         </div>

@@ -26,12 +26,12 @@ export function Contact() {
     <section className="bg-[#FAF3E7] min-h-[400px] flex justify-center px-12 py-10">
       {/* Left Side: Contact Info */}
       <div className="w-1/3 pr-8 flex flex-col">
-        <h2 className="text-[#0D474A] font-semibold text-xl mb-6">Contact Us</h2>
+        <h2 className="text-[#0D474A] font-semibold text-xl mb-6 font-acme">Contact Us</h2>
 
         <div className="mb-4">
-          <h3 className="text-xs font-bold text-black/80 mb-1">GET IN TOUCH</h3>
-          <p className="text-gray-400 text-sm mb-1 cursor-pointer select-text">contactheal.org@gmail.com</p>
-          <p className="text-gray-300 text-sm mb-4 cursor-pointer select-text">producer@healprojectmanger.com</p>
+          <h3 className="text-xs font-bold text-black/80 mb-1 font-acme">GET IN TOUCH</h3>
+          <p className="text-gray-400 text-sm mb-1 cursor-pointer select-text font-acme">contactheal.org@gmail.com</p>
+          <p className="text-gray-300 text-sm mb-4 cursor-pointer select-text font-acme">producer@healprojectmanger.com</p>
           <div className="flex space-x-6 text-[#0D474A] text-2xl">
             <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" aria-label="Twitter">
               <FaTwitter />
@@ -45,8 +45,8 @@ export function Contact() {
 
       {/* Right Side: Contact Form */}
       <div className="w-2/3 max-w-2xl pl-8">
-        <h2 className="text-[#0D474A] font-semibold text-xl mb-4">Send Us A Message</h2>
-        <p className="mb-6 text-gray-600 text-sm">
+        <h2 className="text-[#0D474A] font-semibold mb-4 font-acme text-xl">Send Us A Message</h2>
+        <p className="mb-6 text-gray-600 text-sm font-acme">
           Kindly fill the form below for all enquiries and our team will get in touch with you.
         </p>
 
@@ -91,7 +91,7 @@ export function Contact() {
           ></textarea>
           <button
             type="submit"
-            className="bg-[#0D474A] text-white px-6 py-2 rounded hover:bg-[#0B3B3E] transition font-semibold"
+            className="bg-[#0D474A] text-white px-6 py-2 rounded hover:bg-[#0B3B3E] transition font-semibold font-acme"
           >
             Submit
           </button>
