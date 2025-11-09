@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Menu, X, Headset, Brain, HeartPulse, MessageSquare, Users, Shield, Smartphone, Video, Database, Heart, Globe } from 'lucide-react';
+import { Menu, X, Headset, Brain, HeartPulse, MessageSquare, Users, Shield, Smartphone, Video, Database, Heart, Globe, Check } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
 import Footer from '@/components/Footer';
@@ -225,7 +225,7 @@ export default function ServicesPage() {
 
 
           {/* Services Section */}
-          <section className="relative w-full flex justify-center pt-3 lg:pt-10">
+          <section className="relative w-full flex justify-center py-3 lg:py-10">
             <div className="relative w-full max-w-[1440px] px-4 lg:px-[128px]">
               <div className="flex flex-col items-center gap-[20px] lg:gap-[60px]">
                 <div className="w-full max-w-[1148px] font-acme text-[#2a4045] text-3xl lg:text-5xl text-center tracking-[0] leading-tight lg:leading-[70px]">
@@ -239,32 +239,38 @@ export default function ServicesPage() {
                       {
                         icon: <Headset className="w-8 h-8 text-[#2a4045]" />,
                         title: '24/7 Digital Support',
-                        description: 'Confidential AI-powered chat & voice support—available anytime, anywhere.',
+                        description:
+                          'Confidential AI-powered chat & voice support—available anytime, anywhere.',
                       },
                       {
                         icon: <Brain className="w-8 h-8 text-[#2a4045]" />,
                         title: 'Mental Health',
-                        description: 'Access trauma-informed therapists and peer mentors who walk with you step by step.',
+                        description:
+                          'Access trauma-informed therapists and peer mentors who walk with you step by step.',
                       },
                       {
                         icon: <HeartPulse className="w-8 h-8 text-[#2a4045]" />,
                         title: 'Care & protection',
-                        description: 'Guided, secure referrals to trusted hospitals and clinics for PEP, emergency care, and follow-up.',
+                        description:
+                          'Guided, secure referrals to trusted hospitals and clinics for PEP, emergency care, and follow-up.',
                       },
                       {
                         icon: <MessageSquare className="w-8 h-8 text-[#2a4045]" />,
                         title: 'Justice pathways',
-                        description: 'Learn your rights and connect with vetted lawyers, police units, and legal advocates.',
+                        description:
+                          'Learn your rights and connect with vetted lawyers, police units, and legal advocates.',
                       },
                       {
                         icon: <Globe className="w-8 h-8 text-[#2a4045]" />,
                         title: 'Survivors Communities',
-                        description: 'Join private, anonymous group spaces to share, heal, and grow with others who understand.',
+                        description:
+                          'Join private, anonymous group spaces to share, heal, and grow with others who understand.',
                       },
                       {
-                        icon: <Database  className="w-8 h-8 text-[#2a4045]" />,
+                        icon: <Database className="w-8 h-8 text-[#2a4045]" />,
                         title: 'Resources & Education',
-                        description: 'Explore survivor-centered guides on mental health, safety planning, and empowerment.',
+                        description:
+                          'Explore survivor-centered guides on mental health, safety planning, and empowerment.',
                       },
                     ].map((card, index) => (
                       <div key={index} className="bg-[#012f35] border-none rounded-lg">
@@ -272,10 +278,10 @@ export default function ServicesPage() {
                           <div className="w-[60px] h-[60px] bg-[#fef0d3] rounded-full flex items-center justify-center">
                             {card.icon}
                           </div>
-                          <h3 className="font-acme text-[#fef0d3] text-[32px] tracking-[0] leading-[1.1]">
+                          <h3 className="font-acme text-[#fef0d3] text-[32px] leading-[1.1]">
                             {card.title}
                           </h3>
-                          <p className="font-acme text-[#c5e6ea] text-xl tracking-[0] leading-[26.2px]">
+                          <p className="font-acme text-[#c5e6ea] text-xl leading-[26.2px]">
                             {card.description}
                           </p>
                         </div>
@@ -283,53 +289,66 @@ export default function ServicesPage() {
                     ))}
                   </div>
 
-                  <div className="flex flex-col items-center gap-4 mt-4">
-                    <p className="font-acme text-[#fef0d3] text-2xl tracking-[0] leading-[normal]">
-                      From Survivors, We Worked
-                    </p>
-                    <Link
-                      href="/auth/signup"
-                      className="bg-[#fef0d3] text-[#012f35] hover:bg-[#fef0d3]/90 font-acme text-lg px-8 py-6 h-auto rounded-lg transition-all"
-                    >
-                      Get Started
-                    </Link>
-                  </div>
-                </div>
+                  {/* OUR CAPABILITIES SECTION */}
+                  <div className="w-full flex flex-col lg:flex-row justify-between py-20 gap-10">
+                    {/* Left Column: Capability Boxes */}
+                    <div className="flex flex-col gap-6 w-full lg:w-1/2 justify-center align-center">
+                      {[
+                        { icon: <Headset className="w-6 h-6 text-[#fef0d3]" />, title: '24/7 Digital Support' },
+                        { icon: <Brain className="w-6 h-6 text-[#fef0d3]" />, title: 'Mental Health' },
+                        { icon: <HeartPulse className="w-6 h-6 text-[#fef0d3]" />, title: 'Care & Protection' },
+                        { icon: <Globe className="w-6 h-6 text-[#fef0d3]" />, title: 'Survivor Communities' },
+                      ].map((cap, index) => (
+                        <div
+                          key={index}
+                          className="bg-[#2a4045] flex items-center gap-4 py-4 px-6 rounded-lg shadow-md hover:shadow-lg transition-all"
+                        >
+                          <div className="w-[40px] h-[40px] bg-[#012f35] rounded-full flex items-center justify-center">
+                            {cap.icon}
+                          </div>
+                          <span className="font-acme text-[#fef0d3] text-lg lg:text-xl">{cap.title}</span>
+                        </div>
+                      ))}
+                    </div>
 
-                {/* Additional Features */}
-                <div className="w-full flex flex-col lg:flex-row gap-[50px] lg:gap-[102px]">
-                  <div className="flex flex-col gap-[60px] lg:gap-[140px]">
-                    {[
-                      { icon: <Users className="w-8 h-8 text-[#2a4045]" />, label: '24/7 Digital Support' },
-                      { icon: <Heart className="w-8 h-8 text-[#2a4045]" />, label: 'Mental Health' },
-                      { icon: <Shield className="w-8 h-8 text-[#2a4045]" />, label: 'Care & Protection' },
-                      { icon: <Users className="w-8 h-8 text-[#2a4045]" />, label: 'Survivor Communities' },
-                    ].map((item, index) => (
-                      <div key={index} className="w-full lg:w-[476px] h-[130px] bg-[#2a4045] rounded-[20px] flex items-center px-[60px]">
-                        <div className="w-[60px] h-[60px] bg-[#fef0d3] border-[2px] border-red rounded-full items-center justify-center">
-                          {item.icon}
-                        </div>
-                        <div className="ml-[80px] p-2 font-acme text-[#fef0d3] rounded-full text-xl tracking-[0] leading-[normal]">
-                          {item.label}
-                        </div>
+                    {/* Right Column: Text */}
+                    <div className="flex flex-col gap-4 w-full lg:w-1/2 text-[#2a4045]">
+                      <h3 className="text-lg font-semibold tracking-wide">OUR CAPABILITIES</h3>
+                      <h2 className="text-3xl lg:text-5xl font-acme leading-tight">
+                        From Silence to Strength,<br /> We Walk With You
+                      </h2>
+                      <p className="text-[#2a4045] text-base leading-relaxed">
+                        At HEAL, we combine empathy, innovation, and confidentiality to ensure survivors of
+                        GBV access holistic support whenever they need it most.
+                      </p>
+                      <ul className="space-y-3 text-[#2a4045]">
+                        <li className="flex items-start gap-2">
+                          <Check className="w-5 h-5 text-[#40707b] flex-shrink-0 mt-0.5" />
+                          <span>Private, stigma-free digital counselling available 24/7.</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <Check className="w-5 h-5 text-[#40707b] flex-shrink-0 mt-0.5" />
+                          <span>Safe referrals to trusted medical, legal, and community services.</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <Check className="w-5 h-5 text-[#40707b] flex-shrink-0 mt-0.5" />
+                          <span>Empowered and guided healing through digital tools.</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <Check className="w-5 h-5 text-[#40707b] flex-shrink-0 mt-0.5" />
+                          <span>24/7 survivor-centered support, wherever you are.</span>
+                        </li>
+                      </ul>
+                      <div className="flex pt-10">
+                        <Link
+                          href="#"
+                          className="w-full sm:w-[186px] h-auto py-4 px-6 bg-[#40707b] hover:bg-[#40707b]/90 rounded-[20px] font-acme text-[#fef0d3] text-xl tracking-[0] leading-[normal] flex items-center justify-center transition-all"
+                        >
+                          More Details
+                        </Link>
                       </div>
-                    ))}
-                  </div>
 
-                  <div className="flex-1 flex flex-col items-center lg:items-end">
-                    <Image
-                      className="w-[60px] h-[60px] mb-4"
-                      alt="Icon"
-                      src="/icon-8.png"
-                      width={60}
-                      height={60}
-                    />
-                    <h3 className="font-acme text-[#fef0d3] text-[32px] tracking-[0] leading-[normal] mb-2">
-                      Survivor Communities
-                    </h3>
-                    <p className="font-acme text-[#c5e6ea] text-xl tracking-[0] leading-[26.2px] max-w-[296px] text-center lg:text-right">
-                      Join private, anonymous group spaces to share, heal, and grow with others who understand.
-                    </p>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -337,7 +356,7 @@ export default function ServicesPage() {
           </section>
 
           {/* Testimonials Section */}
-          <section className="relative w-full mt-[200px] lg:mt-[448px] bg-[#40707b] overflow-hidden py-[100px] lg:py-[262px] px-4 lg:px-[184px]">
+          <section className="relative w-full bg-[#40707b] overflow-hidden py-3 lg:py-20 px-4 lg:px-[184px]">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 relative max-w-7xl mx-auto">
               <div className="flex flex-col gap-6 z-10">
                 <div className="font-acme text-[#fef0d3] text-xl tracking-[0] leading-[normal]">
