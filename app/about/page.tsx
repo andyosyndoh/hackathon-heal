@@ -207,6 +207,71 @@ export default function AboutPage() {
           </div>
         </div>
       </section>
+
+      {/* What Makes Us Different Section */}
+      <section className="py-12 sm:py-20 bg-[#FEF5E3] relative overflow-hidden">
+        {/* Decorative sparkles */}
+        <div className="absolute top-10 right-20 text-yellow-400 text-lg">✨</div>
+        <div className="absolute bottom-20 left-20 text-yellow-400 text-sm">✦</div>
+        <div className="absolute top-1/2 right-40 text-yellow-400 text-xl">✨</div>
+        
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Title */}
+          <div className="mb-16">
+            <div className="w-16 h-1 bg-[#044750] mb-4"></div>
+            <h2 className="text-3xl sm:text-4xl font-bold text-[#044750] font-acme">What makes us</h2>
+            <h2 className="text-3xl sm:text-4xl font-bold text-[#044750] font-acme">Different</h2>
+          </div>
+          
+          {/* Three cards */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {/* Radical Accessibility */}
+            <div className="bg-[#B8D4A8] p-6 rounded-lg shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl hover:bg-[#A5C896] cursor-pointer group min-h-[280px] flex flex-col">
+              <div className="flex items-center mb-4">
+                <div className="w-8 h-8 bg-[#2C4A4E] rounded-full flex items-center justify-center mr-3">
+                  <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M7.07,18.28C7.5,17.38 10.12,16.5 12,16.5C13.88,16.5 16.5,17.38 16.93,18.28C15.57,19.36 13.86,20 12,20C10.14,20 8.43,19.36 7.07,18.28M18.36,16.83C16.93,15.09 13.46,14.5 12,14.5C10.54,14.5 7.07,15.09 5.64,16.83C4.62,15.5 4,13.82 4,12C4,7.59 7.59,4 12,4C16.41,4 20,7.59 20,12C20,13.82 19.38,15.5 18.36,16.83M12,6C10.06,6 8.5,7.56 8.5,9.5C8.5,11.44 10.06,13 12,13C13.94,13 15.5,11.44 15.5,9.5C15.5,7.56 13.94,6 12,6M12,11A1.5,1.5 0 0,1 10.5,9.5A1.5,1.5 0 0,1 12,8A1.5,1.5 0 0,1 13.5,9.5A1.5,1.5 0 0,1 12,11Z" />
+                  </svg>
+                </div>
+                <h3 className="font-bold text-[#2C4A4E] font-acme text-lg">Radical Accessibility</h3>
+              </div>
+              <p className="text-sm text-[#2C4A4E] leading-relaxed font-acme flex-1">
+                HEAL provides 24/7 confidential support anytime, anywhere—through AI chat or low-connectivity areas. Survivors don't have to wait for office hours, travel long distances, or risk exposure; they can access help the exact moment they need it.
+              </p>
+            </div>
+
+            {/* Survivor-Centered & Survivor-Built */}
+            <div className="bg-[#B8D4A8] p-6 rounded-lg shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl hover:bg-[#A5C896] cursor-pointer group min-h-[280px] flex flex-col">
+              <div className="flex items-center mb-4">
+                <div className="w-8 h-8 bg-[#2C4A4E] rounded-full flex items-center justify-center mr-3">
+                  <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M16,4C18.21,4 20,5.79 20,8C20,10.21 18.21,12 16,12C13.79,12 12,10.21 12,8C12,5.79 13.79,4 16,4M16,14C18.67,14 24,15.33 24,18V20H8V18C8,15.33 13.33,14 16,14M8,4C10.21,4 12,5.79 12,8C12,10.21 10.21,12 8,12C5.79,12 4,10.21 4,8C4,5.79 5.79,4 8,4M8,14C10.67,14 16,15.33 16,18V20H0V18C0,15.33 5.33,14 8,14Z" />
+                  </svg>
+                </div>
+                <h3 className="font-bold text-[#2C4A4E] font-acme text-lg">Survivor-Centered & Survivor-Built</h3>
+              </div>
+              <p className="text-sm text-[#2C4A4E] leading-relaxed font-acme flex-1">
+                Unlike many top-down initiatives, HEAL is designed with survivors, for survivors. Every feature—from the AI companion to referral pathways—is informed by lived experiences, ensuring dignity, empathy, and relevance, making HEAL a trusted safe space, not just another app.
+              </p>
+            </div>
+
+            {/* Trust & Integrity Through Innovation */}
+            <div className="bg-[#B8D4A8] p-6 rounded-lg shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl hover:bg-[#A5C896] cursor-pointer group min-h-[280px] flex flex-col">
+              <div className="flex items-center mb-4">
+                <div className="w-8 h-8 bg-[#2C4A4E] rounded-full flex items-center justify-center mr-3">
+                  <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12,1L3,5V11C3,16.55 6.84,21.74 12,23C17.16,21.74 21,16.55 21,11V5L12,1M10,17L6,13L7.41,11.59L10,14.17L16.59,7.58L18,9L10,17Z" />
+                  </svg>
+                </div>
+                <h3 className="font-bold text-[#2C4A4E] font-acme text-lg">Trust & Integrity Through Innovation</h3>
+              </div>
+              <p className="text-sm text-[#2C4A4E] leading-relaxed font-acme flex-1">
+                HEAL integrates a blockchain-powered case management system that guarantees tamper-proof records for CHVs, medical officers, and legal actors. This builds accountability, creates evidence for justice, and restores trust in systems that often fail survivors.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
   );
 }
