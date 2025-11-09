@@ -7,13 +7,13 @@ export function GetInTouch() {
       {/* Background Image with Overlay */}
       <div className="absolute inset-0 w-full h-full">
         <Image
-          src="/images/phone-bg.jpeg"
-          alt="Hand holding phone with social icons"
-          className="object-cover w-full h-full opacity-40"
+          src="/images/Contactbg.png"
+          alt="Contact background"
+          className="object-cover w-full h-full opacity-80"
           fill
           style={{ objectFit: "cover" }}
         />
-        <div className="absolute inset-0 bg-black bg-opacity-60" />
+        <div className="absolute inset-0 bg-black bg-opacity-30" />
       </div>
 
       {/* Foreground Content */}
