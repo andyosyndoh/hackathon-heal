@@ -356,51 +356,79 @@ export default function ServicesPage() {
           </section>
 
           {/* Testimonials Section */}
-          <section className="relative w-full bg-[#40707b] overflow-hidden py-3 lg:py-20 px-4 lg:px-[184px]">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 relative max-w-7xl mx-auto">
+          <section className="relative w-full bg-[#40707b] overflow-hidden py-12 lg:py-20 px-4 lg:px-[184px]">
+            <div className="grid grid-cols-1 lg:grid-cols-2 items-center gap-8 mx-auto relative">
+              {/* LEFT CONTENT */}
               <div className="flex flex-col gap-6 z-10">
-                <div className="font-acme text-[#fef0d3] text-xl tracking-[0] leading-[normal]">
+                <div className="font-acme text-[#fef0d3] text-sm uppercase tracking-wide">
                   GET STARTED
                 </div>
 
-                <h2 className="font-acme text-[#fef0d3] text-4xl lg:text-6xl tracking-[0] leading-tight lg:leading-[70px]">
+                <h2 className="font-acme text-[#fef0d3] text-4xl lg:text-6xl leading-tight">
                   Let&#39;s Start Here! <br />
                   Safe Space for World
                 </h2>
 
-                <p className="font-acme text-[#9a9a9a] text-base tracking-[0] leading-[27px] max-w-[656px]">
-                  Hope Empowerment Action Love, Anywhere, Anytime : HEALing every
-                  afflicted Life without barriers
+                <p className="font-acme text-[#d4d4d4] text-base leading-[27px] max-w-[500px]">
+                  Hope Empowerment Action Love, Anywhere, Anytime: HEALing every afflicted life without barriers.
                 </p>
 
                 <div className="flex flex-wrap gap-4 mt-6">
                   <Link
                     href="/auth/signup"
-                    className="h-auto px-3.5 py-2.5 bg-[#fef0d3] hover:bg-[#fef0d3]/90 rounded-[20px] text-[#016a79] font-acme text-xl transition-all"
+                    className="px-6 py-3 bg-[#fef0d3] hover:bg-[#fef0d3]/90 rounded-[20px] text-[#016a79] font-acme text-lg transition-all"
                   >
                     Get Started
                   </Link>
 
                   <Link
                     href="#contact"
-                    className="h-auto px-3.5 py-2.5 rounded-[20px] border-2 border-white text-white hover:bg-white/10 font-acme text-xl transition-all"
+                    className="px-6 py-3 border-2 border-[#fef0d3] text-[#fef0d3] hover:bg-[#fef0d3]/10 rounded-[20px] font-acme text-lg transition-all"
                   >
                     Join our CHVs
                   </Link>
                 </div>
               </div>
 
-              <div className="relative flex items-center justify-center lg:justify-end">
-                <Image
-                  className="w-full max-w-[651px] h-auto object-cover"
-                  alt="Happy black man"
+              {/* RIGHT IMAGE */}
+              <div className="relative flex justify-center lg:justify-end">
+                <img
                   src="/happy-black-man-pointing-at-digital-tablet-screen-ywd94ad-1-800x.png"
-                  width={651}
-                  height={800}
+                  alt="Hero Illustration"
+                  className="rounded-lg object-cover w-full h-auto"
                 />
               </div>
             </div>
+
+            {/* Decorative sparks (optional for visual fidelity) */}
+            {/* <div className="absolute inset-0 pointer-events-none">
+              <img
+                src="/images/decor-sparks.svg"
+                alt=""
+                className="absolute left-[10%] top-[15%] w-8 opacity-70"
+              />
+              <img
+                src="/images/decor-sparks.svg"
+                alt=""
+                className="absolute bottom-[20%] left-[40%] w-10 opacity-70"
+              />
+            </div> */}
+            {/* FLOATING INFO CARD */}
+                <div className="absolute bottom-[40%] right-0 bg-[#17444e] text-white p-6 rounded-lg shadow-lg w-[250px] lg:w-[400px] font-acme text-sm leading-relaxed">
+                  <ul className="space-y-1">
+                    <li className="flex items-center gap-2">
+                      <span className="text-[#5bd4c4] text-lg">✔</span> Strong Referral Pathways
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <span className="text-[#5bd4c4] text-lg">✔</span> Anonymous Report
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <span className="text-[#5bd4c4] text-lg">✔</span> 24/7 AI Therapist
+                    </li>
+                  </ul>
+                </div>
           </section>
+
 
           {/* Newsletter Section */}
           <section className="flex flex-col w-full items-start justify-center px-4 lg:px-[25px] py-[73px] rounded-[10px] mt-[100px] bg-[#fef0d3]">
