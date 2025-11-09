@@ -108,7 +108,7 @@ export default function Navbar() {
           {/* Right Side Buttons */}
           <div className="hidden lg:flex items-center space-x-4 flex-shrink-0">
             <Link
-              href="/#contact"
+              href="/contact"
               className="font-acme text-brand-primary hover:text-brand-dark transition-all duration-300 text-sm uppercase tracking-wide relative group/nav hover:scale-110 hover:tracking-wider"
             >
               CONTACT US
