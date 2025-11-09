@@ -620,7 +620,7 @@ export default function ChatPage() {
                 </div>
               )}
             </div>
-            <Link href="/crisis" className="p-2 hover:bg-gray-800 rounded-lg transition-colors text-red-600">
+            <Link href="/dashboard/crisis" className="p-2 hover:bg-gray-800 rounded-lg transition-colors text-red-600">
               <Phone className="h-4 w-4 sm:h-5 sm:w-5" />
             </Link>
             <button className="p-2 hover:bg-gray-800 rounded-lg transition-colors">
@@ -631,7 +631,7 @@ export default function ChatPage() {
       </div>
 
       {/* Privacy Notice - Fixed */}
-      <div className="bg-blue-500/20 border-b border-blue-500/50 px-3 sm:px-4 py-2 flex-shrink-0">
+      <div className="bg-blue-500/20 border-b max-w-[1400px] mx-auto border-blue-500/50 px-3 sm:px-4 py-2 flex-shrink-0">
         <div className="flex items-center justify-center space-x-2 text-xs sm:text-sm text-blue-300">
           <Shield className="h-3 w-3 sm:h-4 sm:w-4" />
           <span className="text-center">
@@ -643,7 +643,7 @@ export default function ChatPage() {
 
       {/* Voice Status Banner - Fixed */}
       {voiceOption !== 'off' && process.env.NEXT_PUBLIC_ELEVENLABS_API_KEY && (
-        <div className={`border-b px-3 sm:px-4 py-2 flex-shrink-0 ${voiceOption === 'female' ? 'bg-pink-500/20 border-pink-500/50' : 'bg-blue-500/20 border-blue-500/50'
+        <div className={` max-w-[1400px] mx-auto border-b px-3 sm:px-4 py-2 flex-shrink-0 ${voiceOption === 'female' ? 'bg-pink-500/20 border-pink-500/50' : 'bg-blue-500/20 border-blue-500/50'
           }`}>
           <div className={`flex items-center justify-center space-x-2 text-xs sm:text-sm ${voiceOption === 'female' ? 'text-pink-300' : 'text-blue-300'
             }`}>
@@ -657,7 +657,7 @@ export default function ChatPage() {
       )}
 
       {/* Main Content - Flexible */}
-      <div className="flex-1 flex flex-col min-h-0 overflow-hidden">
+      <div className="flex-1 max-w-[1400px] mx-auto flex flex-col min-h-0 overflow-hidden">
         {showVideoConversation ? (
           <div className="flex-1 flex flex-col min-h-0 justify-center items-center relative">
             <div className="absolute inset-0 flex flex-col h-full items-center rounded-lg justify-center">
