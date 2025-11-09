@@ -21,7 +21,7 @@ function SignUpToggle() {
         </Link>
       ) : (
         <Link
-          href="/chat"
+          href="/anonymous"
           className="bg-brand-primary hover:bg-brand-accent border-4 border-brand-cream rounded-full pl-6 pr-3 py-2 flex items-center gap-2 transition-all shadow-md"
         >
           <span className="font-acme text-white text-sm uppercase tracking-wide">GUEST</span>
