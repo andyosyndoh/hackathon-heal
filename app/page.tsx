@@ -71,26 +71,7 @@ export default function HomePage() {
     }
   ];
 
-  const testimonials = [
-    {
-      name: 'Sarah M.',
-      role: 'Student',
-      content: 'Heal has been a lifeline during my anxiety struggles. The AI support is surprisingly understanding and helpful.',
-      rating: 5
-    },
-    {
-      name: 'Dr. James K.',
-      role: 'Clinical Psychologist',
-      content: 'The clinical accuracy and safety protocols make this a valuable tool for mental health support.',
-      rating: 5
-    },
-    {
-      name: 'Maria L.',
-      role: 'Working Professional',
-      content: 'Having 24/7 access to support has made managing my mental health so much more manageable.',
-      rating: 5
-    }
-  ];
+
 
   return (
     <div className="min-h-screen bg-[#FEF5E3]">
@@ -176,7 +157,7 @@ export default function HomePage() {
                 <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center mb-8 sm:mb-12">
                   <Link
                     href="/auth/signup"
-                    className="heal-button text-base sm:text-lg px-6 sm:px-8 py-3 sm:py-4 w-full sm:w-auto inline-flex items-center justify-center whitespace-nowrap rounded-lg"
+                    className="bg-[#044750] hover:bg-[#056173] text-white font-bold py-3 sm:py-4 px-6 sm:px-8 rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-lg active:scale-95 font-acme inline-flex items-center justify-center whitespace-nowrap"
                   >
                     Start Your Journey
                     <ArrowRight className="ml-2 h-4 w-4 sm:h-5 sm:w-5" />
@@ -245,10 +226,10 @@ export default function HomePage() {
       <section id="features" className="py-12 sm:py-20 bg-[#FEF5E3]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12 sm:mb-16">
-            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#044750] mb-4 font-acme">
               Comprehensive Mental Health Support
             </h2>
-            <p className="text-base sm:text-lg lg:text-xl text-gray-600 max-w-2xl mx-auto px-4">
+            <p className="text-base sm:text-lg lg:text-xl text-gray-700 max-w-2xl mx-auto px-4 font-acme">
               Our platform combines cutting-edge AI technology with human expertise
               to provide the support you need, when you need it.
             </p>
@@ -256,12 +237,12 @@ export default function HomePage() {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
             {features.map((feature, index) => (
-              <div key={index} className="heal-card p-4 sm:p-6 text-center hover:shadow-xl transition-all duration-300">
-                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-blue-100 rounded-lg flex items-center justify-center mx-auto mb-3 sm:mb-4">
-                  <feature.icon className="h-5 w-5 sm:h-6 sm:w-6 text-blue-600" />
+              <div key={index} className="bg-white p-4 sm:p-6 text-center hover:shadow-xl transition-all duration-300 rounded-lg border border-[#81A9AD]/20 hover:scale-105 hover:bg-[#F5F5DC] cursor-pointer group">
+                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-[#81A9AD]/20 rounded-lg flex items-center justify-center mx-auto mb-3 sm:mb-4 group-hover:bg-[#044750] transition-colors duration-300">
+                  <feature.icon className="h-5 w-5 sm:h-6 sm:w-6 text-[#044750] group-hover:text-white transition-colors duration-300" />
                 </div>
-                <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-2">{feature.title}</h3>
-                <p className="text-gray-600 text-sm sm:text-base leading-relaxed">{feature.description}</p>
+                <h3 className="text-base sm:text-lg font-semibold text-[#044750] mb-2 font-acme">{feature.title}</h3>
+                <p className="text-gray-600 text-sm sm:text-base leading-relaxed font-acme">{feature.description}</p>
               </div>
             ))}
           </div>
@@ -273,99 +254,113 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12 items-center">
             <div>
-              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-4 sm:mb-6">
+              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#044750] mb-4 sm:mb-6 font-acme">
                 Built by Mental Health Professionals
               </h2>
-              <p className="text-base sm:text-lg text-gray-600 mb-4 sm:mb-6 leading-relaxed">
+              <p className="text-base sm:text-lg text-gray-700 mb-4 sm:mb-6 leading-relaxed font-acme">
                 Heal was created by a team of licensed therapists, AI researchers, and security experts
                 to provide accessible, effective mental health support that prioritizes your privacy and safety.
               </p>
               <div className="space-y-3 sm:space-y-4">
                 <div className="flex items-center space-x-3">
-                  <CheckCircle className="h-4 w-4 sm:h-5 sm:w-5 text-green-600 flex-shrink-0" />
-                  <span className="text-gray-700 text-sm sm:text-base">Evidence-based therapeutic approaches</span>
+                  <CheckCircle className="h-4 w-4 sm:h-5 sm:w-5 text-[#81A9AD] flex-shrink-0" />
+                  <span className="text-gray-700 text-sm sm:text-base font-acme">Evidence-based therapeutic approaches</span>
                 </div>
                 <div className="flex items-center space-x-3">
-                  <CheckCircle className="h-4 w-4 sm:h-5 sm:w-5 text-green-600 flex-shrink-0" />
-                  <span className="text-gray-700 text-sm sm:text-base">24/7 crisis intervention protocols</span>
+                  <CheckCircle className="h-4 w-4 sm:h-5 sm:w-5 text-[#81A9AD] flex-shrink-0" />
+                  <span className="text-gray-700 text-sm sm:text-base font-acme">24/7 crisis intervention protocols</span>
                 </div>
                 <div className="flex items-center space-x-3">
-                  <CheckCircle className="h-4 w-4 sm:h-5 sm:w-5 text-green-600 flex-shrink-0" />
-                  <span className="text-gray-700 text-sm sm:text-base">Continuous clinical supervision</span>
+                  <CheckCircle className="h-4 w-4 sm:h-5 sm:w-5 text-[#81A9AD] flex-shrink-0" />
+                  <span className="text-gray-700 text-sm sm:text-base font-acme">Continuous clinical supervision</span>
                 </div>
                 <div className="flex items-center space-x-3">
-                  <CheckCircle className="h-4 w-4 sm:h-5 sm:w-5 text-green-600 flex-shrink-0" />
-                  <span className="text-gray-700 text-sm sm:text-base">Regular safety and efficacy audits</span>
+                  <CheckCircle className="h-4 w-4 sm:h-5 sm:w-5 text-[#81A9AD] flex-shrink-0" />
+                  <span className="text-gray-700 text-sm sm:text-base font-acme">Regular safety and efficacy audits</span>
                 </div>
               </div>
             </div>
-            <div className="heal-card p-6 sm:p-8">
-              <div className="text-center">
-                <div className="w-12 h-12 sm:w-16 sm:h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4">
-                  <Heart className="h-6 w-6 sm:h-8 sm:w-8 text-blue-600" />
+            <div className="space-y-6">
+              {[
+                { title: 'Heal', content: '"You deserve healing — not shame. This is a safe space to begin."' },
+                { title: 'Healing', content: '"Healing is not a moment. It\'s a journey — and you don\'t have to walk it alone."' },
+                { title: 'Empowerment', content: '"We place survivors at the center — restoring voice, agency, and dignity."' },
+                { title: 'Action', content: '"We turn support into action — connecting you to tools, people, and care that create real change."' },
+                { title: 'Liberation', content: '"Liberation means freedom beyond the trauma — freedom to live fully, confidently, and joyfully."' }
+              ].map((item, index) => (
+                <div key={index} className="bg-white p-4 rounded-lg border border-[#81A9AD]/20 hover:shadow-lg transition-all duration-300 hover:scale-102 cursor-pointer group">
+                  <h4 className="text-lg font-bold text-[#044750] mb-2 font-acme">{item.title}</h4>
+                  <p className="text-gray-600 text-sm leading-relaxed font-acme italic">{item.content}</p>
                 </div>
-                <h3 className="text-lg sm:text-xl font-semibold text-gray-900 mb-3 sm:mb-4">Our Mission</h3>
-                <p className="text-gray-600 leading-relaxed text-sm sm:text-base">
-                  To make professional mental health support accessible to everyone,
-                  breaking down barriers of cost, availability, and stigma through
-                  innovative technology and compassionate care.
-                </p>
-              </div>
+              ))}
             </div>
           </div>
         </div>
       </section>
 
-      {/* Testimonials Section */}
-      <section id="testimonials" className="py-12 sm:py-20 bg-[#FEF5E3]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12 sm:mb-16">
-            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
-              Trusted by Thousands
+      {/* Healing Without Barriers Section */}
+      <section 
+        className="py-16 sm:py-24 bg-cover bg-center bg-no-repeat relative"
+        style={{ backgroundImage: 'url(/images/home-no3.png)' }}
+      >
+        <div className="absolute inset-0 bg-black bg-opacity-50"></div>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <div className="text-center">
+            <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-4 font-acme">
+              Healing Without Barriers
             </h2>
-            <p className="text-base sm:text-lg lg:text-xl text-gray-600 max-w-2xl mx-auto px-4">
-              See how Heal has made a difference in the lives of our users and
-              earned the trust of mental health professionals.
+            <p className="text-lg sm:text-xl text-white mb-8 font-acme">
+              Hope • Empowerment • Action • Love
+            </p>
+            <Link 
+              href="/auth/signup" 
+              className="text-black font-bold py-3 px-8 rounded-full transition-all duration-300 hover:scale-105 hover:shadow-lg active:scale-95 font-acme hover:bg-opacity-90" style={{backgroundColor: '#FEF0D3'}}
+            >
+              Let's Start Here
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Newsletter Section */}
+      <section className="flex items-center justify-center w-full bg-[#fef0d3] py-20 px-4">
+        <div className="w-full max-w-7xl rounded-[20px] shadow-sm bg-gradient-to-r from-white to-[#e8f3ff] flex flex-col lg:flex-row items-center justify-between gap-10 px-8 lg:px-16 py-12">
+          {/* LEFT CONTENT */}
+          <div className="flex flex-col w-full align-center justify-end lg:w-1/2">
+            <h2 className="font-acme text-[#2a4045] text-2xl lg:text-[34px] leading-[42px] mb-3">
+              Sign up for our newsletter!
+            </h2>
+            <p className="font-acme text-[#6b7c93] text-base lg:text-lg leading-7 max-w-[480px]">
+              Get notified about updates, join us in building a world where mental health care is accessible without barriers.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
-            {testimonials.map((testimonial, index) => (
-              <div key={index} className="heal-card p-4 sm:p-6">
-                <div className="flex items-center mb-3 sm:mb-4">
-                  {[...Array(testimonial.rating)].map((_, i) => (
-                    <Star key={i} className="h-3 w-3 sm:h-4 sm:w-4 text-yellow-500 fill-current" />
-                  ))}
-                </div>
-                <p className="text-gray-600 mb-3 sm:mb-4 italic text-sm sm:text-base">"{testimonial.content}"</p>
-                <div>
-                  <div className="font-semibold text-gray-900 text-sm sm:text-base">{testimonial.name}</div>
-                  <div className="text-xs sm:text-sm text-gray-500">{testimonial.role}</div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* CTA Section */}
-      <section className="py-12 sm:py-20 bg-gradient-to-r from-blue-600 to-green-600">
-        <div className="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8">
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white mb-4 sm:mb-6">
-            Ready to Begin Your Healing Journey?
-          </h2>
-          <p className="text-base sm:text-lg lg:text-xl text-blue-100 mb-6 sm:mb-8 leading-relaxed">
-            Join thousands who have found support, healing, and hope through our platform.
-            Your mental health matters, and we're here to help every step of the way.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
-            <Link href="/auth/signup" className="bg-white text-blue-600 hover:bg-gray-50 font-medium py-3 sm:py-4 px-6 sm:px-8 rounded-lg transition-all duration-200 text-base sm:text-lg">
-              Start Free Today
-            </Link>
-            <Link href="/crisis" className="border-2 border-white text-white hover:bg-white hover:text-blue-600 font-medium py-3 sm:py-4 px-6 sm:px-8 rounded-lg transition-all duration-200 text-base sm:text-lg">
-              Need Immediate Help?
-            </Link>
-          </div>
+          {/* RIGHT FORM */}
+          <form className="w-full lg:w-1/2 flex flex-col items-center gap-3 lg:gap-4">
+            <input
+              type="text"
+              placeholder="Enter Your First Name"
+              className="flex-1 w-full px-5 py-[14px] bg-white rounded-[25px] border border-[#ecf2f7] shadow-sm font-acme text-[#7a7a7a] focus:outline-none focus:ring-2 focus:ring-[#016a79]"
+            />
+            <input
+              type="text"
+              placeholder="Enter Your Last Name"
+              className="flex-1 w-full px-5 py-[14px] bg-white rounded-[25px] border border-[#ecf2f7] shadow-sm font-acme text-[#7a7a7a] focus:outline-none focus:ring-2 focus:ring-[#016a79]"
+            />
+            <input
+              type="email"
+              placeholder="Enter Your Email"
+              className="flex-1 w-full px-5 py-[14px] bg-white rounded-[25px] border border-[#ecf2f7] shadow-sm font-acme text-[#6b7c93] focus:outline-none focus:ring-2 focus:ring-[#016a79]"
+            />
+            <div className="flex w-full">
+              <button
+                type="submit"
+                className="mt-2 ml-auto h-auto px-8 py-[13px] bg-[#1a1a1a] rounded-[25px] font-acme text-white text-sm uppercase tracking-[0.5px] hover:bg-[#333] transition-all"
+              >
+                Subscribe
+              </button>
+            </div>
+          </form>
         </div>
       </section>
 
