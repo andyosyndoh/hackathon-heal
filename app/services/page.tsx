@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, Headset, Brain, HeartPulse, MessageSquare, Users, Shield, Smartphone, Video, Database, Heart, Globe } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
 import Footer from '@/components/Footer';
@@ -15,7 +15,7 @@ export default function ServicesPage() {
      <Navbar />
 
       {/* Main Content */}
-      <main className="flex-1 bg-[#fef0d3] mx-4 relative overflow-hidden">
+      <main className="flex-1 bg-[#fef0d3] relative overflow-hidden">
         <div className="relative w-full">
           {/* Decorative sparkles */}
           <img
@@ -180,93 +180,99 @@ export default function ServicesPage() {
           </section>
 
           {/* Partners Section */}
-<section className="relative w-full bg-[#2a4045] py-[80px]">
- {/* <div className="absolute inset-0 bg-grey rounded-xl pointer-events-none" /> */}
-  <div className="flex flex-col items-center gap-[80px] px-4">
-    <div className="font-acme text-white text-[40px] tracking-[0] leading-[normal] text-center">
-      Trusted by 50+ Partners Worldwide
-    </div>
+          <section className="relative w-full bg-[#2a4045] py-[80px]">
+          {/* <div className="absolute inset-0 bg-grey rounded-xl pointer-events-none" /> */}
+            <div className="flex flex-col items-center gap-[80px] px-4">
+              <div className="font-acme text-white text-[40px] tracking-[0] leading-[normal] text-center">
+                Trusted by 50+ Partners Worldwide
+              </div>
 
-    {/* Curved Logos Layout */}
-    <div className="relative w-full max-w-[1000px] flex justify-center flex-wrap lg:flex-nowrap gap-[60px] lg:gap-[120px]">
-     
+              {/* Curved Logos Layout */}
+              <div className="relative w-full max-w-[1000px] flex justify-center flex-wrap lg:flex-nowrap gap-[60px] lg:gap-[120px]">
+              
 
-      {[
-        { src: '/client-9-1536x768.png', alt: 'Client 9' },
-        { src: '/client-4-1536x768.png', alt: 'Client 4' },
-        { src: '/client-2-1536x768.png', alt: 'Client 2' },
-        { src: '/client-5-1536x768.png', alt: 'Client 5' },
-        { src: '/client-6-1536x768.png', alt: 'Client 6' },
-      ].map((logo, index) => {
-        // curve logic: center logo higher, sides lower
-        const curveHeights = [0, 10, 10, 10, 0];
-        return (
-          <div
-            key={`partner-${index}`}
-            className="transition-transform duration-300 hover:scale-105"
-            style={{
-              transform: `translateY(-${curveHeights[index]}px)`,
-            }}
-          >
-            <Image
-              className="w-[159px] h-[79px] object-contain opacity-50 hover:opacity-100 transition-opacity"
-              alt={logo.alt}
-              src={logo.src}
-              width={159}
-              height={79}
-            />
-          </div>
-        );
-      })}
-    </div>
-  </div>
-</section>
+                {[
+                  { src: '/client-9-1536x768.png', alt: 'Client 9' },
+                  { src: '/client-4-1536x768.png', alt: 'Client 4' },
+                  { src: '/client-2-1536x768.png', alt: 'Client 2' },
+                  { src: '/client-5-1536x768.png', alt: 'Client 5' },
+                  { src: '/client-6-1536x768.png', alt: 'Client 6' },
+                ].map((logo, index) => {
+                  // curve logic: center logo higher, sides lower
+                  const curveHeights = [0, 10, 10, 10, 0];
+                  return (
+                    <div
+                      key={`partner-${index}`}
+                      className="transition-transform duration-300 hover:scale-105"
+                      style={{
+                        transform: `translateY(-${curveHeights[index]}px)`,
+                      }}
+                    >
+                      <Image
+                        className="w-[159px] h-[79px] object-contain opacity-50 hover:opacity-100 transition-opacity"
+                        alt={logo.alt}
+                        src={logo.src}
+                        width={159}
+                        height={79}
+                      />
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          </section>
 
 
 
           {/* Services Section */}
-          <section className="relative w-full flex justify-center pt-[200px] lg:pt-[448px]">
+          <section className="relative w-full flex justify-center pt-3 lg:pt-10">
             <div className="relative w-full max-w-[1440px] px-4 lg:px-[128px]">
-              <div className="flex flex-col items-center gap-[100px] lg:gap-[215px]">
-                <div className="w-full max-w-[1148px] font-acme text-[#2a4045] text-3xl lg:text-[58px] text-center tracking-[0] leading-tight lg:leading-[70px]">
+              <div className="flex flex-col items-center gap-[20px] lg:gap-[60px]">
+                <div className="w-full max-w-[1148px] font-acme text-[#2a4045] text-3xl lg:text-5xl text-center tracking-[0] leading-tight lg:leading-[70px]">
                   Discover Safe, Confidential, and Empowering Support with HEAL
                 </div>
 
                 {/* Service Cards */}
                 <div className="w-full flex flex-col items-center gap-8">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-4xl">
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-4xl">
                     {[
                       {
-                        icon: '/icon-1.png',
-                        title: 'Psychoeducation',
-                        description: 'Learn about trauma, healing, and resilience through expert-led resources.',
+                        icon: <Headset className="w-8 h-8 text-[#2a4045]" />,
+                        title: '24/7 Digital Support',
+                        description: 'Confidential AI-powered chat & voice support—available anytime, anywhere.',
                       },
                       {
-                        icon: '/icon-3.png',
+                        icon: <Brain className="w-8 h-8 text-[#2a4045]" />,
                         title: 'Mental Health',
                         description: 'Access trauma-informed therapists and peer mentors who walk with you step by step.',
                       },
                       {
-                        icon: '/icon-2.png',
-                        title: 'Peer Mentorship',
-                        description: 'Connect with survivors who understand your journey and offer guidance.',
+                        icon: <HeartPulse className="w-8 h-8 text-[#2a4045]" />,
+                        title: 'Care & protection',
+                        description: 'Guided, secure referrals to trusted hospitals and clinics for PEP, emergency care, and follow-up.',
                       },
                       {
-                        icon: '/icon-4.png',
-                        title: 'Holistic Journeys',
-                        description: 'Explore wellness practices that nurture mind, body, and spirit.',
+                        icon: <MessageSquare className="w-8 h-8 text-[#2a4045]" />,
+                        title: 'Justice pathways',
+                        description: 'Learn your rights and connect with vetted lawyers, police units, and legal advocates.',
+                      },
+                      {
+                        icon: <Globe className="w-8 h-8 text-[#2a4045]" />,
+                        title: 'Survivors Communities',
+                        description: 'Join private, anonymous group spaces to share, heal, and grow with others who understand.',
+                      },
+                      {
+                        icon: <Database  className="w-8 h-8 text-[#2a4045]" />,
+                        title: 'Resources & Education',
+                        description: 'Explore survivor-centered guides on mental health, safety planning, and empowerment.',
                       },
                     ].map((card, index) => (
                       <div key={index} className="bg-[#012f35] border-none rounded-lg">
                         <div className="flex flex-col items-start p-6 gap-5">
-                          <Image
-                            className="w-[60px] h-[60px]"
-                            alt={`${card.title} icon`}
-                            src={card.icon}
-                            width={60}
-                            height={60}
-                          />
-                          <h3 className="font-acme text-[#fef0d3] text-[32px] tracking-[0] leading-[normal]">
+                          <div className="w-[60px] h-[60px] bg-[#fef0d3] rounded-full flex items-center justify-center">
+                            {card.icon}
+                          </div>
+                          <h3 className="font-acme text-[#fef0d3] text-[32px] tracking-[0] leading-[1.1]">
                             {card.title}
                           </h3>
                           <p className="font-acme text-[#c5e6ea] text-xl tracking-[0] leading-[26.2px]">
@@ -294,20 +300,16 @@ export default function ServicesPage() {
                 <div className="w-full flex flex-col lg:flex-row gap-[50px] lg:gap-[102px]">
                   <div className="flex flex-col gap-[60px] lg:gap-[140px]">
                     {[
-                      { icon: '/icon-2.png', label: '24/7 Digital Support' },
-                      { icon: '/icon-1.png', label: 'Mental Health' },
-                      { icon: '/icon-1.png', label: 'Care & Protection' },
-                      { icon: '/icon-1.png', label: 'Survivor Communities' },
+                      { icon: <Users className="w-8 h-8 text-[#2a4045]" />, label: '24/7 Digital Support' },
+                      { icon: <Heart className="w-8 h-8 text-[#2a4045]" />, label: 'Mental Health' },
+                      { icon: <Shield className="w-8 h-8 text-[#2a4045]" />, label: 'Care & Protection' },
+                      { icon: <Users className="w-8 h-8 text-[#2a4045]" />, label: 'Survivor Communities' },
                     ].map((item, index) => (
                       <div key={index} className="w-full lg:w-[476px] h-[130px] bg-[#2a4045] rounded-[20px] flex items-center px-[60px]">
-                        <Image
-                          className="w-[60px] h-[60px]"
-                          alt="Icon"
-                          src={item.icon}
-                          width={60}
-                          height={60}
-                        />
-                        <div className="ml-[80px] font-acme text-[#fef0d3] text-xl tracking-[0] leading-[normal]">
+                        <div className="w-[60px] h-[60px] bg-[#fef0d3] border-[2px] border-red rounded-full items-center justify-center">
+                          {item.icon}
+                        </div>
+                        <div className="ml-[80px] p-2 font-acme text-[#fef0d3] rounded-full text-xl tracking-[0] leading-[normal]">
                           {item.label}
                         </div>
                       </div>
