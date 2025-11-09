@@ -208,10 +208,10 @@ export function Instructions() {
       <AnimatedTextBlockWrapper>
         <h1 className="mb-4 pt-1 text-center text-3xl sm:text-4xl lg:text-5xl font-semibold">
           <span className="text-white">Need Support?</span>{" "}
-          <span style={{ color: '#9EEAFF' }}>I'm Here.</span>
+          <span style={{ color: '#9EEAFF' }}>I am Here.</span>
         </h1>
         <p className="max-w-[650px] text-center text-base sm:text-lg text-gray-400 mb-12">
-          Have a face-to-face conversation with an AI mental health companion. I'm here to listen, support, and help you through whatever you're experiencing.
+          Have a face-to-face conversation with an AI mental health companion. I am here to listen, support, and help you through whatever you are experiencing.
         </p>
         
         {getUserMediaError && (
