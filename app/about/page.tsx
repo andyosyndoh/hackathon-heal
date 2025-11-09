@@ -272,6 +272,54 @@ export default function AboutPage() {
           </div>
         </div>
       </section>
+
+      {/* Join the HEAL's team Section */}
+      <section className="py-12 sm:py-16 bg-[#2C4A4E]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h2 className="text-3xl sm:text-4xl font-bold text-white font-acme mb-4">
+            Join the HEAL's team!
+          </h2>
+          <p className="text-white/90 mb-8 font-acme">
+            Do you want to be part of Heal's team? click "join team"
+          </p>
+          <button className="bg-white text-[#2C4A4E] font-bold py-3 px-8 rounded-lg hover:bg-gray-100 hover:scale-105 hover:shadow-lg transition-all duration-300 font-acme transform active:scale-95">
+            Join Team
+          </button>
+        </div>
+      </section>
+
+      {/* Gallery Section */}
+      <section className="py-12 sm:py-20 bg-[#FEF5E3]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl sm:text-4xl font-bold text-[#044750] font-acme mb-4">
+              Gallery
+            </h2>
+          </div>
+          
+          {/* Gallery Grid */}
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6">
+            {[
+              'image1.jpg', 'Image1.JPG', 'Image2.jpeg', 'image3.jpg', 'Image3.jpg', 'image3(1).jpg',
+              'Image4.jpg', 'Image5.jpg', 'image6.jpg', 'Image6.jpg', 'Image7.jpg', 'image1.jpg',
+              'image9.jpg', 'image11.jpg', 'Image5.jpg', 'Image13.png'
+            ].map((imageName, index) => (
+              <div key={index} className="relative overflow-hidden rounded-lg shadow-md hover:shadow-xl transition-all duration-300 hover:scale-105 cursor-pointer group">
+                <img
+                  src={`/images/${imageName}`}
+                  alt={`Gallery image ${index + 1}`}
+                  className="w-full h-40 sm:h-48 object-cover group-hover:scale-110 transition-transform duration-300"
+                  onError={(e) => {
+                    const target = e.target as HTMLImageElement;
+                    target.src = '/images/image1.jpg';
+                  }}
+                />
+                <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all duration-300"></div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
     </div>
   );
 }
