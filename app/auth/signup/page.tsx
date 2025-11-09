@@ -217,6 +217,9 @@ export default function SignUpPage() {
                 onChange={handleInputChange}
                 className="w-full rounded-full px-4 py-2 text-sm sm:text-base text-[#FEF5E3] bg-[#677E83] placeholder-[#FEF5E3] border border-[#FEF5E3] focus:ring-2 focus:ring-[#0B3C49] focus:outline-none"
               />
+              {errors.firstName && (
+                <p className="text-red-500 text-xs mt-1">{errors.firstName}</p>
+              )}
               <label htmlFor="lastName" className="block md:hidden text-base lg:text-lg mb-1 font-medium text-[#FEF5E3]">
                 Last Name
               </label>
@@ -229,6 +232,9 @@ export default function SignUpPage() {
                 onChange={handleInputChange}
                 className="w-full rounded-full px-4 py-2 text-sm sm:text-base text-[#FEF5E3] bg-[#677E83] placeholder-[#FEF5E3] border border-[#FEF5E3] focus:ring-2 focus:ring-[#0B3C49] focus:outline-none"
               />
+              {errors.lastName && (
+                <p className="text-red-500 text-xs mt-1">{errors.lastName}</p>
+              )}
             </div>
             <label htmlFor="email" className="block text-base lg:text-lg mb-1 font-medium text-[#FEF5E3]">Email Address</label>
             <input
@@ -240,6 +246,9 @@ export default function SignUpPage() {
               onChange={handleInputChange}
               className="w-full rounded-full border border-[#FAEFD9] bg-transparent px-4 py-2 placeholder-[#FAEFD9] text-[#FAEFD9] focus:ring-2 focus:ring-[#FAEFD9] focus:outline-none"
             />
+            {errors.email && (
+              <p className="text-red-500 text-xs mt-1">{errors.email}</p>
+            )}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <label htmlFor="password" className="block text-base lg:text-lg mb-1 font-medium text-[#FEF5E3]">Password</label>
               <label htmlFor="confirmPassword" className="hidden md:block text-base lg:text-lg mb-1 font-medium text-[#FEF5E3]">Confirm Password</label>
@@ -252,6 +261,9 @@ export default function SignUpPage() {
                 onChange={handleInputChange}
                 className="w-full rounded-full px-4 py-2 text-sm sm:text-base text-[#FEF5E3] bg-[#677E83] placeholder-[#FEF5E3] border border-[#FEF5E3] focus:ring-2 focus:ring-[#0B3C49] focus:outline-none"
               />
+              {errors.password && (
+                <p className="text-red-500 text-xs mt-1">{errors.password}</p>
+              )}
               <label htmlFor="confirmPassword" className="block md:hidden text-base lg:text-lg mb-1 font-medium text-[#FEF5E3]">Confirm Password</label>
               <input
                 id="confirmPassword"
@@ -262,6 +274,9 @@ export default function SignUpPage() {
                 onChange={handleInputChange}
                 className="w-full rounded-full px-4 py-2 text-sm sm:text-base text-[#FEF5E3] bg-[#677E83] placeholder-[#FEF5E3] border border-[#FEF5E3] focus:ring-2 focus:ring-[#0B3C49] focus:outline-none"
               />
+              {errors.confirmPassword && (
+                <p className="text-red-500 text-xs mt-1">{errors.confirmPassword}</p>
+              )}
             </div>
             <div className="space-y-2 mt-4">
               <label className="flex items-center space-x-2 text-sm text-[#FAEFD9]">
@@ -272,6 +287,9 @@ export default function SignUpPage() {
                   onChange={handleInputChange}
                   className="rounded"
                 />
+                {errors.agreeToTerms && (
+                  <p className="text-red-500 text-xs mt-1">{errors.agreeToTerms}</p>
+                )}
                 <span>
                   I agree to the{' '}
                   <Link href="/terms" className="text-[#2AB1F4] hover:underline font-medium">
@@ -287,6 +305,9 @@ export default function SignUpPage() {
                   onChange={handleInputChange}
                   className="rounded"
                 />
+                {errors.agreeToPrivacy && (
+                  <p className="text-red-500 text-xs mt-1">{errors.agreeToPrivacy}</p>
+                )}
                 <span>
                   I agree to the{' '}
                   <Link href="/privacy" className="text-[#2AB1F4] hover:underline font-medium">
@@ -296,6 +317,9 @@ export default function SignUpPage() {
               </label>
             </div>
 
+            {errors.general && (
+              <p className="text-red-500 text-sm text-center mb-2">{errors.general}</p>
+            )}
             <button
               type="submit"
               className="w-full text-base md:text-lg mt-6 border border-[#FAEFD9] text-[#044750] py-2 rounded-full font-semibold hover:bg-[#FAEFD9] hover:text-[#0B3C49] transition-all font-acme"
