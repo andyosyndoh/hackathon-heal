@@ -104,7 +104,7 @@ export default function SignInPage() {
               height={80}
               priority />
       <Image src="/images/decoration.png" alt="Decoration" 
-              className="absolute bottom-1/5 right-1/2 w-auto h-auto opacity-70 -rotate-5"
+              className="hidden md:block absolute bottom-1/5 right-1/2 w-auto h-auto opacity-70 -rotate-5"
               width={65}
               height={65}
               priority />
@@ -151,10 +151,10 @@ export default function SignInPage() {
         </div>
 
         {/* RIGHT SIDE */}
-        <div className="md:w-1/2 flex flex-col items-center justify-center p-8">
-          <div className='w-full bg-[#C2BCAE] bg-opacity-40 p-6 rounded-3xl'>
+        <div className="md:w-1/2 flex flex-col items-center justify-center p-2 md:p-8">
+          <div className='w-full bg-[#C2BCAE] bg-opacity-40 p-2 md:p-6 rounded-3xl'>
           {/* Sign In Card */}
-          <div className="w-full max-w-md bg-[#677E83] p-8 rounded-3xl shadow-md text-[#0B3C49]">
+          <div className="w-full max-w-md bg-[#677E83] p-4 md:p-8 rounded-3xl shadow-md text-[#0B3C49]">
             <h2 className="text-center text-2xl font-semibold mb-8 text-[#0B3C49]" style={{fontFamily: 'Acme, cursive'}}>
               Sign In
             </h2>
