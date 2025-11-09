@@ -155,10 +155,16 @@ export default function SignUpPage() {
               width={100}
               height={100}
               priority />
-      <Image src="/images/logo.png" alt='logo' className="absolute top-6 left-8 w-auto h-auto"
-              width={80}
-              height={80}
-              priority />
+      <Link href="/" className="absolute top-6 left-8 group">
+        <Image
+          src="/Heal-logo.webp"
+          alt="HEAL Logo"
+          width={60}
+          height={60}
+          className="h-15 w-15 object-contain transition-all duration-300 group-hover:scale-110"
+          priority
+        />
+      </Link>
       <div className="flex flex-col md:flex-row w-full max-w-5xl overflow-hidden">
         
         {/* LEFT SIDE */}
@@ -326,7 +332,7 @@ export default function SignUpPage() {
       </p>
       <button
               type="button"
-              onClick={() => router.push('/anonymous-access')}
+              onClick={() => router.push('/anonymous')}
               className="bg-[#FBF9F4] text-[#0B3C49] px-6 py-2 shadow-sm hover:bg-[#092F3A] hover:text-[#FEF5E3] transition text-sm"
             >
               Anonymous Access →

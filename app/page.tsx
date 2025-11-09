@@ -147,7 +147,7 @@ export default function HomePage() {
                   Welcome To Heal
                   <br />
                   <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#056173] via-[#81A9AD] to-[#0C444B] whitespace-nowrap">
-                    Your Listening, Caring Patner
+                    Your Listening, Caring Partner
                   </span>
                 </h1>
                 <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-600 mb-6 sm:mb-8 leading-relaxed">
