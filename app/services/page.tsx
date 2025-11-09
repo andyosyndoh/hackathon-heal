@@ -414,7 +414,7 @@ export default function ServicesPage() {
               />
             </div> */}
             {/* FLOATING INFO CARD */}
-                <div className="absolute bottom-[40%] right-0 bg-[#17444e] text-white p-6 rounded-lg shadow-lg w-[250px] lg:w-[400px] font-acme text-sm leading-relaxed">
+                <div className="absolute bottom-[40%] right-0 bg-[#17444e] text-white p-6 shadow-lg w-[250px] lg:w-[400px] font-acme text-sm leading-relaxed">
                   <ul className="space-y-1">
                     <li className="flex items-center gap-2">
                       <span className="text-[#5bd4c4] text-lg">✔</span> Strong Referral Pathways
@@ -431,53 +431,46 @@ export default function ServicesPage() {
 
 
           {/* Newsletter Section */}
-          <section className="flex flex-col w-full items-start justify-center px-4 lg:px-[25px] py-[73px] rounded-[10px] mt-[100px] bg-[#fef0d3]">
-            <div className="flex flex-col lg:flex-row items-center justify-center gap-8 w-full max-w-6xl mx-auto">
-              <div className="flex flex-col w-full lg:w-[454px] items-start px-[15px] py-0">
-                <div className="flex flex-col items-start gap-[4.5px] pt-0 pb-[0.5px] px-0 w-full">
-                  <h2 className="font-acme text-[#2a4045] text-2xl lg:text-[34.9px] tracking-[-0.88px] leading-[42px]">
-                    Sign up for our newsletter!
-                  </h2>
-
-                  <p className="font-acme text-[#6b7c93] text-lg tracking-[0] leading-7 mt-2">
-                    Get notified about updates, join us in building a world where
-                    mental health care is accessible without barriers.
-                  </p>
-                </div>
-              </div>
-
-              <div className="w-full lg:w-[600px]">
-                <form className="w-full max-w-[515px] flex flex-col items-start gap-3.5">
-                  <div className="gap-1.5 px-0 py-[3px] w-full flex flex-col items-start">
-                    <input
-                      type="text"
-                      placeholder="Enter Your First Name"
-                      className="w-full h-auto pl-[21px] pr-4 py-[16.5px] bg-white rounded-[25px] border border-solid border-[#ecf2f7] font-acme text-[#7a7a7a]"
-                    />
-                    <input
-                      type="text"
-                      placeholder="Enter Your Last Name"
-                      className="w-full h-auto pl-[21px] pr-4 py-[16.5px] bg-white rounded-[25px] border border-solid border-[#ecf2f7] font-acme text-[#7a7a7a]"
-                    />
-                    <input
-                      type="email"
-                      placeholder="Enter Your Email"
-                      className="w-full h-auto pl-[21px] pr-4 py-[16.5px] bg-white rounded-[25px] border border-solid border-[#ecf2f7] font-acme text-[#6b7c93]"
-                    />
-                  </div>
-
-                  <div className="flex flex-col items-end gap-2.5 w-full">
-                    <button
-                      type="submit"
-                      className="h-auto w-full lg:w-[153.41px] px-[39.55px] py-[11px] bg-[#1a1a1a] rounded-[25px] font-acme text-white text-[13px] text-center tracking-[0] leading-7 whitespace-nowrap hover:bg-[#1a1a1a]/90 transition-all"
-                    >
-                      SUBSCRIBE
-                    </button>
-                  </div>
-                </form>
-              </div>
+        <section className="flex items-center justify-center w-full bg-[#fef0d3] py-20 px-4">
+          <div className="w-full max-w-7xl rounded-[20px] shadow-sm bg-gradient-to-r from-white to-[#e8f3ff] flex flex-col lg:flex-row items-center justify-between gap-10 px-8 lg:px-16 py-12">
+            {/* LEFT CONTENT */}
+            <div className="flex flex-col w-full align-center justify-end lg:w-1/2">
+              <h2 className="font-acme text-[#2a4045] text-2xl lg:text-[34px] leading-[42px] mb-3">
+                Sign up for our newsletter!
+              </h2>
+              <p className="font-acme text-[#6b7c93] text-base lg:text-lg leading-7 max-w-[480px]">
+                Get notified about updates, join us in building a world where mental health care is accessible without barriers.
+              </p>
             </div>
-          </section>
+
+            {/* RIGHT FORM */}
+            <form className="w-full lg:w-1/2 flex flex-col items-center gap-3 lg:gap-4">
+              <input
+                type="text"
+                placeholder="Enter Your First Name"
+                className="flex-1 w-full px-5 py-[14px] bg-white rounded-[25px] border border-[#ecf2f7] shadow-sm font-acme text-[#7a7a7a] focus:outline-none focus:ring-2 focus:ring-[#016a79]"
+              />
+              <input
+                type="text"
+                placeholder="Enter Your Last Name"
+                className="flex-1 w-full px-5 py-[14px] bg-white rounded-[25px] border border-[#ecf2f7] shadow-sm font-acme text-[#7a7a7a] focus:outline-none focus:ring-2 focus:ring-[#016a79]"
+              />
+              <input
+                type="email"
+                placeholder="Enter Your Email"
+                className="flex-1 w-full px-5 py-[14px] bg-white rounded-[25px] border border-[#ecf2f7] shadow-sm font-acme text-[#6b7c93] focus:outline-none focus:ring-2 focus:ring-[#016a79]"
+              />
+              <div className="flex w-full">
+                <button
+                  type="submit"
+                  className="mt-2 ml-auto h-auto px-8 py-[13px] bg-[#1a1a1a] rounded-[25px] font-acme text-white text-sm uppercase tracking-[0.5px] hover:bg-[#333] transition-all"
+                >
+                  Subscribe
+                </button>
+              </div>
+            </form>
+          </div>
+        </section>
         </div>
       </main>
 
