@@ -459,7 +459,7 @@ export default function ChatPage() {
       backgroundImage: `url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="leaves" patternUnits="userSpaceOnUse" width="20" height="20"><circle cx="10" cy="10" r="1" fill="%23059669" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23leaves)"/></svg>')`,
       backgroundSize: '200px 200px'
     }}>
-      {showChoiceModal && <ChoiceModal onSelect={handleChoice} />}
+      {/* {showChoiceModal && <ChoiceModal onSelect={handleChoice} />} */}
       {/* Header - Fixed */}
       <div className="backdrop-blur-sm shadow-sm border-b px-3 sm:px-4 py-3 flex-shrink-0 z-50">
         <div className="flex items-center justify-between">
