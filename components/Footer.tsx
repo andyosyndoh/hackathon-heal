@@ -148,7 +148,14 @@ export default function Footer() {
             </p>
           </div>
 
-          <div className="flex items-center py-2.5">
+          <div className="flex items-center gap-4 py-2.5">
+            <Link 
+              href="/privacy" 
+              className="font-acme text-[#6b7280] hover:text-white text-base tracking-[0] leading-7 whitespace-nowrap transition-colors"
+            >
+              Privacy Policy
+            </Link>
+            <span className="text-[#6b7280]">|</span>
             <p className="font-acme text-[#6b7280] text-base tracking-[0] leading-7 whitespace-nowrap">
               Powered by Heal.Org
             </p>

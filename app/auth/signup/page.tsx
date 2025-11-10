@@ -116,7 +116,7 @@ export default function SignUpPage() {
     <main className="min-h-screen bg-[#FAEFD9] flex items-center justify-center p-6 relative overflow-hidden">
       {/* Decoration Images */}
       <Image src="/images/decoration.png" alt="Decoration" 
-              className="absolute top-1/5 left-1/4 w-auto h-auto opacity-70 -rotate-12"
+              className="absolute top-1/5 left-0 md:left-1/4 w-auto h-auto opacity-70 -rotate-12"
               width={80}
               height={80}
               priority />
@@ -126,12 +126,12 @@ export default function SignUpPage() {
               height={70}
               priority />
       <Image src="/images/decoration.png" alt="Decoration" 
-              className="absolute bottom-1/3 left-1/2 w-auto h-auto opacity-50 -rotate-15"
+              className="absolute bottom-1/4 left-1/4 w-auto h-auto opacity-50 -rotate-15 hidden md:block"
               width={90}
               height={90}
               priority />
       <Image src="/images/decoration.png" alt="Decoration" 
-              className="absolute bottom-1/4 right-1/3 w-auto h-auto opacity-70 rotate-15"
+              className="absolute bottom-1/4 right-1/4 w-auto h-auto opacity-70 rotate-15 hidden md:block"
               width={60}
               height={60}
               priority />
@@ -146,7 +146,7 @@ export default function SignUpPage() {
               height={80}
               priority />
       <Image src="/images/decoration.png" alt="Decoration" 
-              className="absolute bottom-1/5 right-1/2 w-auto h-auto opacity-70 -rotate-5"
+              className="absolute bottom-1/5 right-2 w-auto h-auto opacity-70 -rotate-5"
               width={65}
               height={65}
               priority />
@@ -155,7 +155,7 @@ export default function SignUpPage() {
               width={100}
               height={100}
               priority />
-      <Link href="/" className="absolute top-6 left-8 group">
+      <Link href="/" className="absolute top-3 md:top-6 left-4 md:left-8 group">
         <Image
           src="/Heal-logo.webp"
           alt="HEAL Logo"
@@ -169,7 +169,7 @@ export default function SignUpPage() {
         
         {/* LEFT SIDE */}
         <div className="flex flex-col justify-center items-center md:w-1/2 p-10 text-center">
-          <Link href="/" className="text-sm text-gray-500 mb-4 w-full flex items-left gap-1 hover:underline text-[18px]" style={{fontFamily: 'Acme, cursive'}}>
+          <Link href="/" className="text-sm text-gray-500 my-2 md:my-4 w-full flex items-left gap-1 hover:underline text-[18px]" style={{fontFamily: 'Acme, cursive'}}>
             <ArrowLeft className="h-4 w-4" /> Back to Home
           </Link>
           <h2 className="text-[40px] font-semibold text-[#0B3C49] font-acme">Join Our Platform</h2>
@@ -193,53 +193,65 @@ export default function SignUpPage() {
         </div>
 
         {/* RIGHT SIDE */}
-    <div className="flex flex-col items-center justify-center p-8">
-      <div className="w-full bg-[#C2BCAE]/30 p-6 rounded-3xl">
+    <div className="flex flex-col items-center justify-center p-2 md:p-8">
+      <div className="w-full bg-[#C2BCAE]/30 p-2 md:p-6 rounded-3xl">
         {/* Sign Up Card */}
-        <div className="w-full max-w-md bg-[#677E83] p-10 rounded-3xl shadow-lg text-[#FAEFD9]">
-          <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+        <div className="w-full max-w-md bg-[#677E83] p-4 md:p-8 rounded-3xl shadow-lg text-[#FAEFD9]">
+          <form onSubmit={handleSubmit} className="flex flex-col gap-4 sm:gap-6 w-full">
             <h2 className="text-center text-2xl font-semibold mb-8 text-[#0B3C49] font-acme">
               Sign Up
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <label htmlFor="firstName" className="block text-sm mb-1 text-[#044750] text-[20px] font-acme font-medium">
+              <label htmlFor="firstName" className="block text-base lg:text-lg mb-1 font-medium text-[#FEF5E3]">
                 First Name
               </label>
-              <label htmlFor="lastName" className="block text-sm mb-1 text-[#044750] text-[20px] font-acme font-medium">
+              <label htmlFor="lastName" className="hidden md:block text-base lg:text-lg mb-1 font-medium text-[#FEF5E3]">
                 Last Name
               </label>
               <input
                 id="firstName"
                 name="firstName"
                 type="text"
-                placeholder="Enter your first name"
+                placeholder="Enter firstname"
                 value={formData.firstName}
                 onChange={handleInputChange}
-                className="w-full rounded-full border border-[#FAEFD9] bg-transparent px-4 py-2 placeholder-[#FAEFD9] text-[#FAEFD9] focus:ring-2 focus:ring-[#FAEFD9] focus:outline-none"
+                className="w-full rounded-full px-4 py-2 text-sm sm:text-base text-[#FEF5E3] bg-[#677E83] placeholder-[#FEF5E3] border border-[#FEF5E3] focus:ring-2 focus:ring-[#0B3C49] focus:outline-none"
               />
+              {errors.firstName && (
+                <p className="text-red-500 text-xs mt-1">{errors.firstName}</p>
+              )}
+              <label htmlFor="lastName" className="block md:hidden text-base lg:text-lg mb-1 font-medium text-[#FEF5E3]">
+                Last Name
+              </label>
               <input
                 id="lastName"
                 name="lastName"
                 type="text"
-                placeholder="Enter your last name"
+                placeholder="Enter lastname"
                 value={formData.lastName}
                 onChange={handleInputChange}
-                className="w-full rounded-full border border-[#FAEFD9] bg-transparent px-4 py-2 placeholder-[#FAEFD9] text-[#FAEFD9] focus:ring-2 focus:ring-[#FAEFD9] focus:outline-none"
+                className="w-full rounded-full px-4 py-2 text-sm sm:text-base text-[#FEF5E3] bg-[#677E83] placeholder-[#FEF5E3] border border-[#FEF5E3] focus:ring-2 focus:ring-[#0B3C49] focus:outline-none"
               />
+              {errors.lastName && (
+                <p className="text-red-500 text-xs mt-1">{errors.lastName}</p>
+              )}
             </div>
-            <label htmlFor="email" className="block text-sm mb-1 text-[#044750] text-[20px] font-acme font-medium">Email Address</label>
+            <label htmlFor="email" className="block text-base lg:text-lg mb-1 font-medium text-[#FEF5E3]">Email Address</label>
             <input
               id="email"
               name="email"
               type="email"
-              placeholder="Enter your Email Address"
+              placeholder="Enter email"
               value={formData.email}
               onChange={handleInputChange}
               className="w-full rounded-full border border-[#FAEFD9] bg-transparent px-4 py-2 placeholder-[#FAEFD9] text-[#FAEFD9] focus:ring-2 focus:ring-[#FAEFD9] focus:outline-none"
             />
+            {errors.email && (
+              <p className="text-red-500 text-xs mt-1">{errors.email}</p>
+            )}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <label htmlFor="password" className="block text-sm mb-1 text-[#044750] text-[20px] font-acme font-medium">Password</label>
-              <label htmlFor="confirmPassword" className="block text-sm mb-1 text-[#044750] text-[20px] font-acme font-medium">Confirm Password</label>
+              <label htmlFor="password" className="block text-base lg:text-lg mb-1 font-medium text-[#FEF5E3]">Password</label>
+              <label htmlFor="confirmPassword" className="hidden md:block text-base lg:text-lg mb-1 font-medium text-[#FEF5E3]">Confirm Password</label>
               <input
                 id="password"
                 name="password"
@@ -247,9 +259,12 @@ export default function SignUpPage() {
                 placeholder="Enter your password"
                 value={formData.password}
                 onChange={handleInputChange}
-                className="w-full rounded-full border border-[#FAEFD9] bg-transparent px-4 py-2 placeholder-[#FAEFD9] text-[#FAEFD9] focus:ring-2 focus:ring-[#FAEFD9] focus:outline-none"
+                className="w-full rounded-full px-4 py-2 text-sm sm:text-base text-[#FEF5E3] bg-[#677E83] placeholder-[#FEF5E3] border border-[#FEF5E3] focus:ring-2 focus:ring-[#0B3C49] focus:outline-none"
               />
-
+              {errors.password && (
+                <p className="text-red-500 text-xs mt-1">{errors.password}</p>
+              )}
+              <label htmlFor="confirmPassword" className="block md:hidden text-base lg:text-lg mb-1 font-medium text-[#FEF5E3]">Confirm Password</label>
               <input
                 id="confirmPassword"
                 name="confirmPassword"
@@ -257,8 +272,11 @@ export default function SignUpPage() {
                 placeholder="Confirm your password"
                 value={formData.confirmPassword}
                 onChange={handleInputChange}
-                className="w-full rounded-full border border-[#FAEFD9] bg-transparent px-4 py-2 placeholder-[#FAEFD9] text-[#FAEFD9] focus:ring-2 focus:ring-[#FAEFD9] focus:outline-none"
+                className="w-full rounded-full px-4 py-2 text-sm sm:text-base text-[#FEF5E3] bg-[#677E83] placeholder-[#FEF5E3] border border-[#FEF5E3] focus:ring-2 focus:ring-[#0B3C49] focus:outline-none"
               />
+              {errors.confirmPassword && (
+                <p className="text-red-500 text-xs mt-1">{errors.confirmPassword}</p>
+              )}
             </div>
             <div className="space-y-2 mt-4">
               <label className="flex items-center space-x-2 text-sm text-[#FAEFD9]">
@@ -269,9 +287,12 @@ export default function SignUpPage() {
                   onChange={handleInputChange}
                   className="rounded"
                 />
+                {errors.agreeToTerms && (
+                  <p className="text-red-500 text-xs mt-1">{errors.agreeToTerms}</p>
+                )}
                 <span>
                   I agree to the{' '}
-                  <Link href="/terms" className="text-[#2AB1F4] hover:underline">
+                  <Link href="/terms" className="text-[#2AB1F4] hover:underline font-medium">
                     Terms of Service
                   </Link>
                 </span>
@@ -284,18 +305,24 @@ export default function SignUpPage() {
                   onChange={handleInputChange}
                   className="rounded"
                 />
+                {errors.agreeToPrivacy && (
+                  <p className="text-red-500 text-xs mt-1">{errors.agreeToPrivacy}</p>
+                )}
                 <span>
                   I agree to the{' '}
-                  <Link href="/privacy" className="text-[#2AB1F4] hover:underline">
+                  <Link href="/privacy" className="text-[#2AB1F4] hover:underline font-medium">
                     Privacy Policy
                   </Link>
                 </span>
               </label>
             </div>
 
+            {errors.general && (
+              <p className="text-red-500 text-sm text-center mb-2">{errors.general}</p>
+            )}
             <button
               type="submit"
-              className="w-full text-[18px] mt-6 border border-[#FAEFD9] text-[#044750] py-2 rounded-full font-semibold hover:bg-[#FAEFD9] hover:text-[#0B3C49] transition-all font-acme"
+              className="w-full text-base md:text-lg mt-6 border border-[#FAEFD9] text-[#044750] py-2 rounded-full font-semibold hover:bg-[#FAEFD9] hover:text-[#0B3C49] transition-all font-acme"
             >
               Create Account
             </button>
@@ -305,29 +332,29 @@ export default function SignUpPage() {
     </div>
     
     {/* Sign In Link */}
-    <div className="text-center mb-6">
-      <p className="text-gray-600 text-sm">
+    <div className="text-center mb-6 px-4 sm:px-0">
+      <p className="text-gray-600 pt-4 md:pt-8 text-sm sm:text-base">
         Already have an account?{' '}
-        <Link href="/auth/signin" className="text-[#0B3C49] hover:underline font-medium">
+        <Link href="/auth/signin" className="text-[#2AB1F4] hover:underline font-medium">
           Sign in here
         </Link>
       </p>
     </div>
 
     {/* Divider */}
-    <div className="flex items-center justify-center my-8">
+    <div className="flex items-center justify-center w-full max-w-md my-6 sm:my-8 px-4 sm:px-0">
       <div className="flex-1 h-px bg-gray-300" />
-      <span className="px-3 text-gray-700 text-sm">OR</span>
+      <span className="px-2 text-xs sm:text-sm text-gray-600">OR</span>
       <div className="flex-1 h-px bg-gray-300" />
     </div>
 
     {/* Anonymous Access */}
-    <div className="bg-[#C2D0D2] rounded-2xl w-full max-w-md p-6 text-center shadow-md">
-      <h3 className="text-[#0B3C49] text-lg font-bold mb-3 flex items-center justify-center gap-2">
-        <Headset className="h-6 w-6 text-[#0B3C49]" />
-        Need Quick Help Access
+    <div className="bg-[#B0BEC0] rounded-2xl w-full max-w-md p-4 sm:p-6 text-center shadow-sm mx-auto">
+      <h3 className="text-[#0B3C49] text-xl sm:text-2xl font-semibold mb-2 flex items-center justify-center gap-2" style={{fontFamily: 'Acme, sans-serif'}}>
+        <Headset className="h-8 w-8 text-[#0B3C49]" />
+        <span>Need Quick Help Access</span>
       </h3>
-      <p className="text-sm text-[#0B3C49]/80 mb-4">
+      <p className="text-sm sm:text-base text-gray-700 mb-4">
         Get help resources and access our AI text support without registration
       </p>
       <button
