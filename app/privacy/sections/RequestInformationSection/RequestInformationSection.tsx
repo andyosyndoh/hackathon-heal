@@ -1,6 +1,6 @@
 import React from "react";
 
-export const RequestInformationSection = (): JSX.Element => {
+export const RequestInformationSection = (): React.ReactElement => {
   return (
     <section className="w-full">
       <p className="[font-family:'Jost',Helvetica] font-normal text-base tracking-[0] leading-[26.4px] text-black">
