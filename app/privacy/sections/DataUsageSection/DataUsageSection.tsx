@@ -15,7 +15,7 @@ const contentData = [
   },
 ];
 
-export const DataUsageSection = (): JSX.Element => {
+export const DataUsageSection = (): React.ReactElement => {
   return (
     <section className="w-full">
       <h2 className="[font-family:'Public_Sans',Helvetica] font-bold text-black text-base tracking-[0] leading-[26.4px] mb-4">

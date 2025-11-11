@@ -1,6 +1,6 @@
 import React from "react";
 
-export const InformationCollectionSection = (): JSX.Element => {
+export const InformationCollectionSection = (): React.ReactElement => {
   return (
     <section className="w-full">
       <h2 className="[font-family:'Public_Sans',Helvetica] font-bold text-black text-base tracking-[0] leading-[26.4px] mb-3">

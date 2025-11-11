@@ -1,6 +1,6 @@
 import React from "react";
 
-export const GlobalApiSection = (): JSX.Element => {
+export const GlobalApiSection = (): React.ReactElement => {
   return (
     <p className="w-full [font-family:'Jost',Helvetica] font-normal text-base tracking-[0] leading-[26.4px]">
       <span className="text-black">

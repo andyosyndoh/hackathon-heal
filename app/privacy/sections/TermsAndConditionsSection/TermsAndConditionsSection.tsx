@@ -15,7 +15,7 @@ const purposes = [
   'For other purposes about which we will provide you with prior notice as described in the "Changes to This Policy" section.',
 ];
 
-export const TermsAndConditionsSection = (): JSX.Element => {
+export const TermsAndConditionsSection = (): React.ReactElement => {
   return (
     <section className="w-full">
       <p className="[font-family:'Public_Sans',Helvetica] font-normal text-black text-base tracking-[0] leading-[26.4px] mb-[27px]">

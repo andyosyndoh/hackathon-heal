@@ -1,32 +1,19 @@
 "use client";
 
 import React from 'react';
-import { MapContainer, TileLayer, Marker } from 'react-leaflet';
-import 'leaflet/dist/leaflet.css';
-import L from 'leaflet';
-
-// Fix for default marker icon not showing up
-// This is a common issue with react-leaflet and webpack
-delete L.Icon.Default.prototype._getIconUrl;
-
-L.Icon.Default.mergeOptions({
-  iconRetinaUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon-2x.png',
-  iconUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png',
-  shadowUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-shadow.png',
-});
 
 const Map = () => {
-  const position = [51.505, -0.09]; // Placeholder for your office coordinates
-
   return (
-    <div className="w-full" style={{ height: '500px' }}>
-      <MapContainer center={position} zoom={13} scrollWheelZoom={false} className="w-full h-full rounded-lg shadow-lg">
-        <TileLayer
-          attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        />
-        <Marker position={position}></Marker>
-      </MapContainer>
+    <div className="w-full h-[500px] bg-gray-100 rounded-lg shadow-lg flex items-center justify-center border">
+      <div className="text-center p-8">
+        <h3 className="text-xl font-semibold text-gray-700 mb-2">Our Location</h3>
+        <p className="text-gray-600 mb-4">Visit us at our office for in-person consultations</p>
+        <div className="text-sm text-gray-500">
+          <p>123 Mental Health Street</p>
+          <p>Wellness City, WC 12345</p>
+          <p>Phone: (555) 123-4567</p>
+        </div>
+      </div>
     </div>
   );
 };

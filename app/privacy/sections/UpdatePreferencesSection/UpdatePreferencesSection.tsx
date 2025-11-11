@@ -1,6 +1,6 @@
 import React from "react";
 
-export const UpdatePreferencesSection = (): JSX.Element => {
+export const UpdatePreferencesSection = (): React.ReactElement => {
   return (
     <div className="w-full [font-family:'Jost',Helvetica] font-normal text-base tracking-[0] leading-[26.4px]">
       <p className="text-black">
