@@ -12,6 +12,7 @@ export default function SignUpPage() {
   const { register, isAuthenticated, isLoading: authLoading } = useAuth();
   
   const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
     firstName: '',
@@ -252,28 +253,46 @@ export default function SignUpPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <label htmlFor="password" className="block text-base lg:text-lg mb-1 font-medium text-[#FEF5E3]">Password</label>
               <label htmlFor="confirmPassword" className="hidden md:block text-base lg:text-lg mb-1 font-medium text-[#FEF5E3]">Confirm Password</label>
-              <input
-                id="password"
-                name="password"
-                type={showPassword ? "text" : "password"}
-                placeholder="Enter your password"
-                value={formData.password}
-                onChange={handleInputChange}
-                className="w-full rounded-full px-4 py-2 text-sm sm:text-base text-[#FEF5E3] bg-[#677E83] placeholder-[#FEF5E3] border border-[#FEF5E3] focus:ring-2 focus:ring-[#0B3C49] focus:outline-none"
-              />
+              <div className="relative">
+                <input
+                  id="password"
+                  name="password"
+                  type={showPassword ? "text" : "password"}
+                  placeholder="Enter your password"
+                  value={formData.password}
+                  onChange={handleInputChange}
+                  className="w-full rounded-full px-4 py-2 pr-12 text-sm sm:text-base text-[#FEF5E3] bg-[#677E83] placeholder-[#FEF5E3] border border-[#FEF5E3] focus:ring-2 focus:ring-[#0B3C49] focus:outline-none"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-[#FEF5E3] hover:text-[#0B3C49] transition-colors"
+                >
+                  {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+                </button>
+              </div>
               {errors.password && (
                 <p className="text-red-500 text-xs mt-1">{errors.password}</p>
               )}
               <label htmlFor="confirmPassword" className="block md:hidden text-base lg:text-lg mb-1 font-medium text-[#FEF5E3]">Confirm Password</label>
-              <input
-                id="confirmPassword"
-                name="confirmPassword"
-                type={showPassword ? "text" : "password"}
-                placeholder="Confirm your password"
-                value={formData.confirmPassword}
-                onChange={handleInputChange}
-                className="w-full rounded-full px-4 py-2 text-sm sm:text-base text-[#FEF5E3] bg-[#677E83] placeholder-[#FEF5E3] border border-[#FEF5E3] focus:ring-2 focus:ring-[#0B3C49] focus:outline-none"
-              />
+              <div className="relative">
+                <input
+                  id="confirmPassword"
+                  name="confirmPassword"
+                  type={showConfirmPassword ? "text" : "password"}
+                  placeholder="Confirm your password"
+                  value={formData.confirmPassword}
+                  onChange={handleInputChange}
+                  className="w-full rounded-full px-4 py-2 pr-12 text-sm sm:text-base text-[#FEF5E3] bg-[#677E83] placeholder-[#FEF5E3] border border-[#FEF5E3] focus:ring-2 focus:ring-[#0B3C49] focus:outline-none"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-[#FEF5E3] hover:text-[#0B3C49] transition-colors"
+                >
+                  {showConfirmPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+                </button>
+              </div>
               {errors.confirmPassword && (
                 <p className="text-red-500 text-xs mt-1">{errors.confirmPassword}</p>
               )}
