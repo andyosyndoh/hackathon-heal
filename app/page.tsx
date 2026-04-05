@@ -80,7 +80,7 @@ export default function HomePage() {
 
       {/* Hero Section */}
       <section
-      className="relative min-h-screen flex flex-col justify-between bg-cover bg-center bg-no-repeat"
+      className="relative min-h-screen flex flex-col justify-between bg-cover bg-center bg-no-repeat -mt-20"
       style={{ backgroundImage: 'url(/images/Hero-bg-image.png)' }}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex-grow flex items-center">
@@ -88,7 +88,7 @@ export default function HomePage() {
           
           {/* Left: Illustration Image */}
           <div className={`w-full lg:w-1/2 transition-all duration-1000 ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-            <div className="relative w-full max-w-[400px] mx-auto">
+            <div className="relative w-full max-w-[400px] rounded-[100px] mx-auto">
               <Image
                 src="/images/Heal-hero-section.png"
                 alt="Heal Support Illustration"
@@ -111,9 +111,8 @@ export default function HomePage() {
               </span>
             </h1>
             
-            <p className="mt-6 text-base md:text-lg lg:text-xl font-medium text-[#4F5F5C] text-center font-acme max-w-2xl mx-auto lg:mx-0 leading-snug">
-              AI powered Mental health care and support anytime, anywhere. <br className="hidden md:block" />
-              Immediate • Confidential • Judgment-Free and Culturally-sensitive <br className="hidden md:block" />
+            <p className="mt-6 text-base md:text-lg lg:text-xl font-medium text-[#4F5F5C] text-center font-acme max-w-2xl mx-auto lg:mx-0 leading-snug whitespace-nowrap">
+              AI powered Mental health care and support anytime, anywhere. Immediate •<br className="hidden md:block" /> Confidential • Judgment-Free and Culturally-sensitive <br className="hidden md:block" />
               Care designed with you in mind.
             </p>
 

@@ -45,22 +45,22 @@ export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
-    <nav className="bg-[#EFE6D1] sticky top-0 z-50">
-      <div className="max-w-[1400px] mx-auto px-6 lg:px-8">
+    <nav className="bg-transparent sticky top-4 z-50">
+      <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
           {/* Logo - Left */}
           <Link href="/" className="flex items-center space-x-3 group flex-shrink-0">
             <Image
-              src="/Heal-logo.webp"
+              src="images/heal-logo.png"
               alt="HEAL Logo"
               width={80}
               height={80}
               className="h-30 w-30 object-contain transition-all duration-500 drop-shadow-[0_4px_10px_rgba(0,0,0,0.25)] group-hover:scale-115 group-hover:rotate-3 group-hover:drop-shadow-[0_6px_16px_rgba(0,0,0,0.35)]"
               priority
             />
-            <span className="font-acme text-3xl font-bold text-brand-primary group-hover:text-brand-dark transition-all duration-300 group-hover:tracking-wider">
+            {/* <span className="font-acme text-3xl font-bold text-brand-primary group-hover:text-brand-dark transition-all duration-300 group-hover:tracking-wider">
               HEAL
-            </span>
+            </span> */}
           </Link>
 
           {/* Center Navigation */}
