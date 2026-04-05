@@ -126,13 +126,16 @@ export default function HomePage() {
            <br />   */}
 
       {/* Hero Section */}
-      <section className="relative overflow-hidden py-12 sm:py-20 lg:py-32">
+      <section 
+        className="relative overflow-hidden py-12 bg-cover bg-center bg-no-repeat"
+        style={{ backgroundImage: 'url(/images/Hero-bg-image.png)' }}
+      >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-row items-center space-x-10">
             {/* Left: Image */}
             <div className={`${isLoaded ? 'fade-in-up' : 'opacity-0'} flex justify-center lg:justify-start`}>
               <Image
-                src="/Heal-hero-section.png"
+                src="images/Heal-hero-section.png"
                 alt="Heal Hero Section"
                 width={80}
                 height={80}
