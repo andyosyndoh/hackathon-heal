@@ -87,7 +87,7 @@ export default function HomePage() {
         <div className="flex flex-col lg:flex-row items-center justify-between gap-12 w-full">
           
           {/* Left: Illustration Image */}
-          <div className={`w-full lg:w-1/2 transition-all duration-1000 ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+          <div className={`w-full rounded-[100px] lg:w-1/2 transition-all duration-1000 ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
             <div className="relative w-full max-w-[400px] rounded-[100px] mx-auto">
               <Image
                 src="/images/Heal-hero-section.png"
@@ -120,7 +120,7 @@ export default function HomePage() {
               {/* Primary Button */}
               <Link
                 href="/auth/signup"
-                className="bg-[#729384] hover:bg-[#5D7E73] text-white px-8 py-3 rounded-full flex items-center gap-2 transition-transform hover:scale-105 font-semibold text-xs lg:text-sm uppercase tracking-wider font-acme"
+                className="bg-[#6F8F7A] hover:bg-[#6D7E73] text-white px-8 py-3 rounded-full flex items-center gap-2 transition-transform hover:scale-105 font-semibold text-xs lg:text-sm uppercase tracking-wider font-acme"
               >
                 Begin at your pace
                 <ArrowRight className="h-4 w-4" />
