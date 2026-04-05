@@ -9,6 +9,7 @@ import {
   Phone,
   ArrowRight,
   Star,
+  Plus,
   CheckCircle
 } from 'lucide-react';
 import Link from 'next/link';
@@ -78,151 +79,94 @@ export default function HomePage() {
       <Navbar />
 
       {/* Hero Section */}
-      {/* <section className="relative overflow-hidden py-12 sm:py-20 lg:py-32">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center">
-            <div className={`${isLoaded ? 'fade-in-up' : 'opacity-0'}`}>
-              <h1 className=" font-acme text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-gray-900 mb-4 sm:mb-6">
-                Welcome To Heal
-                <br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#056173] via-[#81A9AD] to-[#0C444B]">
-                  Your Listening, Caring Patner
-                </span>
-              </h1>
-              <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-600 mb-6 sm:mb-8 max-w-3xl mx-auto leading-relaxed px-4">
-                AI powered Mental health care and support anytime, anywhere
-                Immediate • Confidential • Judgment-Free and Culturally-sensitive Care designed with you in mind.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center mb-8 sm:mb-12 px-4">
-                <Link href="/auth/signup" className="heal-button text-base sm:text-lg px-6 sm:px-8 py-3 sm:py-4 w-full sm:w-auto">
-                  Start Your Journey
-                  <ArrowRight className="ml-2 h-4 w-4 sm:h-5 sm:w-5" />
-                </Link>
-                <Link href="/crisis" className="bg-red-600 hover:bg-red-700 text-white font-medium py-3 sm:py-4 px-6 sm:px-8 rounded-lg transition-all duration-200 text-base sm:text-lg w-full sm:w-auto text-center">
-                  Crisis Support
-                </Link>
-              </div>
-            </div> */}
-
-      {/* Trust Indicators */}
-      {/* <div className={`${isLoaded ? 'fade-in-up' : 'opacity-0'} grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-8 mt-8 sm:mt-16 px-4`}>
-              <div className="flex items-center justify-center space-x-2">
-                <Shield className="h-4 w-4 sm:h-6 sm:w-6 text-green-600" />
-                <span className="text-gray-700 font-medium text-sm sm:text-base">HIPAA Compliant</span>
-              </div>
-              <div className="flex items-center justify-center space-x-2">
-                <CheckCircle className="h-4 w-4 sm:h-6 sm:w-6 text-green-600" />
-                <span className="text-gray-700 font-medium text-sm sm:text-base">Clinically Verified</span>
-              </div>
-              <div className="flex items-center justify-center space-x-2">
-                <Star className="h-4 w-4 sm:h-6 sm:w-6 text-yellow-500" />
-                <span className="text-gray-700 font-medium text-sm sm:text-base">5-Star Rated</span>
-              </div>
-            </div>
-          </div>
-        </div>
-           <br />
-           <br />
-           <br />   */}
-
-      {/* Hero Section */}
-      <section 
-        className="relative overflow-hidden py-12 bg-cover bg-center bg-no-repeat"
-        style={{ backgroundImage: 'url(/images/Hero-bg-image.png)' }}
-      >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-row items-center space-x-10">
-            {/* Left: Image */}
-            <div className={`${isLoaded ? 'fade-in-up' : 'opacity-0'} flex justify-center lg:justify-start`}>
+      <section
+      className="relative min-h-screen flex flex-col justify-between bg-cover bg-center bg-no-repeat"
+      style={{ backgroundImage: 'url(/images/Hero-bg-image.png)' }}
+    >
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex-grow flex items-center">
+        <div className="flex flex-col lg:flex-row items-center justify-between gap-12 w-full">
+          
+          {/* Left: Illustration Image */}
+          <div className={`w-full lg:w-1/2 transition-all duration-1000 ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+            <div className="relative w-full max-w-[400px] mx-auto">
               <Image
-                src="images/Heal-hero-section.png"
-                alt="Heal Hero Section"
-                width={80}
-                height={80}
-                className="w-full object-contain"
+                src="/images/Heal-hero-section.png"
+                alt="Heal Support Illustration"
+                width={400}
+                height={400}
+                className="w-full h-auto object-contain"
                 priority
               />
             </div>
-            {/* Right: Text Content */}
-            <div className="text-center">
-              <div className={`${isLoaded ? 'fade-in-up' : 'opacity-0'}`}>
-                <h1 className="font-acme text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-gray-900 mb-4 sm:mb-6">
-                  Welcome To Heal
-                  <br />
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#056173] via-[#81A9AD] to-[#0C444B] whitespace-nowrap">
-                    Your Listening, Caring Partner
-                  </span>
-                </h1>
-                <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-600 mb-6 sm:mb-8 leading-relaxed">
-                  AI powered Mental health care and support anytime, anywhere
-                  Immediate • Confidential • Judgment-Free and Culturally-sensitive Care designed with you in mind.
-                </p>
-                <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center mb-8 sm:mb-12">
-                  <Link
-                    href="/auth/signup"
-                    className="bg-[#044750] hover:bg-[#056173] text-white font-bold py-3 sm:py-4 px-6 sm:px-8 rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-lg active:scale-95 font-acme inline-flex items-center justify-center whitespace-nowrap"
-                  >
-                    Start Your Journey
-                    <ArrowRight className="ml-2 h-4 w-4 sm:h-5 sm:w-5" />
-                  </Link>
-                  <Link href="/crisis" className="bg-red-600 hover:bg-red-700 text-white font-medium py-3 sm:py-4 px-6 sm:px-8 rounded-lg transition-all duration-200 text-base sm:text-lg w-full sm:w-auto text-center">
-                    Crisis Support
-                  </Link>
-                </div>
-              </div>
-              {/* Trust Indicators */}
-              <div className={`${isLoaded ? 'fade-in-up' : 'opacity-0'} grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6`}>
-                <div className="flex items-center justify-center space-x-2">
-                  <Shield className="h-4 w-4 sm:h-6 sm:w-6 text-green-600" />
-                  <span className="text-gray-700 font-medium text-sm sm:text-base">HIPAA Compliant</span>
-                </div>
-                <div className="flex items-center justify-center lg:justify-start space-x-2">
-                  <CheckCircle className="h-4 w-4 sm:h-6 sm:w-6 text-green-600" />
-                  <span className="text-gray-700 font-medium text-sm sm:text-base">Clinically Verified</span>
-                </div>
-                <div className="flex items-center justify-center lg:justify-start space-x-2">
-                  <Star className="h-4 w-4 sm:h-6 sm:w-6 text-yellow-500" />
-                  <span className="text-gray-700 font-medium text-sm sm:text-base">5-Star Rated</span>
-                </div>
-              </div>
-            </div>
           </div>
-        </div>
-        <br />
-        <br />
-        <br />
 
-
-
-        {/* White footer section */}
-        <div className="bg-white mt-12 sm:mt-20 py-4 sm:py-6 text-center border-t border-gray-100">
-          <div className="font-acme flex flex-col sm:flex-row justify-center items-center gap-3 sm:gap-6 text-sm sm:text-base text-gray-700">
-            <p>
-              By clicking the arrow, you acknowledge and agree to our{" "}
-              <Link href="/privacy-policy" className="font-acme text-[#056173] underline hover:text-[#0C444B] transition-colors">
-                Privacy Policy
-              </Link>
-              , and to activate your audio
+          {/* Right: Text Content */}
+          <div className={`w-full lg:w-1/2 text-center lg:text-left transition-all duration-1000 delay-300 ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+            <h1 className="flex flex-col gap-2">
+              <span className="text-4xl md:text-5xl lg:text-6xl text-center font-acme font-normal text-[#333] uppercase tracking-tight">
+                Welcome to Heal
+              </span>
+              <span className="text-3xl md:text-5xl font-acme font-normal text-[#6F8F7A] uppercase tracking-tight md:whitespace-nowrap md:-ml-8">
+                Your Listening, Caring Partner
+              </span>
+            </h1>
+            
+            <p className="mt-6 text-base md:text-lg lg:text-xl font-medium text-[#4F5F5C] text-center font-acme max-w-2xl mx-auto lg:mx-0 leading-snug">
+              AI powered Mental health care and support anytime, anywhere. <br className="hidden md:block" />
+              Immediate • Confidential • Judgment-Free and Culturally-sensitive <br className="hidden md:block" />
+              Care designed with you in mind.
             </p>
 
-            <div className="flex items-center gap-2">
-              <button
-                onClick={handlePlayAudio}
-                className="bg-[#056173] hover:bg-[#0C444B] text-white rounded-full p-3 transition-all duration-200 hover:scale-105"
-                aria-label="Play audio"
+            <div className="mt-10 flex flex-wrap justify-center gap-4">
+              {/* Primary Button */}
+              <Link
+                href="/auth/signup"
+                className="bg-[#729384] hover:bg-[#5D7E73] text-white px-8 py-3 rounded-full flex items-center gap-2 transition-transform hover:scale-105 font-semibold text-xs lg:text-sm uppercase tracking-wider font-acme"
               >
-                <ArrowRight className="h-5 w-5" />
-              </button>
-              <span className="text-gray-600 text-sm">00:00 / 01:46:59</span>
+                Begin at your pace
+                <ArrowRight className="h-4 w-4" />
+              </Link>
+
+              {/* Secondary Button */}
+              <Link
+                href="/crisis"
+                className="bg-[#F9EBEB] border border-[#D97E7E] text-[#B34D4D] hover:bg-[#f3dede] px-8 py-3 rounded-full flex items-center gap-2 transition-transform hover:scale-105 font-semibold text-xs lg:text-sm uppercase tracking-wider font-acme"
+              >
+                <Plus className="h-4 w-4" />
+                Immediate Help
+              </Link>
             </div>
           </div>
-
-          {/* Hidden audio element */}
-          <audio ref={audioRef} src="/sounds/Heal_audio.mp3" preload="auto" />
-
         </div>
+      </div>
 
-      </section>
+      {/* Footer Bar (White bar at the bottom) */}
+      <div className="w-full bg-white/90 backdrop-blur-sm border-t border-gray-100 py-4 md:py-8 my-4">
+        <div className="max-w-7xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-4">
+          <p className="text-gray-600 text-sm md:text-base text-center md:text-left font-medium font-acme">
+            By clicking the arrow, you acknowledge and agree to our{" "}
+            <Link href="/privacy-policy" className="text-[#056173] font-bold underline hover:text-[#0C444B]">
+              Privacy Policy
+            </Link>
+            , and to activate your audio
+          </p>
+
+          <div className="flex items-center gap-4">
+            <button
+              onClick={handlePlayAudio}
+              className="bg-[#056173] hover:bg-[#0C444B] text-white rounded-full p-2.5 transition-all hover:scale-110 shadow-md"
+              aria-label="Play audio"
+            >
+              <ArrowRight className="h-5 w-5" />
+            </button>
+            <span className="text-gray-500 font-mono text-sm tracking-tighter">00:00 / 01:14:59</span>
+          </div>
+        </div>
+        
+        <audio ref={audioRef} src="/sounds/Heal_audio.mp3" preload="auto" />
+      </div>
+    </section>
+
 
 
       {/* Features Section */}
