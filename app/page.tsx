@@ -2,15 +2,15 @@
 
 import { useState, useEffect, useRef } from 'react';
 import {
-  Heart,
-  Shield,
   Brain,
   Users,
   Phone,
   ArrowRight,
-  Star,
   Plus,
-  CheckCircle
+  CheckCircle,
+  Bot,
+  PhoneCall,
+  Shield,
 } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -48,34 +48,8 @@ export default function HomePage() {
     }
   };
 
-
-  const features = [
-    {
-      icon: Brain,
-      title: 'AI-Powered Support',
-      description: 'Advanced AI companions provide 24/7 emotional support with personalized conversations and evidence-based therapeutic techniques.'
-    },
-    {
-      icon: Shield,
-      title: 'Privacy First',
-      description: 'End-to-end encryption ensures your conversations remain completely private and secure with zero-knowledge architecture.'
-    },
-    {
-      icon: Phone,
-      title: 'Crisis Management',
-      description: 'Immediate emergency response protocols with location-based services and direct connection to crisis professionals.'
-    },
-    {
-      icon: Users,
-      title: 'Expert Network',
-      description: 'Access to licensed therapists and mental health professionals for comprehensive care when you need it most.'
-    }
-  ];
-
-
-
   return (
-    <div className="min-h-screen bg-[#FEF5E3]">
+    <div className="min-h-screen bg-[#FBE8DE]">
       <Navbar />
 
       {/* Hero Section */}
@@ -112,8 +86,7 @@ export default function HomePage() {
             </h1>
             
             <p className="mt-6 text-base md:text-lg lg:text-xl font-medium text-[#4F5F5C] text-center font-acme max-w-2xl mx-auto lg:mx-0 leading-snug whitespace-nowrap">
-              AI powered Mental health care and support anytime, anywhere. Immediate •<br className="hidden md:block" /> Confidential • Judgment-Free and Culturally-sensitive <br className="hidden md:block" />
-              Care designed with you in mind.
+              AI powered Mental health care and support anytime, anywhere. Immediate •<br className="hidden md:block" /> Confidential • Judgment-Free and Culturally-sensitive Care designed <br className="hidden md:block" />with you in mind.
             </p>
 
             <div className="mt-10 flex flex-wrap justify-center gap-4">
@@ -169,32 +142,59 @@ export default function HomePage() {
 
 
       {/* Features Section */}
-      <section id="features" className="py-12 sm:py-20 bg-[#FEF5E3]">
+      <section id="features" className="py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12 sm:mb-16">
-            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#044750] mb-4 font-acme">
+          <div className="text-center mb-20">
+            <h2 className="text-2xl md:text-3xl font-bold text-[#2F3A3A] font-acme">
               Comprehensive Mental Health Support
             </h2>
-            <p className="text-base sm:text-lg lg:text-xl text-gray-700 max-w-2xl mx-auto px-4 font-acme">
-              Our platform combines cutting-edge AI technology with human expertise
-              to provide the support you need, when you need it.
-            </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
-            {features.map((feature, index) => (
-              <div key={index} className="bg-white p-4 sm:p-6 text-center hover:shadow-xl transition-all duration-300 rounded-lg border border-[#81A9AD]/20 hover:scale-105 hover:bg-[#F5F5DC] cursor-pointer group">
-                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-[#81A9AD]/20 rounded-lg flex items-center justify-center mx-auto mb-3 sm:mb-4 group-hover:bg-[#044750] transition-colors duration-300">
-                  <feature.icon className="h-5 w-5 sm:h-6 sm:w-6 text-[#044750] group-hover:text-white transition-colors duration-300" />
-                </div>
-                <h3 className="text-base sm:text-lg font-semibold text-[#044750] mb-2 font-acme">{feature.title}</h3>
-                <p className="text-gray-600 text-sm sm:text-base leading-relaxed font-acme">{feature.description}</p>
+          {/* Changed to 3 columns and added alignment classes */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 items-center">
+            
+            {/* Card 1: Crisis Management */}
+            <div className="bg-white rounded-3xl p-10 flex flex-col items-center text-center shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-300 cursor-pointer group h-full">
+              <div className="mb-8 transition-transform group-hover:scale-110 duration-300">
+                <PhoneCall size={80} strokeWidth={1} className="text-[#333]" />
               </div>
-            ))}
+              <h3 className="text-xl font-bold text-[#1a1a1a] mb-4 uppercase tracking-tight font-acme">
+                Crisis Management
+              </h3>
+              <p className="text-gray-600 text-sm leading-relaxed font-medium font-acme">
+                Immediate emergency response protocols with location-based services and direct connection to crisis professionals.
+              </p>
+            </div>
+
+            {/* Card 2: AI - Powered Support (Featured Center Card) */}
+            <div className="bg-[#007C85] rounded-3xl p-12 flex flex-col items-center text-center shadow-xl hover:shadow-2xl hover:-translate-y-4 transition-all duration-300 cursor-pointer lg:-mt-12 lg:mb-[-3rem] z-10 text-white min-h-[500px] justify-center">
+              <div className="mb-8">
+                <Bot size={100} strokeWidth={1} className="text-white" />
+              </div>
+              <h3 className="text-2xl font-bold mb-4 uppercase tracking-tight font-acme">
+                AI - Powered Support
+              </h3>
+              <p className="text-teal-50/90 text-base leading-relaxed font-medium font-acme">
+                Advanced AI companions provide 24/7 emotional support with personalized conversations and evidence-based therapeutic techniques.
+              </p>
+            </div>
+
+            {/* Card 3: Privacy First */}
+            <div className="bg-white rounded-3xl p-10 flex flex-col items-center text-center shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-300 cursor-pointer group h-full">
+              <div className="mb-8 transition-transform group-hover:scale-110 duration-300">
+                <Shield size={80} strokeWidth={1} className="text-[#333]" />
+              </div>
+              <h3 className="text-xl font-bold text-[#1a1a1a] mb-4 uppercase tracking-tight font-acme">
+                Privacy First
+              </h3>
+              <p className="text-gray-600 text-sm leading-relaxed font-medium font-acme">
+                End-to-end encryption ensures your conversations remain completely private and secure with zero-knowledge architecture.
+              </p>
+            </div>
+
           </div>
         </div>
       </section>
-
       {/* About Section */}
       <section id="about" className="py-12 sm:py-20 bg-[#FEF5E3]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
