@@ -11,6 +11,7 @@ import {
   Bot,
   PhoneCall,
   Shield,
+  CheckCircle2,
 } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -47,6 +48,16 @@ export default function HomePage() {
       });
     }
   };
+
+
+  const values = [
+    { title: 'Heal', content: '"You deserve healing — not shame. This is a safe space to begin."' },
+    { title: 'Healing', content: '"Healing is not a moment. It\'s a journey — and you don\'t have to walk it alone."' },
+    { title: 'Empowerment', content: '"We place survivors at the center — restoring voice, agency, and dignity."' },
+    { title: 'Action', content: '"We turn support into action — connecting you to tools, people, and care that create real change."' },
+    { title: 'Liberation', content: '"Liberation means freedom beyond the trauma — freedom to live fully, confidently, and joyfully."' }
+  ];
+
 
   return (
     <div className="min-h-screen bg-[#FBE8DE]">
@@ -85,7 +96,7 @@ export default function HomePage() {
               </span>
             </h1>
             
-            <p className="mt-6 text-base md:text-lg lg:text-xl font-medium text-[#4F5F5C] text-center font-acme max-w-2xl mx-auto lg:mx-0 leading-snug whitespace-nowrap">
+            <p className="mt-6 text-base md:text-lg lg:text-xl font-medium text-[#4F5F5C] text-center font-acme max-w-2xl mx-auto lg:mx-0 leading-snug md:whitespace-nowrap">
               AI powered Mental health care and support anytime, anywhere. Immediate •<br className="hidden md:block" /> Confidential • Judgment-Free and Culturally-sensitive Care designed <br className="hidden md:block" />with you in mind.
             </p>
 
@@ -145,13 +156,13 @@ export default function HomePage() {
       <section id="features" className="py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-20">
-            <h2 className="text-2xl md:text-3xl font-bold text-[#2F3A3A] font-acme">
+            <h2 className="text-3xl md:text-4xl font-normal text-[#2F3A3A] font-acme">
               Comprehensive Mental Health Support
             </h2>
           </div>
 
           {/* Changed to 3 columns and added alignment classes */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 items-center">
+          <div className="grid grid-cols-1 gap-8 lg:gap-0 lg:grid-cols-3 items-center">
             
             {/* Card 1: Crisis Management */}
             <div className="bg-white rounded-3xl p-10 flex flex-col items-center text-center shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-300 cursor-pointer group h-full">
@@ -195,54 +206,71 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
       {/* About Section */}
-      <section id="about" className="py-12 sm:py-20 bg-[#FEF5E3]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12 items-center">
+      <section id="about" className="relative py-16 sm:py-24 bg-[#E5EFEC] overflow-hidden">
+      {/* Decorative Sunbursts (Absolute positioned) */}
+      {/* <div className="absolute top-10 left-10 opacity-40 select-none pointer-events-none">
+        <SunburstIcon className="w-16 h-16 text-[#D4B982]" />
+      </div>
+      <div className="absolute bottom-10 right-10 opacity-40 select-none pointer-events-none">
+        <SunburstIcon className="w-20 h-20 text-[#D4B982]" />
+      </div> */}
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-start">
+          
+          {/* Left Side: Image with rounded corners */}
+          <div className="relative group">
+            {/* The yellowish decorative box behind the image in figma */}
+            <div className="absolute -bottom-6 -left-6 w-32 h-20 rounded-lg -z-10 hidden lg:block" />
+            
+            <div className="rounded-[3rem] overflow-hidden shadow-2xl transition-transform duration-500 group-hover:scale-[1.02]">
+              <Image
+                src="/images/about-image.png"
+                alt="Happy people embracing"
+                width={600}
+                height={800}
+                className="w-full h-auto object-cover"
+              />
+            </div>
+          </div>
+
+          {/* Right Side: Content */}
+          <div className="flex flex-col space-y-8">
             <div>
-              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#044750] mb-4 sm:mb-6 font-acme">
+              <h2 className="text-3xl md:text-4xl font-normal text-[#2F3A3A] mb-6 font-acme leading-tight">
                 Built by Mental Health Professionals
               </h2>
-              <p className="text-base sm:text-lg text-gray-700 mb-4 sm:mb-6 leading-relaxed font-acme">
-                Heal was created by a team of licensed therapists, AI researchers, and security experts
-                to provide accessible, effective mental health support that prioritizes your privacy and safety.
+              <p className="text-base sm:text-lg text-[#4F5F5C] mb-8 leading-relaxed font-acme">
+                Heal was created by a team of licensed therapists, AI researchers, and
+                security experts to provide accessible, effective mental health support
+                that prioritizes your privacy and safety.
               </p>
-              <div className="space-y-3 sm:space-y-4">
-                <div className="flex items-center space-x-3">
-                  <CheckCircle className="h-4 w-4 sm:h-5 sm:w-5 text-[#81A9AD] flex-shrink-0" />
-                  <span className="text-gray-700 text-sm sm:text-base font-acme">Evidence-based therapeutic approaches</span>
-                </div>
-                <div className="flex items-center space-x-3">
-                  <CheckCircle className="h-4 w-4 sm:h-5 sm:w-5 text-[#81A9AD] flex-shrink-0" />
-                  <span className="text-gray-700 text-sm sm:text-base font-acme">24/7 crisis intervention protocols</span>
-                </div>
-                <div className="flex items-center space-x-3">
-                  <CheckCircle className="h-4 w-4 sm:h-5 sm:w-5 text-[#81A9AD] flex-shrink-0" />
-                  <span className="text-gray-700 text-sm sm:text-base font-acme">Continuous clinical supervision</span>
-                </div>
-                <div className="flex items-center space-x-3">
-                  <CheckCircle className="h-4 w-4 sm:h-5 sm:w-5 text-[#81A9AD] flex-shrink-0" />
-                  <span className="text-gray-700 text-sm sm:text-base font-acme">Regular safety and efficacy audits</span>
-                </div>
-              </div>
             </div>
-            <div className="space-y-6">
-              {[
-                { title: 'Heal', content: '"You deserve healing — not shame. This is a safe space to begin."' },
-                { title: 'Healing', content: '"Healing is not a moment. It\'s a journey — and you don\'t have to walk it alone."' },
-                { title: 'Empowerment', content: '"We place survivors at the center — restoring voice, agency, and dignity."' },
-                { title: 'Action', content: '"We turn support into action — connecting you to tools, people, and care that create real change."' },
-                { title: 'Liberation', content: '"Liberation means freedom beyond the trauma — freedom to live fully, confidently, and joyfully."' }
-              ].map((item, index) => (
-                <div key={index} className="bg-white p-4 rounded-lg border border-[#81A9AD]/20 hover:shadow-lg transition-all duration-300 hover:scale-102 cursor-pointer group">
-                  <h4 className="text-lg font-bold text-[#044750] mb-2 font-acme">{item.title}</h4>
-                  <p className="text-gray-600 text-sm leading-relaxed font-acme italic">{item.content}</p>
+
+            {/* Values List */}
+            <div className="space-y-8">
+              {values.map((item, index) => (
+                <div key={index} className="flex flex-col space-y-1 border-l-4 border-[#000000]/80 pl-2">
+                  <div className="flex items-center gap-3">
+                    <h3 className="text-xl font-bold text-[#6F8F7A] font-acme uppercase tracking-wide">
+                      {item.title}
+                    </h3>
+                    <CheckCircle2 className="h-5 w-5 text-[#4F5F5C] stroke-[1.5]" />
+                  </div>
+                  <p className="text-[#4A635D] text-base md:text-lg italic leading-relaxed font-acme">
+                    {item.content}
+                  </p>
                 </div>
               ))}
             </div>
           </div>
+
         </div>
-      </section>
+      </div>
+    </section>
+  
 
       {/* Healing Without Barriers Section */}
       <section 
@@ -313,4 +341,5 @@ export default function HomePage() {
       <Footer />
     </div>
   );
+  
 }
