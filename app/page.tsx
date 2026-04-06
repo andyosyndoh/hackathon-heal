@@ -153,7 +153,17 @@ export default function HomePage() {
 
 
       {/* Features Section */}
-      <section id="features" className="py-20">
+      <section id="features" className="relative py-20">
+              <Image src="/images/decoration.png" alt="Decoration" 
+                      className="absolute bottom-6 left-64 w-10 h-10 opacity-70 rotate-30"
+                      width={20}
+                      height={20}
+                      priority />
+              <Image src="/images/decoration.png" alt="Decoration" 
+                      className="absolute -bottom-6 left-40 w-auto h-auto z-20"
+                      width={100}
+                      height={100}
+                      priority />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-20">
             <h2 className="text-3xl md:text-4xl font-normal text-[#2F3A3A] font-acme">
@@ -208,14 +218,23 @@ export default function HomePage() {
       </section>
 
       {/* About Section */}
-      <section id="about" className="relative py-16 sm:py-24 bg-[#E5EFEC] overflow-hidden">
+      <section id="about" className="relative py-16 sm:py-24 bg-[#E5EFEC] mb-20 overflow-hidden">
       {/* Decorative Sunbursts (Absolute positioned) */}
-      {/* <div className="absolute top-10 left-10 opacity-40 select-none pointer-events-none">
-        <SunburstIcon className="w-16 h-16 text-[#D4B982]" />
-      </div>
-      <div className="absolute bottom-10 right-10 opacity-40 select-none pointer-events-none">
-        <SunburstIcon className="w-20 h-20 text-[#D4B982]" />
-      </div> */}
+                <Image src="/images/decoration.png" alt="Decoration" 
+                      className="absolute bottom-1/4 left-40 w-auto h-auto opacity-70 rotate-30"
+                      width={40}
+                      height={40}
+                      priority />
+                <Image src="/images/about-decorative-rectangle.png" alt="Decoration" 
+                      className="absolute bottom-40 left-40 w-40 h-20 opacity-70 rotate-30"
+                      width={40}
+                      height={40}
+                      priority />
+              <Image src="/images/decoration.png" alt="Decoration" 
+                      className="absolute -bottom-6 right-40 w-auto h-auto"
+                      width={100}
+                      height={100}
+                      priority />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-start">
@@ -297,7 +316,7 @@ export default function HomePage() {
       </section>
 
       {/* Newsletter Section */}
-      <section className="flex items-center justify-center w-full bg-[#fef0d3] py-20 px-4">
+      <section className="flex items-center justify-center w-full py-20 px-4">
         <div className="w-full max-w-7xl rounded-[20px] shadow-sm bg-gradient-to-r from-white to-[#e8f3ff] flex flex-col lg:flex-row items-center justify-between gap-10 px-8 lg:px-16 py-12">
           {/* LEFT CONTENT */}
           <div className="flex flex-col w-full align-center justify-end lg:w-1/2">
