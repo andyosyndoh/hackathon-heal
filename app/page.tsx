@@ -226,7 +226,7 @@ export default function HomePage() {
                       height={40}
                       priority />
                 <Image src="/images/about-decorative-rectangle.png" alt="Decoration" 
-                      className="absolute bottom-40 left-40 w-40 h-20 opacity-70 rotate-30"
+                      className="absolute bottom-40 left-40 w-40 h-20 opacity-70 rotate-30 hidden md:block"
                       width={40}
                       height={40}
                       priority />
