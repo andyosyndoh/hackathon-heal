@@ -7,7 +7,52 @@ import Footer from '@/components/Footer';
 export default function AboutPage() {
   return (
     <div className="min-h-screen bg-[#FEF5E3]">
+
       <Navbar />
+      {/*Hero section*/}
+    <section className="relative h-[66.66666667vh] bg-gradient-to-r from-[#81A9AD] via-[#056173] to-[#044750] text-white pt-10 pb-32 lg:pb-0 overflow-hidden flex items-center -mt-20">
+      
+      {/* Decorative Sunbursts - Inserted as absolute elements */}
+     
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full relative z-10">
+        <div className="grid grid-cols-1 lg:grid-cols-2 items-center gap-8">
+          
+          {/* Left: Text Content */}
+          <div className="text-left space-y-4">
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold font-acme tracking-tight">
+              About Us
+            </h1>
+            <p className="max-w-md text-lg sm:text-xl font-medium leading-relaxed opacity-90">
+              HEAL is an AI-powered mental health support platform
+              providing confidential, culturally-sensitive care for survivors
+              of SGBV — anytime, anywhere.
+            </p>
+          </div>
+
+          {/* Right: Cutout Image Positioned at the bottom */}
+          <div className="relative h-full flex justify-center lg:justify-end items-end">
+            <div className="relative w-full max-w-[350px] rounded-[100px] mx-auto]">
+              <Image
+                src="/images/about-hero-women.png"
+                alt="Supportive embrace"
+                width={400}
+                height={400}
+                className="w-full h-auto object-contain"
+                priority
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* The Wavy Bottom Edge using SVG */}
+      <div className="absolute bottom-0 left-0 w-full overflow-hidden leading-[0] transform rotate-180">
+        <svg className="relative block w-full h-[60px]" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+          <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" fill="#FFFFFF"></path>
+        </svg>
+      </div>
+    </section>
       
       {/* Our History Section */}
       <section className="py-12 sm:py-20">
