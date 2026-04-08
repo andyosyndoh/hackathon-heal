@@ -10,20 +10,73 @@ export default function AboutPage() {
 
       <Navbar />
       {/*Hero section*/}
-    <section className="relative h-[66.66666667vh] bg-gradient-to-r from-[#81A9AD] via-[#056173] to-[#044750] text-white pt-10 pb-32 lg:pb-0 overflow-hidden flex items-center -mt-20">
+    <section className="relative lg:h-[66.66666667vh] text-white pt-28 lg:pt-20 lg:pb-0 overflow-hidden flex items-center -mt-20" style={{background: 'linear-gradient(180deg, #DCE7E1 0%, #016A79 100%)'}}>
       
-      {/* Decorative Sunbursts - Inserted as absolute elements */}
-     
+      {/* Decorative Sunbursts */}
+      <Image 
+        src="/images/decoration.png" 
+        alt="Decorative sunburst" 
+        className="absolute"
+        style={{ inset: '15% 5% auto 50%' }}
+        width={50}
+        height={50}
+        priority 
+      />
+      <Image 
+        src="/images/decoration.png" 
+        alt="Decorative sunburst" 
+        className="absolute hidden lg:block -rotate-6"
+        style={{ inset: '20% auto auto 48%' }}
+        width={70}
+        height={70}
+        priority 
+      />
+      <Image 
+        src="/images/decoration.png" 
+        alt="Decorative sunburst" 
+        className="absolute"
+        style={{ inset: '15% 5% auto auto' }}
+        width={50}
+        height={50}
+        priority 
+      />
+      <Image 
+        src="/images/decoration.png" 
+        alt="Decorative sunburst" 
+        className="absolute -rotate-6"
+        style={{ inset: '20% auto auto 88%' }}
+        width={70}
+        height={70}
+        priority 
+      />
+      <Image 
+        src="/images/decoration.png" 
+        alt="Decorative sunburst" 
+        className="absolute rotate-12"
+        style={{ inset: '20% auto auto 8%' }}
+        width={70}
+        height={70}
+        priority 
+      />
+      <Image 
+        src="/images/decoration.png" 
+        alt="Decorative sunburst" 
+        className="absolute rotate-45 z-30"
+        style={{ inset: '75% 60% auto auto' }}
+        width={70}
+        height={70}
+        priority 
+      />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-2 items-center gap-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full relative z-10" >
+        <div className="grid grid-cols-1 lg:grid-cols-2 items-center gap-2 md:gap-8">
           
           {/* Left: Text Content */}
-          <div className="text-left space-y-4">
+          <div className="text-center lg:text-left space-y-4">
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold font-acme tracking-tight">
               About Us
             </h1>
-            <p className="max-w-md text-lg sm:text-xl font-medium leading-relaxed opacity-90">
+            <p className="lg:max-w-md text-base sm:text-lg lg:text-xl font-inter font-medium leading-relaxed opacity-90 whitespace-pre-line">
               HEAL is an AI-powered mental health support platform
               providing confidential, culturally-sensitive care for survivors
               of SGBV — anytime, anywhere.
@@ -47,9 +100,22 @@ export default function AboutPage() {
       </div>
 
       {/* The Wavy Bottom Edge using SVG */}
-      <div className="absolute bottom-0 left-0 w-full overflow-hidden leading-[0] transform rotate-180">
-        <svg className="relative block w-full h-[60px]" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
-          <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" fill="#FFFFFF"></path>
+      <div className="absolute bottom-[-1px] left-0 w-full overflow-hidden leading-[0] z-20">
+        <svg 
+          viewBox="0 0 1200 120" 
+          preserveAspectRatio="none" 
+          className="relative block w-full h-[200px]"
+        >
+          <defs>
+            <linearGradient id="waveGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stopColor="#DCE7E1" />
+              <stop offset="100%" stopColor="#016A79" />
+            </linearGradient>
+          </defs>
+          <path 
+            d="M0,120V60.29C400,20,800,100,1200,60.29V120H0Z" 
+            fill="url(#waveGradient)"
+          />
         </svg>
       </div>
     </section>
