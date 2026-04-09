@@ -4,6 +4,7 @@ import { useState, createContext, useContext, useEffect } from 'react';
 import { useAuth } from '@/hooks/use-auth';
 import { usePathname } from 'next/navigation';
 import Layout from '@/components/layout/Layout';
+import DailyClientProvider from '@/components/DailyClientProvider';
 
 interface SidebarContextType {
   sidebarCollapsed: boolean;
@@ -48,9 +49,11 @@ export default function DashboardLayout({
 
   return (
     <SidebarContext.Provider value={{ sidebarCollapsed, setSidebarCollapsed }}>
-      <Layout user={user} onToggle={setSidebarCollapsed} sidebarCollapsed={sidebarCollapsed}>
-        {children}
-      </Layout>
+      <DailyClientProvider>
+        <Layout user={user} onToggle={setSidebarCollapsed} sidebarCollapsed={sidebarCollapsed}>
+          {children}
+        </Layout>
+      </DailyClientProvider>
     </SidebarContext.Provider>
   );
 }
