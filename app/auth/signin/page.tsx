@@ -119,7 +119,7 @@ export default function SignInPage() {
 
         {/* RIGHT SIDE: Sign In Form Card */}
         <div className="w-full lg:w-1/2 flex justify-center">
-          <div className="w-full max-w-[580px] bg-[#DDE8D2] p-8 md:p-20 rounded-[3rem] shadow-2xl">
+          <div className="w-full max-w-[580px] bg-[#DDE8D2] p-8 md:p-20 rounded-lg shadow-2xl">
             <div className="mb-8">
               <h1 className="text-3xl font-bold text-[#0B3C49] font-acme mb-1">Welcome back!</h1>
               <p className="text-[#0B3C49] font-medium opacity-80">Login to access all your data</p>

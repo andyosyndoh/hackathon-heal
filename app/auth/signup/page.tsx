@@ -212,7 +212,7 @@ export default function SignUpPage() {
 
         {/* RIGHT SIDE: Sign Up Form Card */}
         <div className="w-full lg:w-1/2 flex justify-center">
-          <div className="w-full max-w-[580px] bg-[#DDE8D2] p-8 md:p-12 rounded-[3rem] shadow-2xl">
+          <div className="w-full max-w-[580px] bg-[#DDE8D2] p-8 md:p-12 rounded-lg shadow-2xl">
             <div className="mb-8">
               <h1 className="text-3xl font-bold text-[#0B3C49] font-acme mb-1 whitespace-nowrap">Welcome To HEAL!</h1>
               <p className="text-[#0B3C49] font-medium opacity-80">Sign up to access all your data</p>
@@ -259,15 +259,60 @@ export default function SignUpPage() {
 
               <div className="flex flex-col md:flex-row justify-between py-2">
                 <label className="flex items-center gap-2 text-xs lg:text-sm text-[#056173] font-medium cursor-pointer">
-                  <input type="checkbox" className="rounded text-sm lg:text-base text-[#056173]" /> I agree to the Terms and Conditions
+                  <input 
+                    type="checkbox" 
+                    name="agreeToTerms"
+                    checked={formData.agreeToTerms}
+                    onChange={handleInputChange}
+                    className="rounded text-sm lg:text-base text-[#056173]" 
+                  /> I agree to the Terms and Conditions
                 </label>
                 <label className="flex items-center gap-2 text-xs lg:text-sm text-[#056173] font-medium cursor-pointer">
-                  <input type="checkbox" className="rounded text-sm lg:text-base text-[#056173]" /> I agree to the <span className="text-blue-500 underline">Privacy Policy</span>
+                  <input 
+                    type="checkbox" 
+                    name="agreeToPrivacy"
+                    checked={formData.agreeToPrivacy}
+                    onChange={handleInputChange}
+                    className="rounded text-sm lg:text-base text-[#056173]" 
+                  /> I agree to the <span className="text-blue-500 underline">Privacy Policy</span>
                 </label>
               </div>
 
-              <button type="submit" className="w-full py-4 bg-[#056173] text-white rounded-2xl font-bold font-acme text-lg hover:bg-[#0B3C49] transition-all shadow-lg">
-                Create Account
+              {/* Error Message */}
+              {errors.general && (
+                <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm">
+                  <p className="font-medium">Registration Error</p>
+                  <p>{errors.general}</p>
+                  {errors.general.includes('already exists') && (
+                    <p className="mt-2 text-xs">
+                      Already have an account? <Link href="/auth/signin" className="underline font-medium">Sign in here</Link>
+                    </p>
+                  )}
+                </div>
+              )}
+
+              {/* Individual Field Errors */}
+              {Object.entries(errors).filter(([key]) => key !== 'general').map(([key, error]) => (
+                error && (
+                  <div key={key} className="bg-red-50 border border-red-200 text-red-700 px-3 py-2 rounded-lg text-xs">
+                    {error}
+                  </div>
+                )
+              ))}
+
+              <button 
+                type="submit" 
+                className="w-full py-4 bg-[#056173] text-white rounded-2xl font-bold font-acme text-lg hover:bg-[#0B3C49] transition-all shadow-lg"
+                disabled={isLoading}
+              >
+                {isLoading ? (
+                  <span className="flex items-center justify-center gap-2">
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                    Creating Account...
+                  </span>
+                ) : (
+                  'Create Account'
+                )}
               </button>
 
               <div className="relative flex items-center justify-center py-4">
