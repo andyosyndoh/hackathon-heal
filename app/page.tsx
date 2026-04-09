@@ -65,7 +65,7 @@ export default function HomePage() {
 
       {/* Hero Section */}
       <section
-      className="relative min-h-screen flex flex-col justify-between bg-cover bg-center bg-no-repeat -mt-20"
+      className="relative min-h-screen flex flex-col justify-between bg-cover bg-center bg-no-repeat -mt-24"
       style={{ backgroundImage: 'url(/images/Hero-bg-image.png)' }}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex-grow flex items-center">

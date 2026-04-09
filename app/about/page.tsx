@@ -57,7 +57,7 @@ export default function AboutPage() {
 
       <Navbar />
       {/*Hero section*/}
-      <section className="relative lg:h-[66.66666667vh] text-white pt-28 lg:pt-20 lg:pb-0 overflow-hidden flex items-center -mt-20" style={{ background: 'linear-gradient(180deg, #DCE7E1 0%, #016A79 100%)' }}>
+      <section className="relative lg:h-[66.66666667vh] text-white pt-28 lg:pt-20 lg:pb-0 overflow-hidden flex items-center -mt-24" style={{ background: 'linear-gradient(180deg, #DCE7E1 0%, #016A79 100%)' }}>
 
         {/* Decorative Sunbursts */}
         <Image

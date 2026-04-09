@@ -1,7 +1,6 @@
 import './globals.css';
 import type { Metadata } from 'next';
 import { Inter, Acme } from 'next/font/google';
-import DailyClientProvider from '@/components/DailyClientProvider';
 import { FloatingBoltLogo } from '@/components/FloatingBoltLogo';
 
 const inter = Inter({
@@ -61,12 +60,10 @@ export default function RootLayout({
         <link href="https://fonts.googleapis.com/css2?family=Acme&display=swap" rel="stylesheet" />
       </head>
       <body className={`${inter.variable} ${acme.variable} font-inter antialiased bg-[#FEF5E3]`}>
-        <DailyClientProvider>
-          <div id="root">
-            {children}
-            {/* <FloatingBoltLogo /> */}
-          </div>
-        </DailyClientProvider>
+        <div id="root">
+          {children}
+          {/* <FloatingBoltLogo /> */}
+        </div>
       </body>
     </html>
   );
