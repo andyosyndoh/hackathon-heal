@@ -223,26 +223,26 @@ export default function SignUpPage() {
                 <div className="space-y-1">
                   <label className="text-base lg:text-lg font-normal text-[#016A79] font-acme">First Name</label>
                   <input name="firstName" type="text" placeholder="Enter your first name" onChange={handleInputChange}
-                    className="w-full px-4 py-3 rounded-md border border-gray-200 focus:ring-2 focus:ring-[#056173] outline-none text-sm bg-white/60" />
+                    className="w-full px-4 py-3 rounded-md border border-gray-200 focus:ring-2 focus:ring-[#056173] outline-none text-base lg:text-lg bg-white/60" />
                 </div>
                 <div className="space-y-1">
                   <label className="text-base lg:text-lg font-normal text-[#016A79] font-acme">Last Name</label>
                   <input name="lastName" type="text" placeholder="Enter your last name" onChange={handleInputChange}
-                    className="w-full px-4 py-3 rounded-md border border-gray-200 focus:ring-2 focus:ring-[#056173] outline-none text-sm bg-white/60" />
+                    className="w-full px-4 py-3 rounded-md border border-gray-200 focus:ring-2 focus:ring-[#056173] outline-none text-base lg:text-lg bg-white/60" />
                 </div>
               </div>
 
               <div className="space-y-1">
                 <label className="text-base lg:text-lg font-normal text-[#016A79] font-acme">Email Address</label>
                 <input name="email" type="email" placeholder="Enter your email address" onChange={handleInputChange}
-                  className="w-full px-4 py-3 rounded-md border border-gray-200 focus:ring-2 focus:ring-[#056173] outline-none text-sm bg-white/60" />
+                  className="w-full px-4 py-3 rounded-md border border-gray-200 focus:ring-2 focus:ring-[#056173] outline-none text-base lg:text-lg bg-white/60" />
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-1 relative">
                   <label className="text-base lg:text-lg font-normal text-[#016A79] font-acme">Password</label>
                   <input name="password" type={showPassword ? "text" : "password"} placeholder="Enter your password" onChange={handleInputChange}
-                    className="w-full px-4 py-3 rounded-md border border-gray-200 focus:ring-2 focus:ring-[#056173] outline-none text-sm bg-white/60" />
+                    className="w-full px-4 py-3 rounded-md border border-gray-200 focus:ring-2 focus:ring-[#056173] outline-none text-base lg:text-lg bg-white/60" />
                   <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3 top-9 text-[#016A79] opacity-60">
                     {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                   </button>
@@ -250,7 +250,7 @@ export default function SignUpPage() {
                 <div className="space-y-1 relative">
                   <label className="text-base lg:text-lg font-normal text-[#016A79] font-acme">Confirm Password</label>
                   <input name="confirmPassword" type={showConfirmPassword ? "text" : "password"} placeholder="Confirm your password" onChange={handleInputChange}
-                    className="w-full px-4 py-3 rounded-md border border-gray-200 focus:ring-2 focus:ring-[#016A79] outline-none text-sm bg-white/60" />
+                    className="w-full px-4 py-3 rounded-md border border-gray-200 focus:ring-2 focus:ring-[#016A79] outline-none text-base lg:text-lg bg-white/60" />
                   <button type="button" onClick={() => setShowConfirmPassword(!showConfirmPassword)} className="absolute right-3 top-9 text-[#016A79] opacity-60">
                     {showConfirmPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                   </button>
