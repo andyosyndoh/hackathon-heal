@@ -309,7 +309,7 @@ export default function HomePage() {
               href="/auth/signup" 
               className="text-black font-bold py-3 px-8 rounded-full transition-all duration-300 hover:scale-105 hover:shadow-lg active:scale-95 font-acme hover:bg-opacity-90" style={{backgroundColor: '#FEF0D3'}}
             >
-              Let's Start Here
+              Lets Start Here
             </Link>
           </div>
         </div>
