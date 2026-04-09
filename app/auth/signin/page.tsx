@@ -159,12 +159,33 @@ export default function SignInPage() {
                 </div>
               </div>
 
+              {/* Error Message */}
+              {errors.general && (
+                <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm">
+                  <p className="font-medium">Authentication Error</p>
+                  <p>{errors.general}</p>
+                  {errors.general.includes('Invalid email or password') && (
+                    <p className="mt-2 text-xs">
+                      Don't have an account? <Link href="/auth/signup" className="underline font-medium">Sign up here</Link>
+                    </p>
+                  )}
+                </div>
+              )}
+
               {/* Login Button */}
               <button 
                 type="submit" 
                 className="w-full py-4 bg-[#056173] text-white rounded-2xl font-bold font-acme text-lg hover:bg-[#0B3C49] transition-all shadow-lg"
+                disabled={isLoading}
               >
-                Login
+                {isLoading ? (
+                  <span className="flex items-center justify-center gap-2">
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                    Signing in...
+                  </span>
+                ) : (
+                  'Login'
+                )}
               </button>
 
               {/* Continue With Divider */}
