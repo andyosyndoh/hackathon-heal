@@ -150,7 +150,7 @@ func (s *CrisisService) CreateSafetyPlan(userID string, plan map[string]interfac
 	// Check if user already has a safety plan
 	var existingID string
 	err := s.db.QueryRow("SELECT id FROM safety_plans WHERE user_id = $1", userID).Scan(&existingID)
-	
+
 	if err == sql.ErrNoRows {
 		// Create new safety plan
 		_, err = s.db.Exec(`
@@ -199,7 +199,7 @@ func (s *CrisisService) GetSafetyPlan(userID string) (*models.SafetyPlan, error)
 	`, userID).Scan(&plan.ID, &plan.UserID, &plan.WarningSigns, &plan.CopingStrategies,
 		&plan.SupportContacts, &plan.ProfessionalContacts, &plan.EnvironmentSafety,
 		&plan.CreatedAt, &plan.UpdatedAt)
-	
+
 	if err != nil {
 		return nil, err
 	}
